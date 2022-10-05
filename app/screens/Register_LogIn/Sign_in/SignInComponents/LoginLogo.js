@@ -5,7 +5,7 @@ export const Logo = () => {
     <View style={styles.imageContainer}>
       <Image
         style={{}}
-        source={require("../../../../../assets/images/logoAuth.png")}
+        source={require("../../../../../assets/images/pattyLogo2.png")}
         style={{
           height: "100%",
           width: "100%",

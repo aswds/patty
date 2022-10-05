@@ -67,11 +67,10 @@ export const styles = StyleSheet.create({
   },
   linearGradientStyle: {
     flex: 1,
-    backgroundColor: "#121212",
   },
   imageContainer: {
     height: 90,
-    width: 85,
+    width: 90,
     shadowOpacity: 0.4,
     shadowOffset: { height: 2, width: 0 },
   },
@@ -82,6 +81,7 @@ export const styles = StyleSheet.create({
     marginVertical: 5,
   },
   styledButtonContainer: {
+    marginTop: "10%",
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
