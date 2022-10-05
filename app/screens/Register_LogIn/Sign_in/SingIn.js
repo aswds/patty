@@ -22,6 +22,7 @@ import {
   TouchableWithoutFeedback,
   View,
   StatusBar,
+  ImageBackground,
 } from "react-native";
 import { Line } from "./SignInComponents/Line";
 import CustomAlert from "../CustomAlert";
@@ -32,6 +33,7 @@ import { style } from "../style";
 import { styles } from "./styles";
 import * as Haptics from "expo-haptics";
 import StyledButton from "../components/button";
+import { user_signIn } from "./signInFunction";
 const SignInScreen = (props) => {
   const navigation = useNavigation();
 
@@ -48,41 +50,6 @@ const SignInScreen = (props) => {
   const [isLoggedin, setLoggedinStatus] = useState(false);
   const [userData, setUserData] = useState(null);
   const [isImageLoading, setImageLoadStatus] = useState();
-
-  // const signIn = (email, password) => {
-  //   firebase
-  //     .auth()
-  //     .signInWithEmailAndPassword(email.trim(), password)
-  //     .then((result) => {
-  //       const user = result.user;
-  //       console.log("Logged in with:" + user.email);
-  //     })
-  //     .catch((error) => {
-  //       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-  //       console.log(error.code);
-  //       if (error.code == "auth/invalid-email") {
-  //         setErrorMsg(
-  //           "The format of your email address is not correct please enter your correct email address to proceed."
-  //         ),
-  //           setEmail(false);
-  //         setShowModal(true);
-  //       } else if (error.code == "auth/wrong-password") {
-  //         setPassword({
-  //           isValid: false,
-  //         }),
-  //           setErrorMsg(
-  //             "Sorry, you entered the wrong password. Check your password again."
-  //           ),
-  //           setShowModal(true);
-  //       } else if (error.code == "auth/user-not-found") {
-  //         setErrorMsg(
-  //           "The email you entered does not belong to the account. Check your username and try again."
-  //         ),
-  //           setEmail(false);
-  //         setShowModal(true);
-  //       }
-  //     });
-  // };
 
   const _hideModal = () => {
     setShowModal(false);
@@ -104,128 +71,128 @@ const SignInScreen = (props) => {
     />
   );
   return (
-    <SafeAreaView style={styles.linearGradientStyle}>
-      <StatusBar barStyle={"light-content"} />
-      <TouchableWithoutFeedback
-        onPress={() => Keyboard.dismiss()}
-        style={{ flex: 1 }}
-      >
-        <ScrollView style={styles.container}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-          >
-            <View
-              style={{ justifyContent: "space-between", paddingTop: "10%" }}
+    <ImageBackground
+      source={require("../../../../assets/AE/background-02-01.png")}
+      style={{ flex: 1, width: null, height: null }}
+      blurRadius={35}
+    >
+      <SafeAreaView style={styles.linearGradientStyle}>
+        <StatusBar barStyle={"light-content"} />
+        <TouchableWithoutFeedback
+          onPress={() => Keyboard.dismiss()}
+          style={{ flex: 1 }}
+        >
+          <ScrollView style={styles.container}>
+            <KeyboardAvoidingView
+              behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
-              <View style={styles.logoContainer}>
-                <Logo />
-              </View>
-              <View style={styles.loginContainer}>
-                <View style={styles.innerText}>
-                  <Input isValid={email.isValid} icon={UserIcon}>
-                    <TextInput
-                      keyboardType="email-address"
-                      style={styles.inputField}
-                      placeholderTextColor={style.color}
-                      placeholder="Enter e-mail"
-                      onChangeText={(email) => {
-                        setUserLogin(email);
-                        // setEmail({ ...email, isValid: true });
-                      }}
-                      defaultValue={userLogin}
-                      autoCapitalize="none"
-                    />
-                  </Input>
+              <View
+                style={{ justifyContent: "space-between", paddingTop: "10%" }}
+              >
+                <View style={styles.logoContainer}>
+                  <Logo />
+                </View>
+                <View style={styles.loginContainer}>
+                  <View style={styles.innerText}>
+                    <Input isValid={email.isValid} icon={UserIcon}>
+                      <TextInput
+                        keyboardType="email-address"
+                        style={styles.inputField}
+                        placeholderTextColor={style.color}
+                        placeholder="Enter e-mail"
+                        onChangeText={(email) => {
+                          setUserLogin(email);
+                          // setEmail({ ...email, isValid: true });
+                        }}
+                        defaultValue={userLogin}
+                        autoCapitalize="none"
+                      />
+                    </Input>
 
-                  {/* {email.isValid ? null : (
-                  <Animatable.View
-                    animation="fadeInLeft"
-                    duration={500}
-                    style={styles.animationStyle}
-                  >
-                    <Text style={styles.errorMsg}>{email.errorMsg}</Text>
-                  </Animatable.View>
-                )} */}
-                  <Input isValid={password.isValid} icon={PasswordIcon}>
-                    <TextInput
-                      style={styles.inputField}
-                      secureTextEntry={showPassword}
-                      placeholder="Password"
-                      placeholderTextColor={style.color}
-                      onChangeText={(password) => {
-                        setUserPassword(password);
-                        //  setPassword(true);
+                    <Input isValid={password.isValid} icon={PasswordIcon}>
+                      <TextInput
+                        style={styles.inputField}
+                        secureTextEntry={showPassword}
+                        placeholder="Password"
+                        placeholderTextColor={style.color}
+                        onChangeText={(password) => {
+                          setUserPassword(password);
+                          //  setPassword(true);
+                        }}
+                        defaultValue={userPassword}
+                      />
+                    </Input>
+                    <TouchableOpacity
+                      onPress={() => {
+                        navigation.navigate("DataRecovery");
                       }}
-                      defaultValue={userPassword}
-                    />
-                  </Input>
+                      style={{ alignSelf: "flex-end", paddingVertical: 10 }}
+                    >
+                      <Text style={{ color: "#416194", fontSize: 13 }}>
+                        Forgot a password ?
+                      </Text>
+                    </TouchableOpacity>
+                  </View>
+                </View>
+                <View style={styles.styledButtonContainer}>
+                  <StyledButton
+                    onPress={() => {
+                      user_signIn(
+                        setEmail,
+                        setPassword,
+                        setErrorMsg,
+                        setShowModal,
+                        userLogin,
+                        userPassword
+                      );
+                    }}
+                    style={{
+                      height: 50,
+                      borderRadius: 10,
+                      backgroundColor: "rgba(155 , 50, 50 , 1)",
+                      flex: 1,
+                    }}
+                    textStyle={{
+                      fontFamily: "Nunito-Bold",
+                      fontSize: 20,
+                      color: "#E7E0C9",
+                    }}
+                  >
+                    Sign in
+                  </StyledButton>
+                </View>
+              </View>
+
+              <View style={styles.registerContainer}>
+                <View style={style.textTerms}>
+                  <Text style={style.textTermsStyle}>New user?{"  "}</Text>
                   <TouchableOpacity
                     onPress={() => {
-                      navigation.navigate("DataRecovery");
+                      navigation.navigate("NameInfo");
                     }}
-                    style={{ alignSelf: "flex-end", paddingVertical: 10 }}
                   >
-                    <Text style={{ color: "#416194", fontSize: 13 }}>
-                      Forgot a password ?
+                    <Text
+                      style={{
+                        ...style.textTermsStyle,
+                        fontSize: 15,
+                        color: "#416194",
+                      }}
+                    >
+                      Sign up
                     </Text>
                   </TouchableOpacity>
                 </View>
               </View>
-              <View style={styles.styledButtonContainer}>
-                <StyledButton
-                  onPress={() => {
-                    signIn(userLogin, userPassword);
-                  }}
-                  style={{
-                    height: 50,
-                    borderRadius: 10,
-                    flex: 1,
-                  }}
-                  textStyle={{
-                    fontFamily: "Nunito-Bold",
-                    fontSize: 20,
-                    color: "#E7E0C9",
-                  }}
-                >
-                  Sign in
-                </StyledButton>
-              </View>
-            </View>
-            <Line />
-            {/* <SingInMethods
-              loginWithfacebook={{}}
-              loginWithApple={{}}
-              loginWithGoogle={{}}
-            /> */}
-            <View style={styles.registerContainer}>
-              <View style={style.textTerms}>
-                <Text style={style.textTermsStyle}>New user? </Text>
-                <TouchableOpacity
-                  onPress={() => {
-                    navigation.navigate("NameInfo");
-                  }}
-                >
-                  <Text
-                    style={{
-                      ...style.textTermsStyle,
-                      fontSize: 15,
-                      color: "#416194",
-                    }}
-                  >
-                    Sign up
-                  </Text>
-                </TouchableOpacity>
-              </View>
-            </View>
-          </KeyboardAvoidingView>
-        </ScrollView>
-      </TouchableWithoutFeedback>
-      <CustomAlert
-        errorMsg={errorMsg}
-        hideModal={_hideModal}
-        showModal={_showModal}
-      />
-    </SafeAreaView>
+            </KeyboardAvoidingView>
+          </ScrollView>
+        </TouchableWithoutFeedback>
+        <CustomAlert
+          errorMsg={errorMsg}
+          hideModal={_hideModal}
+          showModal={_showModal}
+        />
+      </SafeAreaView>
+    </ImageBackground>
   );
 };
 
