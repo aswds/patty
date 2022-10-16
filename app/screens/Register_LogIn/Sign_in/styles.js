@@ -4,6 +4,19 @@ export const styles = StyleSheet.create({
     flex: 1,
     flexGrow: 1,
   },
+  styledButtonStyle: {
+    height: 50,
+    borderRadius: 10,
+    backgroundColor: "rgba(155 , 50, 50 , 1)",
+    flex: 1,
+  },
+  styledButtonTextStyle: {
+    fontFamily: "Nunito-Bold",
+    fontSize: 20,
+    color: "#E7E0C9",
+  },
+  forgotPasswordContainer: { alignSelf: "flex-end", paddingVertical: 10 },
+  forgotPasswordTextStyle: { color: "#416194", fontSize: 13 },
   logoContainer: {
     height:
       Platform.OS === "android"
@@ -21,7 +34,6 @@ export const styles = StyleSheet.create({
   },
   loginContainer: {
     width: Dimensions.get("window").width / 1,
-    // backgroundColor: "yellow",
     height: Dimensions.get("window").height * 0.25,
     alignItems: "center",
     justifyContent: "center",
@@ -54,7 +66,8 @@ export const styles = StyleSheet.create({
     marginTop: 30,
     width: "85%",
     height: 55,
-    justifyContent: "flex-start",
+    justifyContent: "space-between",
+
     paddingLeft: 10,
     borderRadius: 10,
     alignItems: "center",

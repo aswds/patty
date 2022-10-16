@@ -5,10 +5,10 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import DataRecovery from "../../screens/Register_LogIn/Recovery";
 import SignInScreen from "../../screens/Register_LogIn/Sign_in/SingIn";
 import SignUpScreen from "../../screens/Register_LogIn/Sign_up/SignUp";
 import { AvatarChoose } from "../../screens/Register_LogIn/Sign_up/Sign_up_screens/AvatarChoose";
-import CameraScreen from "../../screens/Register_LogIn/Sign_up/Sign_up_screens/CameraScreen";
 import { NameModal } from "../../screens/Register_LogIn/Sign_up/Sign_up_screens/NameModal";
 const Stack = createNativeStackNavigator();
 
@@ -28,12 +28,11 @@ export const LoginAndRegister = (props) => {
     <NavigationContainer ref={navigation}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
         <Stack.Screen component={SignInScreen} name="SignInScreen" />
-        {/* <Stack.Screen component={DataRecovery} name="DataRecovery" /> */}
+        <Stack.Screen component={DataRecovery} name="DataRecovery" />
         <Stack.Group>
           <Stack.Screen component={SignUpScreen} name="SignUpScreen" />
           <Stack.Screen component={NameModal} name="NameInfo" />
           <Stack.Screen component={AvatarChoose} name="Avatar" />
-          <Stack.Screen component={CameraScreen} name="Camera" />
           {/* <Stack.Screen component={CameraScreen} name="CameraStack" /> */}
           {/* <Stack.Screen
             component={PasswordRules}
