@@ -1,27 +1,38 @@
-import { setDoc, doc } from "firebase/firestore";
+import { setDoc, doc, updateDoc } from "firebase/firestore";
 import { Alert } from "react-native";
-import { auth, db } from "../../../../../../firebase";
-import { getStorage, ref, uploadBytes } from "firebase/storage";
-const storage = require("firebase/storage");
-export const uploadImage = async (uri) => {
-  const user = auth.currentUser.uid;
+import { app, auth, db, storage } from "../../../../../../firebase";
+import {
+  getDownloadURL,
+  ref,
+  uploadBytes,
+  uploadBytesResumable,
+} from "firebase/storage";
+import { updateProfile } from "firebase/auth";
+export const uploadImage = async (uri, user) => {
+  console.log(uri);
+  const userUID = auth.currentUser.uid;
   const responce = await fetch(uri);
   const blob = await responce.blob();
-  const storage = getStorage();
-  const storageRef = ref(storage, "user_images/");
-  const task = uploadBytes(storageRef, blob).then((snapshot) => {
-    console.log("Uploaded a blob");
-  });
+
+  const storageRef = ref(storage, `user_images/${userUID}`);
+  const task = uploadBytesResumable(storageRef, blob);
+  // uploadBytes(storageRef, blob).then((snapshot) => {
+  //   console.log(snapshot.metadata.ref.bucket.);
+  //   console.log("Uploaded a blob");
+  // });
 
   const taskProgress = (snapshot) => {
     console.log("Transferred:" + snapshot.bytesTransferred);
   };
   const taskComplete = () => {
-    task.snapshot.ref.getDownloadURL().then((snapshot) => {
-      setDoc(doc(db, "USERS", auth.currentUser.uid), {
+    console.log(user);
+    getDownloadURL(task.snapshot.ref).then(async (snapshot) => {
+      updateDoc(doc(db, "USERS", userUID), {
         userImage: snapshot,
+      }).catch((err) => console.log(err));
+      await updateProfile(user, {
+        photoURL: snapshot,
       });
-      auth.currentUser.photoURL({ photoURL: snapshot });
     });
   };
   const taskError = (snapshot) => {

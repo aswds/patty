@@ -33,12 +33,6 @@ export const LoginAndRegister = (props) => {
           <Stack.Screen component={SignUpScreen} name="SignUpScreen" />
           <Stack.Screen component={NameModal} name="NameInfo" />
           <Stack.Screen component={AvatarChoose} name="Avatar" />
-          {/* <Stack.Screen component={CameraScreen} name="CameraStack" /> */}
-          {/* <Stack.Screen
-            component={PasswordRules}
-            name="PasswordRules"
-            options={password_screen_options}
-          /> */}
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

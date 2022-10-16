@@ -17,16 +17,14 @@ const CustomAlert = (props) => {
         animationType="fade"
         transparent={true}
         visible={props.showModal}
-        onRequestClose={() => {
-          props.hideModal();
-        }}
+        onRequestClose={props.hideModal}
       >
         <Pressable
           style={[
             Platform.OS === "ios" ? styles.iOSBackdrop : styles.androidBackdrop,
             styles.backdrop,
           ]}
-          onPress={() => props.hideModal()}
+          onPress={props.hideModal}
         />
 
         <SafeAreaView>
@@ -36,7 +34,6 @@ const CustomAlert = (props) => {
               justifyContent: "center",
               alignItems: "center",
               width: "85%",
-              height: "50%",
             }}
           >
             <View

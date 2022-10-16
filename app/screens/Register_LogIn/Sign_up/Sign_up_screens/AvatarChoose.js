@@ -107,6 +107,7 @@ export const AvatarChoose = (props) => {
         onPress={() => {
           navigation.navigate("SignUpScreen", {
             userName: name,
+            userImage: image,
           });
         }}
       >
