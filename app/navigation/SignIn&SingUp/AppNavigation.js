@@ -13,7 +13,6 @@ export const App_Navigation = (props) => {
   const navigation = useNavigationContainerRef();
   return (
     <NavigationContainer ref={navigation}>
-      s
       <Stack.Navigator screenOptions={{ headerShown: true }}>
         <Stack.Screen component={Home} name="Home" />
       </Stack.Navigator>
