@@ -13,6 +13,7 @@ import {
   KeyboardAvoidingView,
   Platform,
   SafeAreaView,
+  ScrollView,
   StatusBar,
   StyleSheet,
   Text,
@@ -21,131 +22,85 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-
+import { BackButton } from "./components/BackButton";
+import { NMScreen } from "./components/NMScreen";
 export const NameModal = (props) => {
   const [name, setName] = useState();
   const [nameSkip, setNameSkip] = useState();
   const [profileImageSkip, setProfileImageSkip] = useState();
-  const [showModal, setShowModal] = useState(true);
   const { colors } = useTheme();
   const navigation = useNavigation();
   const route = useRoute();
   const styles = makeStyles(colors);
   return (
-    <ImageBackground
-      source={require("../../../../../assets/AE/NameInfo-01.png")}
-      style={{ flex: 1, width: null, height: null }}
-    >
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={styles.modalView}>
-          <StatusBar barStyle={"dark-content"} />
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}
-          >
-            <TouchableWithoutFeedback
-              onPress={() => {
-                Keyboard.dismiss();
+    <NMScreen>
+      <BackButton navigation={navigation} />
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "space-evenly",
+          marginHorizontal: 10,
+        }}
+      >
+        <View
+          style={{
+            flex: 1,
+            alignItems: "center",
+            flexDirection: "row",
+          }}
+        >
+          <View>
+            <Text style={styles.title}>Hi! 👋</Text>
+            <Text
+              style={{
+                fontFamily: "WorkSans-Regular",
+                fontSize: 17,
+                color: colors.text,
               }}
             >
-              <SafeAreaView style={{ flex: 1 }}>
-                <TouchableOpacity
-                  style={{
-                    position: "absolute",
-                    zIndex: 1,
-                    left: 10,
-                    top: 45,
-                  }}
-                  onPress={() => {
-                    navigation.navigate("SignInScreen");
-                  }}
-                >
-                  <FontAwesome5
-                    name="arrow-left"
-                    size={30}
-                    color={colors.text}
-                  />
-                </TouchableOpacity>
-                <View
-                  style={{
-                    flex: 1,
-                    justifyContent: "space-evenly",
-                    marginHorizontal: 10,
-                  }}
-                >
-                  <View
-                    style={{
-                      flex: 1,
-                      alignItems: "center",
-                      flexDirection: "row",
-                    }}
-                  >
-                    <View>
-                      <Text style={styles.title}>Hi! 👋</Text>
-                      <Text
-                        style={{
-                          fontFamily: "WorkSans-Regular",
-                          fontSize: 17,
-                          color: colors.text,
-                        }}
-                      >
-                        What's your name?
-                      </Text>
-                    </View>
-                  </View>
-                  <View
-                    style={{
-                      flex: 1,
-                      flexDirection: "row",
-                      alignItems: "flex-start",
-                    }}
-                  >
-                    <TextInput
-                      style={styles.textInput}
-                      placeholder="🥸 Enter your name"
-                      placeholderTextColor={"grey"}
-                      onChangeText={(text) => {
-                        setName(text);
-                      }}
-                      value={name}
-                    />
-                  </View>
-
-                  <View
-                    style={{
-                      alignItems: "flex-end",
-                      width: "100%",
-                      height: "5%",
-                      marginBottom:
-                        Dimensions.get("window").height >= 800 ? 0 : "5%",
-                    }}
-                  >
-                    <TouchableOpacity
-                      style={styles.nextButtonContainer}
-                      onPress={() => {
-                        setShowModal(!showModal);
-                        navigation.navigate("Avatar", {
-                          userName: name,
-                        });
-                      }}
-                    >
-                      <Text style={styles.nextButtonText}>
-                        {name ? "Next" : "Skip"}
-                      </Text>
-                      <FontAwesome5
-                        name="arrow-right"
-                        size={30}
-                        color={colors.text}
-                      />
-                    </TouchableOpacity>
-                  </View>
-                </View>
-              </SafeAreaView>
-            </TouchableWithoutFeedback>
-          </KeyboardAvoidingView>
+              What's your name?
+            </Text>
+          </View>
         </View>
-      </TouchableWithoutFeedback>
-    </ImageBackground>
+        <View
+          style={{
+            flex: 1,
+            flexDirection: "row",
+            alignItems: "flex-start",
+          }}
+        >
+          <TextInput
+            style={styles.textInput}
+            placeholder="🥸 Enter your name"
+            placeholderTextColor={"grey"}
+            onChangeText={(text) => {
+              setName(text);
+            }}
+            value={name}
+          />
+        </View>
+
+        <View
+          style={{
+            alignItems: "flex-end",
+            width: "100%",
+            height: "5%",
+          }}
+        >
+          <TouchableOpacity
+            style={styles.nextButtonContainer}
+            onPress={() => {
+              navigation.navigate("Avatar", {
+                userName: name,
+              });
+            }}
+          >
+            <Text style={styles.nextButtonText}>{name ? "Next" : "Skip"}</Text>
+            <FontAwesome5 name="arrow-right" size={30} color={colors.text} />
+          </TouchableOpacity>
+        </View>
+      </View>
+    </NMScreen>
   );
 };
 const makeStyles = (colors: any) =>
@@ -165,8 +120,9 @@ const makeStyles = (colors: any) =>
       width: "100%",
     },
     nextButtonContainer: {
-      height: "100%",
       width: "40%",
+      bottom: 10,
+      alignSelf: "center",
       alignItems: "center",
       justifyContent: "space-evenly",
       flexDirection: "row",
@@ -175,7 +131,7 @@ const makeStyles = (colors: any) =>
       fontWeight: "bold",
       color: colors.text,
     },
-    modalView: {
+    container: {
       flex: 1,
     },
   });

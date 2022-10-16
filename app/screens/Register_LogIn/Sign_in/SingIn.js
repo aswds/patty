@@ -27,13 +27,14 @@ import {
 import { Line } from "./SignInComponents/Line";
 import CustomAlert from "../CustomAlert";
 import { Input } from "./SignInComponents/Input";
-import { Logo } from "./SignInComponents/LoginLogo";
+import { Logo } from "../components/Logo";
 // import SingInMethods from "./LoginComponents/SignInMethods";
 import { style } from "../style";
 import { styles } from "./styles";
 import * as Haptics from "expo-haptics";
 import StyledButton from "../components/button";
 import { user_signIn } from "./signInFunction";
+import RecoveryModal from "./SignInComponents/RecoveryModal";
 const SignInScreen = (props) => {
   const navigation = useNavigation();
 
@@ -45,7 +46,7 @@ const SignInScreen = (props) => {
   const [userLogin, setUserLogin] = useState("");
   const [showPassword, setShowPassword] = useState(true);
   const [_showModal, setShowModal] = useState(false);
-  const [singInModal, setSignInModal] = useState(false);
+  const [_showRecoveryModal, setShowRecModal] = useState(false);
 
   const [isLoggedin, setLoggedinStatus] = useState(false);
   const [userData, setUserData] = useState(null);
@@ -54,8 +55,8 @@ const SignInScreen = (props) => {
   const _hideModal = () => {
     setShowModal(false);
   };
-  const _hideSignInModal = () => {
-    setSignInModal(false);
+  const _hideRecModal = () => {
+    setShowRecModal(false);
   };
   const iconColor = "#6D6D6D";
   const iconSize = 24;
@@ -86,9 +87,7 @@ const SignInScreen = (props) => {
             <KeyboardAvoidingView
               behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
-              <View
-                style={{ justifyContent: "space-between", paddingTop: "10%" }}
-              >
+              <View style={{ paddingTop: "10%" }}>
                 <View style={styles.logoContainer}>
                   <Logo />
                 </View>
@@ -126,9 +125,9 @@ const SignInScreen = (props) => {
                       onPress={() => {
                         navigation.navigate("DataRecovery");
                       }}
-                      style={{ alignSelf: "flex-end", paddingVertical: 10 }}
+                      style={styles.forgotPasswordContainer}
                     >
-                      <Text style={{ color: "#416194", fontSize: 13 }}>
+                      <Text style={styles.forgotPasswordTextStyle}>
                         Forgot a password ?
                       </Text>
                     </TouchableOpacity>
@@ -146,17 +145,8 @@ const SignInScreen = (props) => {
                         userPassword
                       );
                     }}
-                    style={{
-                      height: 50,
-                      borderRadius: 10,
-                      backgroundColor: "rgba(155 , 50, 50 , 1)",
-                      flex: 1,
-                    }}
-                    textStyle={{
-                      fontFamily: "Nunito-Bold",
-                      fontSize: 20,
-                      color: "#E7E0C9",
-                    }}
+                    style={styles.styledButtonStyle}
+                    textStyle={styles.styledButtonTextStyle}
                   >
                     Sign in
                   </StyledButton>
@@ -190,6 +180,10 @@ const SignInScreen = (props) => {
           errorMsg={errorMsg}
           hideModal={_hideModal}
           showModal={_showModal}
+        />
+        <RecoveryModal
+          showModal={_showRecoveryModal}
+          hideModal={_hideRecModal}
         />
       </SafeAreaView>
     </ImageBackground>

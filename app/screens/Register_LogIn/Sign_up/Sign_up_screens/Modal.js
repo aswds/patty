@@ -14,6 +14,7 @@ import {
   Pressable,
 } from "react-native";
 // import { theme } from "../../../components/theme";
+const color = "black";
 
 export const ModalPhoto = (props) => {
   const [image, setImage] = useState();
@@ -78,7 +79,7 @@ export const ModalPhoto = (props) => {
                     <MaterialIcons
                       name="insert-photo"
                       size={30}
-                      color="white"
+                      color={color}
                       style={{ paddingHorizontal: 10 }}
                     />
                     <Text style={styles.textStyle}>Pick a picture</Text>
@@ -86,12 +87,7 @@ export const ModalPhoto = (props) => {
                 </TouchableOpacity>
                 <TouchableOpacity
                   style={styles.modalButtonsStyle}
-                  onPress={() => {
-                    props.hideModal(),
-                      navigation.push("CameraStack", {
-                        routeName: props.routeName,
-                      });
-                  }}
+                  onPress={props.hideModal}
                 >
                   <View
                     style={{
@@ -101,12 +97,12 @@ export const ModalPhoto = (props) => {
                     }}
                   >
                     <MaterialIcons
-                      name="photo-camera"
+                      name="close"
                       size={30}
-                      color="white"
+                      color={color}
                       style={{ paddingHorizontal: 10 }}
                     />
-                    <Text style={styles.textStyle}>Do a photo</Text>
+                    <Text style={styles.textStyle}>Close</Text>
                   </View>
                 </TouchableOpacity>
               </View>
@@ -125,16 +121,15 @@ const makeStyles = (colors: any) =>
       alignItems: "center",
     },
     textStyle: {
-      fontFamily: "WorkSans-Medium",
+      fontFamily: "WorkSans-Regular",
+      color: color,
     },
     modalView: {
-      top: 10,
       flexDirection: "column",
       alignItems: "flex-start",
       width: "100%",
       height: Dimensions.get("window").height >= 800 ? "25%" : "40%",
       borderTopRightRadius: 40,
-      backgroundColor: "rgba(240, 240, 240,1)",
 
       borderTopLeftRadius: 40,
       shadowColor: "#000",
@@ -163,7 +158,7 @@ const makeStyles = (colors: any) =>
       alignItems: "center",
       justifyContent: "center",
       borderRadius: 10,
-      backgroundColor: "rgba(220, 220, 220,1)",
+      backgroundColor: "rgba(250, 250, 250,1)",
       shadowColor: "grey",
       shadowOpacity: 0.5,
       shadowRadius: 4,

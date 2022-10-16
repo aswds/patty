@@ -10,17 +10,16 @@ import {
   Keyboard,
 } from "react-native";
 import { MaterialIcons } from "@expo/vector-icons";
-import StyledButton from "../../components/button";
-import forgotPassword from "../../components/forgotPassword";
+// import forgotPassword from "../../components/forgotPassword";
 import { KeyboardAvoidingView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import Line from "../../components/signIn&signUp/line";
+import StyledButton from "./components/button";
+import { Input } from "./Sign_in/SignInComponents/Input";
 
 const DataRecovery = (props) => {
   const [userEmail, setUserEmail] = useState("");
   return (
-    <LinearGradient
-      colors={["#737373", "#3b3b3b"]}
+    <View
       style={{
         flex: 1,
         width: null,
@@ -28,7 +27,6 @@ const DataRecovery = (props) => {
       }}
     >
       <TouchableWithoutFeedback
-        style={{ flex: 1 }}
         onPress={() => {
           Keyboard.dismiss();
         }}
@@ -40,19 +38,16 @@ const DataRecovery = (props) => {
           <View style={styles.container}>
             <View style={{}}>
               <Text style={{ fontSize: 20, alignSelf: "center" }}>
-                Enter your connected e-mail
+                Reset your password
               </Text>
             </View>
             <View style={styles.rContainer}>
-              <View style={styles.userInput}>
-                <View style={{ marginRight: 10, marginBottom: 1 }}>
-                  <MaterialIcons
-                    name="alternate-email"
-                    size={Dimensions.get("window").height >= 800 ? 24 : 20}
-                    color="black"
-                  />
-                </View>
-                <Line />
+              <Input isValid={true}>
+                <MaterialIcons
+                  name="alternate-email"
+                  size={Dimensions.get("window").height >= 800 ? 24 : 20}
+                  color="black"
+                />
                 <TextInput
                   autoCapitalize="none"
                   keyboardType="email-address"
@@ -61,7 +56,7 @@ const DataRecovery = (props) => {
                   onChangeText={(text) => setUserEmail(text)}
                   defaultValue={userEmail}
                 />
-              </View>
+              </Input>
               <View style={styles.shadowButton}>
                 <StyledButton
                   style={{
@@ -74,6 +69,7 @@ const DataRecovery = (props) => {
                   onPress={() => {
                     forgotPassword(userEmail);
                   }}
+                  textStyle={{ color: "white" }}
                 >
                   Submit
                 </StyledButton>
@@ -82,7 +78,7 @@ const DataRecovery = (props) => {
           </View>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
-    </LinearGradient>
+    </View>
   );
 };
 DataRecovery.navigationOptions = () => {
@@ -110,6 +106,13 @@ const styles = StyleSheet.create({
     width: "50%",
     justifyContent: "center",
     alignItems: "center",
+    marginTop: 20,
+    marginBottom: 20,
+    borderRadius: 13,
+    backgroundColor: "rgba(155 , 50, 50 , 1)",
+    height: Dimensions.get("window").height / 14,
+    width: Dimensions.get("window").width / 1.2,
+    alignSelf: "center",
   },
   inputField: {
     width: Dimensions.get("window").width / 2.1,
@@ -118,7 +121,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
   },
   rContainer: {
-    height: "50%",
+    height: "30%",
     width: "100%",
     alignItems: "center",
   },
