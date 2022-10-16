@@ -101,7 +101,7 @@ const SignInScreen = (props) => {
                         placeholder="Enter e-mail"
                         onChangeText={(email) => {
                           setUserLogin(email);
-                          // setEmail({ ...email, isValid: true });
+                          setEmail({ ...email, isValid: true });
                         }}
                         defaultValue={userLogin}
                         autoCapitalize="none"
@@ -116,7 +116,7 @@ const SignInScreen = (props) => {
                         placeholderTextColor={style.color}
                         onChangeText={(password) => {
                           setUserPassword(password);
-                          //  setPassword(true);
+                          setPassword({ ...password, isValid: true });
                         }}
                         defaultValue={userPassword}
                       />

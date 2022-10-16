@@ -18,9 +18,10 @@ export const Input = (props, { style }) => {
         borderColor: props.isValid ? "black" : "red",
       }}
     >
-      {}
       {props.children}
-      <View style={{ marginHorizontal: 15 }}>{props.icon}</View>
+      <View style={{ marginHorizontal: 15, position: "absolute", right: 0 }}>
+        {props.icon}
+      </View>
     </View>
   );
 };

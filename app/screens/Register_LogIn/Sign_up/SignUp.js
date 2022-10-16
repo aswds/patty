@@ -26,11 +26,13 @@ import {
 import * as Animatable from "react-native-animatable";
 import StyledButton from "../components/button";
 import { Logo } from "../components/Logo";
+import CustomAlert from "../CustomAlert";
 import { Input } from "../Sign_in/SignInComponents/Input";
 import { style } from "../style";
 import { Container } from "./Sign_up_components/Container";
 import { Screen } from "./Sign_up_components/Screen";
 import { TermText } from "./Sign_up_components/TermText";
+import { error_handle } from "./Sign_up_screens/Sign_up_Functions/error_handle";
 import { sameUsernames } from "./Sign_up_screens/Sign_up_Functions/sameUsername";
 import { signUpHandle } from "./Sign_up_screens/Sign_up_Functions/signUp";
 import { checkPassword } from "./Sign_up_screens/Sign_up_Functions/Validator";
@@ -38,33 +40,54 @@ const SignUpScreen = (props) => {
   const [username, setUsername] = useState("");
   const [valid, setValid] = useState({
     validUsername: true,
-    validPassword: true,
     validEmail: true,
+    validPassword: true,
+    validConfirmPassword: true,
   });
   const [user, setUser] = useState({
     email: null,
     password: null,
   });
-
+  const [showModal, setShowModal] = useState(false);
   const [confirmPass, setConfirmPass] = useState("");
   const [showPassword, setShowPassword] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
-  const [usernameError, setUsernameError] = useState(null);
-  const [emailError, setEmailError] = useState(null);
   const [passwordError, setPasswordError] = useState(null);
+  const [errorMsg, setErrorMsg] = useState();
+  const [userError, setUsernameError] = useState();
   const ref_input2 = useRef();
   const ref_input3 = useRef();
   const ref_input4 = useRef();
   const navigation = useNavigation();
   const route = useRoute();
-  const name = route.params?.name;
-  const image = route.params?.image;
+  const name = route.params?.userName;
+  const image = route.params?.userImage;
 
-  const loader = () => {
-    setIsLoading(true);
-    setTimeout(() => setIsLoading(false), 1000);
-    clearTimeout();
+  const _hideModal = () => {
+    setShowModal(false);
   };
+  function signUp_handle() {
+    if (
+      valid.validEmail &&
+      valid.validPassword &&
+      valid.validUsername &&
+      user.password == confirmPass
+    ) {
+      signUpHandle(user.email, user.password, username, name, image).catch(
+        (err) => {
+          error_handle(err.error_type, err.message, {
+            setValid,
+            valid,
+          }).catch((err) => {
+            setShowModal(true), setErrorMsg(err);
+          });
+        }
+      );
+    } else {
+      setShowModal(true),
+        setErrorMsg("Please check if everything is correct :)");
+    }
+  }
   function refHandle(ref_input) {
     ref_input.current.focus();
   }
@@ -97,10 +120,11 @@ const SignUpScreen = (props) => {
               placeholderTextColor={style.color}
               onChangeText={(text) => {
                 setUsername(text);
-                sameUsernames(text, setUsernameError).then((res) => {
-                  console.log(res);
-                  setValid({ ...valid, validUsername: res });
-                });
+                sameUsernames(text, setUsernameError)
+                  .then((res) => {
+                    setValid({ ...valid, validUsername: res });
+                  })
+                  .catch((err) => setValid({ ...valid, validUsername: err }));
               }}
               onSubmitEditing={() => {
                 refHandle(ref_input2);
@@ -128,9 +152,6 @@ const SignUpScreen = (props) => {
               keyboardType="email-address"
               placeholder="Email"
               placeholderTextColor={style.color}
-              onEndEditing={() => {
-                // similarEmail(user.email);
-              }}
               onSubmitEditing={() => {
                 refHandle(ref_input3);
               }}
@@ -169,6 +190,9 @@ const SignUpScreen = (props) => {
               secureTextEntry={showPassword}
               placeholder="Password"
               placeholderTextColor={style.color}
+              onChange={() => {
+                setValid({ ...valid, validPassword: true });
+              }}
               onChangeText={(text) => {
                 setUser({ ...user, password: text });
                 // checkPassword(text, setValid, setPasswordError);
@@ -199,7 +223,7 @@ const SignUpScreen = (props) => {
           )} */}
           <Input
             style={styles.inputStyle}
-            isValid={valid.validPassword}
+            isValid={valid.validConfirmPassword}
             icon={
               <MaterialCommunityIcons
                 name="lock-check"
@@ -214,7 +238,15 @@ const SignUpScreen = (props) => {
               secureTextEntry={showPassword}
               placeholder="Confirm your password"
               placeholderTextColor={style.color}
-              onChangeText={(text) => setConfirmPass(text)}
+              onChangeText={(text) => {
+                setConfirmPass(text);
+
+                if (user.password != text) {
+                  setValid({ ...valid, validConfirmPassword: false });
+                } else {
+                  setValid({ ...valid, validConfirmPassword: true });
+                }
+              }}
               defaultValue={confirmPass}
               ref={ref_input4}
             />
@@ -228,16 +260,7 @@ const SignUpScreen = (props) => {
             color: "#E7E0C9",
           }}
           style={styles.styledButton}
-          onPress={() => {
-            if (
-              valid.validEmail &&
-              valid.validPassword &&
-              valid.validUsername &&
-              user.password == confirmPass
-            ) {
-              signUpHandle(user.email, user.password, username, name, image);
-            }
-          }}
+          onPress={signUp_handle}
         >
           Sign Up
         </StyledButton>
@@ -245,6 +268,12 @@ const SignUpScreen = (props) => {
         <TermText />
         {/* Fix */}
       </KeyboardAvoidingView>
+      <CustomAlert
+        errorMsg={errorMsg}
+        hideModal={_hideModal}
+        showModal={showModal}
+        setErrorMsg={setErrorMsg}
+      />
     </Screen>
   );
 };
@@ -277,10 +306,10 @@ const styles = StyleSheet.create({
   },
 
   inputField: {
-    width: Dimensions.get("window").width / 2.1,
-    height: Dimensions.get("window").height / 13,
+    width: "100%",
+    height: "100%",
     justifyContent: "center",
-    borderRadius: 20,
+    borderRadius: 10,
     fontSize: 13,
     fontFamily: "WorkSans-Medium",
   },
