@@ -6,7 +6,7 @@ import {
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useState } from "react";
+import React, { useReducer, useState, useEffect } from "react";
 import {
   Dimensions,
   Image,
@@ -35,6 +35,7 @@ import * as Haptics from "expo-haptics";
 import StyledButton from "../components/button";
 import { user_signIn } from "./signInFunction";
 import RecoveryModal from "./SignInComponents/RecoveryModal";
+import { AuthReducer, initialState } from "../../../redux/AuthReducer";
 const SignInScreen = (props) => {
   const navigation = useNavigation();
 
@@ -51,13 +52,15 @@ const SignInScreen = (props) => {
   const [isLoggedin, setLoggedinStatus] = useState(false);
   const [userData, setUserData] = useState(null);
   const [isImageLoading, setImageLoadStatus] = useState();
-
+  const [loginReducer, dispatch] = useReducer(AuthReducer, initialState);
   const _hideModal = () => {
     setShowModal(false);
   };
   const _hideRecModal = () => {
     setShowRecModal(false);
   };
+  useEffect(() => {}, []);
+
   const iconColor = "#6D6D6D";
   const iconSize = 24;
   const UserIcon = (
@@ -136,13 +139,15 @@ const SignInScreen = (props) => {
                 <View style={styles.styledButtonContainer}>
                   <StyledButton
                     onPress={() => {
+                      setTimeout(() => {}, 1000);
                       user_signIn(
                         setEmail,
                         setPassword,
                         setErrorMsg,
                         setShowModal,
                         userLogin,
-                        userPassword
+                        userPassword,
+                        dispatch
                       );
                     }}
                     style={styles.styledButtonStyle}

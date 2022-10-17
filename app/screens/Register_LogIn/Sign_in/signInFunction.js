@@ -1,24 +1,28 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import * as Haptics from "expo-haptics";
 import { authentication } from "../../../../firebase";
+import { AuthReducer, initialState } from "../../../redux/AuthReducer";
+import { useReducer } from "react";
 export const user_signIn = (
   setEmail,
   setPassword,
   setErrorMsg,
   setShowModal,
   email,
-  password
+  password,
+  dispatch
 ) => {
   const auth = getAuth();
+  dispatch({ type: "AUTH_START" });
 
   signInWithEmailAndPassword(auth, email, password)
     .then((userCredential) => {
-      // Signed in
       const user = userCredential.user;
-      console.log(user);
-      // ...
+      dispatch({ type: "AUTH_END" });
     })
     .catch((error) => {
+      console.log("f");
+      // dispatch({ type: "AUTH_END" });
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       if (error.code == "auth/invalid-email") {
         setErrorMsg(
