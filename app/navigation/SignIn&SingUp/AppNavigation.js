@@ -5,6 +5,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import { Tabs } from "../../custom/navigation/tabs";
 import Home from "../../screens/Home/Home";
 const Stack = createNativeStackNavigator();
 
@@ -13,9 +14,7 @@ export const App_Navigation = (props) => {
   const navigation = useNavigationContainerRef();
   return (
     <NavigationContainer ref={navigation}>
-      <Stack.Navigator screenOptions={{ headerShown: true }}>
-        <Stack.Screen component={Home} name="Home" />
-      </Stack.Navigator>
+      <Tabs />
     </NavigationContainer>
   );
 };

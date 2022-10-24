@@ -4,6 +4,7 @@ import {
   ImageBackground,
   TouchableWithoutFeedback,
   ScrollView,
+  View,
 } from "react-native";
 
 export const Screen = (props) => {
@@ -14,8 +15,11 @@ export const Screen = (props) => {
       blurRadius={9}
     >
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <ScrollView contentContainerStyle={styles.scrollViewContainer}>
-          {props.children}
+        <ScrollView
+          style={{ flex: 1 }}
+          contentContainerStyle={styles.scrollViewContainer}
+        >
+          <View style={styles.viewStyle}>{props.children}</View>
         </ScrollView>
       </TouchableWithoutFeedback>
     </ImageBackground>
@@ -28,9 +32,12 @@ const styles = StyleSheet.create({
     height: null,
   },
   scrollViewContainer: {
-    flex: 1,
     flexGrow: 1,
+  },
+  viewStyle: {
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
+    paddingVertical: "10%",
   },
 });

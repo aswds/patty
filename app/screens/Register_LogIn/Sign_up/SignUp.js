@@ -6,7 +6,7 @@ import {
 } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useRef, useState } from "react";
+import React, { useContext, useRef, useState } from "react";
 import {
   Alert,
   Dimensions,
@@ -24,11 +24,12 @@ import {
   View,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
+import { AuthContext } from "../../../navigation/SignIn&SingUp/components/AuthContext";
 import StyledButton from "../components/button";
 import { Logo } from "../components/Logo";
 import CustomAlert from "../CustomAlert";
 import { Input } from "../Sign_in/SignInComponents/Input";
-import { style } from "../style";
+import { style, textStyle } from "../style";
 import { Container } from "./Sign_up_components/Container";
 import { Screen } from "./Sign_up_components/Screen";
 import { TermText } from "./Sign_up_components/TermText";
@@ -36,6 +37,7 @@ import { error_handle } from "./Sign_up_screens/Sign_up_Functions/error_handle";
 import { sameUsernames } from "./Sign_up_screens/Sign_up_Functions/sameUsername";
 import { signUpHandle } from "./Sign_up_screens/Sign_up_Functions/signUp";
 import { checkPassword } from "./Sign_up_screens/Sign_up_Functions/Validator";
+
 const SignUpScreen = (props) => {
   const [username, setUsername] = useState("");
   const [valid, setValid] = useState({
@@ -62,7 +64,7 @@ const SignUpScreen = (props) => {
   const route = useRoute();
   const name = route.params?.userName;
   const image = route.params?.userImage;
-
+  const { signUp } = useContext(AuthContext);
   const _hideModal = () => {
     setShowModal(false);
   };
@@ -117,14 +119,19 @@ const SignUpScreen = (props) => {
                 ...styles.inputField,
               }}
               placeholder="Username"
-              placeholderTextColor={style.color}
+              placeholderTextColor={textStyle.color}
               onChangeText={(text) => {
                 setUsername(text);
-                sameUsernames(text, setUsernameError)
+              }}
+              onEndEditing={() => {
+                sameUsernames(username, setErrorMsg)
                   .then((res) => {
                     setValid({ ...valid, validUsername: res });
                   })
-                  .catch((err) => setValid({ ...valid, validUsername: err }));
+                  .catch((err) => {
+                    setValid({ ...valid, validUsername: err }),
+                      setShowModal(!err);
+                  });
               }}
               onSubmitEditing={() => {
                 refHandle(ref_input2);
@@ -151,7 +158,7 @@ const SignUpScreen = (props) => {
               autoCapitalize="none"
               keyboardType="email-address"
               placeholder="Email"
-              placeholderTextColor={style.color}
+              placeholderTextColor={textStyle.color}
               onSubmitEditing={() => {
                 refHandle(ref_input3);
               }}
@@ -189,7 +196,7 @@ const SignUpScreen = (props) => {
               style={styles.inputField}
               secureTextEntry={showPassword}
               placeholder="Password"
-              placeholderTextColor={style.color}
+              placeholderTextColor={textStyle.color}
               onChange={() => {
                 setValid({ ...valid, validPassword: true });
               }}
@@ -237,7 +244,7 @@ const SignUpScreen = (props) => {
               autoCapitalize="none"
               secureTextEntry={showPassword}
               placeholder="Confirm your password"
-              placeholderTextColor={style.color}
+              placeholderTextColor={textStyle.color}
               onChangeText={(text) => {
                 setConfirmPass(text);
 
@@ -334,7 +341,7 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   styledButton: {
-    marginTop: 20,
+    marginTop: 30,
     marginBottom: 20,
     borderRadius: 13,
     backgroundColor: "rgba(155 , 50, 50 , 1)",

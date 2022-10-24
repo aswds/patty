@@ -1,7 +1,7 @@
 import { collection, where, query, getDocs } from "firebase/firestore";
 
 import { db } from "../../../../../../firebase";
-export const sameUsernames = async (username, setUsernameError) => {
+export const sameUsernames = async (username, setErrorMsg) => {
   return new Promise(async (resolve, reject) => {
     const q = query(
       collection(db, "USERS"),
@@ -12,7 +12,7 @@ export const sameUsernames = async (username, setUsernameError) => {
         if (snapshot.empty) {
           resolve(true);
         } else {
-          setUsernameError("Username is already taken!");
+          setErrorMsg("Username is already taken!");
           reject(false);
         }
       })

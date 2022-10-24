@@ -5,10 +5,15 @@ import { auth } from "../../../firebase";
 
 export default function Home() {
   return (
-    <View style={{ flex: 1, justifyContent: "center", alignItems: "center" }}>
-      <TouchableOpacity onPress={() => signOut(auth)}>
-        <Text>Hello</Text>
-      </TouchableOpacity>
+    <View
+      style={{
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center",
+        backgroundColor: "black",
+      }}
+    >
+      <Text>Home Screen</Text>
     </View>
   );
 }

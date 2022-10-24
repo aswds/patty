@@ -6,7 +6,7 @@ import {
 } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import { LinearGradient } from "expo-linear-gradient";
-import React, { useReducer, useState, useEffect } from "react";
+import React, { useReducer, useState, useEffect, useContext } from "react";
 import {
   Dimensions,
   Image,
@@ -24,23 +24,28 @@ import {
   StatusBar,
   ImageBackground,
 } from "react-native";
-import { Line } from "./SignInComponents/Line";
+import Screen from "./SignInComponents/Screen";
 import CustomAlert from "../CustomAlert";
 import { Input } from "./SignInComponents/Input";
 import { Logo } from "../components/Logo";
 // import SingInMethods from "./LoginComponents/SignInMethods";
-import { style } from "../style";
+import { textStyle } from "../style";
 import { styles } from "./styles";
 import * as Haptics from "expo-haptics";
 import StyledButton from "../components/button";
-import { user_signIn } from "./signInFunction";
+import { user_signIn } from "./SignInComponents/SignInFuncs/signInFunction";
 import RecoveryModal from "./SignInComponents/RecoveryModal";
 import { AuthReducer, initialState } from "../../../redux/AuthReducer";
+import {
+  AuthContext,
+  AuthContextProvider,
+} from "../../../navigation/SignIn&SingUp/components/AuthContext";
+import SignUpContainer from "./SignInComponents/SignUpContainer";
+import Loader from "../components/Loader";
+import isEmpty from "./SignInComponents/SignInFuncs/isEmpty";
 const SignInScreen = (props) => {
   const navigation = useNavigation();
-
   const [email, setEmail] = useState({ isValid: true, errorMsg: "" });
-  const [isLoading, setIsLoading] = useState(false);
   const [password, setPassword] = useState({ isValid: true, errorMsg: "" });
   const [errorMsg, setErrorMsg] = useState();
   const [userPassword, setUserPassword] = useState("");
@@ -52,15 +57,15 @@ const SignInScreen = (props) => {
   const [isLoggedin, setLoggedinStatus] = useState(false);
   const [userData, setUserData] = useState(null);
   const [isImageLoading, setImageLoadStatus] = useState();
-  const [loginReducer, dispatch] = useReducer(AuthReducer, initialState);
   const _hideModal = () => {
     setShowModal(false);
   };
   const _hideRecModal = () => {
     setShowRecModal(false);
   };
-  useEffect(() => {}, []);
-
+  const _clearMsg = () => {
+    setErrorMsg();
+  };
   const iconColor = "#6D6D6D";
   const iconSize = 24;
   const UserIcon = (
@@ -74,124 +79,95 @@ const SignInScreen = (props) => {
       onPress={() => setShowPassword(!showPassword)}
     />
   );
+  const { signIn } = useContext(AuthContext);
+  const { isLoading } = useContext(AuthContext);
+
   return (
-    <ImageBackground
-      source={require("../../../../assets/AE/background-02-01.png")}
-      style={{ flex: 1, width: null, height: null }}
-      blurRadius={35}
-    >
-      <SafeAreaView style={styles.linearGradientStyle}>
-        <StatusBar barStyle={"light-content"} />
-        <TouchableWithoutFeedback
-          onPress={() => Keyboard.dismiss()}
-          style={{ flex: 1 }}
-        >
-          <ScrollView style={styles.container}>
-            <KeyboardAvoidingView
-              behavior={Platform.OS === "ios" ? "padding" : "height"}
+    <>
+      <Screen styles={styles} keyboardDismiss={Keyboard.dismiss}>
+        <View style={{ paddingTop: "10%" }}>
+          <View style={styles.logoContainer}>
+            <Logo />
+          </View>
+          <View style={styles.loginContainer}>
+            <View style={styles.innerText}>
+              <Input isValid={email.isValid} icon={UserIcon}>
+                <TextInput
+                  keyboardType="email-address"
+                  style={styles.inputField}
+                  placeholderTextColor={textStyle.color}
+                  placeholder="Enter e-mail"
+                  onChangeText={(email) => {
+                    setUserLogin(email);
+                    setEmail({ ...email, isValid: true });
+                  }}
+                  defaultValue={userLogin}
+                  autoCapitalize="none"
+                />
+              </Input>
+              <Input isValid={password.isValid} icon={PasswordIcon}>
+                <TextInput
+                  style={styles.inputField}
+                  secureTextEntry={showPassword}
+                  placeholder="Password"
+                  placeholderTextColor={textStyle.color}
+                  onChangeText={(password) => {
+                    setUserPassword(password);
+                    setPassword({ ...password, isValid: true });
+                  }}
+                  defaultValue={userPassword}
+                />
+              </Input>
+              <TouchableOpacity
+                onPress={() => {
+                  navigation.navigate("DataRecovery");
+                }}
+                style={styles.forgotPasswordContainer}
+              >
+                <Text style={styles.forgotPasswordTextStyle}>
+                  Forgot a password ?
+                </Text>
+              </TouchableOpacity>
+            </View>
+          </View>
+          <View style={styles.styledButtonContainer}>
+            <StyledButton
+              onPress={() => {
+                user_signIn(
+                  setEmail,
+                  setPassword,
+                  setErrorMsg,
+                  setShowModal,
+                  userLogin,
+                  userPassword
+                )
+                  .then(() => {
+                    signIn();
+                  })
+                  .catch(() => {});
+              }}
+              style={styles.styledButtonStyle}
+              textStyle={styles.styledButtonTextStyle}
             >
-              <View style={{ paddingTop: "10%" }}>
-                <View style={styles.logoContainer}>
-                  <Logo />
-                </View>
-                <View style={styles.loginContainer}>
-                  <View style={styles.innerText}>
-                    <Input isValid={email.isValid} icon={UserIcon}>
-                      <TextInput
-                        keyboardType="email-address"
-                        style={styles.inputField}
-                        placeholderTextColor={style.color}
-                        placeholder="Enter e-mail"
-                        onChangeText={(email) => {
-                          setUserLogin(email);
-                          setEmail({ ...email, isValid: true });
-                        }}
-                        defaultValue={userLogin}
-                        autoCapitalize="none"
-                      />
-                    </Input>
+              Sign in
+            </StyledButton>
+          </View>
+        </View>
 
-                    <Input isValid={password.isValid} icon={PasswordIcon}>
-                      <TextInput
-                        style={styles.inputField}
-                        secureTextEntry={showPassword}
-                        placeholder="Password"
-                        placeholderTextColor={style.color}
-                        onChangeText={(password) => {
-                          setUserPassword(password);
-                          setPassword({ ...password, isValid: true });
-                        }}
-                        defaultValue={userPassword}
-                      />
-                    </Input>
-                    <TouchableOpacity
-                      onPress={() => {
-                        navigation.navigate("DataRecovery");
-                      }}
-                      style={styles.forgotPasswordContainer}
-                    >
-                      <Text style={styles.forgotPasswordTextStyle}>
-                        Forgot a password ?
-                      </Text>
-                    </TouchableOpacity>
-                  </View>
-                </View>
-                <View style={styles.styledButtonContainer}>
-                  <StyledButton
-                    onPress={() => {
-                      setTimeout(() => {}, 1000);
-                      user_signIn(
-                        setEmail,
-                        setPassword,
-                        setErrorMsg,
-                        setShowModal,
-                        userLogin,
-                        userPassword,
-                        dispatch
-                      );
-                    }}
-                    style={styles.styledButtonStyle}
-                    textStyle={styles.styledButtonTextStyle}
-                  >
-                    Sign in
-                  </StyledButton>
-                </View>
-              </View>
-
-              <View style={styles.registerContainer}>
-                <View style={style.textTerms}>
-                  <Text style={style.textTermsStyle}>New user?{"  "}</Text>
-                  <TouchableOpacity
-                    onPress={() => {
-                      navigation.navigate("NameInfo");
-                    }}
-                  >
-                    <Text
-                      style={{
-                        ...style.textTermsStyle,
-                        fontSize: 15,
-                        color: "#416194",
-                      }}
-                    >
-                      Sign up
-                    </Text>
-                  </TouchableOpacity>
-                </View>
-              </View>
-            </KeyboardAvoidingView>
-          </ScrollView>
-        </TouchableWithoutFeedback>
-        <CustomAlert
-          errorMsg={errorMsg}
-          hideModal={_hideModal}
-          showModal={_showModal}
+        <SignUpContainer
+          styles={styles}
+          navigation={navigation}
+          textStyle={textStyle}
         />
-        <RecoveryModal
-          showModal={_showRecoveryModal}
-          hideModal={_hideRecModal}
-        />
-      </SafeAreaView>
-    </ImageBackground>
+      </Screen>
+      <CustomAlert
+        errorMsg={errorMsg}
+        hideModal={_hideModal}
+        showModal={_showModal}
+        clearMsg={_clearMsg}
+      />
+      <RecoveryModal showModal={_showRecoveryModal} hideModal={_hideRecModal} />
+    </>
   );
 };
 

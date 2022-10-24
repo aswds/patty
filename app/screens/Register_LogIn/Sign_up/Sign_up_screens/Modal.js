@@ -12,6 +12,7 @@ import {
   Text,
   SafeAreaView,
   Pressable,
+  Platform,
 } from "react-native";
 // import { theme } from "../../../components/theme";
 const color = "black";
@@ -132,14 +133,8 @@ const makeStyles = (colors: any) =>
       borderTopRightRadius: 40,
 
       borderTopLeftRadius: 40,
-      shadowColor: "#000",
-      shadowOffset: {
-        width: 0,
-        height: 2,
-      },
-      shadowOpacity: 0.25,
-      shadowRadius: 4,
-      elevation: 5,
+
+      shadowOpacity: 0,
     },
 
     whiteButtonContainer: {
@@ -158,7 +153,10 @@ const makeStyles = (colors: any) =>
       alignItems: "center",
       justifyContent: "center",
       borderRadius: 10,
-      backgroundColor: "rgba(250, 250, 250,1)",
+      backgroundColor:
+        Platform.OS == "ios"
+          ? "rgba(250, 250, 250,1)"
+          : "rgba(230, 230, 230,1)",
       shadowColor: "grey",
       shadowOpacity: 0.5,
       shadowRadius: 4,

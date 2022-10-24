@@ -1,4 +1,4 @@
-export const style = {
+export const textStyle = {
   color: "grey",
   textContainer: {
     justifyContent: "center",

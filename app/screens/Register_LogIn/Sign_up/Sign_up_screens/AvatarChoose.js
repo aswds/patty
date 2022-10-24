@@ -20,6 +20,9 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
+import ACAskImage from "./components/ACAskImage";
+import ACImage from "./components/ACImage";
+import ACNextButton from "./components/ACNextButton";
 import { ACScreen } from "./components/ACScreen";
 import { BackButton } from "./components/BackButton";
 import { ModalPhoto } from "./Modal";
@@ -63,37 +66,9 @@ export const AvatarChoose = (props) => {
       <BackButton navigation={navigation} />
       <StatusBar barStyle={DarkTheme.dark ? "light-content" : "dark-content"} />
 
-      <TouchableOpacity
-        style={{
-          height: 200,
-          width: 200,
-          borderRadius: 100,
-          borderWidth: 3,
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-        onPress={_showModalHandle}
-      >
-        {image ? (
-          <Image
-            source={{ uri: image }}
-            style={{
-              width: "100%",
-              height: "100%",
-              borderRadius: 100,
-              justifyContent: "center",
-              alignItems: "center",
-            }}
-          />
-        ) : (
-          <Text style={{ fontSize: 100 }}>🤔</Text>
-        )}
-      </TouchableOpacity>
+      <ACImage _showModalHandle={_showModalHandle} image={image} />
 
-      <View style={{ maxWidth: "99%" }}>
-        <Text style={styles.title}>Hi {route.params?.userName}!</Text>
-        <Text style={styles.textStyle}>It's time to choose your avatar!</Text>
-      </View>
+      <ACAskImage styles={styles} route={route} />
 
       <ModalPhoto
         routeName={route.name}
@@ -102,18 +77,12 @@ export const AvatarChoose = (props) => {
         imageHandler={_imagePropHandler}
       />
 
-      <TouchableOpacity
-        style={styles.nextButtonContainer}
-        onPress={() => {
-          navigation.navigate("SignUpScreen", {
-            userName: name,
-            userImage: image,
-          });
-        }}
-      >
-        <Text style={styles.nextButtonText}>{name ? "Next" : "Skip"}</Text>
-        <FontAwesome5 name="arrow-right" size={30} color={colors.text} />
-      </TouchableOpacity>
+      <ACNextButton
+        navigation={navigation}
+        styles={styles}
+        image={image}
+        name={name}
+      />
     </ACScreen>
   );
 };

@@ -16,7 +16,9 @@ export const Container = (props) => {
 const styles = StyleSheet.create({
   registerContainer: {
     marginTop: "5%",
-    height: Dimensions.get("window").height / 2.2,
+    marginBottom: "5%",
+    height: Dimensions.get("window").height * 0.5,
+    // height: Dimensions.get("window").height / 2.2,
     width: Dimensions.get("window").width / 1.3,
     justifyContent: "center",
   },

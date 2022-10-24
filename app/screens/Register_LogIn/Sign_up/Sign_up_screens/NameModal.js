@@ -23,6 +23,8 @@ import {
   View,
 } from "react-native";
 import { BackButton } from "./components/BackButton";
+import NMAskName from "./components/NMAskName";
+import NMNextButton from "./components/NMNextButton";
 import { NMScreen } from "./components/NMScreen";
 export const NameModal = (props) => {
   const [name, setName] = useState();
@@ -42,26 +44,8 @@ export const NameModal = (props) => {
           marginHorizontal: 10,
         }}
       >
-        <View
-          style={{
-            flex: 1,
-            alignItems: "center",
-            flexDirection: "row",
-          }}
-        >
-          <View>
-            <Text style={styles.title}>Hi! 👋</Text>
-            <Text
-              style={{
-                fontFamily: "WorkSans-Regular",
-                fontSize: 17,
-                color: colors.text,
-              }}
-            >
-              What's your name?
-            </Text>
-          </View>
-        </View>
+        <NMAskName styles={styles} />
+
         <View
           style={{
             flex: 1,
@@ -80,25 +64,7 @@ export const NameModal = (props) => {
           />
         </View>
 
-        <View
-          style={{
-            alignItems: "flex-end",
-            width: "100%",
-            height: "5%",
-          }}
-        >
-          <TouchableOpacity
-            style={styles.nextButtonContainer}
-            onPress={() => {
-              navigation.navigate("Avatar", {
-                userName: name,
-              });
-            }}
-          >
-            <Text style={styles.nextButtonText}>{name ? "Next" : "Skip"}</Text>
-            <FontAwesome5 name="arrow-right" size={30} color={colors.text} />
-          </TouchableOpacity>
-        </View>
+        <NMNextButton navigation={navigation} styles={styles} name={name} />
       </View>
     </NMScreen>
   );
