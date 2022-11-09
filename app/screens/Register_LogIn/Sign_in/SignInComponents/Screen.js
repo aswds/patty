@@ -17,7 +17,6 @@ export default function Screen(props) {
       blurRadius={35}
     >
       <SafeAreaView style={styles.linearGradientStyle}>
-        <StatusBar barStyle={"light-content"} />
         <TouchableWithoutFeedback onPress={keyboardDissmis} style={{ flex: 1 }}>
           <ScrollView
             style={styles.container}

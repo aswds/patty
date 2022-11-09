@@ -51,6 +51,7 @@ function set_errorMsg_errorType(error_code) {
 async function setDocs(result, userInfo) {
   const { email, username, name, image } = userInfo;
   await setDoc(doc(db, `USERS`, `${auth.currentUser.uid}`), {
+    userUID: auth.currentUser.uid,
     email: email,
     verifiedEmail: false,
     username: username,
@@ -60,8 +61,9 @@ async function setDocs(result, userInfo) {
     city: "",
     phoneNumber: "",
     userImage: "",
-    createdAt: Timestamp.fromDate(new Date()) || new Date(),
-    userUID: auth.currentUser.uid,
+    following: 0,
+    followers: 0,
+    createdAt: Timestamp.fromDate(new Date()).toJSON() || new Date(),
   }).then(() => {
     uploadImage(image, auth.currentUser);
   });
@@ -86,7 +88,6 @@ export const signUpHandle = async (
       .then((res) => setDocs(res, userInfo))
 
       .catch((error) => {
-        console.error(error);
         set_errorMsg_errorType(error.code)
           .then((res) => {
             res(res);

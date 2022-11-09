@@ -17,7 +17,6 @@ import { LoginAndRegister } from "./SignIn_SignUp_nav";
 export const NavigationController = (props) => {
   const { colors } = useTheme();
   const [isSignedIn, setIsSigned] = useState(true);
-  // const [isLoading, setIsLoading] = useState(false);
   const navigation = useNavigationContainerRef();
   const Stack = createNativeStackNavigator();
   const user = auth.currentUser;

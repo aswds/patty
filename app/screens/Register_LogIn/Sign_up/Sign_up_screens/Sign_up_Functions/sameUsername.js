@@ -1,4 +1,5 @@
 import { collection, where, query, getDocs } from "firebase/firestore";
+import { Alert } from "react-native";
 
 import { db } from "../../../../../../firebase";
 export const sameUsernames = async (username, setErrorMsg) => {
@@ -16,6 +17,6 @@ export const sameUsernames = async (username, setErrorMsg) => {
           reject(false);
         }
       })
-      .catch((e) => console.log(e));
+      .catch((e) => Alert.alert(e));
   });
 };

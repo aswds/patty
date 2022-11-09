@@ -13,8 +13,8 @@ export default function Icon({ Icon, icon_name, focused, title }) {
       style={[
         styles.container,
         {
-          height: isMap ? DimensionWidth * 0.15 : DimensionWidth * 0.14,
-          marginBottom: isMap ? 10 : 0,
+          height: isMap ? DimensionWidth * 0.16 : DimensionWidth * 0.14,
+          marginBottom: isMap ? 20 : 0,
         },
       ]}
     >

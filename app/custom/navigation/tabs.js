@@ -5,7 +5,6 @@ import { View, Image, Text, ImageBackground, StyleSheet } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "../../navigation/SignIn&SingUp/components/Icon";
 import Chat from "../../screens/Chat/Chat";
-import Home from "../../screens/Home/Home";
 import Map from "../../screens/Map/Map";
 import Profile from "../../screens/Profile/Profile";
 
@@ -36,7 +35,7 @@ const TabButton = (props) => {
 };
 export const Tabs = () => {
   return (
-    <Tab.Navigator screenOptions={tabOptions}>
+    <Tab.Navigator screenOptions={tabOptions} initialRouteName="Map">
       <Tab.Screen
         name="Profile"
         component={Profile}

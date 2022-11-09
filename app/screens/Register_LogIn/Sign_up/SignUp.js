@@ -98,121 +98,118 @@ const SignUpScreen = (props) => {
       <View>
         <Logo />
       </View>
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.keyboardAvoidingViewStyle}
-      >
-        <Container>
-          <Input
-            isValid={valid.validUsername}
-            style={styles.inputStyle}
-            icon={
-              <AntDesign
-                name="user"
+
+      <Container>
+        <Input
+          isValid={valid.validUsername}
+          style={styles.inputStyle}
+          icon={
+            <AntDesign
+              name="user"
+              size={Dimensions.get("window").height >= 800 ? 24 : 20}
+              color="black"
+            />
+          }
+        >
+          <TextInput
+            style={{
+              ...styles.inputField,
+            }}
+            placeholder="Username"
+            placeholderTextColor={textStyle.color}
+            onChangeText={(text) => {
+              setUsername(text);
+            }}
+            onEndEditing={() => {
+              sameUsernames(username, setErrorMsg)
+                .then((res) => {
+                  setValid({ ...valid, validUsername: res });
+                })
+                .catch((err) => {
+                  setValid({ ...valid, validUsername: err }),
+                    setShowModal(!err);
+                });
+            }}
+            onSubmitEditing={() => {
+              refHandle(ref_input2);
+            }}
+            defaultValue={username}
+          />
+        </Input>
+
+        <Input
+          style={styles.inputStyle}
+          icon={
+            <MaterialIcons
+              name="alternate-email"
+              size={Dimensions.get("window").height >= 800 ? 24 : 20}
+              color="black"
+            />
+          }
+          isValid={valid.validEmail}
+        >
+          <TextInput
+            style={{
+              ...styles.inputField,
+            }}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            placeholder="Email"
+            placeholderTextColor={textStyle.color}
+            onSubmitEditing={() => {
+              refHandle(ref_input3);
+            }}
+            onChangeText={(text) => {
+              setUser({ ...user, email: text });
+              setValid({ ...valid, validEmail: true });
+            }}
+            value={user.email}
+            ref={ref_input2}
+          />
+        </Input>
+
+        <Input
+          isValid={valid.validPassword}
+          style={styles.inputStyle}
+          icon={
+            showPassword ? (
+              <Feather
+                name="eye-off"
                 size={Dimensions.get("window").height >= 800 ? 24 : 20}
                 color="black"
+                onPress={() => setShowPassword(false)}
               />
-            }
-          >
-            <TextInput
-              style={{
-                ...styles.inputField,
-              }}
-              placeholder="Username"
-              placeholderTextColor={textStyle.color}
-              onChangeText={(text) => {
-                setUsername(text);
-              }}
-              onEndEditing={() => {
-                sameUsernames(username, setErrorMsg)
-                  .then((res) => {
-                    setValid({ ...valid, validUsername: res });
-                  })
-                  .catch((err) => {
-                    setValid({ ...valid, validUsername: err }),
-                      setShowModal(!err);
-                  });
-              }}
-              onSubmitEditing={() => {
-                refHandle(ref_input2);
-              }}
-              defaultValue={username}
-            />
-          </Input>
-
-          <Input
-            style={styles.inputStyle}
-            icon={
-              <MaterialIcons
-                name="alternate-email"
+            ) : (
+              <Feather
+                name="eye"
                 size={Dimensions.get("window").height >= 800 ? 24 : 20}
                 color="black"
+                onPress={() => setShowPassword(true)}
               />
-            }
-            isValid={valid.validEmail}
-          >
-            <TextInput
-              style={{
-                ...styles.inputField,
-              }}
-              autoCapitalize="none"
-              keyboardType="email-address"
-              placeholder="Email"
-              placeholderTextColor={textStyle.color}
-              onSubmitEditing={() => {
-                refHandle(ref_input3);
-              }}
-              onChangeText={(text) => {
-                setUser({ ...user, email: text });
-                setValid({ ...valid, validEmail: true });
-              }}
-              value={user.email}
-              ref={ref_input2}
-            />
-          </Input>
+            )
+          }
+        >
+          <TextInput
+            style={styles.inputField}
+            secureTextEntry={showPassword}
+            placeholder="Password"
+            placeholderTextColor={textStyle.color}
+            onChange={() => {
+              setValid({ ...valid, validPassword: true });
+            }}
+            onChangeText={(text) => {
+              setUser({ ...user, password: text });
+              // checkPassword(text, setValid, setPasswordError);
+            }}
+            onSubmitEditing={() => {
+              refHandle(ref_input4);
+            }}
+            value={user.password}
+            ref={ref_input3}
+          />
+        </Input>
 
-          <Input
-            isValid={valid.validPassword}
-            style={styles.inputStyle}
-            icon={
-              showPassword ? (
-                <Feather
-                  name="eye-off"
-                  size={Dimensions.get("window").height >= 800 ? 24 : 20}
-                  color="black"
-                  onPress={() => setShowPassword(false)}
-                />
-              ) : (
-                <Feather
-                  name="eye"
-                  size={Dimensions.get("window").height >= 800 ? 24 : 20}
-                  color="black"
-                  onPress={() => setShowPassword(true)}
-                />
-              )
-            }
-          >
-            <TextInput
-              style={styles.inputField}
-              secureTextEntry={showPassword}
-              placeholder="Password"
-              placeholderTextColor={textStyle.color}
-              onChange={() => {
-                setValid({ ...valid, validPassword: true });
-              }}
-              onChangeText={(text) => {
-                setUser({ ...user, password: text });
-                // checkPassword(text, setValid, setPasswordError);
-              }}
-              onSubmitEditing={() => {
-                refHandle(ref_input4);
-              }}
-              value={user.password}
-              ref={ref_input3}
-            />
-          </Input>
-
-          {/* {valid.validPassword ? null : (
+        {/* {valid.validPassword ? null : (
             <Animatable.View
               animation="fadeInLeft"
               duration={500}
@@ -228,53 +225,52 @@ const SignUpScreen = (props) => {
               </Text>
             </Animatable.View>
           )} */}
-          <Input
-            style={styles.inputStyle}
-            isValid={valid.validConfirmPassword}
-            icon={
-              <MaterialCommunityIcons
-                name="lock-check"
-                size={Dimensions.get("window").height >= 800 ? 24 : 20}
-                color="black"
-              />
-            }
-          >
-            <TextInput
-              style={styles.inputField}
-              autoCapitalize="none"
-              secureTextEntry={showPassword}
-              placeholder="Confirm your password"
-              placeholderTextColor={textStyle.color}
-              onChangeText={(text) => {
-                setConfirmPass(text);
-
-                if (user.password != text) {
-                  setValid({ ...valid, validConfirmPassword: false });
-                } else {
-                  setValid({ ...valid, validConfirmPassword: true });
-                }
-              }}
-              defaultValue={confirmPass}
-              ref={ref_input4}
+        <Input
+          style={styles.inputStyle}
+          isValid={valid.validConfirmPassword}
+          icon={
+            <MaterialCommunityIcons
+              name="lock-check"
+              size={Dimensions.get("window").height >= 800 ? 24 : 20}
+              color="black"
             />
-          </Input>
-        </Container>
-
-        <StyledButton
-          textStyle={{
-            fontFamily: "Nunito-Bold",
-            fontSize: 20,
-            color: "#E7E0C9",
-          }}
-          style={styles.styledButton}
-          onPress={signUp_handle}
+          }
         >
-          Sign Up
-        </StyledButton>
-        {/* Fix */}
-        <TermText />
-        {/* Fix */}
-      </KeyboardAvoidingView>
+          <TextInput
+            style={styles.inputField}
+            autoCapitalize="none"
+            secureTextEntry={showPassword}
+            placeholder="Confirm your password"
+            placeholderTextColor={textStyle.color}
+            onChangeText={(text) => {
+              setConfirmPass(text);
+
+              if (user.password != text) {
+                setValid({ ...valid, validConfirmPassword: false });
+              } else {
+                setValid({ ...valid, validConfirmPassword: true });
+              }
+            }}
+            defaultValue={confirmPass}
+            ref={ref_input4}
+          />
+        </Input>
+      </Container>
+
+      <StyledButton
+        textStyle={{
+          fontFamily: "Nunito-Bold",
+          fontSize: 20,
+          color: "#E7E0C9",
+        }}
+        style={styles.styledButton}
+        onPress={signUp_handle}
+      >
+        Sign Up
+      </StyledButton>
+      {/* Fix */}
+      <TermText />
+      {/* Fix */}
       <CustomAlert
         errorMsg={errorMsg}
         hideModal={_hideModal}
@@ -331,10 +327,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     shadowOffset: { height: 2, width: 0 },
   },
-  keyboardAvoidingViewStyle: {
-    alignItems: "center",
-    justifyContent: "center",
-  },
+
   animationStyle: {
     width: Dimensions.get("window").width / 1.5,
     justifyContent: "center",

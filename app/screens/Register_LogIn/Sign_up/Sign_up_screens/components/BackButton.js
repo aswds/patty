@@ -1,5 +1,5 @@
 import { FontAwesome5 } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native";
+import { Platform, TouchableOpacity } from "react-native";
 export const BackButton = ({ navigation }) => {
   return (
     <TouchableOpacity
@@ -8,6 +8,7 @@ export const BackButton = ({ navigation }) => {
         zIndex: 1,
         left: 15,
         top: 0,
+        margin: Platform.OS == "android" ? 10 : 0,
       }}
       onPress={() => {
         navigation.goBack();

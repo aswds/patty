@@ -5,16 +5,21 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import { Provider } from "react-redux";
 import { Tabs } from "../../custom/navigation/tabs";
-import Home from "../../screens/Home/Home";
+import store from "../../redux/store/store";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 const Stack = createNativeStackNavigator();
 
 export const App_Navigation = (props) => {
-  const { colors } = useTheme();
   const navigation = useNavigationContainerRef();
   return (
-    <NavigationContainer ref={navigation}>
-      <Tabs />
-    </NavigationContainer>
+    <SafeAreaProvider>
+      <NavigationContainer ref={navigation}>
+        <Provider store={store}>
+          <Tabs />
+        </Provider>
+      </NavigationContainer>
+    </SafeAreaProvider>
   );
 };

@@ -5,6 +5,7 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   View,
+  KeyboardAvoidingView,
 } from "react-native";
 
 export const Screen = (props) => {
@@ -16,10 +17,17 @@ export const Screen = (props) => {
     >
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <ScrollView
-          style={{ flex: 1 }}
           contentContainerStyle={styles.scrollViewContainer}
+          showsVerticalScrollIndicator={false}
         >
-          <View style={styles.viewStyle}>{props.children}</View>
+          {/* <View style={styles.viewStyle}> */}
+          <KeyboardAvoidingView
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            style={styles.viewStyle}
+          >
+            {props.children}
+          </KeyboardAvoidingView>
+          {/* </View> */}
         </ScrollView>
       </TouchableWithoutFeedback>
     </ImageBackground>
@@ -32,12 +40,19 @@ const styles = StyleSheet.create({
     height: null,
   },
   scrollViewContainer: {
-    flexGrow: 1,
+    flexGrow: 2,
+    justifyContent: "center",
+    alignItems: "center",
   },
   viewStyle: {
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
     paddingVertical: "10%",
+  },
+  keyboardAvoidingViewStyle: {
+    flex: 1,
+    width: null,
+    height: null,
   },
 });

@@ -9,7 +9,6 @@ import {
 } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
 export const uploadImage = async (uri, user) => {
-  console.log(uri);
   const userUID = auth.currentUser.uid;
   const responce = await fetch(uri);
   const blob = await responce.blob();
@@ -25,18 +24,17 @@ export const uploadImage = async (uri, user) => {
     console.log("Transferred:" + snapshot.bytesTransferred);
   };
   const taskComplete = () => {
-    console.log(user);
     getDownloadURL(task.snapshot.ref).then(async (snapshot) => {
       updateDoc(doc(db, "USERS", userUID), {
         userImage: snapshot,
-      }).catch((err) => console.log(err));
+      }).catch((err) => Alert.alert(err));
       await updateProfile(user, {
         photoURL: snapshot,
       });
     });
   };
   const taskError = (snapshot) => {
-    console.log(snapshot);
+    Alert.alert(snapshot);
   };
   task.on("state_changed", taskProgress, taskError, taskComplete);
 };

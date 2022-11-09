@@ -25,6 +25,7 @@ import ACImage from "./components/ACImage";
 import ACNextButton from "./components/ACNextButton";
 import { ACScreen } from "./components/ACScreen";
 import { BackButton } from "./components/BackButton";
+import NMNextButton from "./components/NMNextButton";
 import { ModalPhoto } from "./Modal";
 export const AvatarChoose = (props) => {
   const route = useRoute();
@@ -76,7 +77,6 @@ export const AvatarChoose = (props) => {
         showModal={showModal}
         imageHandler={_imagePropHandler}
       />
-
       <ACNextButton
         navigation={navigation}
         styles={styles}
@@ -103,7 +103,10 @@ const makeStyles = (colors: any) =>
     },
     nextButtonContainer: {
       width: "40%",
-      alignSelf: "center",
+      position: "absolute",
+      bottom: 10,
+      right: 0,
+      alignSelf: "flex-end",
       alignItems: "center",
       justifyContent: "space-evenly",
       flexDirection: "row",

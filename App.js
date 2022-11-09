@@ -1,10 +1,10 @@
 import { useFonts } from "expo-font";
-import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { LoginAndRegister } from "./app/navigation/SignIn&SingUp/SignIn_SignUp_nav";
 import { useFontsLoad } from "./app/hooks/useFontsLoad";
 import { NavigationController } from "./app/navigation/SignIn&SingUp/NavigationController";
 import { ProvidedNavigator } from "./app/navigation/SignIn&SingUp/ProvidedNavigator";
+import { StatusBar } from "react-native";
 export default function App() {
   const { isLoaded, error } = useFontsLoad();
 
@@ -26,7 +26,9 @@ export default function App() {
   }
   return (
     <View style={styles.container}>
+      <StatusBar barStyle={"light-content"} />
       <ProvidedNavigator />
+      {console.log("f")}
     </View>
   );
 }

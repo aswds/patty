@@ -3,7 +3,6 @@ export const initialState = {
 };
 
 export const AuthReducer = (prevState, action) => {
-  console.log(action.type);
   switch (action.type) {
     case "AUTH_START":
       return { ...prevState, isLoading: true };

@@ -87,8 +87,10 @@ const makeStyles = (colors: any) =>
     },
     nextButtonContainer: {
       width: "40%",
+      position: "absolute",
       bottom: 10,
-      alignSelf: "center",
+      right: 0,
+      alignSelf: "flex-end",
       alignItems: "center",
       justifyContent: "space-evenly",
       flexDirection: "row",
