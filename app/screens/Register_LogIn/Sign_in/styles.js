@@ -1,4 +1,5 @@
 import { Dimensions, Platform, StyleSheet } from "react-native";
+import { colors } from "../../../src/colors";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -25,7 +26,7 @@ export const styles = StyleSheet.create({
     alignItems: "center",
   },
   registerContainer: {
-    height: 50,
+    height: "10%",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -62,7 +63,7 @@ export const styles = StyleSheet.create({
   },
   userInput: {
     flexDirection: "row",
-    backgroundColor: "#E2E2E2",
+    backgroundColor: colors.input,
     marginTop: 30,
     width: "85%",
     height: 55,

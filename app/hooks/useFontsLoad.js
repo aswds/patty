@@ -11,6 +11,7 @@ export const useFontsLoad = () => {
     "WorkSans-Bold": require("../../assets/fonts/WorkSans/WorkSans-Bold.ttf"),
     "WorkSans-Regular": require("../../assets/fonts/WorkSans/WorkSans-Regular.ttf"),
     "WorkSans-Medium": require("../../assets/fonts/WorkSans/WorkSans-Medium.ttf"),
+    "WorkSans-SemiBold": require("../../assets/fonts/WorkSans/WorkSans-SemiBold.ttf"),
     "Nunito-Bold": require("../../assets/fonts/Nunito/static/Nunito-Bold.ttf"),
     "Nunito-Regular": require("../../assets/fonts/Nunito/static/Nunito-Regular.ttf"),
   });

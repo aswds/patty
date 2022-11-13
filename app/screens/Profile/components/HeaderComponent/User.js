@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { Image, View, Text, StyleSheet, ActivityIndicator } from "react-native";
 import EditButton from "./EditButton";
+import LogOutButton from "./LogoutButton";
 export default function User({ user, setIsLoading }) {
   return (
     <>
@@ -24,6 +25,7 @@ export default function User({ user, setIsLoading }) {
             setIsLoading(false);
           }}
         />
+        <LogOutButton />
         <EditButton />
       </View>
 

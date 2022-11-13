@@ -43,6 +43,7 @@ import {
 import SignUpContainer from "./SignInComponents/SignUpContainer";
 import Loader from "../components/Loader";
 import isEmpty from "./SignInComponents/SignInFuncs/isEmpty";
+import ForgotPassword from "./SignInComponents/ForgotPassword";
 const SignInScreen = (props) => {
   const navigation = useNavigation();
   const [email, setEmail] = useState({ isValid: true, errorMsg: "" });
@@ -118,16 +119,7 @@ const SignInScreen = (props) => {
                   defaultValue={userPassword}
                 />
               </Input>
-              <TouchableOpacity
-                onPress={() => {
-                  navigation.navigate("DataRecovery");
-                }}
-                style={styles.forgotPasswordContainer}
-              >
-                <Text style={styles.forgotPasswordTextStyle}>
-                  Forgot a password ?
-                </Text>
-              </TouchableOpacity>
+              <ForgotPassword styles={styles} navigation={navigation} />
             </View>
           </View>
           <View style={styles.styledButtonContainer}>
@@ -153,13 +145,8 @@ const SignInScreen = (props) => {
             </StyledButton>
           </View>
         </View>
-
-        <SignUpContainer
-          styles={styles}
-          navigation={navigation}
-          textStyle={textStyle}
-        />
       </Screen>
+
       <CustomAlert
         errorMsg={errorMsg}
         hideModal={_hideModal}

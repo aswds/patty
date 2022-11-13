@@ -1,5 +1,6 @@
 export const colors = {
-  background: "#101010",
+  background: "#151515",
   text: "white",
-  accentColor: "red", //FIX
+  accentColor: "rgba(155 , 50, 50 , 1)", //FIX
+  input: "#2C2C2C",
 };

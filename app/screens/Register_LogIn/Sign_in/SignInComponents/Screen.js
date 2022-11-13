@@ -6,24 +6,44 @@ import {
   TouchableWithoutFeedback,
   ScrollView,
   KeyboardAvoidingView,
+  Dimensions,
+  View,
+  Image,
 } from "react-native";
+import { colors } from "../../../../src/colors";
+
+const size = {
+  height: Dimensions.get("window").height * 0.2,
+  width: Dimensions.get("window").height * 0.2,
+};
 
 export default function Screen(props) {
   const { styles, keyboardDissmis } = props;
   return (
-    <ImageBackground
-      source={require("../../../../../assets/AE/background-02-01.png")}
-      style={{ flex: 1, width: null, height: null }}
-      blurRadius={35}
+    <View
+      style={{
+        flex: 1,
+        width: null,
+        height: null,
+        backgroundColor: "#202020",
+      }}
     >
-      <SafeAreaView style={styles.linearGradientStyle}>
+      <SafeAreaView style={styles.container}>
         <TouchableWithoutFeedback onPress={keyboardDissmis} style={{ flex: 1 }}>
           <ScrollView
             style={styles.container}
+            contentContainerStyle={{
+              ...styles.container,
+            }}
             showsHorizontalScrollIndicator={false}
             showsHorizontalScrollIndicator={false}
           >
             <KeyboardAvoidingView
+              style={{
+                flex: 1,
+                marginTop: "20%",
+                justifyContent: "flex-start",
+              }}
               behavior={Platform.OS === "ios" ? "padding" : "height"}
             >
               {props.children}
@@ -31,6 +51,6 @@ export default function Screen(props) {
           </ScrollView>
         </TouchableWithoutFeedback>
       </SafeAreaView>
-    </ImageBackground>
+    </View>
   );
 }

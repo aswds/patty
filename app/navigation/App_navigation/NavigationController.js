@@ -11,9 +11,12 @@ import { ActivityIndicator } from "react-native";
 import { auth } from "../../../firebase";
 import { AuthReducer, initialState } from "../../redux/AuthReducer";
 import { App_Navigation } from "./AppNavigation";
-import { AuthContext, AuthContextProvider } from "./components/AuthContext";
-import { Loader } from "./components/Loader";
-import { LoginAndRegister } from "./SignIn_SignUp_nav";
+import {
+  AuthContext,
+  AuthContextProvider,
+} from "../SignIn&SingUp/components/AuthContext";
+import { Loader } from "../SignIn&SingUp/components/Loader";
+import { LoginAndRegister } from "../SignIn&SingUp/SignIn_SignUp_nav";
 export const NavigationController = (props) => {
   const { colors } = useTheme();
   const [isSignedIn, setIsSigned] = useState(true);

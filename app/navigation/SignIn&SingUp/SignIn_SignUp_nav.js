@@ -5,6 +5,7 @@ import {
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
+import InitialScreen from "../../screens/Register_LogIn/Initial_Screen/InitialScreen";
 import DataRecovery from "../../screens/Register_LogIn/Recovery";
 import SignInScreen from "../../screens/Register_LogIn/Sign_in/SingIn";
 import SignUpScreen from "../../screens/Register_LogIn/Sign_up/SignUp";
@@ -27,8 +28,11 @@ export const LoginAndRegister = (props) => {
   return (
     <NavigationContainer ref={navigation}>
       <Stack.Navigator screenOptions={{ headerShown: false }}>
-        <Stack.Screen component={SignInScreen} name="SignInScreen" />
-        <Stack.Screen component={DataRecovery} name="DataRecovery" />
+        <Stack.Screen component={InitialScreen} name="InitialScreen" />
+        <Stack.Group>
+          <Stack.Screen component={SignInScreen} name="SignInScreen" />
+          <Stack.Screen component={DataRecovery} name="DataRecovery" />
+        </Stack.Group>
         <Stack.Group>
           <Stack.Screen component={SignUpScreen} name="SignUpScreen" />
           <Stack.Screen component={NameModal} name="NameInfo" />
