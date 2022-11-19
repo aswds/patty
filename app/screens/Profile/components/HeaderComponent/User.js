@@ -1,8 +1,11 @@
 import React, { useState } from "react";
 import { Image, View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import useUserImage from "../../../../hooks/useUserImage";
 import EditButton from "./EditButton";
 import LogOutButton from "./LogoutButton";
+import UserImage from "./UserImage";
 export default function User({ user, setIsLoading }) {
+  const { fetchableImage } = useUserImage(user.userImage);
   return (
     <>
       <View
@@ -13,18 +16,7 @@ export default function User({ user, setIsLoading }) {
           justifyContent: "center",
         }}
       >
-        <Image
-          source={{
-            uri: "https://firebasestorage.googleapis.com/v0/b/patty-9be57.appspot.com/o/user_images%2FXLs2KPd0QKfO4oJLGgdtlA5tlI83?alt=media&token=e8d926b8-fc01-490e-8b0b-a6f6028816f5",
-          }}
-          style={styles.imageStyle}
-          onLoadStart={() => {
-            setIsLoading(true);
-          }}
-          onLoadEnd={() => {
-            setIsLoading(false);
-          }}
-        />
+        <UserImage uri={user.userImage} setIsLoading={setIsLoading} />
         <LogOutButton />
         <EditButton />
       </View>
@@ -41,11 +33,7 @@ const styles = StyleSheet.create({
     fontFamily: "WorkSans-Bold",
     fontSize: 15,
   },
-  imageStyle: {
-    borderRadius: 100,
-    height: "100%",
-    aspectRatio: 1,
-  },
+
   usernameContainer: {
     backgroundColor: "rgba(21, 21, 21, 0.6)",
     height: "15%",

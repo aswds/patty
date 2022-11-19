@@ -6,7 +6,7 @@ import DoPartyButton from "./components/DoPartyButton";
 import PartyModal from "./components/PartyModal";
 const styledMap = require("./styledMap.json");
 export default function Map() {
-  const [ShowModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(false);
   function hideModal() {
     setShowModal(!showModal);
   }
@@ -25,7 +25,7 @@ export default function Map() {
           }}
         />
       </Callout>
-      <PostModal showModal={ShowModal} hideModal={hideModal} />
+      <PartyModal showModal={showModal} hideModal={hideModal} />
     </View>
   );
 }

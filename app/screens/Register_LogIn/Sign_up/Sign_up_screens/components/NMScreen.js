@@ -2,7 +2,6 @@ import {
   ImageBackground,
   TouchableWithoutFeedback,
   View,
-  StatusBar,
   KeyboardAvoidingView,
   Platform,
   Keyboard,
@@ -10,15 +9,19 @@ import {
   StyleSheet,
   SafeAreaView,
 } from "react-native";
+import { colors } from "../../../../../src/colors";
 export const NMScreen = (props) => {
   return (
-    <ImageBackground
-      source={require("../../../../../../assets/AE/NameInfo-01.png")}
-      style={{ flex: 1, width: null, height: null }}
+    <View
+      style={{
+        flex: 1,
+        width: null,
+        height: null,
+        backgroundColor: colors.background,
+      }}
     >
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
-          <StatusBar barStyle={"dark-content"} />
           <KeyboardAvoidingView
             behavior={Platform.OS === "ios" ? "padding" : "height"}
             style={{ flex: 1 }}
@@ -31,7 +34,11 @@ export const NMScreen = (props) => {
               <SafeAreaView style={{ flex: 1 }}>
                 <ScrollView
                   style={{ flex: 1 }}
-                  contentContainerStyle={{ flex: 1, width: null, height: null }}
+                  contentContainerStyle={{
+                    flex: 1,
+                    width: null,
+                    height: null,
+                  }}
                 >
                   {props.children}
                 </ScrollView>
@@ -40,7 +47,7 @@ export const NMScreen = (props) => {
           </KeyboardAvoidingView>
         </View>
       </TouchableWithoutFeedback>
-    </ImageBackground>
+    </View>
   );
 };
 const styles = StyleSheet.create({

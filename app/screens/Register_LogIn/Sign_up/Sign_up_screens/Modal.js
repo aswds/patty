@@ -14,12 +14,11 @@ import {
   Pressable,
   Platform,
 } from "react-native";
-// import { theme } from "../../../components/theme";
-const color = "black";
-
+import { colors } from "../../../../src/colors";
+const color = colors.background;
 export const ModalPhoto = (props) => {
   const [image, setImage] = useState();
-  const { colors } = useTheme();
+
   const navigation = useNavigation();
   const styles = makeStyles(colors);
   const pickImage = async () => {
@@ -36,15 +35,13 @@ export const ModalPhoto = (props) => {
     }
   };
   return (
-    <Modal
-      animationType="slide"
-      transparent={true}
-      visible={props.showModal}
-      style={{ backgroundColor: "transparent" }}
-    >
+    <Modal animationType="slide" transparent={true} visible={props.showModal}>
       <TouchableWithoutFeedback
         onPress={props.hideModal}
-        style={{ height: "100%", width: "100%" }}
+        style={{
+          height: "100%",
+          width: "100%",
+        }}
       >
         <View style={{ ...styles.centeredView }}>
           <View
@@ -52,10 +49,15 @@ export const ModalPhoto = (props) => {
               ...styles.modalView,
               justifyContent: "space-around",
               alignItems: "center",
-              borderColor: "white",
             }}
           >
-            <SafeAreaView style={{ flex: 1, justifyContent: "center" }}>
+            <SafeAreaView
+              style={{
+                flex: 1,
+                width: "100%",
+                justifyContent: "center",
+              }}
+            >
               <View
                 style={{
                   flex: 1,
@@ -67,16 +69,10 @@ export const ModalPhoto = (props) => {
                   style={styles.modalButtonsStyle}
                   onPress={() => {
                     pickImage();
-                    // props.hideModal();
+                    props.hideModal();
                   }}
                 >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      flex: 1,
-                    }}
-                  >
+                  <View style={styles.iconContainer}>
                     <MaterialIcons
                       name="insert-photo"
                       size={30}
@@ -90,13 +86,7 @@ export const ModalPhoto = (props) => {
                   style={styles.modalButtonsStyle}
                   onPress={props.hideModal}
                 >
-                  <View
-                    style={{
-                      flexDirection: "row",
-                      alignItems: "center",
-                      flex: 1,
-                    }}
-                  >
+                  <View style={styles.iconContainer}>
                     <MaterialIcons
                       name="close"
                       size={30}
@@ -121,9 +111,14 @@ const makeStyles = (colors: any) =>
       justifyContent: "flex-end",
       alignItems: "center",
     },
+    iconContainer: {
+      flexDirection: "row",
+      alignItems: "center",
+      flex: 1,
+    },
     textStyle: {
-      fontFamily: "WorkSans-Regular",
-      color: color,
+      fontFamily: "WorkSans-Bold",
+      color: colors.background,
     },
     modalView: {
       flexDirection: "column",
@@ -153,10 +148,11 @@ const makeStyles = (colors: any) =>
       alignItems: "center",
       justifyContent: "center",
       borderRadius: 10,
-      backgroundColor:
-        Platform.OS == "ios"
-          ? "rgba(250, 250, 250,1)"
-          : "rgba(230, 230, 230,1)",
+      backgroundColor: colors.buttonTextColor,
+      // backgroundColor:
+      //   Platform.OS == "ios"
+      //     ? "rgba(250, 250, 250,1)"
+      //     : "rgba(230, 230, 230,1)",
       shadowColor: "grey",
       shadowOpacity: 0.5,
       shadowRadius: 4,

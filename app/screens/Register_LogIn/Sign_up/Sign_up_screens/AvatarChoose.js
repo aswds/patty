@@ -12,7 +12,6 @@ import {
   ImageBackground,
   Platform,
   SafeAreaView,
-  StatusBar,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -20,11 +19,12 @@ import {
   Dimensions,
   ScrollView,
 } from "react-native";
+import { colors } from "../../../../src/colors";
 import ACAskImage from "./components/ACAskImage";
 import ACImage from "./components/ACImage";
 import ACNextButton from "./components/ACNextButton";
 import { ACScreen } from "./components/ACScreen";
-import { BackButton } from "./components/BackButton";
+import { BackButton } from "../../components/BackButton";
 import NMNextButton from "./components/NMNextButton";
 import { ModalPhoto } from "./Modal";
 export const AvatarChoose = (props) => {
@@ -47,7 +47,6 @@ export const AvatarChoose = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [image, setImage] = useState(imageParam);
   const navigation = useNavigation();
-  const styles = makeStyles(colors);
   const name = route.params?.name;
 
   useEffect(() => {
@@ -65,7 +64,6 @@ export const AvatarChoose = (props) => {
   return (
     <ACScreen>
       <BackButton navigation={navigation} />
-      <StatusBar barStyle={DarkTheme.dark ? "light-content" : "dark-content"} />
 
       <ACImage _showModalHandle={_showModalHandle} image={image} />
 
@@ -78,41 +76,43 @@ export const AvatarChoose = (props) => {
         imageHandler={_imagePropHandler}
       />
       <ACNextButton
-        navigation={navigation}
         styles={styles}
         image={image}
         name={name}
+        navigation={navigation}
       />
     </ACScreen>
   );
 };
-const makeStyles = (colors: any) =>
-  StyleSheet.create({
-    title: {
-      fontFamily: "WorkSans-Bold",
-      fontSize: 20,
-      color: colors.text,
-    },
-    textStyle: {
-      fontFamily: "WorkSans-Regular",
-      fontSize: 20,
-      color: colors.text,
-    },
-    container: {
-      flex: 1,
-    },
-    nextButtonContainer: {
-      width: "40%",
-      position: "absolute",
-      bottom: 10,
-      right: 0,
-      alignSelf: "flex-end",
-      alignItems: "center",
-      justifyContent: "space-evenly",
-      flexDirection: "row",
-    },
-    nextButtonText: {
-      fontWeight: "bold",
-      color: colors.text,
-    },
-  });
+const styles = StyleSheet.create({
+  title: {
+    fontFamily: "WorkSans-Bold",
+    fontSize: 20,
+    color: colors.buttonTextColor,
+  },
+  textStyle: {
+    fontFamily: "WorkSans-Regular",
+    fontSize: 20,
+    color: colors.iconColor,
+  },
+  container: {
+    flex: 1,
+  },
+  nextButtonContainer: {
+    width: "40%",
+    position: "absolute",
+    bottom: 10,
+    right: 0,
+    alignSelf: "flex-end",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    flexDirection: "row",
+    backgroundColor: colors.accentColor,
+    padding: 10,
+    borderRadius: 40,
+  },
+  nextButtonText: {
+    fontWeight: "bold",
+    color: colors.text,
+  },
+});

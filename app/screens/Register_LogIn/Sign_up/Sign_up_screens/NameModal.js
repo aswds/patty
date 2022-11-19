@@ -14,7 +14,6 @@ import {
   Platform,
   SafeAreaView,
   ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
   TextInput,
@@ -22,7 +21,9 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import { BackButton } from "./components/BackButton";
+import { colors } from "../../../../src/colors";
+import { Input } from "../../components/Input";
+import { BackButton } from "../../components/BackButton";
 import NMAskName from "./components/NMAskName";
 import NMNextButton from "./components/NMNextButton";
 import { NMScreen } from "./components/NMScreen";
@@ -30,38 +31,35 @@ export const NameModal = (props) => {
   const [name, setName] = useState();
   const [nameSkip, setNameSkip] = useState();
   const [profileImageSkip, setProfileImageSkip] = useState();
-  const { colors } = useTheme();
   const navigation = useNavigation();
   const route = useRoute();
-  const styles = makeStyles(colors);
   return (
     <NMScreen>
       <BackButton navigation={navigation} />
       <View
         style={{
           flex: 1,
-          justifyContent: "space-evenly",
+          alignItems: "flex-start",
+          justifyContent: "center",
           marginHorizontal: 10,
         }}
       >
-        <NMAskName styles={styles} />
+        <View style={{ marginHorizontal: 10 }}>
+          <NMAskName styles={styles} />
 
-        <View
-          style={{
-            flex: 1,
-            flexDirection: "row",
-            alignItems: "flex-start",
-          }}
-        >
-          <TextInput
-            style={styles.textInput}
-            placeholder="🥸 Enter your name"
-            placeholderTextColor={"grey"}
-            onChangeText={(text) => {
-              setName(text);
-            }}
-            value={name}
-          />
+          <View style={{}}>
+            <Input isValid={true} style={{ width: "100%" }}>
+              <TextInput
+                style={styles.textInput}
+                placeholder="🥸 Enter your name"
+                placeholderTextColor={colors.iconColor}
+                onChangeText={(text) => {
+                  setName(text);
+                }}
+                value={name}
+              />
+            </Input>
+          </View>
         </View>
 
         <NMNextButton navigation={navigation} styles={styles} name={name} />
@@ -69,37 +67,38 @@ export const NameModal = (props) => {
     </NMScreen>
   );
 };
-const makeStyles = (colors: any) =>
-  StyleSheet.create({
-    title: {
-      fontFamily: "WorkSans-Bold",
-      fontSize: 35,
-      color: colors.text,
-    },
-    textInput: {
-      borderRadius: 10,
-      borderBottomWidth: 3,
-      borderBottomColor: colors.text,
-      fontFamily: "WorkSans-Regular",
-      paddingVertical: "5%",
-      paddingHorizontal: 10,
-      width: "100%",
-    },
-    nextButtonContainer: {
-      width: "40%",
-      position: "absolute",
-      bottom: 10,
-      right: 0,
-      alignSelf: "flex-end",
-      alignItems: "center",
-      justifyContent: "space-evenly",
-      flexDirection: "row",
-    },
-    nextButtonText: {
-      fontWeight: "bold",
-      color: colors.text,
-    },
-    container: {
-      flex: 1,
-    },
-  });
+const styles = StyleSheet.create({
+  title: {
+    fontFamily: "WorkSans-Bold",
+    fontSize: 35,
+    color: colors.buttonTextColor,
+  },
+  textInput: {
+    borderBottomColor: colors.iconColor,
+    fontFamily: "WorkSans-Regular",
+    paddingVertical: "5%",
+    paddingHorizontal: 10,
+    width: "100%",
+    color: colors.text,
+  },
+  nextButtonContainer: {
+    width: "40%",
+    position: "absolute",
+    bottom: 10,
+    right: 0,
+    alignSelf: "flex-end",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    flexDirection: "row",
+    backgroundColor: colors.accentColor,
+    padding: 10,
+    borderRadius: 40,
+  },
+  nextButtonText: {
+    fontWeight: "bold",
+    color: colors.buttonTextColor,
+  },
+  container: {
+    flex: 1,
+  },
+});

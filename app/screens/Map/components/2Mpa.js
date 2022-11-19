@@ -61,7 +61,9 @@ const PostModal = (props) => {
           <View style={styles.scrollViewContainer}>
             <ScrollView
               onScroll={() => animationStart(isAnimationRan, setIsAnimationRan)}
-              scrollEnabled={userCanScroll}
+              onTouchMove={() => {
+                animationStart(isAnimationRan, setIsAnimationRan);
+              }}
               style={styles.scrollViewContainer}
               scrollEventThrottle={1}
               contentContainerStyle={{

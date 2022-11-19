@@ -1,11 +1,15 @@
 import { ImageBackground, StyleSheet, View, SafeAreaView } from "react-native";
+import { colors } from "../../../../../src/colors";
 
 export const ACScreen = (props) => {
   return (
-    <ImageBackground
-      style={{ flex: 1, width: null, height: null }}
-      source={require("../../../../../../assets/AE/AvatarChoose-01-01-01.png")}
-      blurRadius={0}
+    <View
+      style={{
+        flex: 1,
+        width: null,
+        height: null,
+        backgroundColor: colors.background,
+      }}
     >
       <View style={styles.container}>
         <SafeAreaView
@@ -24,7 +28,7 @@ export const ACScreen = (props) => {
           </View>
         </SafeAreaView>
       </View>
-    </ImageBackground>
+    </View>
   );
 };
 const styles = StyleSheet.create({

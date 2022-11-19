@@ -6,8 +6,8 @@ import {
   ViewProps,
   StyleSheet,
 } from "react-native";
-import { styles } from "../styles";
-
+import { colors } from "../../../src/colors";
+import { styles } from "../Sign_in/styles";
 export const Input = (props, { style }) => {
   return (
     <View
@@ -15,7 +15,7 @@ export const Input = (props, { style }) => {
         ...styles.userInput,
         ...props.style,
         borderWidth: props.isValid ? null : 1,
-        borderColor: props.isValid ? "black" : "red",
+        borderColor: props.isValid ? "black" : colors.accentColor,
       }}
     >
       {props.children}

@@ -25,9 +25,6 @@ import { animationStart } from "./ModalComponents/animations";
 import { CloseButton } from "./ModalComponents/CloseButton";
 import Screen from "./ModalComponents/Screen";
 const PartyModal = (props) => {
-  const [animation, setAnimation] = useState(new Animated.Value(0));
-  const [animationBorder, setAnimationBorder] = useState(new Animated.Value(0));
-
   const [userCanScroll, setUserCanScroll] = useState(true);
 
   const iconSize = Dimensions.get("window").width * 0.1;
@@ -39,19 +36,6 @@ const PartyModal = (props) => {
     setAnimationBorder(new Animated.Value(0));
   }
 
-  const modalHeight = animation.interpolate({
-    inputRange: [0, 1],
-    outputRange: ["85%", "100%"],
-  });
-  const modalBorderRad = animationBorder.interpolate({
-    inputRange: [0, 1],
-    outputRange: [40, 0],
-  });
-  const modalStyle = {
-    height: modalHeight,
-    borderTopLeftRadius: modalBorderRad,
-    borderTopRightRadius: modalBorderRad,
-  };
   const insets = useSafeAreaInsets();
 
   return (
@@ -62,13 +46,7 @@ const PartyModal = (props) => {
       onRequestClose={props.hideModal}
     >
       <StatusBar barStyle={"light-content"} />
-      <Screen
-        modalStyle={modalStyle}
-        userCanScroll={userCanScroll}
-        animationStart={animationStart}
-      >
-        <CloseButton closeModal={closeModal} color={"white"} iconSize={35} />
-      </Screen>
+      <Screen hideModal={props.hideModal}></Screen>
     </Modal>
   );
 };

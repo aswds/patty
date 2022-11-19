@@ -3,6 +3,7 @@ import { TouchableOpacity, View, Text, StyleSheet } from "react-native";
 import { colors } from "../../../../src/colors";
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
+import * as Haptics from "expo-haptics";
 export default function Buttons(props) {
   const { navigation } = props;
   return (
@@ -10,7 +11,8 @@ export default function Buttons(props) {
       <TouchableOpacity
         style={styles.button1}
         onPress={() => {
-          navigation.navigate("SignUpScreen");
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+          navigation.navigate("NameInfo");
         }}
       >
         <Text style={styles.textStyle}>Sign up</Text>
@@ -18,13 +20,14 @@ export default function Buttons(props) {
           <Ionicons
             name="ios-arrow-forward-circle-sharp"
             size={25}
-            color="white"
+            color={colors.buttonTextColor}
           />
         </View>
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.button2}
         onPress={() => {
+          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
           navigation.navigate("SignInScreen");
         }}
       >
@@ -59,7 +62,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textStyle: {
-    color: "white",
+    color: colors.buttonTextColor,
     fontFamily: "WorkSans-SemiBold",
   },
 });

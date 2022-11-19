@@ -36,7 +36,7 @@ function Profile(props) {
       <FlatList
         style={{ flex: 1 }}
         ListHeaderComponent={
-          <View style={{ height: Dimensions.get("window").height * 0.42 }}>
+          <View style={{ height: Dimensions.get("window").height * 0.5 }}>
             <Header user={current_user} setIsLoading={setIsLoading} />
             <Follower_info />
           </View>

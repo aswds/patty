@@ -1,12 +1,12 @@
 import React from "react";
 import { View, Text } from "react-native";
+import { colors } from "../../../../../src/colors";
 export default function NMAskName(props) {
   const { styles } = props;
   return (
     <View
       style={{
-        flex: 1,
-        alignItems: "center",
+        alignSelf: "flex-start",
         flexDirection: "row",
       }}
     >
@@ -16,7 +16,7 @@ export default function NMAskName(props) {
           style={{
             fontFamily: "WorkSans-Regular",
             fontSize: 17,
-            color: "black",
+            color: colors.iconColor,
           }}
         >
           What's your name?

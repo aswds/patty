@@ -14,7 +14,8 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { KeyboardAvoidingView } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import StyledButton from "./components/button";
-import { Input } from "./Sign_in/SignInComponents/Input";
+import { colors } from "../../src/colors";
+import { Input } from "./components/Input";
 
 const DataRecovery = (props) => {
   const [userEmail, setUserEmail] = useState("");
@@ -24,6 +25,7 @@ const DataRecovery = (props) => {
         flex: 1,
         width: null,
         height: null,
+        backgroundColor: colors.background,
       }}
     >
       <TouchableWithoutFeedback
@@ -37,7 +39,9 @@ const DataRecovery = (props) => {
         >
           <View style={styles.container}>
             <View style={{}}>
-              <Text style={{ fontSize: 20, alignSelf: "center" }}>
+              <Text
+                style={{ fontSize: 20, alignSelf: "center", color: "white" }}
+              >
                 Reset your password
               </Text>
             </View>
@@ -46,12 +50,13 @@ const DataRecovery = (props) => {
                 <MaterialIcons
                   name="alternate-email"
                   size={Dimensions.get("window").height >= 800 ? 24 : 20}
-                  color="black"
+                  color={colors.iconColor}
                 />
                 <TextInput
                   autoCapitalize="none"
                   keyboardType="email-address"
                   style={styles.inputField}
+                  placeholderTextColor={"grey"}
                   placeholder="Email"
                   onChangeText={(text) => setUserEmail(text)}
                   defaultValue={userEmail}
@@ -81,15 +86,7 @@ const DataRecovery = (props) => {
     </View>
   );
 };
-DataRecovery.navigationOptions = () => {
-  return {
-    headerShown: true,
-    headerTransparent: true,
-    headerTitle: () => {
-      return null;
-    },
-  };
-};
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,

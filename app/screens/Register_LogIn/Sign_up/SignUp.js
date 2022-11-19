@@ -25,19 +25,20 @@ import {
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { AuthContext } from "../../../navigation/SignIn&SingUp/components/AuthContext";
+import { colors } from "../../../src/colors";
 import StyledButton from "../components/button";
+import { Input } from "../components/Input";
 import { Logo } from "../components/Logo";
+import { Screen } from "../components/Screen";
 import CustomAlert from "../CustomAlert";
-import { Input } from "../Sign_in/SignInComponents/Input";
 import { style, textStyle } from "../style";
 import { Container } from "./Sign_up_components/Container";
-import { Screen } from "./Sign_up_components/Screen";
 import { TermText } from "./Sign_up_components/TermText";
+import { BackButton } from "../components/BackButton";
 import { error_handle } from "./Sign_up_screens/Sign_up_Functions/error_handle";
 import { sameUsernames } from "./Sign_up_screens/Sign_up_Functions/sameUsername";
 import { signUpHandle } from "./Sign_up_screens/Sign_up_Functions/signUp";
 import { checkPassword } from "./Sign_up_screens/Sign_up_Functions/Validator";
-
 const SignUpScreen = (props) => {
   const [username, setUsername] = useState("");
   const [valid, setValid] = useState({
@@ -93,11 +94,13 @@ const SignUpScreen = (props) => {
   function refHandle(ref_input) {
     ref_input.current.focus();
   }
+
   return (
     <Screen>
       <View>
         <Logo />
       </View>
+      <BackButton navigation={navigation} />
 
       <Container>
         <Input
@@ -107,7 +110,7 @@ const SignUpScreen = (props) => {
             <AntDesign
               name="user"
               size={Dimensions.get("window").height >= 800 ? 24 : 20}
-              color="black"
+              color={colors.iconColor}
             />
           }
         >
@@ -121,7 +124,7 @@ const SignUpScreen = (props) => {
               setUsername(text);
             }}
             onEndEditing={() => {
-              sameUsernames(username, setErrorMsg)
+              sameUsernames(username.trim(), setErrorMsg)
                 .then((res) => {
                   setValid({ ...valid, validUsername: res });
                 })
@@ -143,7 +146,7 @@ const SignUpScreen = (props) => {
             <MaterialIcons
               name="alternate-email"
               size={Dimensions.get("window").height >= 800 ? 24 : 20}
-              color="black"
+              color={colors.iconColor}
             />
           }
           isValid={valid.validEmail}
@@ -176,14 +179,14 @@ const SignUpScreen = (props) => {
               <Feather
                 name="eye-off"
                 size={Dimensions.get("window").height >= 800 ? 24 : 20}
-                color="black"
+                color={colors.iconColor}
                 onPress={() => setShowPassword(false)}
               />
             ) : (
               <Feather
                 name="eye"
                 size={Dimensions.get("window").height >= 800 ? 24 : 20}
-                color="black"
+                color={colors.iconColor}
                 onPress={() => setShowPassword(true)}
               />
             )
@@ -232,7 +235,7 @@ const SignUpScreen = (props) => {
             <MaterialCommunityIcons
               name="lock-check"
               size={Dimensions.get("window").height >= 800 ? 24 : 20}
-              color="black"
+              color={colors.iconColor}
             />
           }
         >
@@ -309,6 +312,7 @@ const styles = StyleSheet.create({
   },
 
   inputField: {
+    color: "white",
     width: "100%",
     height: "100%",
     justifyContent: "center",

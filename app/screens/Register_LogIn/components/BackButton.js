@@ -1,6 +1,8 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Platform, StyleSheet, TouchableOpacity } from "react-native";
-import { colors } from "../../../../../src/colors";
+import { colors } from "../../../src/colors";
+const isAndroid = Platform.OS == "android";
+
 export const BackButton = ({ navigation }) => {
   return (
     <TouchableOpacity
@@ -11,7 +13,7 @@ export const BackButton = ({ navigation }) => {
     >
       <FontAwesome5
         name="arrow-left"
-        size={30}
+        size={isAndroid ? 25 : 30}
         color={colors.buttonTextColor}
       />
     </TouchableOpacity>
@@ -19,11 +21,11 @@ export const BackButton = ({ navigation }) => {
 };
 const styles = StyleSheet.create({
   arrowContainer: {
-    height: "8%",
+    height: isAndroid ? 35 : 50,
     aspectRatio: 1,
     position: "absolute",
     zIndex: 1,
-    left: 15,
+    left: isAndroid ? 0 : 15,
     top: 0,
     justifyContent: "center",
     alignItems: "center",

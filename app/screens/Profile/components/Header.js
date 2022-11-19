@@ -18,7 +18,7 @@ export default function Header({ user, setIsLoading }) {
   const insets = useSafeAreaInsets();
   return (
     <View style={{ flex: 1 }}>
-      <ContainerBG image={{}} styles={styles} insets={insets}>
+      <ContainerBG image={user.userImage} styles={styles} insets={insets}>
         <User user={user} setIsLoading={setIsLoading} />
       </ContainerBG>
     </View>

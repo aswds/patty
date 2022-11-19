@@ -1,4 +1,5 @@
 import { View, ActivityIndicator } from "react-native";
+import { colors } from "../../../src/colors";
 export const Loader = (isLoading) => {
   return (
     <View
@@ -6,10 +7,10 @@ export const Loader = (isLoading) => {
         flex: 1,
         justifyContent: "center",
         alignItems: "center",
-        backgroundColor: "rgba(0,0,0,0)",
+        backgroundColor: colors.background,
       }}
     >
-      <ActivityIndicator size={"small"} color="grey" />
+      <ActivityIndicator size={"small"} color={colors.accentColor} />
     </View>
   );
 };

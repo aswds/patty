@@ -1,5 +1,6 @@
 import React from "react";
 import { TouchableOpacity, Image, Text } from "react-native";
+import { colors } from "../../../../../src/colors";
 export default function ACImage(props) {
   const { _showModalHandle, image } = props;
   return (
@@ -9,6 +10,7 @@ export default function ACImage(props) {
         width: 200,
         borderRadius: 100,
         borderWidth: 3,
+        borderColor: colors.iconColor,
         justifyContent: "center",
         alignItems: "center",
       }}
