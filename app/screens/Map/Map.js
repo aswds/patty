@@ -1,10 +1,20 @@
 import React, { useState } from "react";
-import { View, Text, TouchableOpacity, StyleSheet } from "react-native";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  Platform,
+  SafeAreaView,
+} from "react-native";
 import MapView, { Callout } from "react-native-maps";
 import PostModal from "./components/2Mpa";
 import DoPartyButton from "./components/DoPartyButton";
 import PartyModal from "./components/PartyModal";
+import SearchButton from "./components/SearchButton";
 const styledMap = require("./styledMap.json");
+const isAndroid = Platform.OS == "android";
+
 export default function Map() {
   const [showModal, setShowModal] = useState(false);
   function hideModal() {
@@ -18,26 +28,20 @@ export default function Map() {
         provider={"google"}
         customMapStyle={styledMap}
       />
-      <Callout style={styles.containerButton}>
-        <DoPartyButton
-          onPress={() => {
-            setShowModal(true);
-          }}
-        />
-      </Callout>
+      <SearchButton />
+      <DoPartyButton
+        onPress={() => {
+          setShowModal(true);
+        }}
+      />
+
       <PartyModal showModal={showModal} hideModal={hideModal} />
     </View>
   );
 }
 const styles = StyleSheet.create({
+  searchButtonContainer: {},
   container: {
     flex: 1,
-  },
-  containerButton: {
-    bottom: "15%",
-    width: "100%",
-    height: "10%",
-    alignItems: "center",
-    justifyContent: "center",
   },
 });

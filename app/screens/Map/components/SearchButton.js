@@ -7,10 +7,11 @@ import {
   View,
   SafeAreaView,
 } from "react-native";
+import { FontAwesome, AntDesign, Ionicons } from "@expo/vector-icons";
 import { colors } from "../../../src/colors";
 const isAndroid = Platform.OS == "android";
 
-export default function DoPartyButton(props) {
+export default function SearchButton(props) {
   const { onPress } = props;
   return (
     <Callout style={styles.containerButton}>
@@ -27,7 +28,12 @@ export default function DoPartyButton(props) {
           activeOpacity={0.8}
           onPress={onPress}
         >
-          <Text style={styles.textStyle}>Throw a party</Text>
+          <Ionicons name="search" size={"35%"} color={colors.mapAccentColor} />
+          {/* <FontAwesome
+            name="search"
+            size={"30%"}
+            color={colors.mapAccentColor}
+          /> */}
         </TouchableOpacity>
       </SafeAreaView>
     </Callout>
@@ -36,17 +42,18 @@ export default function DoPartyButton(props) {
 
 const styles = StyleSheet.create({
   button: {
-    height: "50%",
-    width: "80%",
-    backgroundColor: colors.mapAccentColor,
-    borderRadius: 10,
+    height: "70%",
+    aspectRatio: 1,
+    backgroundColor: "white",
+    borderRadius: 100,
     justifyContent: "center",
     alignItems: "center",
   },
   containerButton: {
-    bottom: "15%",
-    width: "50%",
-    alignSelf: "center",
+    top: "10%",
+    right: 0,
+    width: "30%",
+    alignSelf: "flex-end",
     height: isAndroid ? "15%" : "10%",
     marginBottom: 20,
     alignItems: "center",
@@ -55,6 +62,5 @@ const styles = StyleSheet.create({
   textStyle: {
     color: "white",
     fontFamily: "WorkSans-Bold",
-    fontSize: 13,
   },
 });

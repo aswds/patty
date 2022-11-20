@@ -18,29 +18,10 @@ export default function Header({ user, setIsLoading }) {
   const insets = useSafeAreaInsets();
   return (
     <View style={{ flex: 1 }}>
-      <ContainerBG image={user.userImage} styles={styles} insets={insets}>
+      <ContainerBG image={user.userImage} insets={insets}>
         <User user={user} setIsLoading={setIsLoading} />
       </ContainerBG>
     </View>
   );
 }
-const styles = StyleSheet.create({
-  container: {
-    width: "100%",
-    height: "100%",
-    overflow: "hidden",
-    borderBottomRightRadius: 30,
-    borderBottomLeftRadius: 30,
-  },
-  imageStyle: {
-    width: "100%",
-    height: "100%",
-    borderBottomLeftRadius: 40,
-    borderBottomRightRadius: 40,
-  },
-  textStyle: {
-    color: "white",
-    fontFamily: "WorkSans-Bold",
-    fontSize: 15,
-  },
-});
+const styles = StyleSheet.create({});

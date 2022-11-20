@@ -5,4 +5,5 @@ export const colors = {
   input: "#2C2C2C",
   iconColor: "#6D6D6D",
   buttonTextColor: "#E7E0C9",
+  mapAccentColor: "rgb(210, 40, 45)",
 };

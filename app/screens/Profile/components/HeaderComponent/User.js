@@ -10,7 +10,7 @@ export default function User({ user, setIsLoading }) {
     <>
       <View
         style={{
-          height: "50%",
+          height: "45%",
           width: "100%",
           flexDirection: "row",
           justifyContent: "center",
