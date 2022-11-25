@@ -6,61 +6,33 @@ import {
   TouchableOpacity,
   View,
   SafeAreaView,
+  Animated,
 } from "react-native";
-import { FontAwesome, AntDesign, Ionicons } from "@expo/vector-icons";
+import {
+  FontAwesome,
+  AntDesign,
+  FontAwesome5,
+  Ionicons,
+} from "@expo/vector-icons";
 import { colors } from "../../../src/colors";
 const isAndroid = Platform.OS == "android";
 
 export default function SearchButton(props) {
-  const { onPress } = props;
+  const { onPress, isFocused, styles } = props;
   return (
-    <Callout style={styles.containerButton}>
-      <SafeAreaView
-        style={{
-          flex: 1,
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <TouchableOpacity
-          style={styles.button}
-          activeOpacity={0.8}
-          onPress={onPress}
-        >
-          <Ionicons name="search" size={"35%"} color={colors.mapAccentColor} />
-          {/* <FontAwesome
-            name="search"
-            size={"30%"}
-            color={colors.mapAccentColor}
-          /> */}
-        </TouchableOpacity>
-      </SafeAreaView>
-    </Callout>
+    <TouchableOpacity
+      style={[
+        styles.button,
+        { backgroundColor: isFocused ? "rgba(255, 255, 255, 1)" : null },
+      ]}
+      activeOpacity={0.8}
+      onPress={onPress}
+    >
+      <FontAwesome5
+        name="search-location"
+        size={"30%"}
+        color={isFocused ? colors.mapAccentColor : "grey"}
+      />
+    </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    height: "70%",
-    aspectRatio: 1,
-    backgroundColor: "white",
-    borderRadius: 100,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  containerButton: {
-    top: "10%",
-    right: 0,
-    width: "30%",
-    alignSelf: "flex-end",
-    height: isAndroid ? "15%" : "10%",
-    marginBottom: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  textStyle: {
-    color: "white",
-    fontFamily: "WorkSans-Bold",
-  },
-});

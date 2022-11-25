@@ -7,6 +7,8 @@ import Icon from "../../navigation/SignIn&SingUp/components/Icon";
 import Chat from "../../screens/Chat/Chat";
 import Map from "../../screens/Map/Map";
 import Profile from "../../screens/Profile/Profile";
+import { BackButton } from "../../screens/Register_LogIn/components/BackButton";
+import { ProfileNavigator } from "./ProfileNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -37,8 +39,8 @@ export const Tabs = () => {
   return (
     <Tab.Navigator screenOptions={tabOptions} initialRouteName="Map">
       <Tab.Screen
-        name="Profile"
-        component={Profile}
+        name="ProfileNav"
+        component={ProfileNavigator}
         options={{
           // tabBarButton: (props) => {
           //   return (

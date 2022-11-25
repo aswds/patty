@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Callout } from "react-native-maps";
 import {
   StyleSheet,
@@ -8,53 +8,25 @@ import {
   SafeAreaView,
 } from "react-native";
 import { colors } from "../../../src/colors";
+import { FontAwesome5 } from "@expo/vector-icons";
 const isAndroid = Platform.OS == "android";
 
 export default function DoPartyButton(props) {
-  const { onPress } = props;
+  const { onPress, isFocused, styles } = props;
   return (
-    <Callout style={styles.containerButton}>
-      <SafeAreaView
-        style={{
-          flex: 1,
-          width: "100%",
-          justifyContent: "center",
-          alignItems: "center",
-        }}
-      >
-        <TouchableOpacity
-          style={styles.button}
-          activeOpacity={0.8}
-          onPress={onPress}
-        >
-          <Text style={styles.textStyle}>Throw a party</Text>
-        </TouchableOpacity>
-      </SafeAreaView>
-    </Callout>
+    <TouchableOpacity
+      style={[
+        styles.button,
+        { backgroundColor: isFocused ? "rgba(255, 255, 255, 1)" : null },
+      ]}
+      activeOpacity={0.8}
+      onPress={onPress}
+    >
+      <FontAwesome5
+        name="fire-alt"
+        size={"30%"}
+        color={isFocused ? colors.mapAccentColor : "grey"}
+      />
+    </TouchableOpacity>
   );
 }
-
-const styles = StyleSheet.create({
-  button: {
-    height: "50%",
-    width: "80%",
-    backgroundColor: colors.mapAccentColor,
-    borderRadius: 10,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  containerButton: {
-    bottom: "15%",
-    width: "50%",
-    alignSelf: "center",
-    height: isAndroid ? "15%" : "10%",
-    marginBottom: 20,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  textStyle: {
-    color: "white",
-    fontFamily: "WorkSans-Bold",
-    fontSize: 13,
-  },
-});
