@@ -74,6 +74,7 @@ export const signUpHandle = async (
   password,
   username,
   name,
+  surname,
   image,
   setError
 ) => {
@@ -81,6 +82,7 @@ export const signUpHandle = async (
     email,
     username,
     name,
+    surname,
     image,
   };
   return new Promise((res, rej) => {

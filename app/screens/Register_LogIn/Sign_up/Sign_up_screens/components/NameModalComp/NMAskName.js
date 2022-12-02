@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Text } from "react-native";
-import { colors } from "../../../../../src/colors";
+import { colors } from "../../../../../../src/colors";
 export default function NMAskName(props) {
   const { styles } = props;
   return (
@@ -8,6 +8,7 @@ export default function NMAskName(props) {
       style={{
         alignSelf: "flex-start",
         flexDirection: "row",
+        marginHorizontal: 20,
       }}
     >
       <View>
@@ -19,7 +20,7 @@ export default function NMAskName(props) {
             color: colors.iconColor,
           }}
         >
-          What's your name?
+          What's your full name?
         </Text>
       </View>
     </View>

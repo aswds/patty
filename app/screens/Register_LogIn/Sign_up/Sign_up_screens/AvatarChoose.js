@@ -20,13 +20,14 @@ import {
   ScrollView,
 } from "react-native";
 import { colors } from "../../../../src/colors";
-import ACAskImage from "./components/ACAskImage";
-import ACImage from "./components/ACImage";
-import ACNextButton from "./components/ACNextButton";
-import { ACScreen } from "./components/ACScreen";
+import ACAskImage from "./components/AvatarChooseComp/ACAskImage";
+import ACImage from "./components/AvatarChooseComp/ACImage";
+import ACNextButton from "./components/AvatarChooseComp/ACNextButton";
+import { ACScreen } from "./components/AvatarChooseComp/ACScreen";
 import { BackButton } from "../../components/BackButton";
-import NMNextButton from "./components/NMNextButton";
+import NMNextButton from "./components/NameModalComp/NMNextButton";
 import { ModalPhoto } from "./Modal";
+import { IOSModal } from "./IOSModal";
 export const AvatarChoose = (props) => {
   const route = useRoute();
 
@@ -37,17 +38,22 @@ export const AvatarChoose = (props) => {
     setImage(imageProp);
   };
   const _showModalHandle = () => {
-    setShowModal(true);
+    !isAndroid && IOSModal(_imagePropHandler);
+
+    setShowModal(isAndroid);
   };
   useEffect(() => {
     setImage(route.params?.imageURI);
   }, [route.params?.imageURI]);
   const imageParam = route.params?.imageURI;
+  const isAndroid = Platform.OS == "android";
   const { colors } = useTheme();
-  const [showModal, setShowModal] = useState(false);
+  const [showModal, setShowModal] = useState(isAndroid);
   const [image, setImage] = useState(imageParam);
   const navigation = useNavigation();
   const name = route.params?.name;
+  const surname = route.params?.surname;
+  const username = route.params?.username;
 
   useEffect(() => {
     (async () => {
@@ -64,7 +70,6 @@ export const AvatarChoose = (props) => {
   return (
     <ACScreen>
       <BackButton navigation={navigation} />
-
       <ACImage _showModalHandle={_showModalHandle} image={image} />
 
       <ACAskImage styles={styles} route={route} />
@@ -79,6 +84,8 @@ export const AvatarChoose = (props) => {
         styles={styles}
         image={image}
         name={name}
+        surname={surname}
+        username={username}
         navigation={navigation}
       />
     </ACScreen>
@@ -99,7 +106,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   nextButtonContainer: {
-    width: "40%",
+    width: "35%",
     position: "absolute",
     bottom: 10,
     right: 0,
@@ -113,6 +120,6 @@ const styles = StyleSheet.create({
   },
   nextButtonText: {
     fontWeight: "bold",
-    color: colors.text,
+    color: colors.buttonTextColor,
   },
 });

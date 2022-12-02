@@ -8,6 +8,7 @@ import {
 } from "react-native";
 import { colors } from "../../../src/colors";
 import { styles } from "../Sign_in/styles";
+
 export const Input = (props, { style }) => {
   return (
     <View

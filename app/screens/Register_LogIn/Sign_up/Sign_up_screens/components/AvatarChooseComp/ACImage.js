@@ -1,6 +1,6 @@
 import React from "react";
 import { TouchableOpacity, Image, Text } from "react-native";
-import { colors } from "../../../../../src/colors";
+import { colors } from "../../../../../../src/colors";
 export default function ACImage(props) {
   const { _showModalHandle, image } = props;
   return (
@@ -8,11 +8,12 @@ export default function ACImage(props) {
       style={{
         height: 200,
         width: 200,
-        borderRadius: 100,
-        borderWidth: 3,
+        borderRadius: "90%",
+        backgroundColor: colors.buttonBG,
         borderColor: colors.iconColor,
         justifyContent: "center",
         alignItems: "center",
+        overflow: "hidden",
       }}
       onPress={_showModalHandle}
     >
@@ -22,7 +23,6 @@ export default function ACImage(props) {
           style={{
             width: "100%",
             height: "100%",
-            borderRadius: 100,
             justifyContent: "center",
             alignItems: "center",
           }}

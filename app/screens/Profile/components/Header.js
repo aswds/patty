@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Image,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Feather } from "@expo/vector-icons";
@@ -17,10 +18,10 @@ import Followers from "./Follower_info";
 export default function Header({ user, setIsLoading }) {
   const insets = useSafeAreaInsets();
   return (
-    <View style={{ flex: 1 }}>
-      <ContainerBG image={user.userImage} insets={insets}>
-        <User user={user} setIsLoading={setIsLoading} />
-      </ContainerBG>
+    <View style={{ paddingTop: insets.top }}>
+      {/* <ContainerBG image={user.userImage} insets={insets}> */}
+      <User user={user} setIsLoading={setIsLoading} />
+      {/* </ContainerBG> */}
     </View>
   );
 }

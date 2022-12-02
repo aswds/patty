@@ -9,7 +9,7 @@ import {
   StyleSheet,
   SafeAreaView,
 } from "react-native";
-import { colors } from "../../../../../src/colors";
+import { colors } from "../../../../../../src/colors";
 export const NMScreen = (props) => {
   return (
     <View

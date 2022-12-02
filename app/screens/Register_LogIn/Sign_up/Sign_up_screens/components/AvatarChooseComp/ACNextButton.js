@@ -1,17 +1,20 @@
 import React from "react";
 import { TouchableOpacity, Text, View } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
-import { colors } from "../../../../../src/colors";
+import { colors } from "../../../../../../src/colors";
 export default function ACNextButton(props) {
-  const { navigation, image, styles, name } = props;
+  const { navigation, image, styles, name, surname } = props;
   return (
     <TouchableOpacity
       style={{ ...styles.nextButtonContainer, marginHorizontal: 10 }}
       onPress={() => {
-        navigation.navigate("SignUpScreen", {
-          userName: name || "",
-          userImage: image || "",
-        });
+        if (name && surname) {
+          navigation.navigate("SignUpTypes", {
+            name: name,
+            surname: surname,
+            userImage: image || "",
+          });
+        }
       }}
     >
       <Text style={styles.nextButtonText}>{image ? "Next" : "Skip"}</Text>

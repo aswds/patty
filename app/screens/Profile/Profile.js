@@ -23,6 +23,7 @@ import RenderItem from "./components/RenderItem";
 function Profile(props) {
   useEffect(() => {
     props.fetch_user();
+    setUser(props.current_user);
   }, []);
   const [isLoading, setIsLoading] = useState(false);
   const { current_user } = props;
@@ -33,13 +34,11 @@ function Profile(props) {
   return (
     <Screen>
       {isLoading && <Loader />}
+      {/* {console.log(current_user)} */}
       <FlatList
         style={{ flex: 1 }}
         ListHeaderComponent={
-          <View style={{ height: Dimensions.get("window").height * 0.5 }}>
-            <Header user={current_user} setIsLoading={setIsLoading} />
-            <Follower_info />
-          </View>
+          <Header user={current_user} setIsLoading={setIsLoading} />
         }
         data={[user]}
         renderItem={(item) => {

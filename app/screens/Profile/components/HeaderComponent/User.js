@@ -1,45 +1,39 @@
 import React, { useState } from "react";
-import { Image, View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  Image,
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  SafeAreaView,
+} from "react-native";
 import useUserImage from "../../../../hooks/useUserImage";
+import { MoreInfo } from "./abbo";
 import EditButton from "./EditButton";
 import LogOutButton from "./LogoutButton";
+import UserBio from "./UserBio";
+import UserFollowers from "./UserFollowers";
 import UserImage from "./UserImage";
+import UserName from "./UserName";
 export default function User({ user, setIsLoading }) {
   const { fetchableImage } = useUserImage(user.userImage);
   return (
-    <>
-      <View
-        style={{
-          height: "45%",
-          width: "100%",
-          flexDirection: "row",
-          justifyContent: "center",
-        }}
-      >
-        <UserImage uri={user.userImage} setIsLoading={setIsLoading} />
-        <LogOutButton />
-        <EditButton />
-      </View>
+    <View
+      style={{
+        justifyContent: "center",
+        paddingHorizontal: "5%",
+        paddingTop: "10%",
+      }}
+    >
+      <UserImage uri={user.userImage} setIsLoading={setIsLoading} />
+      {/* <LogOutButton /> */}
+      {/* <EditButton /> */}
 
-      <View style={styles.usernameContainer}>
-        <Text style={styles.textStyle}>{user.username}</Text>
-      </View>
-    </>
+      <UserName user={user} styles={styles} />
+      <UserBio user={user} />
+      {/* <UserBio user={user} /> */}
+      <UserFollowers user={user} />
+    </View>
   );
 }
-const styles = StyleSheet.create({
-  textStyle: {
-    color: "white",
-    fontFamily: "WorkSans-Bold",
-    fontSize: 15,
-  },
-
-  usernameContainer: {
-    backgroundColor: "rgba(21, 21, 21, 0.6)",
-    height: "15%",
-    width: "30%",
-    borderRadius: 25,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+const styles = StyleSheet.create({});
