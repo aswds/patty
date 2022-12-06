@@ -1,7 +1,7 @@
 import { ActionSheetIOS } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 
-export function IOSModal(_imagePropHandler) {
+export function IOSModal(_imagePropHandler, setImage) {
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
@@ -12,7 +12,7 @@ export function IOSModal(_imagePropHandler) {
     });
 
     if (!result.cancelled) {
-      _imagePropHandler(result.uri);
+      _imagePropHandler(setImage, result.uri);
     }
   };
   ActionSheetIOS.showActionSheetWithOptions(

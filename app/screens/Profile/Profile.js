@@ -10,6 +10,7 @@ import {
   FlatList,
   Dimensions,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import { useSelector, useDispatch, connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -20,12 +21,21 @@ import Screen from "./components/Screen";
 import Loader from "./components/Loader";
 import Header from "./components/Header";
 import RenderItem from "./components/RenderItem";
+import { colors } from "../../src/colors";
+const wait = (timeout) => {
+  return new Promise((resolve) => setTimeout(resolve, timeout));
+};
 function Profile(props) {
+  const [refreshing, setRefreshing] = useState(false);
+
+  const onRefresh = React.useCallback(() => {
+    setRefreshing(true);
+    wait(2000).then(() => setRefreshing(false));
+  }, []);
   useEffect(() => {
     props.fetch_user();
     setUser(props.current_user);
   }, []);
-  const [isLoading, setIsLoading] = useState(false);
   const { current_user } = props;
   const [user, setUser] = useState(current_user);
   if (!current_user) {
@@ -33,13 +43,18 @@ function Profile(props) {
   }
   return (
     <Screen>
-      {isLoading && <Loader />}
-      {/* {console.log(current_user)} */}
       <FlatList
         style={{ flex: 1 }}
-        ListHeaderComponent={
-          <Header user={current_user} setIsLoading={setIsLoading} />
+        refreshControl={
+          <SafeAreaView>
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh}
+              tintColor={colors.buttonText}
+            />
+          </SafeAreaView>
         }
+        ListHeaderComponent={<Header user={current_user} />}
         data={[user]}
         renderItem={(item) => {
           return <RenderItem item={item} />;

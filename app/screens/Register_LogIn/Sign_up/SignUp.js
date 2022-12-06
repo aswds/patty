@@ -40,7 +40,6 @@ import { sameUsernames } from "./Sign_up_screens/Sign_up_Functions/sameUsername"
 import { signUpHandle } from "./Sign_up_screens/Sign_up_Functions/signUp";
 import { checkPassword } from "./Sign_up_screens/Sign_up_Functions/Validator";
 const SignUpScreen = (props) => {
-  const [username, setUsername] = useState("");
   const [valid, setValid] = useState({
     validUsername: true,
     validEmail: true,
@@ -63,8 +62,11 @@ const SignUpScreen = (props) => {
   const ref_input4 = useRef();
   const navigation = useNavigation();
   const route = useRoute();
-  const name = route.params?.userName;
+  const name = route.params?.name;
+  const surname = route.params?.surname;
+  const username = route.params?.username;
   const image = route.params?.userImage;
+
   const { signUp } = useContext(AuthContext);
   const _hideModal = () => {
     setShowModal(false);
@@ -73,19 +75,23 @@ const SignUpScreen = (props) => {
     if (
       valid.validEmail &&
       valid.validPassword &&
-      valid.validUsername &&
       user.password == confirmPass
     ) {
-      signUpHandle(user.email, user.password, username, name, image).catch(
-        (err) => {
-          error_handle(err.error_type, err.message, {
-            setValid,
-            valid,
-          }).catch((err) => {
-            setShowModal(true), setErrorMsg(err);
-          });
-        }
-      );
+      signUpHandle(
+        user.email,
+        user.password,
+        username,
+        name,
+        surname,
+        image
+      ).catch((err) => {
+        error_handle(err.error_type, err.message, {
+          setValid,
+          valid,
+        }).catch((err) => {
+          setShowModal(true), setErrorMsg(err);
+        });
+      });
     } else {
       setShowModal(true),
         setErrorMsg("Please check if everything is correct :)");
@@ -97,13 +103,13 @@ const SignUpScreen = (props) => {
 
   return (
     <Screen>
-      <View>
+      <View style={{ bottom: "10%" }}>
         <Logo />
       </View>
       <BackButton navigation={navigation} />
 
       <Container>
-        <Input
+        {/* <Input
           isValid={valid.validUsername}
           style={styles.inputStyle}
           icon={
@@ -138,7 +144,7 @@ const SignUpScreen = (props) => {
             }}
             defaultValue={username}
           />
-        </Input>
+        </Input> */}
 
         <Input
           style={styles.inputStyle}
@@ -211,23 +217,6 @@ const SignUpScreen = (props) => {
             ref={ref_input3}
           />
         </Input>
-
-        {/* {valid.validPassword ? null : (
-            <Animatable.View
-              animation="fadeInLeft"
-              duration={500}
-              style={styles.animationStyle}
-            >
-              <Text
-                style={{ color: "lightgrey" }}
-                onPress={() => {
-                  navigation.navigate("PasswordRules");
-                }}
-              >
-                Check password rules here 👀
-              </Text>
-            </Animatable.View>
-          )} */}
         <Input
           style={styles.inputStyle}
           isValid={valid.validConfirmPassword}
@@ -290,13 +279,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  inputStyle: { width: "100%", height: "16%" },
+  inputStyle: { width: "100%", height: "22%" },
   errorMsg: {
     color: "red",
   },
   registerContainer: {
     marginTop: "5%",
-    height: Dimensions.get("window").height / 2.2,
     width: Dimensions.get("window").width / 1.3,
     justifyContent: "center",
   },

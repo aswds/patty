@@ -1,6 +1,7 @@
+import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
-import { Alert, StyleSheet, TextInput, View } from "react-native";
+import { Alert, StyleSheet, TextInput, View, Dimensions } from "react-native";
 import { colors } from "../../../../src/colors";
 import { BackButton } from "../../components/BackButton";
 import { Input } from "../../components/Input";
@@ -10,6 +11,8 @@ import { NMScreen } from "./components/NameModalComp/NMScreen";
 import AskUsername from "./components/Username/AskUsername";
 import NextButton from "./components/Username/NextButton";
 import { sameUsernames } from "./Sign_up_Functions/sameUsername";
+import { text_modifier } from "./Sign_up_Functions/text_modifier";
+
 export const Username = (props) => {
   const [username, setUsername] = useState("");
   const [errorMsg, setErrorMsg] = useState();
@@ -36,23 +39,30 @@ export const Username = (props) => {
             width: "100%",
           }}
         >
-          <Input isValid={true} style={{ width: "90%" }}>
+          <Input
+            isValid={true}
+            style={{ width: "90%" }}
+            icon={
+              <MaterialIcons
+                name="alternate-email"
+                size={Dimensions.get("window").height >= 800 ? 24 : 20}
+                color={colors.iconColor}
+              />
+            }
+          >
             <TextInput
               style={styles.textInput}
               placeholder="username"
               placeholderTextColor={colors.iconColor}
               onChangeText={(text) => {
-                setUsername(
-                  text.replace(" ", "_").replace(/[^a-zA-Z_0-9-]/g, "")
-                );
-                sameUsernames(
-                  text.replace(" ", "_").replace(/[^a-zA-Z_0-9-]/g, ""),
-                  setErrorMsg
-                )
-                  .then((res) => setIsDisabled(!res))
+                sameUsernames(text_modifier(text), setErrorMsg)
+                  .then((res) => {
+                    setIsDisabled(!res);
+                  })
                   .catch((err) => {
                     setIsDisabled(!err);
                   });
+                setUsername(text_modifier(text));
               }}
               value={username}
               autoCorrect={false}

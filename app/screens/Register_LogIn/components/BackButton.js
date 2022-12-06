@@ -1,8 +1,7 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import { Platform, StyleSheet, TouchableOpacity } from "react-native";
 import { colors } from "../../../src/colors";
-const isAndroid = Platform.OS == "android";
-
+import { isAndroid } from "../../../src/platform";
 export const BackButton = ({ navigation }) => {
   return (
     <TouchableOpacity

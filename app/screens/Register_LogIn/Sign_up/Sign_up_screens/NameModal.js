@@ -78,7 +78,7 @@ export const NameModal = (props) => {
                 placeholder="surname"
                 placeholderTextColor={colors.iconColor}
                 onChangeText={(text) => {
-                  setFullName({ ...fullName, surname: text });
+                  setFullName({ ...fullName, surname: text.trim() });
                 }}
                 value={fullName.surname}
                 ref={surname_input_ref}

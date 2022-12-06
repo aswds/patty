@@ -9,8 +9,7 @@ import {
 } from "react-native";
 import { colors } from "../../../src/colors";
 import { FontAwesome5 } from "@expo/vector-icons";
-const isAndroid = Platform.OS == "android";
-
+import { isAndroid } from "../../../src/platform";
 export default function DoPartyButton(props) {
   const { onPress, isFocused, styles } = props;
   return (

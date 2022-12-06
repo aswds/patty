@@ -1,14 +1,28 @@
 import React, { useState } from "react";
-import { Dimensions, Image, StyleSheet, View } from "react-native";
+import {
+  Dimensions,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import useUserImage from "../../../../hooks/useUserImage";
 import Container from "./Container";
-import FollowButton from "./FollowButton";
-export default function UserImage({ uri, setIsLoading }) {
+import Button from "../../Button";
+import { useNavigation } from "@react-navigation/native";
+export default function UserImage({ uri, setIsLoading, user }) {
   const { fetchableImage } = useUserImage(uri);
+
+  const navigation = useNavigation();
 
   const source = fetchableImage
     ? { uri: uri }
     : require("../../../../../assets/images/noImage-01.png");
+
+  const onPress = () => {
+    navigation.navigate("EditProfile", { user });
+  };
+
   return (
     <View
       style={{
@@ -19,20 +33,19 @@ export default function UserImage({ uri, setIsLoading }) {
         alignItems: "flex-end",
       }}
     >
-      <View style={{}}>
+      <TouchableOpacity style={{}}>
         <Image
           source={source}
           style={styles.imageStyle}
-          onLoadStart={() => {
-            setIsLoading(true);
-          }}
-          onLoadEnd={() => {
-            setIsLoading(false);
+          onLayout={() => {
+            setTimeout(() => {
+              setIsLoading(false);
+            }, 500);
           }}
         />
-      </View>
+      </TouchableOpacity>
       <View>
-        <FollowButton />
+        <Button onPress={onPress} text="Edit" />
       </View>
     </View>
   );

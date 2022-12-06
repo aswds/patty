@@ -8,6 +8,8 @@ export const colors = {
   iconColor: "#6D6D6D",
   buttonTextColor: "#E7E0C9",
   mapAccentColor: "rgb(210, 40, 45)",
+  doneButtonBG: "#2B3526",
+  doneButtonText: "#9FC084",
   buttonBG: "#2F2524",
   buttonText: "#FF5454",
 };

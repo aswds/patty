@@ -1,14 +1,16 @@
-import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import React, { Component } from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
-import { colors } from "../../../../src/colors";
+import { colors } from "../../src/colors";
 
-export default function FollowButton() {
+function Button({ style, onPress, text, textStyled }) {
   return (
-    <TouchableOpacity style={styles.buttonBG}>
-      <Text style={styles.textStyle}>Edit</Text>
+    <TouchableOpacity style={[styles.buttonBG, style]} onPress={onPress}>
+      <Text style={[styles.textStyle, textStyled]}>{text}</Text>
     </TouchableOpacity>
   );
 }
+
 const styles = StyleSheet.create({
   buttonBG: {
     backgroundColor: colors.buttonBG,
@@ -24,3 +26,4 @@ const styles = StyleSheet.create({
     fontSize: 13,
   },
 });
+export default Button;

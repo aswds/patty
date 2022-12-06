@@ -1,7 +1,8 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { colors } from "../../../../src/colors";
-export default function UserFollowers(user) {
+export default function UserFollowers(data) {
+  const { user } = data;
   return (
     <View
       style={{
@@ -12,10 +13,10 @@ export default function UserFollowers(user) {
       }}
     >
       <Text style={styles.textStyle}>
-        32 <Text style={styles.followTextStyle}>followers</Text>
+        {user.followers} <Text style={styles.followTextStyle}>followers</Text>
       </Text>
       <Text style={[styles.textStyle, { marginLeft: "5%" }]}>
-        32 <Text style={styles.followTextStyle}>following</Text>
+        {user.following} <Text style={styles.followTextStyle}>following</Text>
       </Text>
     </View>
   );

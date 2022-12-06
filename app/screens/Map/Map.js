@@ -18,8 +18,8 @@ import * as Location from "expo-location";
 import Loader from "../Register_LogIn/components/Loader";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { colors } from "../../src/colors";
+import { isAndroid } from "../../src/platform";
 const styledMap = require("./styledMap.json");
-const isAndroid = Platform.OS == "android";
 export default function Map() {
   const [markers, setMarkers] = useState([]);
   const [showModal, setShowModal] = useState(false);
@@ -92,6 +92,7 @@ export default function Map() {
                   longitudeDelta: 0,
                 }}
                 key={index}
+                image={require("../../../assets/images/pattyLogo2.png")}
               >
                 <FontAwesome5
                   name="fire-alt"

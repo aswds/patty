@@ -15,8 +15,7 @@ import {
   Ionicons,
 } from "@expo/vector-icons";
 import { colors } from "../../../src/colors";
-const isAndroid = Platform.OS == "android";
-
+import { isAndroid } from "../../../src/platform";
 export default function SearchButton(props) {
   const { onPress, isFocused, styles } = props;
   return (

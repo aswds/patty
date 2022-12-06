@@ -17,7 +17,7 @@ export const sameUsernames = async (username, setErrorMsg) => {
           if (snapshot.empty) {
             resolve(true);
           } else {
-            setErrorMsg("Username is already taken!");
+            setErrorMsg("Username is already taken ");
             reject(false);
           }
         })

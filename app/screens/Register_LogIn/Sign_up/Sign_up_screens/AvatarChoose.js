@@ -28,17 +28,14 @@ import { BackButton } from "../../components/BackButton";
 import NMNextButton from "./components/NameModalComp/NMNextButton";
 import { ModalPhoto } from "./Modal";
 import { IOSModal } from "./IOSModal";
+import { _hideModal, _imagePropHandler } from "./AvatarFunctions/ACFunctions";
+import useGallery from "../../../../hooks/useGallery";
+import { isAndroid } from "../../../../src/platform";
 export const AvatarChoose = (props) => {
   const route = useRoute();
-
-  const _hideModal = () => {
-    setShowModal(false);
-  };
-  const _imagePropHandler = (imageProp) => {
-    setImage(imageProp);
-  };
+  const { colors } = useTheme();
   const _showModalHandle = () => {
-    !isAndroid && IOSModal(_imagePropHandler);
+    !isAndroid && IOSModal(_imagePropHandler, setImage);
 
     setShowModal(isAndroid);
   };
@@ -46,26 +43,14 @@ export const AvatarChoose = (props) => {
     setImage(route.params?.imageURI);
   }, [route.params?.imageURI]);
   const imageParam = route.params?.imageURI;
-  const isAndroid = Platform.OS == "android";
-  const { colors } = useTheme();
   const [showModal, setShowModal] = useState(isAndroid);
   const [image, setImage] = useState(imageParam);
   const navigation = useNavigation();
   const name = route.params?.name;
   const surname = route.params?.surname;
   const username = route.params?.username;
+  useGallery();
 
-  useEffect(() => {
-    (async () => {
-      if (Platform.OS !== "web") {
-        const { status } =
-          await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== "granted") {
-          alert("Sorry, we need camera roll permissions to make this work!");
-        }
-      }
-    })();
-  }, []);
   // not safe to pass params in  3 screens (change to (registration->firebase.createNewUser->enter name -> choose avatar -> updateProfile -> Home screen))
   return (
     <ACScreen>
@@ -76,10 +61,11 @@ export const AvatarChoose = (props) => {
 
       <ModalPhoto
         routeName={route.name}
-        hideModal={_hideModal}
+        hideModal={_hideModal.bind(null, setShowModal)}
         showModal={showModal}
         imageHandler={_imagePropHandler}
       />
+
       <ACNextButton
         styles={styles}
         image={image}

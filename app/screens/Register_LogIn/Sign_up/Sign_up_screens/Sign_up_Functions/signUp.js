@@ -49,7 +49,8 @@ function set_errorMsg_errorType(error_code) {
   });
 }
 async function setDocs(result, userInfo) {
-  const { email, username, name, image } = userInfo;
+  const { email, username, name, surname, image } = userInfo;
+  console.log(username);
   await setDoc(doc(db, `USERS`, `${auth.currentUser.uid}`), {
     userUID: auth.currentUser.uid,
     email: email,
@@ -57,12 +58,14 @@ async function setDocs(result, userInfo) {
     username: username,
     searchUsername: username.toLowerCase(),
     name: name || "",
+    surname: surname,
     country: "",
     city: "",
     phoneNumber: "",
     userImage: "",
     following: 0,
     followers: 0,
+    bio: "",
     createdAt: Timestamp.fromDate(new Date()).toJSON() || new Date(),
   }).then(() => {
     uploadImage(image, auth.currentUser);
