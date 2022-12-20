@@ -17,50 +17,34 @@ import { IOSModal } from "../../../Register_LogIn/Sign_up/Sign_up_screens/IOSMod
 import { isAndroid } from "../../../../src/platform";
 import Button from "../../Button";
 import { colors } from "../../../../src/colors";
-export default function EditImage({ uri }) {
-  const { fetchableImage } = useUserImage(uri);
+import { _showModalHandle } from "../../../Register_LogIn/Sign_up/Sign_up_screens/Sign_up_Functions/_showModalHandel";
+export default function EditImage({ source, isDefault }) {
   const route = useRoute();
   const [showModal, setShowModal] = useState(false);
-  const [image, setImage] = useState();
-  const _showModalHandle = () => {
-    !isAndroid && IOSModal(_imagePropHandler, setImage);
-    setShowModal(isAndroid);
-  };
-  useEffect(() => {
-    setImage(route.params?.imageURI);
-  }, [route.params?.imageURI]);
+  const [isDefaultImage, setIsDefault] = useState(isDefault);
+  const [image, setImage] = useState(source);
   const navigation = useNavigation();
-  const source = fetchableImage
-    ? { uri: uri }
-    : require("../../../../../assets/images/noImage-01.png");
-
-  const onPress = () => {
-    navigation.navigate("Profile", { user });
-  };
 
   return (
     <View
       style={{
-        width: "100%",
-        justifyContent: "space-between",
-        marginBottom: "5%",
+        justifyContent: "flex-start",
         flexDirection: "row",
         alignItems: "flex-end",
       }}
     >
-      <TouchableOpacity style={{}} onPress={() => {}}>
-        <Image source={source} style={styles.imageStyle} />
-      </TouchableOpacity>
-      <View>
-        <Button
-          onPress={onPress}
-          text="Done"
-          style={{
-            backgroundColor: colors.doneButtonBG,
-          }}
-          textStyled={{ color: colors.doneButtonText }}
+      <TouchableOpacity
+        style={{}}
+        onPress={() => {
+          _showModalHandle(setImage, setShowModal);
+        }}
+      >
+        <Image
+          source={image == source ? source : { uri: image }}
+          style={styles.imageStyle}
         />
-      </View>
+      </TouchableOpacity>
+
       <ModalPhoto
         routeName={route.name}
         hideModal={_hideModal.bind(null, setShowModal)}

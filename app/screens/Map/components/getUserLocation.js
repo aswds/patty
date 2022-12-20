@@ -11,6 +11,6 @@ export async function getUserLocation() {
     }
 
     let location = await Location.getCurrentPositionAsync({});
-    res(location.coords);
+    await res(location.coords);
   });
 }

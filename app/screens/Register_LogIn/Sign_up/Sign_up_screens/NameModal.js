@@ -27,6 +27,7 @@ import { BackButton } from "../../components/BackButton";
 import NMAskName from "./components/NameModalComp/NMAskName";
 import NMNextButton from "./components/NameModalComp/NMNextButton";
 import { NMScreen } from "./components/NameModalComp/NMScreen";
+import { text_modifier_name } from "./Sign_up_Functions/text_modifier";
 export const NameModal = (props) => {
   const [fullName, setFullName] = useState({ name: null, surname: null });
   const [nameSkip, setNameSkip] = useState();
@@ -63,7 +64,7 @@ export const NameModal = (props) => {
                 placeholder="name"
                 placeholderTextColor={colors.iconColor}
                 onChangeText={(text) => {
-                  setFullName({ ...fullName, name: text });
+                  setFullName({ ...fullName, name: text_modifier_name(text) });
                 }}
                 value={fullName.name}
                 onSubmitEditing={() => {
@@ -78,7 +79,10 @@ export const NameModal = (props) => {
                 placeholder="surname"
                 placeholderTextColor={colors.iconColor}
                 onChangeText={(text) => {
-                  setFullName({ ...fullName, surname: text.trim() });
+                  setFullName({
+                    ...fullName,
+                    surname: text_modifier_name(text),
+                  });
                 }}
                 value={fullName.surname}
                 ref={surname_input_ref}

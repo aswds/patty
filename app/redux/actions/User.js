@@ -24,7 +24,7 @@ export function fetch_user(userUID, setUser) {
         "User not found",
         "We can't find user with that credentials."
       );
-      console.log("No such document!");
+      auth.signOut();
     }
   };
 }

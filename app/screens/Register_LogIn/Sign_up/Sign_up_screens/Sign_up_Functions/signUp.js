@@ -1,6 +1,10 @@
 const firebaseAuth = require("firebase/auth");
 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { collection, doc, setDoc, Timestamp } from "firebase/firestore";
 import { uploadImage } from "./uploadImage";
 import { db, auth } from "../../../../../../firebase";
@@ -25,8 +29,7 @@ function set_errorMsg_errorType(error_code) {
       case "auth/email-already-exists":
         rej({
           error_type: "email",
-          message:
-            "The provided email is already in use by an existing user. Each user must have a unique email.",
+          message: "The provided email is already in use by an existing user.",
         });
         break;
       case "auth/email-already-in-use":
@@ -50,7 +53,6 @@ function set_errorMsg_errorType(error_code) {
 }
 async function setDocs(result, userInfo) {
   const { email, username, name, surname, image } = userInfo;
-  console.log(username);
   await setDoc(doc(db, `USERS`, `${auth.currentUser.uid}`), {
     userUID: auth.currentUser.uid,
     email: email,
@@ -79,7 +81,7 @@ export const signUpHandle = async (
   name,
   surname,
   image,
-  setError
+  signUp
 ) => {
   const userInfo = {
     email,
@@ -90,12 +92,18 @@ export const signUpHandle = async (
   };
   return new Promise((res, rej) => {
     const { user } = createUserWithEmailAndPassword(auth, email, password)
-      .then((res) => setDocs(res, userInfo))
+      .then(async (result) => {
+        res("EmailVerification"),
+          await sendEmailVerification(result.user).then(
+            async (res) =>
+              await result.user.reload().then(() => setDocs(result, userInfo))
+          );
+      })
 
       .catch((error) => {
         set_errorMsg_errorType(error.code)
-          .then((res) => {
-            res(res);
+          .then((result) => {
+            res(result);
           })
           .catch((e) => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);

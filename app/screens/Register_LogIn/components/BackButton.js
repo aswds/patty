@@ -20,7 +20,7 @@ export const BackButton = ({ navigation }) => {
 };
 const styles = StyleSheet.create({
   arrowContainer: {
-    height: isAndroid ? 35 : 50,
+    height: 50,
     aspectRatio: 1,
     position: "absolute",
     zIndex: 1,

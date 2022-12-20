@@ -5,7 +5,9 @@ export default function useUserImage(image) {
   if (image) {
     fetch(image)
       .then((res) => setStatus(res.ok))
-      .catch((e) => Alert.alert(`Can't download user image`));
+      .catch((e) => {
+        Alert.alert(`Can't download user image`), setStatus(false);
+      });
   }
 
   return { fetchableImage };

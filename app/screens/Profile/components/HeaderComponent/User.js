@@ -8,7 +8,6 @@ import {
   SafeAreaView,
 } from "react-native";
 import useUserImage from "../../../../hooks/useUserImage";
-import Skeleton from "../../../Skeleton/Skeleton";
 import Loader from "../Loader";
 import { MoreInfo } from "./abbo";
 import EditButton from "../../Button";
@@ -16,7 +15,9 @@ import LogOutButton from "./LogoutButton";
 import UserBio from "./UserBio";
 import UserFollowers from "./UserFollowers";
 import UserImage from "./UserImage";
-import UserName from "./UserName";
+import UserName from "./UserName/UserName";
+import { Skeleton } from "moti/skeleton";
+import AccountNotVerified from "../../AccountNotVerified";
 export default function User({ user }) {
   const { fetchableImage } = useUserImage(user.userImage);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -29,16 +30,19 @@ export default function User({ user }) {
         paddingTop: "10%",
       }}
     >
-      {console.log(isLoading)}
-      {isLoading && <Loader />}
-      <UserImage uri={user.userImage} setIsLoading={setIsLoading} user={user} />
+      <AccountNotVerified isVerified={user.verifiedEmail} />
+      <UserImage
+        uri={user.userImage}
+        Loader={{ isLoading, setIsLoading }}
+        user={user}
+      />
+
       {/* <LogOutButton /> */}
       {/* <EditButton /> */}
+      <UserName user={user} styles={styles} isLoading={isLoading} />
 
       {!isLoading && (
         <>
-          <UserName user={user} styles={styles} />
-
           <UserBio user={user} />
           <UserFollowers user={user} />
         </>

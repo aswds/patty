@@ -80,7 +80,6 @@ const SignInScreen = (props) => {
     />
   );
   const { signIn } = useContext(AuthContext);
-  const { isLoading } = useContext(AuthContext);
 
   return (
     <>

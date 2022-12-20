@@ -1,6 +1,7 @@
 import React from "react";
 import { TouchableOpacity, Image, Text } from "react-native";
 import { colors } from "../../../../../../src/colors";
+import { isAndroid } from "../../../../../../src/platform";
 export default function ACImage(props) {
   const { _showModalHandle, image } = props;
   return (
@@ -8,7 +9,7 @@ export default function ACImage(props) {
       style={{
         height: 200,
         width: 200,
-        borderRadius: "90%",
+        borderRadius: isAndroid ? 80 : "90%",
         backgroundColor: colors.buttonBG,
         borderColor: colors.iconColor,
         justifyContent: "center",

@@ -9,6 +9,9 @@ import {
 } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
 export const uploadImage = async (uri, user) => {
+  if (!uri) {
+    return;
+  }
   const userUID = auth.currentUser.uid;
 
   // const responce = await fetch(uri);
@@ -18,9 +21,9 @@ export const uploadImage = async (uri, user) => {
   fetch(uri)
     .then((responce) => responce.blob())
     .then((blob) => uploadBytesResumable(storageRef, blob))
-    .then((task) => getDownloadURL(task.snapshot.ref))
+    .then(async (task) => await getDownloadURL(task.snapshot.ref))
     .then(async (snapshot) => {
-      updateDoc(doc(db, "USERS", userUID), {
+      await updateDoc(doc(db, "USERS", userUID), {
         userImage: snapshot,
       }).catch((err) => Alert.alert(err));
       await updateProfile(user, {

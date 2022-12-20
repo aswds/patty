@@ -39,6 +39,7 @@ import { error_handle } from "./Sign_up_screens/Sign_up_Functions/error_handle";
 import { sameUsernames } from "./Sign_up_screens/Sign_up_Functions/sameUsername";
 import { signUpHandle } from "./Sign_up_screens/Sign_up_Functions/signUp";
 import { checkPassword } from "./Sign_up_screens/Sign_up_Functions/Validator";
+import { isAndroid } from "../../../src/platform";
 const SignUpScreen = (props) => {
   const [valid, setValid] = useState({
     validUsername: true,
@@ -77,21 +78,28 @@ const SignUpScreen = (props) => {
       valid.validPassword &&
       user.password == confirmPass
     ) {
+      //handling sign up
       signUpHandle(
         user.email,
         user.password,
         username,
         name,
         surname,
-        image
-      ).catch((err) => {
-        error_handle(err.error_type, err.message, {
-          setValid,
-          valid,
-        }).catch((err) => {
-          setShowModal(true), setErrorMsg(err);
+        image,
+        signUp
+      )
+        .then((res) => {
+          navigation.navigate("EmailVerification");
+        })
+        .catch((err) => {
+          //if error occures, show modal
+          error_handle(err.error_type, err.message, {
+            setValid,
+            valid,
+          }).catch((err) => {
+            setShowModal(true), setErrorMsg(err);
+          });
         });
-      });
     } else {
       setShowModal(true),
         setErrorMsg("Please check if everything is correct :)");
@@ -103,49 +111,12 @@ const SignUpScreen = (props) => {
 
   return (
     <Screen>
-      <View style={{ bottom: "10%" }}>
+      <View style={{ bottom: isAndroid ? 0 : "10%" }}>
         <Logo />
       </View>
       <BackButton navigation={navigation} />
 
       <Container>
-        {/* <Input
-          isValid={valid.validUsername}
-          style={styles.inputStyle}
-          icon={
-            <AntDesign
-              name="user"
-              size={Dimensions.get("window").height >= 800 ? 24 : 20}
-              color={colors.iconColor}
-            />
-          }
-        >
-          <TextInput
-            style={{
-              ...styles.inputField,
-            }}
-            placeholder="Username"
-            placeholderTextColor={textStyle.color}
-            onChangeText={(text) => {
-              setUsername(text);
-            }}
-            onEndEditing={() => {
-              sameUsernames(username.trim(), setErrorMsg)
-                .then((res) => {
-                  setValid({ ...valid, validUsername: res });
-                })
-                .catch((err) => {
-                  setValid({ ...valid, validUsername: err }),
-                    setShowModal(!err);
-                });
-            }}
-            onSubmitEditing={() => {
-              refHandle(ref_input2);
-            }}
-            defaultValue={username}
-          />
-        </Input> */}
-
         <Input
           style={styles.inputStyle}
           icon={
@@ -248,7 +219,6 @@ const SignUpScreen = (props) => {
           />
         </Input>
       </Container>
-
       <StyledButton
         textStyle={{
           fontFamily: "Nunito-Bold",
@@ -326,12 +296,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   styledButton: {
-    marginTop: 30,
+    marginTop: "10%",
     marginBottom: 20,
     borderRadius: 13,
     backgroundColor: "rgba(155 , 50, 50 , 1)",
-    height: Dimensions.get("window").height / 14,
-    width: Dimensions.get("window").width / 1.2,
+    height: isAndroid ? "10%" : 70,
+    width: "90%",
     alignSelf: "center",
   },
 });

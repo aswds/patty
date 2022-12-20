@@ -6,7 +6,7 @@ import {
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { Dimensions } from "react-native";
-import EditProfile from "../../screens/Profile/EditProfile";
+import EditProfile from "../../screens/Profile/EditProfile/EditProfile";
 import Profile from "../../screens/Profile/Profile";
 const Stack = createNativeStackNavigator();
 

@@ -1,17 +1,17 @@
 import { ActionSheetIOS } from "react-native";
 import * as ImagePicker from "expo-image-picker";
-
-export function IOSModal(_imagePropHandler, setImage) {
+import { _imagePropHandler } from "./AvatarFunctions/ACFunctions";
+export function IOSModal(setImage) {
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 1,
       presentationStyle: ImagePicker.UIImagePickerPresentationStyle.AUTOMATIC,
     });
-
     if (!result.cancelled) {
+      console.log(setImage);
       _imagePropHandler(setImage, result.uri);
     }
   };

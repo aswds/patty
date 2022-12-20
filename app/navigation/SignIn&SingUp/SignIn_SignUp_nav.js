@@ -10,6 +10,8 @@ import DataRecovery from "../../screens/Register_LogIn/Recovery";
 import SignInScreen from "../../screens/Register_LogIn/Sign_in/SingIn";
 import SignUpScreen from "../../screens/Register_LogIn/Sign_up/SignUp";
 import { AvatarChoose } from "../../screens/Register_LogIn/Sign_up/Sign_up_screens/AvatarChoose";
+import EmailVerification from "../../screens/Register_LogIn/Sign_up/Sign_up_screens/EmailVerification";
+import ChangeEmail from "../../screens/Register_LogIn/Sign_up/Sign_up_screens/EmailVerification/ChangeEmail";
 import { NameModal } from "../../screens/Register_LogIn/Sign_up/Sign_up_screens/NameModal";
 import { Username } from "../../screens/Register_LogIn/Sign_up/Sign_up_screens/Username";
 const Stack = createNativeStackNavigator();
@@ -39,6 +41,12 @@ export const LoginAndRegister = (props) => {
           <Stack.Screen component={NameModal} name="NameInfo" />
           <Stack.Screen component={AvatarChoose} name="Avatar" />
           <Stack.Screen component={Username} name="Username" />
+          {/* <Stack.Screen
+            component={EmailVerification}
+            name="EmailVerification"
+          />
+
+          <Stack.Screen component={ChangeEmail} name="ChangeEmail" /> */}
         </Stack.Group>
       </Stack.Navigator>
     </NavigationContainer>

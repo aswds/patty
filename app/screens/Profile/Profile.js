@@ -22,6 +22,7 @@ import Loader from "./components/Loader";
 import Header from "./components/Header";
 import RenderItem from "./components/RenderItem";
 import { colors } from "../../src/colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 const wait = (timeout) => {
   return new Promise((resolve) => setTimeout(resolve, timeout));
 };
@@ -38,6 +39,7 @@ function Profile(props) {
   }, []);
   const { current_user } = props;
   const [user, setUser] = useState(current_user);
+  const insets = useSafeAreaInsets();
   if (!current_user) {
     return <Loader />;
   }
@@ -46,13 +48,14 @@ function Profile(props) {
       <FlatList
         style={{ flex: 1 }}
         refreshControl={
-          <SafeAreaView>
+          <View style={{ marginTop: insets.top }}>
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh}
               tintColor={colors.buttonText}
+              style={{ alignItems: "center", zIndex: 1 }}
             />
-          </SafeAreaView>
+          </View>
         }
         ListHeaderComponent={<Header user={current_user} />}
         data={[user]}

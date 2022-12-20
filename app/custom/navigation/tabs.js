@@ -8,7 +8,8 @@ import Chat from "../../screens/Chat/Chat";
 import Map from "../../screens/Map/Map";
 import Profile from "../../screens/Profile/Profile";
 import { BackButton } from "../../screens/Register_LogIn/components/BackButton";
-import { ProfileNavigator } from "./ProfileNavigator";
+import { ProfileNavigator } from "../../navigation/Navigators/ProfileNavigator";
+import { MapNavigator } from "../../navigation/Navigators/MapNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -37,7 +38,7 @@ const TabButton = (props) => {
 };
 export const Tabs = () => {
   return (
-    <Tab.Navigator screenOptions={tabOptions} initialRouteName="Map">
+    <Tab.Navigator screenOptions={tabOptions} initialRouteName="MapNav">
       <Tab.Screen
         name="ProfileNav"
         component={ProfileNavigator}
@@ -64,8 +65,8 @@ export const Tabs = () => {
       />
 
       <Tab.Screen
-        name="Map"
-        component={Map}
+        name="MapNav"
+        component={MapNavigator}
         options={{
           tabBarIcon: ({ focused }) => {
             return (

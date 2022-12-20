@@ -1,3 +1,4 @@
+import React from "react";
 import React, { useState } from "react";
 import {
   View,
@@ -16,8 +17,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import StyledButton from "./components/button";
 import { colors } from "../../src/colors";
 import { Input } from "./components/Input";
-
-const DataRecovery = ({ sendEmail, text }) => {
+export default function VerifyEmail({ user }) {
   const [userEmail, setUserEmail] = useState("");
   return (
     <View
@@ -42,7 +42,7 @@ const DataRecovery = ({ sendEmail, text }) => {
               <Text
                 style={{ fontSize: 20, alignSelf: "center", color: "white" }}
               >
-                {text}
+                Reset your password
               </Text>
             </View>
             <View style={styles.rContainer}>
@@ -59,7 +59,7 @@ const DataRecovery = ({ sendEmail, text }) => {
                   placeholderTextColor={"grey"}
                   placeholder="Email"
                   onChangeText={(text) => setUserEmail(text)}
-                  defaultValue={userEmail}
+                  defaultValue={user.email}
                 />
               </Input>
               <View style={styles.shadowButton}>
@@ -71,9 +71,7 @@ const DataRecovery = ({ sendEmail, text }) => {
                     borderRadius: 10,
                     elevation: 5,
                   }}
-                  onPress={() => {
-                    sendEmail(userEmail);
-                  }}
+                  onPress={() => {}}
                   textStyle={{ color: "white" }}
                 >
                   Submit
@@ -85,8 +83,7 @@ const DataRecovery = ({ sendEmail, text }) => {
       </TouchableWithoutFeedback>
     </View>
   );
-};
-
+}
 const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -134,5 +131,3 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
 });
-
-export default DataRecovery;

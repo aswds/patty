@@ -31,14 +31,11 @@ import { IOSModal } from "./IOSModal";
 import { _hideModal, _imagePropHandler } from "./AvatarFunctions/ACFunctions";
 import useGallery from "../../../../hooks/useGallery";
 import { isAndroid } from "../../../../src/platform";
+import { _showModalHandle } from "./Sign_up_Functions/_showModalHandel";
 export const AvatarChoose = (props) => {
   const route = useRoute();
   const { colors } = useTheme();
-  const _showModalHandle = () => {
-    !isAndroid && IOSModal(_imagePropHandler, setImage);
 
-    setShowModal(isAndroid);
-  };
   useEffect(() => {
     setImage(route.params?.imageURI);
   }, [route.params?.imageURI]);
@@ -55,7 +52,10 @@ export const AvatarChoose = (props) => {
   return (
     <ACScreen>
       <BackButton navigation={navigation} />
-      <ACImage _showModalHandle={_showModalHandle} image={image} />
+      <ACImage
+        _showModalHandle={_showModalHandle.bind(null, setImage, setShowModal)}
+        image={image}
+      />
 
       <ACAskImage styles={styles} route={route} />
 
@@ -63,7 +63,7 @@ export const AvatarChoose = (props) => {
         routeName={route.name}
         hideModal={_hideModal.bind(null, setShowModal)}
         showModal={showModal}
-        imageHandler={_imagePropHandler}
+        imageHandler={_imagePropHandler.bind(null, setImage)}
       />
 
       <ACNextButton

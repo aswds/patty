@@ -10,7 +10,10 @@ import useUserImage from "../../../../hooks/useUserImage";
 import Container from "./Container";
 import Button from "../../Button";
 import { useNavigation } from "@react-navigation/native";
-export default function UserImage({ uri, setIsLoading, user }) {
+import { Skeleton } from "moti/skeleton";
+export default function UserImage({ uri, Loader, user }) {
+  const { isLoading, setIsLoading } = Loader;
+
   const { fetchableImage } = useUserImage(uri);
 
   const navigation = useNavigation();
@@ -20,7 +23,10 @@ export default function UserImage({ uri, setIsLoading, user }) {
     : require("../../../../../assets/images/noImage-01.png");
 
   const onPress = () => {
-    navigation.navigate("EditProfile", { user });
+    navigation.navigate("EditProfile", {
+      user,
+      image: { source: source, isDefault: !fetchableImage },
+    });
   };
 
   return (
@@ -33,17 +39,21 @@ export default function UserImage({ uri, setIsLoading, user }) {
         alignItems: "flex-end",
       }}
     >
-      <TouchableOpacity style={{}}>
-        <Image
-          source={source}
-          style={styles.imageStyle}
-          onLayout={() => {
-            setTimeout(() => {
-              setIsLoading(false);
-            }, 500);
-          }}
-        />
-      </TouchableOpacity>
+      {/* Loader */}
+      <Skeleton show={isLoading} radius={"43%"} height={100} width={100}>
+        <View>
+          <Image
+            source={source}
+            style={styles.imageStyle}
+            onLayout={() => {
+              setTimeout(() => {
+                setIsLoading(false);
+              }, 500);
+            }}
+          />
+        </View>
+      </Skeleton>
+
       <View>
         <Button onPress={onPress} text="Edit" />
       </View>

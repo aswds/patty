@@ -5,7 +5,7 @@ import {
   useTheme,
 } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { onAuthStateChanged } from "firebase/auth";
+import { onAuthStateChanged, sendEmailVerification } from "firebase/auth";
 import React, { useEffect, useState, useReducer, useContext } from "react";
 import { ActivityIndicator } from "react-native";
 import { auth } from "../../../firebase";
@@ -19,14 +19,17 @@ import { Loader } from "../SignIn&SingUp/components/Loader";
 import { LoginAndRegister } from "../SignIn&SingUp/SignIn_SignUp_nav";
 export const NavigationController = (props) => {
   const { colors } = useTheme();
-  const [isSignedIn, setIsSigned] = useState(true);
+  const [isSignedIn, setIsSigned] = useState(false);
   const navigation = useNavigationContainerRef();
   const Stack = createNativeStackNavigator();
   const user = auth.currentUser;
   const { isLoading } = useContext(AuthContext);
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
+      // if (user.emailVerified) {
       setIsSigned(true);
+      // }
     } else {
       setIsSigned(false);
     }

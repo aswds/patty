@@ -1,5 +1,5 @@
-import React, { useState, useCallback } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 export default function UserBio({ user }) {
   let NUM_OF_LINES = 5;
   const [style, setStyle] = useState({
@@ -13,6 +13,7 @@ export default function UserBio({ user }) {
       style={style}
       onPress={() => {
         setStyle({ ...style });
+
         setShowMore(!showMore);
       }}
     >

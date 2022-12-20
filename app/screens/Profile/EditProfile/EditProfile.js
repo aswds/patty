@@ -1,31 +1,44 @@
-import React from "react";
+import { useRoute } from "@react-navigation/native";
+import React, { useState } from "react";
 import {
-  View,
+  Keyboard,
   StyleSheet,
   TouchableWithoutFeedback,
-  Keyboard,
+  View,
 } from "react-native";
-import { useRoute } from "@react-navigation/native";
-import UserName from "../components/HeaderComponent/UserName";
-import UserBio from "../components/HeaderComponent/UserBio";
-import UserFollowers from "../components/HeaderComponent/UserFollowers";
 import { colors } from "../../../src/colors";
-import UserImage from "../components/HeaderComponent/UserImage";
+import Button from "../Button";
 import EditImage from "./components/EditImage";
 import EditName from "./components/EditName";
+import EditUserBio from "./components/EditUserBio";
 export default function EditProfile(props) {
   const route = useRoute();
   const user = route.params?.user;
-
+  const { source, isDefault } = route.params?.image;
+  const [editedUser, setEditedUser] = useState({
+    ...user,
+  });
+  const onPress = () => {};
   return (
     <View style={styles.container}>
-      <TouchableWithoutFeedback
-        style={{ backgroundColor: "blue" }}
-        onPress={() => Keyboard.dismiss()}
-      >
+      {console.log(user)}
+      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={{ flex: 1 }}>
-          <EditImage uri={user.userImage} />
+          <View style={styles.imageContainer}>
+            <EditImage source={source} isDefault={isDefault} />
+            <Button
+              onPress={onPress}
+              text="Done"
+              style={{
+                alignSelf: "flex-end",
+                backgroundColor: colors.doneButtonBG,
+              }}
+              textStyled={{ color: colors.doneButtonText }}
+            />
+          </View>
+
           <EditName user={user} />
+          <EditUserBio user={user} />
         </View>
       </TouchableWithoutFeedback>
     </View>
@@ -40,5 +53,12 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 40,
     backgroundColor: colors.background,
     flex: 1,
+  },
+  imageContainer: {
+    width: "100%",
+    justifyContent: "space-between",
+    alignItems: "flex-end",
+    flexDirection: "row",
+    marginBottom: "5%",
   },
 });
