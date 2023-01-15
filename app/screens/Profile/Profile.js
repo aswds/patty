@@ -10,6 +10,7 @@ import {
   FlatList,
   Dimensions,
   ScrollView,
+  RefreshControl,
 } from "react-native";
 import { useSelector, useDispatch, connect } from "react-redux";
 import { bindActionCreators } from "redux";
@@ -20,26 +21,40 @@ import Screen from "./components/Screen";
 import Loader from "./components/Loader";
 import Header from "./components/Header";
 import RenderItem from "./components/RenderItem";
+import { colors } from "../../src/colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { onRefresh } from "./refreshControlFuncs";
+
 function Profile(props) {
+  const [refreshing, setRefreshing] = useState(false);
+
   useEffect(() => {
     props.fetch_user();
+    setUser(props.current_user);
   }, []);
-  const [isLoading, setIsLoading] = useState(false);
-  const { current_user } = props;
+  const { current_user, isLoading } = props;
   const [user, setUser] = useState(current_user);
+  const insets = useSafeAreaInsets();
   if (!current_user) {
     return <Loader />;
   }
+  //https://reactjs.org/docs/context.html !!!
   return (
     <Screen>
-      {isLoading && <Loader />}
       <FlatList
         style={{ flex: 1 }}
-        ListHeaderComponent={
-          <View style={{ height: Dimensions.get("window").height * 0.5 }}>
-            <Header user={current_user} setIsLoading={setIsLoading} />
-            <Follower_info />
+        refreshControl={
+          <View style={{ marginTop: insets.top }}>
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh.bind(null, setRefreshing)}
+              tintColor={colors.buttonText}
+              style={{ alignItems: "center", zIndex: 1 }}
+            />
           </View>
+        }
+        ListHeaderComponent={
+          <Header user={current_user} isLoading={isLoading} />
         }
         data={[user]}
         renderItem={(item) => {
@@ -65,6 +80,7 @@ const mapDispatchProps = (dispatch) => {
 };
 const mapStateToProps = (store) => ({
   current_user: store.user_state.current_user,
+  isLoading: store.user_state.isLoading,
   posts: store.user_state.posts,
   following: store.user_state.following,
   followers: store.user_state.followers,

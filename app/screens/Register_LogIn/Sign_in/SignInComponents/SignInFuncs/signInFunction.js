@@ -1,10 +1,9 @@
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
 import * as Haptics from "expo-haptics";
-import { authentication } from "../../../../../../firebase";
+import { auth, authentication } from "../../../../../../firebase";
 import { AuthReducer, initialState } from "../../../../../redux/AuthReducer";
 import { useReducer } from "react";
 import error_handle from "./error_handle";
-
 export const user_signIn = async (
   setEmail,
   setPassword,
@@ -14,7 +13,6 @@ export const user_signIn = async (
   password,
   signIn
 ) => {
-  const auth = getAuth();
   return new Promise((res, rej) => {
     signInWithEmailAndPassword(auth, email, password)
       .then(() => {

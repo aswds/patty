@@ -17,15 +17,13 @@ import {
 import { colors } from "../../../../src/colors";
 const color = colors.background;
 export const ModalPhoto = (props) => {
-  const [image, setImage] = useState();
-
   const navigation = useNavigation();
   const styles = makeStyles(colors);
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      aspect: [4, 3],
+      aspect: [1, 1],
       quality: 1,
     });
 
@@ -142,7 +140,7 @@ const makeStyles = (colors: any) =>
     modalButtonsStyle: {
       flexDirection: "row",
       width: Dimensions.get("window").width * 0.7,
-      height: "27%",
+      height: "23%",
       padding: 10,
       borderColor: true ? "white" : colors.border,
       alignItems: "center",

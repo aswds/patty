@@ -8,25 +8,49 @@ import {
   SafeAreaView,
 } from "react-native";
 import { colors } from "../../../src/colors";
-import { FontAwesome5 } from "@expo/vector-icons";
-const isAndroid = Platform.OS == "android";
-
+import { Ionicons } from "@expo/vector-icons";
+import { isAndroid } from "../../../src/platform";
+import { useNavigation } from "@react-navigation/native";
 export default function DoPartyButton(props) {
-  const { onPress, isFocused, styles } = props;
+  const navigation = useNavigation();
+
   return (
     <TouchableOpacity
-      style={[
-        styles.button,
-        { backgroundColor: isFocused ? "rgba(255, 255, 255, 1)" : null },
-      ]}
+      style={styles.button}
       activeOpacity={0.8}
-      onPress={onPress}
+      onPress={props.onPress}
     >
-      <FontAwesome5
-        name="fire-alt"
-        size={"30%"}
-        color={isFocused ? colors.mapAccentColor : "grey"}
-      />
+      <View style={styles.iconContainer}>
+        <Ionicons name="add-circle" size={40} color={colors.accentColor} />
+      </View>
+
+      <View style={styles.textContainer}>
+        <Text style={styles.textStyle}>make a party</Text>
+      </View>
     </TouchableOpacity>
   );
 }
+
+const styles = StyleSheet.create({
+  button: {},
+  iconContainer: {
+    shadowOffset: { height: 4, width: 0 },
+    shadowOpacity: 1,
+    shadowRadius: 2,
+    alignItems: "center",
+    justifyContent: "center",
+    borderRadius: 30,
+    backgroundColor: colors.background,
+    shadowColor: isAndroid ? "white" : "rgba(0, 0, 0, 0.7)",
+  },
+  icon: {},
+  textContainer: {
+    marginTop: 10,
+  },
+  textStyle: {
+    fontFamily: "WorkSans-Bold",
+    color: colors.iconColor,
+    fontSize: 15,
+    opacity: 0.8,
+  },
+});

@@ -1,45 +1,53 @@
 import React, { useState } from "react";
-import { Image, View, Text, StyleSheet, ActivityIndicator } from "react-native";
+import {
+  Image,
+  View,
+  Text,
+  StyleSheet,
+  ActivityIndicator,
+  SafeAreaView,
+} from "react-native";
 import useUserImage from "../../../../hooks/useUserImage";
-import EditButton from "./EditButton";
+import Loader from "../Loader";
+import { MoreInfo } from "./abbo";
+import EditButton from "../../Button";
 import LogOutButton from "./LogoutButton";
+import UserBio from "./UserBio";
+import UserFollowers from "./UserFollowers";
 import UserImage from "./UserImage";
-export default function User({ user, setIsLoading }) {
+import UserName from "./UserName/UserName";
+import { Skeleton } from "moti/skeleton";
+import AccountNotVerified from "../../AccountNotVerified";
+export default function User({ user }) {
   const { fetchableImage } = useUserImage(user.userImage);
-  return (
-    <>
-      <View
-        style={{
-          height: "45%",
-          width: "100%",
-          flexDirection: "row",
-          justifyContent: "center",
-        }}
-      >
-        <UserImage uri={user.userImage} setIsLoading={setIsLoading} />
-        <LogOutButton />
-        <EditButton />
-      </View>
+  const [isLoading, setIsLoading] = React.useState(true);
 
-      <View style={styles.usernameContainer}>
-        <Text style={styles.textStyle}>{user.username}</Text>
-      </View>
-    </>
+  return (
+    <View
+      style={{
+        justifyContent: "center",
+        paddingHorizontal: "5%",
+        paddingTop: user.verifiedEmail ? "10%" : "15%",
+      }}
+    >
+      <AccountNotVerified isVerified={user.verifiedEmail} />
+      <UserImage
+        uri={user.userImage}
+        Loader={{ isLoading, setIsLoading }}
+        user={user}
+      />
+
+      {/* <LogOutButton /> */}
+      {/* <EditButton /> */}
+      <UserName user={user} styles={styles} isLoading={isLoading} />
+
+      {!isLoading && (
+        <>
+          <UserBio user={user} />
+          <UserFollowers user={user} />
+        </>
+      )}
+    </View>
   );
 }
-const styles = StyleSheet.create({
-  textStyle: {
-    color: "white",
-    fontFamily: "WorkSans-Bold",
-    fontSize: 15,
-  },
-
-  usernameContainer: {
-    backgroundColor: "rgba(21, 21, 21, 0.6)",
-    height: "15%",
-    width: "30%",
-    borderRadius: 25,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-});
+const styles = StyleSheet.create({});

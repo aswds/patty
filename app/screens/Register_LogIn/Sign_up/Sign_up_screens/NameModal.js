@@ -5,7 +5,7 @@ import {
   useRoute,
   useTheme,
 } from "@react-navigation/native";
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Dimensions,
   ImageBackground,
@@ -24,50 +24,77 @@ import {
 import { colors } from "../../../../src/colors";
 import { Input } from "../../components/Input";
 import { BackButton } from "../../components/BackButton";
-import NMAskName from "./components/NMAskName";
-import NMNextButton from "./components/NMNextButton";
-import { NMScreen } from "./components/NMScreen";
+import NMAskName from "./components/NameModalComp/NMAskName";
+import NMNextButton from "./components/NameModalComp/NMNextButton";
+import { NMScreen } from "./components/NameModalComp/NMScreen";
+import { text_modifier_name } from "./Sign_up_Functions/text_modifier";
 export const NameModal = (props) => {
-  const [name, setName] = useState();
+  const [fullName, setFullName] = useState({ name: null, surname: null });
   const [nameSkip, setNameSkip] = useState();
   const [profileImageSkip, setProfileImageSkip] = useState();
   const navigation = useNavigation();
   const route = useRoute();
+  const surname_input_ref = useRef();
+  function refHandle(ref_input) {
+    ref_input.current.focus();
+  }
   return (
     <NMScreen>
       <BackButton navigation={navigation} />
-      <View
-        style={{
-          flex: 1,
-          alignItems: "flex-start",
-          justifyContent: "center",
-          marginHorizontal: 10,
-        }}
-      >
-        <View style={{ marginHorizontal: 10 }}>
+      <View style={styles.container}>
+        <View style={{}}>
           <NMAskName styles={styles} />
+          <View style={styles.inputContainer}>
+            <Input
+              isValid={true}
+              style={{ width: "45%" }}
+              inputStyle={styles.textInput}
+              placeholder="name"
+              placeholderTextColor={colors.iconColor}
+              onChangeText={(text) => {
+                setFullName({ ...fullName, name: text_modifier_name(text) });
+              }}
+              value={fullName.name}
+              onSubmitEditing={() => {
+                refHandle(surname_input_ref);
+              }}
+              autoCorrect={false}
+            />
 
-          <View style={{}}>
-            <Input isValid={true} style={{ width: "100%" }}>
-              <TextInput
-                style={styles.textInput}
-                placeholder="🥸 Enter your name"
-                placeholderTextColor={colors.iconColor}
-                onChangeText={(text) => {
-                  setName(text);
-                }}
-                value={name}
-              />
-            </Input>
+            <Input
+              isValid={true}
+              style={{ width: "45%" }}
+              inputStyle={styles.textInput}
+              placeholder="surname"
+              placeholderTextColor={colors.iconColor}
+              onChangeText={(text) => {
+                setFullName({
+                  ...fullName,
+                  surname: text_modifier_name(text),
+                });
+              }}
+              value={fullName.surname}
+              ref={surname_input_ref}
+              autoCorrect={false}
+            />
           </View>
         </View>
-
-        <NMNextButton navigation={navigation} styles={styles} name={name} />
+        <NMNextButton
+          navigation={navigation}
+          styles={styles}
+          name={fullName.name}
+          surname={fullName.surname}
+        />
       </View>
     </NMScreen>
   );
 };
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "flex-start",
+    justifyContent: "center",
+  },
   title: {
     fontFamily: "WorkSans-Bold",
     fontSize: 35,
@@ -75,7 +102,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     borderBottomColor: colors.iconColor,
-    fontFamily: "WorkSans-Regular",
+    fontFamily: "WorkSans-Bold",
     paddingVertical: "5%",
     paddingHorizontal: 10,
     width: "100%",
@@ -94,11 +121,13 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 40,
   },
+  inputContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "100%",
+  },
   nextButtonText: {
     fontWeight: "bold",
     color: colors.buttonTextColor,
-  },
-  container: {
-    flex: 1,
   },
 });

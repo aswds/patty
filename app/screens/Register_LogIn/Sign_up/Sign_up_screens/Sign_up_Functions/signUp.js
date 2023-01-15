@@ -1,6 +1,10 @@
 const firebaseAuth = require("firebase/auth");
 
-import { getAuth, createUserWithEmailAndPassword } from "firebase/auth";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  sendEmailVerification,
+} from "firebase/auth";
 import { collection, doc, setDoc, Timestamp } from "firebase/firestore";
 import { uploadImage } from "./uploadImage";
 import { db, auth } from "../../../../../../firebase";
@@ -25,8 +29,7 @@ function set_errorMsg_errorType(error_code) {
       case "auth/email-already-exists":
         rej({
           error_type: "email",
-          message:
-            "The provided email is already in use by an existing user. Each user must have a unique email.",
+          message: "The provided email is already in use by an existing user.",
         });
         break;
       case "auth/email-already-in-use":
@@ -49,7 +52,7 @@ function set_errorMsg_errorType(error_code) {
   });
 }
 async function setDocs(result, userInfo) {
-  const { email, username, name, image } = userInfo;
+  const { email, username, name, surname, image } = userInfo;
   await setDoc(doc(db, `USERS`, `${auth.currentUser.uid}`), {
     userUID: auth.currentUser.uid,
     email: email,
@@ -57,12 +60,14 @@ async function setDocs(result, userInfo) {
     username: username,
     searchUsername: username.toLowerCase(),
     name: name || "",
+    surname: surname,
     country: "",
     city: "",
     phoneNumber: "",
     userImage: "",
     following: 0,
     followers: 0,
+    bio: "",
     createdAt: Timestamp.fromDate(new Date()).toJSON() || new Date(),
   }).then(() => {
     uploadImage(image, auth.currentUser);
@@ -74,23 +79,27 @@ export const signUpHandle = async (
   password,
   username,
   name,
-  image,
-  setError
+  surname,
+  image
 ) => {
   const userInfo = {
     email,
     username,
     name,
+    surname,
     image,
   };
   return new Promise((res, rej) => {
     const { user } = createUserWithEmailAndPassword(auth, email, password)
-      .then((res) => setDocs(res, userInfo))
+      .then((result) => {
+        setDocs(result, userInfo);
+        sendEmailVerification(result.user);
+      })
 
       .catch((error) => {
         set_errorMsg_errorType(error.code)
-          .then((res) => {
-            res(res);
+          .then((result) => {
+            res(result);
           })
           .catch((e) => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);

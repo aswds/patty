@@ -1,30 +1,21 @@
-import {
-  NavigationContainer,
-  StackActions,
-  useNavigationContainerRef,
-  useTheme,
-} from "@react-navigation/native";
+import { useNavigationContainerRef, useTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { onAuthStateChanged } from "firebase/auth";
-import React, { useEffect, useState, useReducer, useContext } from "react";
-import { ActivityIndicator } from "react-native";
+import { getAuth, onAuthStateChanged } from "firebase/auth";
+import React, { useContext, useState } from "react";
 import { auth } from "../../../firebase";
-import { AuthReducer, initialState } from "../../redux/AuthReducer";
-import { App_Navigation } from "./AppNavigation";
-import {
-  AuthContext,
-  AuthContextProvider,
-} from "../SignIn&SingUp/components/AuthContext";
+import { AuthContext } from "../SignIn&SingUp/components/AuthContext";
 import { Loader } from "../SignIn&SingUp/components/Loader";
 import { LoginAndRegister } from "../SignIn&SingUp/SignIn_SignUp_nav";
+import { App_Navigation } from "./AppNavigation";
+
 export const NavigationController = (props) => {
   const { colors } = useTheme();
-  const [isSignedIn, setIsSigned] = useState(true);
+  const [isSignedIn, setIsSigned] = useState(false);
+  const [isLoading, setIsLoading] = useState(true);
   const navigation = useNavigationContainerRef();
   const Stack = createNativeStackNavigator();
-  const user = auth.currentUser;
-  const { isLoading } = useContext(AuthContext);
   onAuthStateChanged(auth, (user) => {
+    setIsLoading(false);
     if (user) {
       setIsSigned(true);
     } else {

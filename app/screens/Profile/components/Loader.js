@@ -10,7 +10,7 @@ export default function Loader() {
         top: 0,
         bottom: 0,
         opacity: 0.7,
-        backgroundColor: "#151515",
+        backgroundColor: "transparent",
         justifyContent: "center",
         alignItems: "center",
       }}

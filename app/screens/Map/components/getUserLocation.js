@@ -10,7 +10,7 @@ export async function getUserLocation() {
       rej();
     }
 
-    let location = await Location.getCurrentPositionAsync({});
+    let location = await Location.getCurrentPositionAsync();
     res(location.coords);
   });
 }

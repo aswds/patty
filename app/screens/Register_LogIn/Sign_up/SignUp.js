@@ -1,46 +1,26 @@
 import {
-  AntDesign,
   Feather,
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
 import React, { useContext, useRef, useState } from "react";
-import {
-  Alert,
-  Dimensions,
-  Image,
-  ImageBackground,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
-import * as Animatable from "react-native-animatable";
+import { Dimensions, StyleSheet, View } from "react-native";
 import { AuthContext } from "../../../navigation/SignIn&SingUp/components/AuthContext";
 import { colors } from "../../../src/colors";
+import { isAndroid } from "../../../src/platform";
+import { BackButton } from "../components/BackButton";
 import StyledButton from "../components/button";
 import { Input } from "../components/Input";
 import { Logo } from "../components/Logo";
 import { Screen } from "../components/Screen";
 import CustomAlert from "../CustomAlert";
-import { style, textStyle } from "../style";
+import { textStyle } from "../style";
 import { Container } from "./Sign_up_components/Container";
 import { TermText } from "./Sign_up_components/TermText";
-import { BackButton } from "../components/BackButton";
 import { error_handle } from "./Sign_up_screens/Sign_up_Functions/error_handle";
-import { sameUsernames } from "./Sign_up_screens/Sign_up_Functions/sameUsername";
 import { signUpHandle } from "./Sign_up_screens/Sign_up_Functions/signUp";
-import { checkPassword } from "./Sign_up_screens/Sign_up_Functions/Validator";
 const SignUpScreen = (props) => {
-  const [username, setUsername] = useState("");
   const [valid, setValid] = useState({
     validUsername: true,
     validEmail: true,
@@ -63,8 +43,11 @@ const SignUpScreen = (props) => {
   const ref_input4 = useRef();
   const navigation = useNavigation();
   const route = useRoute();
-  const name = route.params?.userName;
+  const name = route.params?.name;
+  const surname = route.params?.surname;
+  const username = route.params?.username;
   const image = route.params?.userImage;
+
   const { signUp } = useContext(AuthContext);
   const _hideModal = () => {
     setShowModal(false);
@@ -73,19 +56,26 @@ const SignUpScreen = (props) => {
     if (
       valid.validEmail &&
       valid.validPassword &&
-      valid.validUsername &&
-      user.password == confirmPass
+      user.password === confirmPass
     ) {
-      signUpHandle(user.email, user.password, username, name, image).catch(
-        (err) => {
-          error_handle(err.error_type, err.message, {
-            setValid,
-            valid,
-          }).catch((err) => {
-            setShowModal(true), setErrorMsg(err);
-          });
-        }
-      );
+      //handling sign up
+      signUpHandle(
+        user.email,
+        user.password,
+        username,
+        name,
+        surname,
+        image,
+        signUp
+      ).catch((err) => {
+        //if error occures, show modal
+        error_handle(err.error_type, err.message, {
+          setValid,
+          valid,
+        }).catch((err) => {
+          setShowModal(true), setErrorMsg(err);
+        });
+      });
     } else {
       setShowModal(true),
         setErrorMsg("Please check if everything is correct :)");
@@ -94,52 +84,32 @@ const SignUpScreen = (props) => {
   function refHandle(ref_input) {
     ref_input.current.focus();
   }
+  function PasswordIcon() {
+    return showPassword ? (
+      <Feather
+        name="eye-off"
+        size={Dimensions.get("window").height >= 800 ? 24 : 20}
+        color={colors.iconColor}
+        onPress={() => setShowPassword(false)}
+      />
+    ) : (
+      <Feather
+        name="eye"
+        size={Dimensions.get("window").height >= 800 ? 24 : 20}
+        color={colors.iconColor}
+        onPress={() => setShowPassword(true)}
+      />
+    );
+  }
 
   return (
     <Screen>
-      <View>
+      <View style={{}}>
         <Logo />
       </View>
       <BackButton navigation={navigation} />
 
       <Container>
-        <Input
-          isValid={valid.validUsername}
-          style={styles.inputStyle}
-          icon={
-            <AntDesign
-              name="user"
-              size={Dimensions.get("window").height >= 800 ? 24 : 20}
-              color={colors.iconColor}
-            />
-          }
-        >
-          <TextInput
-            style={{
-              ...styles.inputField,
-            }}
-            placeholder="Username"
-            placeholderTextColor={textStyle.color}
-            onChangeText={(text) => {
-              setUsername(text);
-            }}
-            onEndEditing={() => {
-              sameUsernames(username.trim(), setErrorMsg)
-                .then((res) => {
-                  setValid({ ...valid, validUsername: res });
-                })
-                .catch((err) => {
-                  setValid({ ...valid, validUsername: err }),
-                    setShowModal(!err);
-                });
-            }}
-            onSubmitEditing={() => {
-              refHandle(ref_input2);
-            }}
-            defaultValue={username}
-          />
-        </Input>
-
         <Input
           style={styles.inputStyle}
           icon={
@@ -150,84 +120,46 @@ const SignUpScreen = (props) => {
             />
           }
           isValid={valid.validEmail}
-        >
-          <TextInput
-            style={{
-              ...styles.inputField,
-            }}
-            autoCapitalize="none"
-            keyboardType="email-address"
-            placeholder="Email"
-            placeholderTextColor={textStyle.color}
-            onSubmitEditing={() => {
-              refHandle(ref_input3);
-            }}
-            onChangeText={(text) => {
-              setUser({ ...user, email: text });
-              setValid({ ...valid, validEmail: true });
-            }}
-            value={user.email}
-            ref={ref_input2}
-          />
-        </Input>
+          autoCapitalize="none"
+          keyboardType="email-address"
+          placeholder="Email"
+          placeholderTextColor={textStyle.color}
+          onSubmitEditing={() => {
+            refHandle(ref_input3);
+          }}
+          onChangeText={(text) => {
+            setUser({ ...user, email: text });
+            setValid({ ...valid, validEmail: true });
+          }}
+          value={user.email}
+          ref={ref_input2}
+          inputStyle={{
+            ...styles.inputField,
+          }}
+        />
 
         <Input
           isValid={valid.validPassword}
           style={styles.inputStyle}
-          icon={
-            showPassword ? (
-              <Feather
-                name="eye-off"
-                size={Dimensions.get("window").height >= 800 ? 24 : 20}
-                color={colors.iconColor}
-                onPress={() => setShowPassword(false)}
-              />
-            ) : (
-              <Feather
-                name="eye"
-                size={Dimensions.get("window").height >= 800 ? 24 : 20}
-                color={colors.iconColor}
-                onPress={() => setShowPassword(true)}
-              />
-            )
-          }
-        >
-          <TextInput
-            style={styles.inputField}
-            secureTextEntry={showPassword}
-            placeholder="Password"
-            placeholderTextColor={textStyle.color}
-            onChange={() => {
-              setValid({ ...valid, validPassword: true });
-            }}
-            onChangeText={(text) => {
-              setUser({ ...user, password: text });
-              // checkPassword(text, setValid, setPasswordError);
-            }}
-            onSubmitEditing={() => {
-              refHandle(ref_input4);
-            }}
-            value={user.password}
-            ref={ref_input3}
-          />
-        </Input>
+          icon={<PasswordIcon />}
+          secureTextEntry={showPassword}
+          placeholder="Password"
+          placeholderTextColor={textStyle.color}
+          onChange={() => {
+            setValid({ ...valid, validPassword: true });
+          }}
+          onChangeText={(text) => {
+            setUser({ ...user, password: text });
+            // checkPassword(text, setValid, setPasswordError);
+          }}
+          onSubmitEditing={() => {
+            refHandle(ref_input4);
+          }}
+          value={user.password}
+          ref={ref_input3}
+          inputStyle={styles.inputField}
+        />
 
-        {/* {valid.validPassword ? null : (
-            <Animatable.View
-              animation="fadeInLeft"
-              duration={500}
-              style={styles.animationStyle}
-            >
-              <Text
-                style={{ color: "lightgrey" }}
-                onPress={() => {
-                  navigation.navigate("PasswordRules");
-                }}
-              >
-                Check password rules here 👀
-              </Text>
-            </Animatable.View>
-          )} */}
         <Input
           style={styles.inputStyle}
           isValid={valid.validConfirmPassword}
@@ -238,28 +170,24 @@ const SignUpScreen = (props) => {
               color={colors.iconColor}
             />
           }
-        >
-          <TextInput
-            style={styles.inputField}
-            autoCapitalize="none"
-            secureTextEntry={showPassword}
-            placeholder="Confirm your password"
-            placeholderTextColor={textStyle.color}
-            onChangeText={(text) => {
-              setConfirmPass(text);
+          autoCapitalize="none"
+          secureTextEntry={showPassword}
+          placeholder="Confirm your password"
+          placeholderTextColor={textStyle.color}
+          onChangeText={(text) => {
+            setConfirmPass(text);
 
-              if (user.password != text) {
-                setValid({ ...valid, validConfirmPassword: false });
-              } else {
-                setValid({ ...valid, validConfirmPassword: true });
-              }
-            }}
-            defaultValue={confirmPass}
-            ref={ref_input4}
-          />
-        </Input>
+            if (user.password != text) {
+              setValid({ ...valid, validConfirmPassword: false });
+            } else {
+              setValid({ ...valid, validConfirmPassword: true });
+            }
+          }}
+          defaultValue={confirmPass}
+          ref={ref_input4}
+          inputStyle={styles.inputField}
+        />
       </Container>
-
       <StyledButton
         textStyle={{
           fontFamily: "Nunito-Bold",
@@ -290,7 +218,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
-  inputStyle: { width: "100%", height: "16%" },
+  inputStyle: {
+    width: "100%",
+    height: isAndroid ? Dimensions.get("window").height * 0.1 : "20%",
+  },
   errorMsg: {
     color: "red",
   },
@@ -338,12 +269,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   styledButton: {
-    marginTop: 30,
+    marginTop: "10%",
     marginBottom: 20,
     borderRadius: 13,
     backgroundColor: "rgba(155 , 50, 50 , 1)",
-    height: Dimensions.get("window").height / 14,
-    width: Dimensions.get("window").width / 1.2,
+    height: isAndroid ? "10%" : 70,
+    width: "90%",
     alignSelf: "center",
   },
 });

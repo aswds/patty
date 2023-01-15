@@ -23,7 +23,7 @@ export default function error_handle(props) {
       break;
     case "auth/user-not-found":
       setErrorMsg(
-        "The email you entered does not belong to the account. Check your username and try again."
+        "The email you entered does not belong to the account. Check your email and try again."
       ),
         setEmail(false);
       setShowModal(true);

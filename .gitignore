@@ -10,5 +10,6 @@ npm-debug.*
 *.orig.*
 web-build/
 firebase.js
+screens/Map/components/SearchBar.js
 # macOS
 .DS_Store

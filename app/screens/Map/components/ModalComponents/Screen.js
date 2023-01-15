@@ -46,7 +46,6 @@ export default function Screen(props) {
             onTouchMove={() => {
               if (!isAnimationRan) {
                 animationStart(setIsAnimationRan, animation, animationBorder);
-                console.log("f");
               }
             }}
             scrollEnabled={true}

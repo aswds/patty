@@ -5,24 +5,24 @@ import {
   Platform,
   Dimensions,
 } from "react-native";
+import { isAndroid } from "../../../../src/platform";
 export const Container = (props) => {
   return (
     <View style={styles.registerContainer}>
-      <View style={styles.innerText}>{props.children}</View>
+      <View style={styles.innerStyle}>{props.children}</View>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
   registerContainer: {
-    marginTop: "5%",
-    marginBottom: "5%",
-    height: Dimensions.get("window").height * 0.5,
-    // height: Dimensions.get("window").height / 2.2,
-    width: Dimensions.get("window").width / 1.3,
+    marginBottom: isAndroid ? 0 : "5%",
+    height: isAndroid ? null : Dimensions.get("window").height / 2.2,
+    width: "80%",
     justifyContent: "center",
   },
-  innerText: {
+  innerStyle: {
     alignItems: "center",
+    marginVertical: isAndroid ? "5%" : 0,
   },
 });
