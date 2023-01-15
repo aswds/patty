@@ -15,7 +15,7 @@ import ContainerBG from "./HeaderComponent/ContainerBG";
 
 import User from "./HeaderComponent/User";
 import Followers from "./Follower_info";
-export default function Header({ user }) {
+export default function Header({ user, isLoading }) {
   const insets = useSafeAreaInsets();
 
   return (

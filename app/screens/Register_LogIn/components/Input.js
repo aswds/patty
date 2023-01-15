@@ -7,22 +7,53 @@ import {
   StyleSheet,
 } from "react-native";
 import { colors } from "../../../src/colors";
-import { styles } from "../Sign_in/styles";
 
-export const Input = (props, { style }) => {
-  return (
-    <View
-      style={{
-        ...styles.userInput,
-        ...props.style,
-        borderWidth: props.isValid ? null : 1,
-        borderColor: props.isValid ? "black" : colors.accentColor,
-      }}
-    >
-      {props.children}
-      <View style={{ marginHorizontal: 15, position: "absolute", right: 0 }}>
-        {props.icon}
+export const Input = React.forwardRef(
+  ({ style, isValid, icon, children, inputStyle, ...props }, ref) => {
+    return (
+      <View
+        style={{
+          ...styles.userInput,
+          ...style,
+          borderWidth: isValid ? null : 1,
+          borderColor: isValid ? "black" : colors.accentColor,
+        }}
+      >
+        <TextInput
+          style={{
+            ...styles.textInput,
+            ...inputStyle,
+          }}
+          ref={ref}
+          {...props}
+        />
+        <View style={{ marginHorizontal: 15, position: "absolute", right: 0 }}>
+          {icon}
+        </View>
       </View>
-    </View>
-  );
-};
+    );
+  }
+);
+
+const styles = StyleSheet.create({
+  userInput: {
+    flexDirection: "row",
+    backgroundColor: colors.input,
+    marginTop: 30,
+    width: "85%",
+    height: 55,
+    justifyContent: "space-between",
+
+    paddingLeft: 10,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  textInput: {
+    borderBottomColor: colors.iconColor,
+    fontFamily: "WorkSans-Bold",
+    paddingVertical: "5%",
+    paddingHorizontal: 10,
+    width: "100%",
+    color: colors.text,
+  },
+});

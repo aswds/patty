@@ -42,12 +42,8 @@ export default function EditName({ user }) {
             ]}
             onChangeText={(text) => {
               sameUsernames(text_modifier(text), setErrorMsg)
-                .then((res) => {
-                  console.log(res);
-                })
-                .catch((err) => {
-                  console.log(err);
-                }),
+                .then((res) => {})
+                .catch((err) => {}),
                 setUserInfo({ ...userInfo, username: text_modifier(text) });
             }}
             placeholder=""

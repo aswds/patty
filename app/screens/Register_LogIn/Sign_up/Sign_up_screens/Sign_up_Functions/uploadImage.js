@@ -19,9 +19,9 @@ export const uploadImage = async (uri, user) => {
 
   const storageRef = ref(storage, `user_images/${userUID}`);
   fetch(uri)
-    .then((responce) => responce.blob())
+    .then((response) => response.blob())
     .then((blob) => uploadBytesResumable(storageRef, blob))
-    .then(async (task) => await getDownloadURL(task.snapshot.ref))
+    .then(async (res) => await getDownloadURL(res.task.snapshot.ref))
     .then(async (snapshot) => {
       await updateDoc(doc(db, "USERS", userUID), {
         userImage: snapshot,

@@ -41,54 +41,42 @@ export const NameModal = (props) => {
   return (
     <NMScreen>
       <BackButton navigation={navigation} />
-      <View
-        style={{
-          flex: 1,
-          alignItems: "flex-start",
-          justifyContent: "center",
-        }}
-      >
+      <View style={styles.container}>
         <View style={{}}>
           <NMAskName styles={styles} />
+          <View style={styles.inputContainer}>
+            <Input
+              isValid={true}
+              style={{ width: "45%" }}
+              inputStyle={styles.textInput}
+              placeholder="name"
+              placeholderTextColor={colors.iconColor}
+              onChangeText={(text) => {
+                setFullName({ ...fullName, name: text_modifier_name(text) });
+              }}
+              value={fullName.name}
+              onSubmitEditing={() => {
+                refHandle(surname_input_ref);
+              }}
+              autoCorrect={false}
+            />
 
-          <View
-            style={{
-              flexDirection: "row",
-              justifyContent: "space-evenly",
-              width: "100%",
-            }}
-          >
-            <Input isValid={true} style={{ width: "45%" }}>
-              <TextInput
-                style={styles.textInput}
-                placeholder="name"
-                placeholderTextColor={colors.iconColor}
-                onChangeText={(text) => {
-                  setFullName({ ...fullName, name: text_modifier_name(text) });
-                }}
-                value={fullName.name}
-                onSubmitEditing={() => {
-                  refHandle(surname_input_ref);
-                }}
-                autoCorrect={false}
-              />
-            </Input>
-            <Input isValid={true} style={{ width: "45%" }}>
-              <TextInput
-                style={styles.textInput}
-                placeholder="surname"
-                placeholderTextColor={colors.iconColor}
-                onChangeText={(text) => {
-                  setFullName({
-                    ...fullName,
-                    surname: text_modifier_name(text),
-                  });
-                }}
-                value={fullName.surname}
-                ref={surname_input_ref}
-                autoCorrect={false}
-              />
-            </Input>
+            <Input
+              isValid={true}
+              style={{ width: "45%" }}
+              inputStyle={styles.textInput}
+              placeholder="surname"
+              placeholderTextColor={colors.iconColor}
+              onChangeText={(text) => {
+                setFullName({
+                  ...fullName,
+                  surname: text_modifier_name(text),
+                });
+              }}
+              value={fullName.surname}
+              ref={surname_input_ref}
+              autoCorrect={false}
+            />
           </View>
         </View>
         <NMNextButton
@@ -102,6 +90,11 @@ export const NameModal = (props) => {
   );
 };
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    alignItems: "flex-start",
+    justifyContent: "center",
+  },
   title: {
     fontFamily: "WorkSans-Bold",
     fontSize: 35,
@@ -128,11 +121,13 @@ const styles = StyleSheet.create({
     padding: 10,
     borderRadius: 40,
   },
+  inputContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    width: "100%",
+  },
   nextButtonText: {
     fontWeight: "bold",
     color: colors.buttonTextColor,
-  },
-  container: {
-    flex: 1,
   },
 });

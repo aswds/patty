@@ -21,7 +21,6 @@ export default function EditProfile(props) {
   const onPress = () => {};
   return (
     <View style={styles.container}>
-      {console.log(user)}
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={{ flex: 1 }}>
           <View style={styles.imageContainer}>

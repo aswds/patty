@@ -32,13 +32,7 @@ export const Username = (props) => {
         }}
       >
         <AskUsername />
-        <View
-          style={{
-            flexDirection: "row",
-            justifyContent: "space-evenly",
-            width: "100%",
-          }}
-        >
+        <View style={styles.inputContainer}>
           <Input
             isValid={true}
             style={{ width: "90%" }}
@@ -49,27 +43,23 @@ export const Username = (props) => {
                 color={colors.iconColor}
               />
             }
-          >
-            <TextInput
-              style={styles.textInput}
-              placeholder="username"
-              placeholderTextColor={colors.iconColor}
-              onChangeText={(text) => {
-                sameUsernames(text_modifier(text), setErrorMsg)
-                  .then((res) => {
-                    setIsDisabled(!res);
-                  })
-                  .catch((err) => {
-                    setIsDisabled(!err);
-                  });
-                setUsername(text_modifier(text));
-              }}
-              value={username}
-              autoCorrect={false}
-              autoCapitalize={false}
-              autoFocus
-            />
-          </Input>
+            placeholder="username"
+            placeholderTextColor={colors.iconColor}
+            onChangeText={(text) => {
+              sameUsernames(text_modifier(text), setErrorMsg)
+                .then((res) => {
+                  setIsDisabled(!res);
+                })
+                .catch((err) => {
+                  setIsDisabled(!err);
+                });
+              setUsername(text_modifier(text));
+            }}
+            value={username}
+            autoCorrect={false}
+            autoCapitalize={false}
+            autoFocus
+          />
         </View>
         <NextButton
           navigation={navigation}
@@ -88,6 +78,11 @@ const styles = StyleSheet.create({
     fontFamily: "WorkSans-Bold",
     fontSize: 35,
     color: colors.buttonTextColor,
+  },
+  inputContainer: {
+    flexDirection: "row",
+    justifyContent: "center",
+    width: "100%",
   },
   textInput: {
     borderBottomColor: colors.iconColor,

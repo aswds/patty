@@ -80,8 +80,7 @@ export const signUpHandle = async (
   username,
   name,
   surname,
-  image,
-  signUp
+  image
 ) => {
   const userInfo = {
     email,
@@ -92,12 +91,9 @@ export const signUpHandle = async (
   };
   return new Promise((res, rej) => {
     const { user } = createUserWithEmailAndPassword(auth, email, password)
-      .then(async (result) => {
-        res("EmailVerification"),
-          await sendEmailVerification(result.user).then(
-            async (res) =>
-              await result.user.reload().then(() => setDocs(result, userInfo))
-          );
+      .then((result) => {
+        setDocs(result, userInfo);
+        sendEmailVerification(result.user);
       })
 
       .catch((error) => {

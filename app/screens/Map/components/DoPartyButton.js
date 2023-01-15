@@ -13,14 +13,12 @@ import { isAndroid } from "../../../src/platform";
 import { useNavigation } from "@react-navigation/native";
 export default function DoPartyButton(props) {
   const navigation = useNavigation();
-  function onPress(params) {
-    navigation.navigate("PartyCreationScreen");
-  }
+
   return (
     <TouchableOpacity
       style={styles.button}
       activeOpacity={0.8}
-      onPress={onPress}
+      onPress={props.onPress}
     >
       <View style={styles.iconContainer}>
         <Ionicons name="add-circle" size={40} color={colors.accentColor} />
@@ -43,8 +41,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 30,
     backgroundColor: colors.background,
-    justifyContent: "center",
-    alignItems: "center",
     shadowColor: isAndroid ? "white" : "rgba(0, 0, 0, 0.7)",
   },
   icon: {},

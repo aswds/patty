@@ -12,4 +12,10 @@ export const colors = {
   doneButtonText: "#9FC084",
   buttonBG: "#2F2524",
   buttonText: "#FF5454",
+  cancle: "#A85959", //TypeError
+  partyCreateScreenColors: {
+    button: {
+      backgroundColor: "#722424",
+    },
+  },
 };

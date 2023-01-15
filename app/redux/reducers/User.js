@@ -4,48 +4,40 @@ import {
   USER_STATE_CHANGE,
   USER_FOLLOWERS_STATE_CHANGE,
   USER_FOLLOWING_STATE_CHANGE,
+  USER_STATE_LOADED,
+  USER_STATE_ERROR,
 } from "../constants/user_constants";
 
 const initialState = {
-  isLoading: true,
+  isLoading: false,
+  error: null,
   current_user: {},
-  following: [],
-  followers: [],
+  
 };
 
 export const user_reducer = (state = initialState, action) => {
-  console.log(action.currentUser);
   switch (action.type) {
-    // case USER_INFO_LOADING: {
-    //   return {
-    //     ...state,
-    //     isLoading: true,
-    //   };
-    // }
-    // case USER_INFO_LOADED: {
-    //   return {
-    //     ...state,
-    //     isLoading: false,
-    //     currentUser: action.currentUser,
-    //   };
-    // }
     case USER_STATE_CHANGE:
       return {
         ...state,
+        isLoading: true,
+      };
+    case USER_STATE_LOADED: {
+      return {
+        ...state,
         isLoading: false,
-
+        
         current_user: action.current_user,
       };
-    case USER_FOLLOWING_STATE_CHANGE:
+    }
+    case USER_STATE_ERROR: {
       return {
         ...state,
-        following: action.following,
+        isLoading: false,
+        error: action.error,
       };
-    case USER_FOLLOWERS_STATE_CHANGE:
-      return {
-        ...state,
-        followers: action.followers,
-      };
+    }
+    
     default:
       return state;
   }

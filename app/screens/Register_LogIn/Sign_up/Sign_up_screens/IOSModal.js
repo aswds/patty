@@ -11,7 +11,6 @@ export function IOSModal(setImage) {
       presentationStyle: ImagePicker.UIImagePickerPresentationStyle.AUTOMATIC,
     });
     if (!result.cancelled) {
-      console.log(setImage);
       _imagePropHandler(setImage, result.uri);
     }
   };

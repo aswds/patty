@@ -27,7 +27,7 @@ export default function User({ user }) {
       style={{
         justifyContent: "center",
         paddingHorizontal: "5%",
-        paddingTop: "10%",
+        paddingTop: user.verifiedEmail ? "10%" : "15%",
       }}
     >
       <AccountNotVerified isVerified={user.verifiedEmail} />

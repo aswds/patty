@@ -1,22 +1,23 @@
 import React, { useState, useEffect } from "react";
 
 import * as Location from "expo-location";
+import { getUserLocation } from "../screens/Map/components/getUserLocation";
 
 export default function useUserLocation() {
-  const [location, setLocation] = useState(null);
+  const [userLocation, setUserLocation] = useState(null);
   const [errorMsg, setErrorMsg] = useState(null);
+  const [isLoading, setIsLoading] = useState();
 
   useEffect(() => {
-    (async () => {
-      let { status } = await Location.requestForegroundPermissionsAsync();
-      if (status !== "granted") {
-        setErrorMsg("Permission to access location was denied");
-        return;
-      }
-
-      let location = await Location.getCurrentPositionAsync({});
-      setLocation(location);
-    })();
+    getUserLocation().then((res) => {
+      setUserLocation({
+        latitude: res.latitude,
+        latitudeDelta: 0,
+        longitude: res.longitude,
+        longitudeDelta: -0.01,
+      }),
+        setIsLoading(false);
+    });
   }, []);
-  return [location, errorMsg, false];
+  return { userLocation, errorMsg, isLoading };
 }

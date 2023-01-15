@@ -11,6 +11,7 @@ import Container from "./Container";
 import Button from "../../Button";
 import { useNavigation } from "@react-navigation/native";
 import { Skeleton } from "moti/skeleton";
+import { isAndroid } from "../../../../src/platform";
 export default function UserImage({ uri, Loader, user }) {
   const { isLoading, setIsLoading } = Loader;
 
@@ -30,17 +31,14 @@ export default function UserImage({ uri, Loader, user }) {
   };
 
   return (
-    <View
-      style={{
-        width: "100%",
-        justifyContent: "space-between",
-        marginBottom: "5%",
-        flexDirection: "row",
-        alignItems: "flex-end",
-      }}
-    >
+    <View style={styles.container}>
       {/* Loader */}
-      <Skeleton show={isLoading} radius={"43%"} height={100} width={100}>
+      <Skeleton
+        show={isLoading}
+        radius={isAndroid ? 45 : "43%"}
+        height={100}
+        width={100}
+      >
         <View>
           <Image
             source={source}
@@ -62,9 +60,15 @@ export default function UserImage({ uri, Loader, user }) {
 }
 
 const styles = StyleSheet.create({
-  container: {},
+  container: {
+    width: "100%",
+    justifyContent: "space-between",
+    marginBottom: "5%",
+    flexDirection: "row",
+    alignItems: "flex-end",
+  },
   imageStyle: {
-    borderRadius: "45%",
+    borderRadius: isAndroid ? 45 : "45%",
     height: 100,
     aspectRatio: 1,
   },

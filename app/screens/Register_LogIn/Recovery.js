@@ -46,22 +46,24 @@ const DataRecovery = ({ sendEmail, text }) => {
               </Text>
             </View>
             <View style={styles.rContainer}>
-              <Input isValid={true}>
-                <MaterialIcons
-                  name="alternate-email"
-                  size={Dimensions.get("window").height >= 800 ? 24 : 20}
-                  color={colors.iconColor}
-                />
-                <TextInput
-                  autoCapitalize="none"
-                  keyboardType="email-address"
-                  style={styles.inputField}
-                  placeholderTextColor={"grey"}
-                  placeholder="Email"
-                  onChangeText={(text) => setUserEmail(text)}
-                  defaultValue={userEmail}
-                />
-              </Input>
+              <Input
+                isValid={true}
+                icon={
+                  <MaterialIcons
+                    name="alternate-email"
+                    size={Dimensions.get("window").height >= 800 ? 24 : 20}
+                    color={colors.iconColor}
+                  />
+                }
+                autoCapitalize="none"
+                keyboardType="email-address"
+                inputStyle={styles.inputField}
+                placeholderTextColor={"grey"}
+                placeholder="Email"
+                onChangeText={(text) => setUserEmail(text)}
+                defaultValue={userEmail}
+              />
+
               <View style={styles.shadowButton}>
                 <StyledButton
                   style={{

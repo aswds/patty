@@ -58,7 +58,7 @@ export default function EditImage({ source, isDefault }) {
 const styles = StyleSheet.create({
   container: {},
   imageStyle: {
-    borderRadius: "45%",
+    borderRadius:50,
     height: 100,
     aspectRatio: 1,
   },

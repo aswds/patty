@@ -1,5 +1,6 @@
 import { Dimensions, Platform, StyleSheet } from "react-native";
 import { colors } from "../../../src/colors";
+import { isAndroid } from "../../../src/platform";
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
@@ -61,18 +62,7 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "bold",
   },
-  userInput: {
-    flexDirection: "row",
-    backgroundColor: colors.input,
-    marginTop: 30,
-    width: "85%",
-    height: 55,
-    justifyContent: "space-between",
-
-    paddingLeft: 10,
-    borderRadius: 10,
-    alignItems: "center",
-  },
+ 
   inputField: {
     flex: 1,
     paddingHorizontal: 15,
@@ -84,8 +74,8 @@ export const styles = StyleSheet.create({
     flex: 1,
   },
   imageContainer: {
-    height: 90,
-    width: 90,
+    height: isAndroid ? 80 : 90,
+    aspectRatio: 1,
     shadowOpacity: 0.4,
     shadowOffset: { height: 2, width: 0 },
   },

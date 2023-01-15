@@ -9,7 +9,7 @@ export default function ACImage(props) {
       style={{
         height: 200,
         width: 200,
-        borderRadius: isAndroid ? 80 : "90%",
+        borderRadius: 80,
         backgroundColor: colors.buttonBG,
         borderColor: colors.iconColor,
         justifyContent: "center",

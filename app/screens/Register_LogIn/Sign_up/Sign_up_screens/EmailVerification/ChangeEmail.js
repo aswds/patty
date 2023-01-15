@@ -42,21 +42,16 @@ export default function ChangeEmail() {
               />
             }
             isValid={true}
-          >
-            <TextInput
-              style={{
-                ...styles.inputField,
-              }}
-              autoCapitalize="none"
-              keyboardType="email-address"
-              placeholder="Email"
-              placeholderTextColor={textStyle.color}
-              onChangeText={(text) => {
-                setEmail(text);
-              }}
-              value={Email}
-            />
-          </Input>
+            autoCapitalize="none"
+            keyboardType="email-address"
+            placeholder="Email"
+            placeholderTextColor={textStyle.color}
+            onChangeText={(text) => {
+              setEmail(text);
+            }}
+            value={Email}
+            inputStyle={styles.inputField}
+          />
 
           <StyledButton
             style={{

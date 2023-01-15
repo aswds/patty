@@ -1,50 +1,20 @@
-import {
-  AntDesign,
-  Feather,
-  MaterialIcons,
-  FontAwesome,
-} from "@expo/vector-icons";
+import { Feather, FontAwesome } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { LinearGradient } from "expo-linear-gradient";
-import React, { useReducer, useState, useEffect, useContext } from "react";
-import {
-  Dimensions,
-  Image,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-  StatusBar,
-  ImageBackground,
-} from "react-native";
+import React, { useContext, useState } from "react";
+import { Keyboard, TextInput, View } from "react-native";
 
-import CustomAlert from "../CustomAlert";
-import { Logo } from "../components/Logo";
-import { textStyle } from "../style";
-import { styles } from "./styles";
-import * as Haptics from "expo-haptics";
-import StyledButton from "../components/button";
-import { user_signIn } from "./SignInComponents/SignInFuncs/signInFunction";
-import { AuthReducer, initialState } from "../../../redux/AuthReducer";
-import {
-  AuthContext,
-  AuthContextProvider,
-} from "../../../navigation/SignIn&SingUp/components/AuthContext";
-import SignUpContainer from "./SignInComponents/SignUpContainer";
-import Loader from "../components/Loader";
-import isEmpty from "./SignInComponents/SignInFuncs/isEmpty";
-import ForgotPassword from "./SignInComponents/ForgotPassword";
+import { AuthContext } from "../../../navigation/SignIn&SingUp/components/AuthContext";
 import { colors } from "../../../src/colors";
-import { Input } from "../components/Input";
-import { Screen } from "../components/Screen";
 import { BackButton } from "../components/BackButton";
+import StyledButton from "../components/button";
+import { Input } from "../components/Input";
+import { Logo } from "../components/Logo";
+import { Screen } from "../components/Screen";
+import CustomAlert from "../CustomAlert";
+import { textStyle } from "../style";
+import ForgotPassword from "./SignInComponents/ForgotPassword";
+import { user_signIn } from "./SignInComponents/SignInFuncs/signInFunction";
+import { styles } from "./styles";
 const SignInScreen = (props) => {
   const navigation = useNavigation();
   const [email, setEmail] = useState({ isValid: true, errorMsg: "" });
@@ -90,33 +60,34 @@ const SignInScreen = (props) => {
         </View>
         <View style={styles.loginContainer}>
           <View style={styles.innerText}>
-            <Input isValid={email.isValid} icon={UserIcon}>
-              <TextInput
-                keyboardType="email-address"
-                style={styles.inputField}
-                placeholderTextColor={textStyle.color}
-                placeholder="Enter e-mail"
-                onChangeText={(email) => {
-                  setUserLogin(email);
-                  setEmail({ ...email, isValid: true });
-                }}
-                defaultValue={userLogin}
-                autoCapitalize="none"
-              />
-            </Input>
-            <Input isValid={password.isValid} icon={PasswordIcon}>
-              <TextInput
-                style={styles.inputField}
-                secureTextEntry={showPassword}
-                placeholder="Password"
-                placeholderTextColor={textStyle.color}
-                onChangeText={(password) => {
-                  setUserPassword(password);
-                  setPassword({ ...password, isValid: true });
-                }}
-                defaultValue={userPassword}
-              />
-            </Input>
+            <Input
+              isValid={email.isValid}
+              icon={UserIcon}
+              inputStyle={styles.inputField}
+              keyboardType="email-address"
+              placeholderTextColor={textStyle.color}
+              placeholder="Enter e-mail"
+              onChangeText={(email) => {
+                setUserLogin(email);
+                setEmail({ ...email, isValid: true });
+              }}
+              defaultValue={userLogin}
+              autoCapitalize="none"
+            />
+
+            <Input
+              isValid={password.isValid}
+              icon={PasswordIcon}
+              secureTextEntry={showPassword}
+              placeholder="Password"
+              placeholderTextColor={textStyle.color}
+              onChangeText={(password) => {
+                setUserPassword(password);
+                setPassword({ ...password, isValid: true });
+              }}
+              defaultValue={userPassword}
+              inputStyle={styles.inputField}
+            />
             <ForgotPassword styles={styles} navigation={navigation} />
           </View>
         </View>

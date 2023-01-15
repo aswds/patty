@@ -5,3 +5,7 @@ export function text_modifier(text) {
 export function text_modifier_name(text) {
   return text.replace(/[^a-zA-Z-]/gi, "");
 }
+
+export function text_modifier_tags(text) {
+  return text.replace(" ", "");
+}

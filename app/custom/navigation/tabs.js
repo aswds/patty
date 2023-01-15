@@ -1,15 +1,9 @@
 import { Feather, Ionicons } from "@expo/vector-icons";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import { BlurView } from "expo-blur";
-import { View, Image, Text, ImageBackground, StyleSheet } from "react-native";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import { MapNavigator } from "../../navigation/Navigators/MapNavigator";
+import { ProfileNavigator } from "../../navigation/Navigators/ProfileNavigator";
 import Icon from "../../navigation/SignIn&SingUp/components/Icon";
 import Chat from "../../screens/Chat/Chat";
-import Map from "../../screens/Map/Map";
-import Profile from "../../screens/Profile/Profile";
-import { BackButton } from "../../screens/Register_LogIn/components/BackButton";
-import { ProfileNavigator } from "../../navigation/Navigators/ProfileNavigator";
-import { MapNavigator } from "../../navigation/Navigators/MapNavigator";
 
 const Tab = createBottomTabNavigator();
 
@@ -28,14 +22,7 @@ const tabOptions = {
     elevation: 0,
   },
 };
-const TabButton = (props) => {
-  const { item, onPress, accessibilityState, Icon } = props;
-  return (
-    <TouchableOpacity onPress={onPress} activeOpacity={0.5} style={{ flex: 1 }}>
-      {props.children}
-    </TouchableOpacity>
-  );
-};
+
 export const Tabs = () => {
   return (
     <Tab.Navigator screenOptions={tabOptions} initialRouteName="MapNav">

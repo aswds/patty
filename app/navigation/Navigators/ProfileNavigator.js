@@ -8,12 +8,13 @@ import React from "react";
 import { Dimensions } from "react-native";
 import EditProfile from "../../screens/Profile/EditProfile/EditProfile";
 import Profile from "../../screens/Profile/Profile";
+import { isAndroid } from "../../src/platform";
 const Stack = createNativeStackNavigator();
 
 export const ProfileNavigator = (props) => {
   const { colors } = useTheme();
   const navigation = useNavigationContainerRef();
-
+  const radius = isAndroid ? 0 : 50;
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen component={Profile} name="Profile" />
@@ -21,8 +22,8 @@ export const ProfileNavigator = (props) => {
         screenOptions={{
           presentation: "modal",
           contentStyle: {
-            borderTopLeftRadius: 50,
-            borderTopRightRadius: 50,
+            borderTopLeftRadius: radius,
+            borderTopRightRadius: radius,
           },
         }}
       >
