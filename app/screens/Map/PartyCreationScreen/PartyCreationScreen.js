@@ -1,4 +1,8 @@
-import { useNavigation, useRoute } from "@react-navigation/native";
+import {
+  useNavigation,
+  usePreventRemoveContext,
+  useRoute,
+} from "@react-navigation/native";
 import React, { useState } from "react";
 
 import PickTime from "../PickTime/PickTime";
@@ -9,8 +13,10 @@ import CustomButton from "./components/LocationAddButton";
 import PickTitle from "./components/PickTitle";
 import Screen from "./components/Screen";
 import TagList from "./components/TagList";
-import { Alert } from "../../../../f/f";
+import { Alert } from "react-native";
+import { BackButton } from "../../Register_LogIn/components/BackButton";
 export default function PartyCreationScreen(props) {
+  const prevent = usePreventRemoveContext();
   const route = useRoute();
   const navigation = useNavigation();
   const { userLocation } = route.params;
@@ -24,6 +30,8 @@ export default function PartyCreationScreen(props) {
     location: location,
     time: time,
   };
+  const hasUnsavedChanges = Boolean(title, tags, location, time);
+
   React.useEffect(
     () =>
       navigation.addListener("beforeRemove", (e) => {
@@ -34,7 +42,6 @@ export default function PartyCreationScreen(props) {
 
         // Prevent default behavior of leaving the screen
         e.preventDefault();
-
         // Prompt the user before leaving the screen
         Alert.alert(
           "Discard changes?",
@@ -51,13 +58,15 @@ export default function PartyCreationScreen(props) {
           ]
         );
       }),
-    [navigation]
+    [navigation, hasUnsavedChanges]
   );
   return (
     <Screen>
+      <BackButton navigation={navigation} />
       <Creators />
       <PickTitle setTitle={setTitle} />
       <TagList setTags={setTags} tags={tags} />
+      {console.log(hasUnsavedChanges)}
       <Location
         setLocation={setLocation}
         userLocation={userLocation}

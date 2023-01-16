@@ -20,10 +20,10 @@ export const MapNavigator = (props) => {
 
       <Stack.Group
         screenOptions={{
-          presentation: "modal",
+          presentation: "fullScreenModal",
           contentStyle: {
-            borderTopLeftRadius: radius,
-            borderTopRightRadius: radius,
+            // borderTopLeftRadius: radius,
+            // borderTopRightRadius: radius,
           },
         }}
       >
@@ -31,8 +31,18 @@ export const MapNavigator = (props) => {
           component={PartyCreationScreen}
           name="PartyCreationScreen"
         />
-        <Stack.Screen component={ChooseLocation} name="ChooseLocation" />
         <Stack.Screen component={AddCreatorsScreen} name="AddCreators" />
+      </Stack.Group>
+      <Stack.Group
+        screenOptions={{
+          presentation: "modal",
+          contentStyle: {
+            borderTopLeftRadius: radius,
+            borderTopRightRadius: radius,
+          },
+        }}
+      >
+        <Stack.Screen component={ChooseLocation} name="ChooseLocation" />
       </Stack.Group>
     </Stack.Navigator>
   );
