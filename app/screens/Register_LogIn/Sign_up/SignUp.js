@@ -3,14 +3,14 @@ import {
   MaterialCommunityIcons,
   MaterialIcons,
 } from "@expo/vector-icons";
-import { useNavigation, useRoute } from "@react-navigation/native";
+import { useRoute } from "@react-navigation/native";
 import React, { useContext, useRef, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { AuthContext } from "../../../navigation/SignIn&SingUp/components/AuthContext";
 import { colors } from "../../../src/colors";
 import { isAndroid } from "../../../src/platform";
 import { BackButton } from "../components/BackButton";
-import StyledButton from "../components/button";
+import Button from "../components/button";
 import { Input } from "../components/Input";
 import { Logo } from "../components/Logo";
 import { Screen } from "../components/Screen";
@@ -20,7 +20,9 @@ import { Container } from "./Sign_up_components/Container";
 import { TermText } from "./Sign_up_components/TermText";
 import { error_handle } from "./Sign_up_screens/Sign_up_Functions/error_handle";
 import { signUpHandle } from "./Sign_up_screens/Sign_up_Functions/signUp";
+
 const SignUpScreen = (props) => {
+  const { navigation } = props;
   const [valid, setValid] = useState({
     validUsername: true,
     validEmail: true,
@@ -34,14 +36,10 @@ const SignUpScreen = (props) => {
   const [showModal, setShowModal] = useState(false);
   const [confirmPass, setConfirmPass] = useState("");
   const [showPassword, setShowPassword] = useState(true);
-  const [isLoading, setIsLoading] = useState(false);
-  const [passwordError, setPasswordError] = useState(null);
   const [errorMsg, setErrorMsg] = useState();
-  const [userError, setUsernameError] = useState();
   const ref_input2 = useRef();
   const ref_input3 = useRef();
   const ref_input4 = useRef();
-  const navigation = useNavigation();
   const route = useRoute();
   const name = route.params?.name;
   const surname = route.params?.surname;
@@ -60,25 +58,26 @@ const SignUpScreen = (props) => {
     ) {
       //handling sign up
       signUpHandle(
-        user.email,
-        user.password,
+        user.email.trim(),
+        user.password.trim(),
         username,
         name,
         surname,
         image,
         signUp
       ).catch((err) => {
-        //if error occures, show modal
+        //if error occurs, show modal
         error_handle(err.error_type, err.message, {
           setValid,
           valid,
         }).catch((err) => {
-          setShowModal(true), setErrorMsg(err);
+          setShowModal(true);
+          setErrorMsg(err);
         });
       });
     } else {
-      setShowModal(true),
-        setErrorMsg("Please check if everything is correct :)");
+      setShowModal(true);
+      setErrorMsg("Please check if everything is correct :)");
     }
   }
   function refHandle(ref_input) {
@@ -104,7 +103,7 @@ const SignUpScreen = (props) => {
 
   return (
     <Screen>
-      <View style={{}}>
+      <View>
         <Logo />
       </View>
       <BackButton navigation={navigation} />
@@ -119,6 +118,7 @@ const SignUpScreen = (props) => {
               color={colors.iconColor}
             />
           }
+          autoComplete={false}
           isValid={valid.validEmail}
           autoCapitalize="none"
           keyboardType="email-address"
@@ -176,7 +176,6 @@ const SignUpScreen = (props) => {
           placeholderTextColor={textStyle.color}
           onChangeText={(text) => {
             setConfirmPass(text);
-
             if (user.password != text) {
               setValid({ ...valid, validConfirmPassword: false });
             } else {
@@ -188,7 +187,7 @@ const SignUpScreen = (props) => {
           inputStyle={styles.inputField}
         />
       </Container>
-      <StyledButton
+      <Button
         textStyle={{
           fontFamily: "Nunito-Bold",
           fontSize: 20,
@@ -198,7 +197,7 @@ const SignUpScreen = (props) => {
         onPress={signUp_handle}
       >
         Sign Up
-      </StyledButton>
+      </Button>
       {/* Fix */}
       <TermText />
       {/* Fix */}
@@ -269,12 +268,11 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   styledButton: {
-    marginTop: "10%",
     marginBottom: 20,
     borderRadius: 13,
     backgroundColor: "rgba(155 , 50, 50 , 1)",
     height: isAndroid ? "10%" : 70,
-    width: "90%",
+    width: "80%",
     alignSelf: "center",
   },
 });

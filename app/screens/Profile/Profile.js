@@ -1,22 +1,8 @@
 import React, { useEffect, useState } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  SafeAreaView,
-  ActivityIndicator,
-  ImageBackground,
-  StyleSheet,
-  FlatList,
-  Dimensions,
-  ScrollView,
-  RefreshControl,
-} from "react-native";
-import { useSelector, useDispatch, connect } from "react-redux";
+import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
+import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetch_user } from "../../redux/actions/User";
-import { auth } from "../../../firebase";
-import Follower_info from "./components/Follower_info";
 import Screen from "./components/Screen";
 import Loader from "./components/Loader";
 import Header from "./components/Header";
@@ -26,15 +12,14 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { onRefresh } from "./refreshControlFuncs";
 
 function Profile(props) {
+  const { current_user, isLoading } = props;
   const [refreshing, setRefreshing] = useState(false);
-
+  const [user, setUser] = useState(current_user);
+  const insets = useSafeAreaInsets();
   useEffect(() => {
     props.fetch_user();
     setUser(props.current_user);
   }, []);
-  const { current_user, isLoading } = props;
-  const [user, setUser] = useState(current_user);
-  const insets = useSafeAreaInsets();
   if (!current_user) {
     return <Loader />;
   }

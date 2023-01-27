@@ -1,21 +1,17 @@
-import { useNavigationContainerRef, useTheme } from "@react-navigation/native";
-import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import { getAuth, onAuthStateChanged } from "firebase/auth";
-import React, { useContext, useState } from "react";
+import { onAuthStateChanged } from "firebase/auth";
+import React, { useState } from "react";
 import { auth } from "../../../firebase";
-import { AuthContext } from "../SignIn&SingUp/components/AuthContext";
 import { Loader } from "../SignIn&SingUp/components/Loader";
 import { LoginAndRegister } from "../SignIn&SingUp/SignIn_SignUp_nav";
 import { App_Navigation } from "./AppNavigation";
+import { VerifyEmailNav } from "../EmailVerification/VerifyEmailNav";
 
 export const NavigationController = (props) => {
-  const { colors } = useTheme();
   const [isSignedIn, setIsSigned] = useState(false);
-  const [isLoading, setIsLoading] = useState(true);
-  const navigation = useNavigationContainerRef();
-  const Stack = createNativeStackNavigator();
+  const [isLoading, setIsLoading] = useState(false);
+  const [emailVerified, setIsEmailVerified] = useState(false);
   onAuthStateChanged(auth, (user) => {
-    setIsLoading(false);
+    setIsEmailVerified(user?.emailVerified);
     if (user) {
       setIsSigned(true);
     } else {
@@ -25,6 +21,12 @@ export const NavigationController = (props) => {
   if (isLoading) {
     return <Loader />;
   }
-
-  return <>{isSignedIn ? <App_Navigation /> : <LoginAndRegister />}</>;
+  if (isSignedIn && !emailVerified) {
+    return <VerifyEmailNav />;
+  }
+  return (
+    <>
+      {isSignedIn && emailVerified ? <App_Navigation /> : <LoginAndRegister />}
+    </>
+  );
 };

@@ -1,21 +1,18 @@
 import React from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  Dimensions,
-  Platform,
-  Alert,
-} from "react-native";
+import { Dimensions, Platform, StyleSheet, Text, View } from "react-native";
+
 const isAndroid = Platform.OS == "android";
 
 export default function RenderItem(props) {
   const { item } = props;
   const user_info = item.item;
+  console.log(item);
+  if (user_info === undefined) {
+    return;
+  }
   return (
     <View style={styles.container}>
       <View>
-        {console.log(user_info)}
         <Text style={styles.textNumberStyle}>128 🎉</Text>
       </View>
       <View>

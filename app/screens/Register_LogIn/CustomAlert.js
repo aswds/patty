@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Modal,
   Platform,
@@ -10,7 +10,6 @@ import {
 } from "react-native";
 
 const CustomAlert = (props) => {
-  const [modalVisible, setModalVisible] = useState(props.showModal);
   return (
     <View>
       <Modal
@@ -28,28 +27,9 @@ const CustomAlert = (props) => {
         />
 
         <SafeAreaView>
-          <View
-            style={{
-              alignSelf: "center",
-              justifyContent: "center",
-              alignItems: "center",
-              width: "85%",
-            }}
-          >
-            <View
-              style={{
-                backgroundColor: "rgba(40,40,40,1)",
-                justifyContent: "center",
-                alignItems: "center",
-                borderRadius: 20,
-                padding: 30,
-              }}
-            >
-              <Text
-                style={{ color: "rgba(110,110,110,1)", textAlign: "center" }}
-              >
-                {props.errorMsg}
-              </Text>
+          <View style={styles.modalContainer}>
+            <View style={styles.textContainer}>
+              <Text style={styles.textStyle}>{props.errorMsg}</Text>
             </View>
           </View>
         </SafeAreaView>
@@ -59,6 +39,20 @@ const CustomAlert = (props) => {
 };
 
 const styles = StyleSheet.create({
+  modalContainer: {
+    alignSelf: "center",
+    justifyContent: "center",
+    alignItems: "center",
+    width: "85%",
+  },
+  textContainer: {
+    backgroundColor: "rgba(40,40,40,1)",
+    justifyContent: "center",
+    alignItems: "center",
+    borderRadius: 20,
+    padding: 30,
+  },
+  textStyle: { color: "rgba(110,110,110,1)", textAlign: "center" },
   centeredView: {
     flex: 1,
     justifyContent: "center",
@@ -73,11 +67,6 @@ const styles = StyleSheet.create({
   },
   buttonOpen: {
     backgroundColor: "#F194FF",
-  },
-  textStyle: {
-    color: "white",
-    fontWeight: "bold",
-    textAlign: "center",
   },
 
   iOSBackdrop: {

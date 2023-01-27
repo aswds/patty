@@ -1,5 +1,6 @@
 export function error_handle(error_type, message, additionalFuncs) {
   const { setValid, valid } = additionalFuncs;
+  console.log(error_type, message);
   return new Promise((res, rej) => {
     switch (error_type) {
       case "email":
@@ -16,7 +17,6 @@ export function error_handle(error_type, message, additionalFuncs) {
         break;
       default:
         return;
-        break;
     }
   });
 }

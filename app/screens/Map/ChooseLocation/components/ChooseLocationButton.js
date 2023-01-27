@@ -1,9 +1,10 @@
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { colors } from "../../../../src/colors";
-import { Entypo } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import * as Haptics from "expo-haptics";
+
 export default function ChooseLocationButton({ region, address }) {
   const navigation = useNavigation();
   return (
@@ -11,7 +12,12 @@ export default function ChooseLocationButton({ region, address }) {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          navigation.navigate("PartyCreationScreen", { region, address });
+          if (address && region) {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            navigation.navigate("PartyCreationScreen", { region, address });
+          } else {
+            Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
+          }
         }}
       >
         <MaterialCommunityIcons

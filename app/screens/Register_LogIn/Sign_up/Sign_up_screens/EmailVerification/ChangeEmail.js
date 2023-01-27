@@ -1,20 +1,13 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { useRoute } from "@react-navigation/native";
 import React from "react";
-import {
-  StyleSheet,
-  TextInput,
-  View,
-  Dimensions,
-  Text,
-  TouchableOpacity,
-  KeyboardAvoidingView,
-} from "react-native";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../../../src/colors";
-import StyledButton from "../../../components/button";
+import Button from "../../../components/button";
 import { Input } from "../../../components/Input";
 import { textStyle } from "../../../style";
 import Container from "./Container";
+
 export default function ChangeEmail() {
   const route = useRoute();
   const [Email, setEmail] = React.useState(route.params?.email);
@@ -53,7 +46,7 @@ export default function ChangeEmail() {
             inputStyle={styles.inputField}
           />
 
-          <StyledButton
+          <Button
             style={{
               ...styles.shadowButton,
 
@@ -64,7 +57,7 @@ export default function ChangeEmail() {
             textStyle={{ color: "white" }}
           >
             Submit
-          </StyledButton>
+          </Button>
         </View>
       </Container>
     </>

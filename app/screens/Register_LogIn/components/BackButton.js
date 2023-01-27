@@ -2,10 +2,11 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import { Platform, StyleSheet, TouchableOpacity } from "react-native";
 import { colors } from "../../../src/colors";
 import { isAndroid } from "../../../src/platform";
-export const BackButton = ({ navigation }) => {
+
+export const BackButton = ({ navigation, style }) => {
   return (
     <TouchableOpacity
-      style={styles.arrowContainer}
+      style={[styles.arrowContainer, style]}
       onPress={() => {
         navigation.goBack();
       }}

@@ -1,20 +1,24 @@
 import React from "react";
 import {
-  StyleSheet,
-  View,
-  TouchableOpacity,
-  Text,
   Dimensions,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
 } from "react-native";
-const StyledButton = (props) => {
+import { colors } from "../../../src/colors";
+
+const Button = (props) => {
   return (
     <TouchableOpacity
       {...props}
       activeOpacity={0.7}
-      style={{ ...styles.container, ...props.style }}
+      style={[styles.container, props.style]}
     >
       <View style={{ justifyContent: "center" }}>
-        <Text style={{ ...props.textStyle }}>{props.children}</Text>
+        <Text style={{ ...props.textStyle, color: colors.buttonTextColor }}>
+          {props.children}
+        </Text>
       </View>
     </TouchableOpacity>
   );
@@ -28,11 +32,11 @@ const styles = StyleSheet.create({
     height: Dimensions.get("window").height / 17,
     borderRadius: 50,
     overflow: "hidden",
-    backgroundColor: "#13294B",
+    backgroundColor: colors.accentColor,
     borderWidth: 0,
   },
   linearGradient: {
     flex: 1,
   },
 });
-export default StyledButton;
+export default Button;

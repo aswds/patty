@@ -1,6 +1,7 @@
 import { ActionSheetIOS } from "react-native";
 import * as ImagePicker from "expo-image-picker";
 import { _imagePropHandler } from "./AvatarFunctions/ACFunctions";
+
 export function IOSModal(setImage) {
   const pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -10,8 +11,8 @@ export function IOSModal(setImage) {
       quality: 1,
       presentationStyle: ImagePicker.UIImagePickerPresentationStyle.AUTOMATIC,
     });
-    if (!result.cancelled) {
-      _imagePropHandler(setImage, result.uri);
+    if (!result.canceled) {
+      _imagePropHandler(setImage, result.assets[0].uri);
     }
   };
   ActionSheetIOS.showActionSheetWithOptions(
@@ -22,9 +23,9 @@ export function IOSModal(setImage) {
       userInterfaceStyle: "dark",
     },
     (buttonIndex) => {
-      if (buttonIndex == 0) {
+      if (buttonIndex === 0) {
         pickImage();
-      } else if (buttonIndex == 1) {
+      } else if (buttonIndex === 1) {
       }
     }
   );

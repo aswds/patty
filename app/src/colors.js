@@ -8,11 +8,12 @@ export const colors = {
   iconColor: "#6D6D6D",
   buttonTextColor: "#E7E0C9",
   mapAccentColor: "rgb(210, 40, 45)",
-  doneButtonBG: "#2B3526",
-  doneButtonText: "#9FC084",
-  buttonBG: "#2F2524",
-  buttonText: "#FF5454",
-  cancle: "#A85959", //TypeError
+  doneButtonBG: "#2B3526", // Profile screen // Edit button
+  doneButtonText: "#9FC084", // Profile screen // Edit button
+  buttonBG: "#2F2524", // Profile screen // Edit button
+  buttonText: "#FF5454", // Profile screen // Edit button
+  cancel: "#A85959", //TypeError
+  blue_text: "#0A67FF",
   partyCreateScreenColors: {
     button: {
       backgroundColor: "#722424",

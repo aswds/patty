@@ -1,16 +1,12 @@
 const firebaseAuth = require("firebase/auth");
 
-import {
-  getAuth,
-  createUserWithEmailAndPassword,
-  sendEmailVerification,
-} from "firebase/auth";
-import { collection, doc, setDoc, Timestamp } from "firebase/firestore";
+import { createUserWithEmailAndPassword } from "firebase/auth";
+import { doc, setDoc, Timestamp } from "firebase/firestore";
 import { uploadImage } from "./uploadImage";
-import { db, auth } from "../../../../../../firebase";
-import { Alert } from "react-native";
+import { auth, db } from "../../../../../../firebase";
 import * as Haptics from "expo-haptics";
-function set_errorMsg_errorType(error_code) {
+
+export function set_errorMsg_errorType(error_code) {
   return new Promise((res, rej) => {
     switch (error_code) {
       case "auth/invalid-email":
@@ -93,7 +89,6 @@ export const signUpHandle = async (
     const { user } = createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         setDocs(result, userInfo);
-        sendEmailVerification(result.user);
       })
 
       .catch((error) => {

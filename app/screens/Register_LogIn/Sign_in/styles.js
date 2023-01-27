@@ -1,13 +1,13 @@
 import { Dimensions, Platform, StyleSheet } from "react-native";
-import { colors } from "../../../src/colors";
 import { isAndroid } from "../../../src/platform";
+
 export const styles = StyleSheet.create({
   container: {
     flex: 1,
     flexGrow: 1,
   },
   styledButtonStyle: {
-    height: 50,
+    height: 60,
     borderRadius: 10,
     backgroundColor: "rgba(155 , 50, 50 , 1)",
     flex: 1,
@@ -62,7 +62,7 @@ export const styles = StyleSheet.create({
     fontSize: 15,
     fontWeight: "bold",
   },
- 
+
   inputField: {
     flex: 1,
     paddingHorizontal: 15,

@@ -1,27 +1,21 @@
-import React, { useRef, useState } from "react";
+import React, { useState } from "react";
 
 import {
-  Button,
+  Alert,
+  Keyboard,
   Modal,
   StyleSheet,
-  TextInput,
+  Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-  Text,
-  Keyboard,
-  KeyboardAvoidingView,
-  Alert,
 } from "react-native";
 import { colors } from "../../../../src/colors";
 import { AntDesign } from "@expo/vector-icons";
 import { Input } from "../../../Register_LogIn/components/Input";
 import * as Haptics from "expo-haptics";
-import {
-  text_modifier,
-  text_modifier_name,
-  text_modifier_tags,
-} from "../../../Register_LogIn/Sign_up/Sign_up_screens/Sign_up_Functions/text_modifier";
+import { text_modifier_tags } from "../../../Register_LogIn/Sign_up/Sign_up_screens/Sign_up_Functions/text_modifier";
+
 export default function TagModal({ setTags, isVisible, hideModal }) {
   const [tagTitle, setTagTitle] = useState("");
   function onChangeText(text) {
@@ -60,7 +54,7 @@ export default function TagModal({ setTags, isVisible, hideModal }) {
   function CloseButton() {
     return (
       <TouchableOpacity style={styles.button} onPress={onClose}>
-        <Text style={[styles.textStyle, { color: colors.cancle }]}>Cancle</Text>
+        <Text style={[styles.textStyle, { color: colors.cancel }]}>Cancle</Text>
       </TouchableOpacity>
     );
   }

@@ -3,6 +3,7 @@ import { StyleSheet, TextInput, View } from "react-native";
 import { colors } from "../../../../src/colors";
 import { Title } from "./TagList";
 import { Feather } from "@expo/vector-icons";
+
 export default function PickTitle({ setTitle }) {
   const [editing, setEditing] = useState(true);
   const styles = makeStyle(editing);
@@ -47,7 +48,7 @@ const makeStyle = (isEditing) => {
     },
     inputField: {
       padding: isEditing ? 10 : 0,
-      color: isEditing ? "white" : colors.iconColor,
+      color: "white",
       width: "100%",
       height: "100%",
       borderRadius: 50,

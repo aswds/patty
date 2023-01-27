@@ -4,7 +4,11 @@ import { Platform, StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../src/colors";
 import SwitchDateType from "./components/SwitchDateType";
 import * as Haptics from "expo-haptics";
-export default function PickTime() {
+import { Title } from "../PartyCreationScreen/components/TagList";
+import { FontAwesome } from "@expo/vector-icons";
+
+export default function PickTime(props) {
+  const { setTime, setToScrollBottom } = props;
   const [date, setDate] = useState(new Date(Date.now()));
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
@@ -12,6 +16,7 @@ export default function PickTime() {
   const onChange = (_, selectedDate) => {
     const currentDate = selectedDate;
     setDate(currentDate);
+    setTime(currentDate);
   };
 
   const showMode = (currentMode) => {
@@ -24,6 +29,7 @@ export default function PickTime() {
   function onPress() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setShow(true);
+    setToScrollBottom(true);
     setMode((mode) => {
       return mode == "date" ? "time" : "date";
     });
@@ -36,37 +42,52 @@ export default function PickTime() {
           Selected time:{" "}
           {date.toLocaleString("ukr", {
             dateStyle: "short",
-            timeStyle: "short",
+            timeStyle: "short", // fix
           })}
         </Text>
       </View>
     );
   }
   return (
-    <View style={styles.dateContainer}>
-      <SelectedTime />
-      {show && (
-        <DateTimePicker
-          testID="dateTimePicker"
-          style={styles.datePickerStyle}
-          value={date}
-          mode={mode}
-          minimumDate={mode == "date" ? new Date() : null}
-          timeZoneOffsetInSeconds={0}
-          onChange={onChange}
-          display="spinner"
-        />
-      )}
-      <SwitchDateType
-        dateMode={mode}
-        onPress={onPress}
-        isConfirmButtonShown={show}
-        onDone={() => {
-          Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-          setShow(false);
-        }}
+    <>
+      <Title
+        title={"Date and time"}
+        icon={
+          <FontAwesome
+            name="calendar"
+            size={24}
+            color={colors.iconColor}
+            style={{ paddingBottom: 5, paddingLeft: 5 }}
+          />
+        }
       />
-    </View>
+
+      <View style={styles.dateContainer}>
+        <SelectedTime />
+        {show && (
+          <DateTimePicker
+            testID="dateTimePicker"
+            style={styles.datePickerStyle}
+            value={date}
+            mode={mode}
+            minimumDate={mode == "date" ? new Date() : null}
+            timeZoneOffsetInSeconds={0}
+            onChange={onChange}
+            display="spinner"
+          />
+        )}
+        <SwitchDateType
+          dateMode={mode}
+          onPress={onPress}
+          isConfirmButtonShown={show}
+          onDone={() => {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
+            setShow(false);
+            setToScrollBottom(false);
+          }}
+        />
+      </View>
+    </>
   );
 }
 
