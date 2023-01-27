@@ -13,66 +13,46 @@ import CustomButton from "./components/LocationAddButton";
 import PickTitle from "./components/PickTitle";
 import Screen from "./components/Screen";
 import TagList from "./components/TagList";
-import { Alert } from "react-native";
 import { BackButton } from "../../Register_LogIn/components/BackButton";
+import Access from "./components/Access";
+import { preventLeaving } from "./preventLeaving";
+
 export default function PartyCreationScreen(props) {
   const prevent = usePreventRemoveContext();
   const route = useRoute();
+  const { region, address } = route.params;
   const navigation = useNavigation();
   const { userLocation } = route.params;
   const [tags, setTags] = useState([]);
   const [location, setLocation] = useState({});
   const [time, setTime] = useState();
-  const [title, setTitle] = React.useState();
+  const [title, setTitle] = useState();
+  const [access, setAccess] = useState();
   let data = {
     title: title,
     tags: tags,
-    location: location,
+    location: { region, address },
     time: time,
+    access: access,
   };
   const hasUnsavedChanges = Boolean(title, tags, location, time);
 
-  React.useEffect(
-    () =>
-      navigation.addListener("beforeRemove", (e) => {
-        if (!hasUnsavedChanges) {
-          // If we don't have unsaved changes, then we don't need to do anything
-          return;
-        }
-
-        // Prevent default behavior of leaving the screen
-        e.preventDefault();
-        // Prompt the user before leaving the screen
-        Alert.alert(
-          "Discard changes?",
-          "You have unsaved changes. Are you sure to discard them and leave the screen?",
-          [
-            { text: "Don't leave", style: "cancel", onPress: () => {} },
-            {
-              text: "Discard",
-              style: "destructive",
-              // If the user confirmed, then we dispatch the action we blocked earlier
-              // This will continue the action that had triggered the removal of the screen
-              onPress: () => navigation.dispatch(e.data.action),
-            },
-          ]
-        );
-      }),
-    [navigation, hasUnsavedChanges]
-  );
+  React.useEffect(() => {
+    preventLeaving(navigation, hasUnsavedChanges);
+  }, [navigation, hasUnsavedChanges]);
   return (
     <Screen>
-      <BackButton navigation={navigation} />
+      <BackButton navigation={navigation} style={{ left: 0 }} />
       <Creators />
       <PickTitle setTitle={setTitle} />
       <TagList setTags={setTags} tags={tags} />
-      {console.log(hasUnsavedChanges)}
+      <Access setAccess={setAccess} />
       <Location
         setLocation={setLocation}
         userLocation={userLocation}
         locationInfo={{
-          addressInfo: route.params?.address,
-          region: route.params?.region,
+          addressInfo: address,
+          region: region,
         }}
         locationAddButton={
           <CustomButton

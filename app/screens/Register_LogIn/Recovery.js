@@ -1,91 +1,34 @@
 import React, { useState } from "react";
-import {
-  View,
-  StyleSheet,
-  TextInput,
-  Text,
-  ImageBackground,
-  Dimensions,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
 // import forgotPassword from "../../components/forgotPassword";
-import { KeyboardAvoidingView } from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import StyledButton from "./components/button";
-import { colors } from "../../src/colors";
-import { Input } from "./components/Input";
+import { Alert, Dimensions, StyleSheet } from "react-native";
+import ChangeEmail from "../VerifyEmail/ChangeEmail";
+import { getAuth, sendPasswordResetEmail } from "firebase/auth";
+import { set_errorMsg_errorType } from "./Sign_up/Sign_up_screens/Sign_up_Functions/signUp";
+import { error_handle } from "./Sign_up/Sign_up_screens/Sign_up_Functions/error_handle";
 
-const DataRecovery = ({ sendEmail, text }) => {
+const Recovery = ({ navigation }) => {
   const [userEmail, setUserEmail] = useState("");
-  return (
-    <View
-      style={{
-        flex: 1,
-        width: null,
-        height: null,
-        backgroundColor: colors.background,
-      }}
-    >
-      <TouchableWithoutFeedback
-        onPress={() => {
-          Keyboard.dismiss();
-        }}
-      >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.container}
-        >
-          <View style={styles.container}>
-            <View style={{}}>
-              <Text
-                style={{ fontSize: 20, alignSelf: "center", color: "white" }}
-              >
-                {text}
-              </Text>
-            </View>
-            <View style={styles.rContainer}>
-              <Input
-                isValid={true}
-                icon={
-                  <MaterialIcons
-                    name="alternate-email"
-                    size={Dimensions.get("window").height >= 800 ? 24 : 20}
-                    color={colors.iconColor}
-                  />
-                }
-                autoCapitalize="none"
-                keyboardType="email-address"
-                inputStyle={styles.inputField}
-                placeholderTextColor={"grey"}
-                placeholder="Email"
-                onChangeText={(text) => setUserEmail(text)}
-                defaultValue={userEmail}
-              />
+  function passRecovery(userEmail) {
+    const auth = getAuth();
+    sendPasswordResetEmail(auth, userEmail)
+      .then(() => {
+        Alert.alert("We've sent you a letter to reset password");
+      })
+      .catch((e) => {
+        set_errorMsg_errorType(e.code).catch((e) => {
+          error_handle("email", e.message, {}).catch((e) => {
+            Alert.alert({ message: e, showErrorModal: true });
+          });
+        });
+      });
+  }
 
-              <View style={styles.shadowButton}>
-                <StyledButton
-                  style={{
-                    ...styles.shadowButton,
-                    marginTop: 30,
-                    width: "100%",
-                    borderRadius: 10,
-                    elevation: 5,
-                  }}
-                  onPress={() => {
-                    sendEmail(userEmail);
-                  }}
-                  textStyle={{ color: "white" }}
-                >
-                  Submit
-                </StyledButton>
-              </View>
-            </View>
-          </View>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
-    </View>
+  return (
+    <ChangeEmail
+      passRecoveryFunction={passRecovery}
+      isPasswordReset={true}
+      navigation={navigation}
+    />
   );
 };
 
@@ -110,7 +53,6 @@ const styles = StyleSheet.create({
     borderRadius: 13,
     backgroundColor: "rgba(155 , 50, 50 , 1)",
     height: Dimensions.get("window").height / 14,
-    width: Dimensions.get("window").width / 1.2,
     alignSelf: "center",
   },
   inputField: {
@@ -137,4 +79,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default DataRecovery;
+export default Recovery;

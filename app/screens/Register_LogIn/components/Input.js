@@ -1,11 +1,5 @@
 import React from "react";
-import {
-  View,
-  TextInput,
-  Dimensions,
-  ViewProps,
-  StyleSheet,
-} from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 import { colors } from "../../../src/colors";
 
 export const Input = React.forwardRef(
@@ -24,6 +18,7 @@ export const Input = React.forwardRef(
             ...styles.textInput,
             ...inputStyle,
           }}
+          autoCapitalize={"none"}
           ref={ref}
           {...props}
         />

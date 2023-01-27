@@ -1,14 +1,10 @@
-import {
-  NavigationContainer,
-  useNavigationContainerRef,
-  useTheme,
-} from "@react-navigation/native";
+import { useNavigationContainerRef, useTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import { Dimensions } from "react-native";
 import EditProfile from "../../screens/Profile/EditProfile/EditProfile";
 import Profile from "../../screens/Profile/Profile";
 import { isAndroid } from "../../src/platform";
+
 const Stack = createNativeStackNavigator();
 
 export const ProfileNavigator = (props) => {

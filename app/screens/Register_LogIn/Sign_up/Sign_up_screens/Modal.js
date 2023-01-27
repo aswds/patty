@@ -1,20 +1,18 @@
 import { MaterialIcons } from "@expo/vector-icons";
-import { useNavigation, useTheme } from "@react-navigation/native";
+import { useNavigation } from "@react-navigation/native";
 import * as ImagePicker from "expo-image-picker";
-import { useState } from "react";
 import {
   Dimensions,
   Modal,
+  SafeAreaView,
   StyleSheet,
+  Text,
   TouchableOpacity,
   TouchableWithoutFeedback,
   View,
-  Text,
-  SafeAreaView,
-  Pressable,
-  Platform,
 } from "react-native";
 import { colors } from "../../../../src/colors";
+
 const color = colors.background;
 export const ModalPhoto = (props) => {
   const navigation = useNavigation();
@@ -26,9 +24,9 @@ export const ModalPhoto = (props) => {
       aspect: [1, 1],
       quality: 1,
     });
-
-    if (!result.cancelled) {
-      props.imageHandler(result.uri);
+    console.log(result.assets);
+    if (!result.canceled) {
+      props.imageHandler(result.assets[0].uri);
       props.hideModal();
     }
   };

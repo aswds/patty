@@ -1,9 +1,7 @@
-import { useFonts } from "expo-font";
-import { StyleSheet, Text, View } from "react-native";
-import { LoginAndRegister } from "./app/navigation/SignIn&SingUp/SignIn_SignUp_nav";
+import { StatusBar, StyleSheet, View } from "react-native";
 import { useFontsLoad } from "./app/hooks/useFontsLoad";
 import { ProvidedNavigator } from "./app/navigation/SignIn&SingUp/ProvidedNavigator";
-import { StatusBar } from "react-native";
+
 export default function App() {
   const { isLoaded, error } = useFontsLoad();
 

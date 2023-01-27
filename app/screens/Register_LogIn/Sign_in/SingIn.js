@@ -1,12 +1,11 @@
 import { Feather, FontAwesome } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import React, { useContext, useState } from "react";
-import { Keyboard, TextInput, View } from "react-native";
+import { Keyboard, View } from "react-native";
 
 import { AuthContext } from "../../../navigation/SignIn&SingUp/components/AuthContext";
 import { colors } from "../../../src/colors";
 import { BackButton } from "../components/BackButton";
-import StyledButton from "../components/button";
+import Button from "../components/button";
 import { Input } from "../components/Input";
 import { Logo } from "../components/Logo";
 import { Screen } from "../components/Screen";
@@ -15,8 +14,9 @@ import { textStyle } from "../style";
 import ForgotPassword from "./SignInComponents/ForgotPassword";
 import { user_signIn } from "./SignInComponents/SignInFuncs/signInFunction";
 import { styles } from "./styles";
+
 const SignInScreen = (props) => {
-  const navigation = useNavigation();
+  const { navigation } = props;
   const [email, setEmail] = useState({ isValid: true, errorMsg: "" });
   const [password, setPassword] = useState({ isValid: true, errorMsg: "" });
   const [errorMsg, setErrorMsg] = useState();
@@ -25,15 +25,10 @@ const SignInScreen = (props) => {
   const [showPassword, setShowPassword] = useState(true);
   const [_showModal, setShowModal] = useState(false);
 
-  const [isLoggedin, setLoggedinStatus] = useState(false);
-  const [userData, setUserData] = useState(null);
-  const [isImageLoading, setImageLoadStatus] = useState();
   const _hideModal = () => {
     setShowModal(false);
   };
-  const _hideRecModal = () => {
-    setShowRecModal(false);
-  };
+
   const _clearMsg = () => {
     setErrorMsg();
   };
@@ -92,7 +87,7 @@ const SignInScreen = (props) => {
           </View>
         </View>
         <View style={styles.styledButtonContainer}>
-          <StyledButton
+          <Button
             onPress={() => {
               user_signIn(
                 setEmail,
@@ -111,7 +106,7 @@ const SignInScreen = (props) => {
             textStyle={styles.styledButtonTextStyle}
           >
             Sign in
-          </StyledButton>
+          </Button>
         </View>
       </Screen>
 

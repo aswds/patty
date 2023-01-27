@@ -1,18 +1,13 @@
 import {
-  USER_INFO_LOADING,
-  USER_INFO_LOADED,
   USER_STATE_CHANGE,
-  USER_FOLLOWERS_STATE_CHANGE,
-  USER_FOLLOWING_STATE_CHANGE,
-  USER_STATE_LOADED,
   USER_STATE_ERROR,
+  USER_STATE_LOADED,
 } from "../constants/user_constants";
 
 const initialState = {
   isLoading: false,
   error: null,
   current_user: {},
-  
 };
 
 export const user_reducer = (state = initialState, action) => {
@@ -26,7 +21,7 @@ export const user_reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-        
+
         current_user: action.current_user,
       };
     }
@@ -37,7 +32,7 @@ export const user_reducer = (state = initialState, action) => {
         error: action.error,
       };
     }
-    
+
     default:
       return state;
   }

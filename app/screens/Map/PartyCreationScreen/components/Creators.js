@@ -1,10 +1,9 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CreatorImage from "./CreatorImages";
-import CreatorNames from "./CreatorText";
-import { fetchUsers_ } from "./fetchUsers";
 import { useSelector } from "react-redux";
 import { colors } from "../../../../src/colors";
+
 export default function Creators() {
   const [creators, setCreators] = useState([]);
   const user = useSelector((state) => state.user_state.current_user);
@@ -18,7 +17,7 @@ export default function Creators() {
       </TouchableOpacity>
       <View style={styles.userImagesContainer}>
         <CreatorImage user={user} />
-        <View style={{ margin: 10 }}>
+        <View style={{ margin: 5 }}>
           <Text style={styles.textStyle_CreatorsName}>You</Text>
         </View>
 
@@ -52,7 +51,7 @@ const styles = StyleSheet.create({
     color: "#4C678F",
   },
   textStyle_CreatorsName: {
-    fontFamily: "WorkSans-Medium",
+    fontFamily: "WorkSans-Bold",
     fontSize: 13,
     color: colors.iconColor,
   },

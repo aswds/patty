@@ -1,11 +1,9 @@
-import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
-import { colors } from "../../../src/colors";
+import { StyleSheet, View } from "react-native";
 import { Logo } from "../components/Logo";
 import Buttons from "./components/Buttons";
-export default function InitialScreen() {
-  const navigation = useNavigation();
+
+export default function InitialScreen({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>

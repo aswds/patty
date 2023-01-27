@@ -1,4 +1,3 @@
-import { signOut } from "firebase/auth";
 import { doc, getDoc } from "firebase/firestore";
 import { Alert } from "react-native";
 import { auth, db } from "../../../firebase";
@@ -6,6 +5,7 @@ import {
   USER_STATE_CHANGE,
   USER_STATE_LOADED,
 } from "../constants/user_constants";
+
 export function fetch_user() {
   return async (dispatch) => {
     dispatch({ type: USER_STATE_CHANGE });
@@ -25,7 +25,7 @@ export function fetch_user() {
         "User not found",
         "We can't find user with that credentials."
       );
-      auth.signOut();
+      await auth.signOut();
     }
   };
 }

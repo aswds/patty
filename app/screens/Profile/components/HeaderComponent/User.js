@@ -1,23 +1,11 @@
-import React, { useState } from "react";
-import {
-  Image,
-  View,
-  Text,
-  StyleSheet,
-  ActivityIndicator,
-  SafeAreaView,
-} from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import useUserImage from "../../../../hooks/useUserImage";
-import Loader from "../Loader";
-import { MoreInfo } from "./abbo";
-import EditButton from "../../Button";
-import LogOutButton from "./LogoutButton";
 import UserBio from "./UserBio";
 import UserFollowers from "./UserFollowers";
 import UserImage from "./UserImage";
 import UserName from "./UserName/UserName";
-import { Skeleton } from "moti/skeleton";
-import AccountNotVerified from "../../AccountNotVerified";
+
 export default function User({ user }) {
   const { fetchableImage } = useUserImage(user.userImage);
   const [isLoading, setIsLoading] = React.useState(true);
@@ -30,7 +18,6 @@ export default function User({ user }) {
         paddingTop: user.verifiedEmail ? "10%" : "15%",
       }}
     >
-      <AccountNotVerified isVerified={user.verifiedEmail} />
       <UserImage
         uri={user.userImage}
         Loader={{ isLoading, setIsLoading }}

@@ -1,27 +1,35 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../../src/colors";
-import { IAddress } from "../types";
+
 const AddressTitle = ({ Address }) => {
   return (
     <View style={styles.addressTitleContainer} pointerEvents="none">
-      <Text style={styles.textStyle}>{Address}</Text>
+      <Text style={styles.textStyle}>
+        {Address ?? <Text style={styles.error}>Cannot pick a location</Text>}
+      </Text>
     </View>
   );
 };
 const styles = StyleSheet.create({
   addressTitleContainer: {
     height: "10%",
-    maxWidth: "90%",
     position: "absolute",
     bottom: "20%",
-    alignSelf: "center",
+    width: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   textStyle: {
     fontFamily: "WorkSans-Bold",
+    maxWidth: "90%",
     fontSize: 16,
     textAlign: "center",
     color: colors.iconColor,
+  },
+  error: {
+    fontFamily: "WorkSans-Bold",
+    color: colors.cancel,
   },
 });
 export default AddressTitle;
