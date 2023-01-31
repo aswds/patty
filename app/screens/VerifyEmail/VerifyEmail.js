@@ -1,5 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import Screen from "./components/Screen";
 import { colors } from "../../src/colors";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -85,7 +92,6 @@ const VerifyEmail = (props) => {
   const [sendEmailVerificationAgain, setSendEmailVerificationAgain] =
     useState(false);
   const [canSend, setCanSend] = useState(true);
-  const [reloadUser, setReloadUser] = useState(false);
   function sendVerification() {
     sendEmailVerification(auth.currentUser)
       .then(() => {
@@ -116,7 +122,6 @@ const VerifyEmail = (props) => {
     return (
       <Button
         style={{
-          alignSelf: "center",
           backgroundColor: canSend ? colors.accentColor : colors.disabledButton,
         }}
         onPress={sendVerificationLetter}
@@ -125,10 +130,18 @@ const VerifyEmail = (props) => {
       </Button>
     );
   }
-
-  useEffect(() => {
-    auth.currentUser.reload();
-  }, [reloadUser]);
+  function EmailVerified() {
+    return (
+      <Button
+        onPress={() => {
+          auth.currentUser.reload();
+        }}
+        style={{ marginBottom: 20 }}
+      >
+        I've verified email
+      </Button>
+    );
+  }
 
   useEffect(() => {
     if (!auth.currentUser?.emailVerified && !verification.emailWasSent) {
@@ -138,20 +151,25 @@ const VerifyEmail = (props) => {
   const email = auth.currentUser?.email;
   return (
     <Screen>
-      <View style={styles.container}>
-        <Title />
-        <MainText
-          email={
-            email && !route.params?.changedEmail
-              ? email
-              : route.params?.changedEmail
-          }
-          text={verification.text}
-        />
-      </View>
-      <SendVerificationAgain />
+      <ScrollView style={{ flex: 1 }} contentContainerStyle={{ flexGrow: 1 }}>
+        <View style={styles.container}>
+          <Title />
+          <MainText
+            email={
+              email && !route.params?.changedEmail
+                ? email
+                : route.params?.changedEmail
+            }
+            text={verification.text}
+          />
+        </View>
+        <View style={styles.buttonsContainer}>
+          <EmailVerified />
+          <SendVerificationAgain />
+        </View>
 
-      <ChangeEmailText />
+        <ChangeEmailText />
+      </ScrollView>
     </Screen>
   );
 };
@@ -161,6 +179,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
   },
+  buttonsContainer: { alignItems: "center", justifyContent: "space-around" },
   titleContainer: { alignItems: "center" },
   mainTextContainer: {
     marginTop: "15%",

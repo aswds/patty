@@ -1,16 +1,14 @@
 import { useRoute } from "@react-navigation/native";
-import React, { useEffect, useState } from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { colors } from "../../../../src/colors";
-import LocationAddButton from "./LocationAddButton";
 import { Title } from "./TagList";
 import { MaterialIcons } from "@expo/vector-icons";
-const styledMap = require("../../styledMap.json");
+
 const mapStyle = require("../../mapStyle.json");
 export default function Location(props) {
   const route = useRoute();
-  const { setLocation } = props;
 
   // function Map() {
   //   return (

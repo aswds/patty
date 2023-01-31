@@ -21,7 +21,6 @@ export const user_reducer = (state = initialState, action) => {
       return {
         ...state,
         isLoading: false,
-
         current_user: action.current_user,
       };
     }

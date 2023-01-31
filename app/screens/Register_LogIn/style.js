@@ -19,7 +19,7 @@ export const textStyle = {
     justifyContent: "center",
   },
   textTermsStyle: {
-    fontFamily: "Lato-Regular",
+    fontFamily: "WorkSans-Regular",
     fontWeight: "400",
     color: "grey",
   },

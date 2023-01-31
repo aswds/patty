@@ -12,11 +12,11 @@ export default function PickTime(props) {
   const [date, setDate] = useState(new Date(Date.now()));
   const [mode, setMode] = useState("date");
   const [show, setShow] = useState(false);
-
+  const minDate = new Date();
   const onChange = (_, selectedDate) => {
     const currentDate = selectedDate;
-    setDate(currentDate);
     setTime(currentDate);
+    setDate(currentDate);
   };
 
   const showMode = (currentMode) => {
@@ -31,7 +31,7 @@ export default function PickTime(props) {
     setShow(true);
     setToScrollBottom(true);
     setMode((mode) => {
-      return mode == "date" ? "time" : "date";
+      return mode === "date" ? "time" : "date";
     });
   }
 
@@ -70,7 +70,7 @@ export default function PickTime(props) {
             style={styles.datePickerStyle}
             value={date}
             mode={mode}
-            minimumDate={mode == "date" ? new Date() : null}
+            minimumDate={minDate}
             timeZoneOffsetInSeconds={0}
             onChange={onChange}
             display="spinner"

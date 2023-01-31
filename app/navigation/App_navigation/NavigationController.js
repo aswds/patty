@@ -9,9 +9,7 @@ import { VerifyEmailNav } from "../EmailVerification/VerifyEmailNav";
 export const NavigationController = (props) => {
   const [isSignedIn, setIsSigned] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [emailVerified, setIsEmailVerified] = useState(false);
   onAuthStateChanged(auth, (user) => {
-    setIsEmailVerified(user?.emailVerified);
     if (user) {
       setIsSigned(true);
     } else {
@@ -21,12 +19,16 @@ export const NavigationController = (props) => {
   if (isLoading) {
     return <Loader />;
   }
-  if (isSignedIn && !emailVerified) {
+  if (isSignedIn && !auth.currentUser?.emailVerified) {
     return <VerifyEmailNav />;
   }
   return (
     <>
-      {isSignedIn && emailVerified ? <App_Navigation /> : <LoginAndRegister />}
+      {isSignedIn && auth.currentUser?.emailVerified ? (
+        <App_Navigation />
+      ) : (
+        <LoginAndRegister />
+      )}
     </>
   );
 };
