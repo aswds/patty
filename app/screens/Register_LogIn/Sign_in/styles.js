@@ -35,7 +35,7 @@ export const styles = StyleSheet.create({
     color: "red",
   },
   loginContainer: {
-    width: Dimensions.get("window").width / 1,
+    width: Dimensions.get("window").width,
     height: Dimensions.get("window").height * 0.25,
     alignItems: "center",
     justifyContent: "center",
@@ -69,6 +69,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 15,
     justifyContent: "center",
     color: "white",
+    fontFamily: "WorkSans-Regular",
   },
   linearGradientStyle: {
     flex: 1,

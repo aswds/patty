@@ -1,23 +1,17 @@
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { colors } from "../../../../src/colors";
-import { useSelector } from "react-redux";
+import { addPartyOnMap } from "../addPartyOnMap";
+import { useNavigation } from "@react-navigation/native";
 
 export default function CreatePartyButton({ data }) {
-  const { verifiedEmail } = useSelector((state) => {
-    return state.user_state.current_user;
-  });
-  const { time, location, title, tags } = data;
-  const allNecessaryDataPresent = Boolean(
-    time,
-    location.region,
-    location.address,
-    title
-  );
+  const navigation = useNavigation();
+  const { time, location, title } = data;
+  const allNecessaryDataPresent =
+    time && location.region && location.address && title;
   function onPress() {
-    if (allNecessaryDataPresent && verifiedEmail) {
-    } else if (!verifiedEmail) {
-      Alert.alert("Please verify your email to continue.");
+    if (allNecessaryDataPresent) {
+      addPartyOnMap(data).then(() => navigation.goBack());
     } else {
       Alert.alert("Please make sure you entered all data.");
     }

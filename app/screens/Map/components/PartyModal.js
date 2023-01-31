@@ -1,43 +1,8 @@
-import { FontAwesome } from "@expo/vector-icons";
-import React, { useEffect, useRef, useState } from "react";
-import {
-  Modal,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TouchableWithoutFeedback,
-  View,
-  Animated,
-  Dimensions,
-  TouchableOpacity,
-  PanResponder,
-  SafeAreaView,
-  Image,
-  StatusBar,
-  Easing,
-  Alert,
-} from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { Feather } from "@expo/vector-icons";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { colors } from "../../../src/colors";
-import { animationStart } from "./ModalComponents/animations";
-import { CloseButton } from "./ModalComponents/CloseButton";
+import React from "react";
+import { Modal, StatusBar, StyleSheet } from "react-native";
 import Screen from "./ModalComponents/Screen";
+
 const PartyModal = (props) => {
-  const [userCanScroll, setUserCanScroll] = useState(true);
-
-  const iconSize = Dimensions.get("window").width * 0.1;
-  const styles = makeStyle(colors);
-  const navigation = useNavigation();
-  function closeModal() {
-    setIsAnimationRan(false), props.hideModal();
-    setAnimation(new Animated.Value(0));
-    setAnimationBorder(new Animated.Value(0));
-  }
-
-  const insets = useSafeAreaInsets();
-
   return (
     <Modal
       animationType="slide"

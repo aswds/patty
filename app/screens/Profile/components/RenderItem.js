@@ -1,12 +1,10 @@
 import React from "react";
-import { Dimensions, Platform, StyleSheet, Text, View } from "react-native";
-
-const isAndroid = Platform.OS == "android";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { isAndroid } from "../../../src/platform";
 
 export default function RenderItem(props) {
   const { item } = props;
   const user_info = item.item;
-  console.log(item);
   if (user_info === undefined) {
     return;
   }

@@ -12,9 +12,13 @@ export default function ChooseLocationButton({ region, address }) {
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          if (address && region) {
+          if (address.Label && region) {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-            navigation.navigate("PartyCreationScreen", { region, address });
+            navigation.navigate("PartyCreationScreen", {
+              region,
+              address: address.Label,
+              fullAddressInfo: address,
+            });
           } else {
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);
           }

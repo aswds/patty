@@ -6,14 +6,16 @@ import AddressTitle from "./components/AddressTitle";
 import ChooseLocationButton from "./components/ChooseLocationButton";
 import FakeMarker from "./components/Marker";
 import { getAddress } from "./getAddress";
-import Loader from "../../Register_LogIn/components/Loader";
-import useUserLocation from "../../../hooks/useUserLocation";
+import { useRoute } from "@react-navigation/native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const mapStyle = require("../mapStyle.json");
 export default function ChooseLocation() {
   const [region, setRegion] = useState();
   const [addressInfo, setAddressInfo] = useState({});
-  const { userLocation, errorMsg, isLoading } = useUserLocation();
+  const route = useRoute();
+  const { userLocation } = route.params;
+  const insets = useSafeAreaInsets();
   function onRegionChange(region) {
     getAddress(region.latitude, region.longitude)
       .then((res) => {
@@ -23,9 +25,7 @@ export default function ChooseLocation() {
     setRegion(region);
   }
   return (
-    <View style={styles.container}>
-      {/*<SafeAreaView style={styles.safeAreaStyle}>*/}
-      {isLoading && <Loader isVisible={isLoading} />}
+    <View style={[styles.container, {}]}>
       <MapView
         provider={"google"}
         customMapStyle={mapStyle}
@@ -35,11 +35,12 @@ export default function ChooseLocation() {
         onRegionChangeComplete={onRegionChange}
         initialRegion={userLocation}
       />
-      <GooglePlaceSearch style={[styles.googlePlaceSearchStyle]} />
+      <GooglePlaceSearch
+        style={[styles.googlePlaceSearchStyle, { paddingTop: insets.top }]}
+      />
       <FakeMarker />
       <AddressTitle Address={addressInfo.Label} />
-      <ChooseLocationButton region={region} address={addressInfo.Label} />
-      {/*</SafeAreaView>*/}
+      <ChooseLocationButton region={region} address={addressInfo} />
     </View>
   );
 }
@@ -48,8 +49,6 @@ const styles = StyleSheet.create({
   container: {
     //make map container
     flex: 1,
-    borderTopLeftRadius: 45,
-    borderTopRightRadius: 45,
     overflow: "hidden",
   },
   googlePlaceSearchStyle: {},
