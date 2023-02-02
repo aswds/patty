@@ -14,6 +14,8 @@ import { auth } from "../../../firebase";
 import { sendEmailVerification } from "firebase/auth";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Button from "../Register_LogIn/components/button";
+import { eventEmitter } from "../../custom/EventEmitter";
+import { EMAIL_VERIFICATION } from "../constans";
 
 function Title() {
   return (
@@ -89,9 +91,19 @@ const VerifyEmail = (props) => {
     text: "Sending a verification letter...\n",
     emailWasSent: false,
   });
-  const [sendEmailVerificationAgain, setSendEmailVerificationAgain] =
-    useState(false);
   const [canSend, setCanSend] = useState(true);
+
+  useEffect(() => {
+    const unsubscribe = setInterval(() => {
+      auth.currentUser?.reload();
+      if (auth.currentUser?.emailVerified) {
+        console.log("f");
+        eventEmitter.emit(EMAIL_VERIFICATION);
+      }
+    }, 1000);
+    return () => clearInterval(unsubscribe);
+  }, [auth.currentUser?.emailVerified]);
+
   function sendVerification() {
     sendEmailVerification(auth.currentUser)
       .then(() => {
@@ -107,6 +119,9 @@ const VerifyEmail = (props) => {
         });
       });
   }
+  // setInterval(function () {
+  //   verifyUserEmail();
+  // }, 1000);
   function SendVerificationAgain() {
     function sendVerificationLetter() {
       if (canSend) {
@@ -130,24 +145,12 @@ const VerifyEmail = (props) => {
       </Button>
     );
   }
-  function EmailVerified() {
-    return (
-      <Button
-        onPress={() => {
-          auth.currentUser.reload();
-        }}
-        style={{ marginBottom: 20 }}
-      >
-        I've verified email
-      </Button>
-    );
-  }
 
   useEffect(() => {
     if (!auth.currentUser?.emailVerified && !verification.emailWasSent) {
       sendVerification();
     }
-  }, [route.params?.changedEmail, sendEmailVerificationAgain]);
+  }, [route.params?.changedEmail]);
   const email = auth.currentUser?.email;
   return (
     <Screen>
@@ -164,7 +167,6 @@ const VerifyEmail = (props) => {
           />
         </View>
         <View style={styles.buttonsContainer}>
-          <EmailVerified />
           <SendVerificationAgain />
         </View>
 
