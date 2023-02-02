@@ -1,9 +1,7 @@
-import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import * as Haptics from "expo-haptics";
-import { auth, authentication } from "../../../../../../firebase";
-import { AuthReducer, initialState } from "../../../../../redux/AuthReducer";
-import { useReducer } from "react";
+import { signInWithEmailAndPassword } from "firebase/auth";
+import { auth } from "../../../../../../firebase";
 import error_handle from "./error_handle";
+
 export const user_signIn = async (
   setEmail,
   setPassword,
