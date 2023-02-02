@@ -1,38 +1,20 @@
 import * as React from "react";
+import { authReducer } from "../../../redux/reducers/AuthReducer";
+import { getAuth } from "firebase/auth";
 
 export const AuthContext = React.createContext();
 
 export function AuthContextProvider({ children }) {
-  const [state, dispatch] = React.useReducer(
-    (prevState, action) => {
-      switch (action.type) {
-        case "AUTH_START":
-          return {
-            isLoading: true,
-          };
-        case "AUTH_END":
-          return {
-            isLoading: false,
-          };
-      }
-    },
-    {
-      isLoading: false,
-    }
-  );
+  const auth = getAuth();
+  const [state, dispatch] = React.useReducer(authReducer, {
+    emailVerified: auth.currentUser?.emailVerified,
+    isLoading: false,
+  });
   const authContext = React.useMemo(
     () => ({
-      signIn: (data) => {
-        dispatch({ type: "AUTH_START" });
-        setTimeout(() => {
-          dispatch({ type: "AUTH_END" });
-        }, 1000);
-      },
-      signUp: (data) => {
-        dispatch({ type: "AUTH_START" });
-        setTimeout(() => {
-          dispatch({ type: "AUTH_END" });
-        }, 1000);
+      verifyUserEmail: (data) => {
+        console.log(auth.currentUser.emailVerified);
+        auth.currentUser?.reload();
       },
     }),
     []
@@ -41,9 +23,8 @@ export function AuthContextProvider({ children }) {
   return (
     <AuthContext.Provider
       value={{
-        signIn: authContext.signIn,
-        signUp: authContext.signUp,
-        isLoading: state.isLoading,
+        verifyUserEmail: authContext.verifyUserEmail,
+        userEmailVerified: state.emailVerified,
       }}
     >
       {children}
