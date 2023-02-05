@@ -4,13 +4,13 @@ import AddCreatorsScreen from "../../screens/Map/AddCreators/AddCreatorsScreen";
 import ChooseLocation from "../../screens/Map/ChooseLocation/ChooseLocation";
 import Map from "../../screens/Map/Map";
 import PartyCreationScreen from "../../screens/Map/PartyCreationScreen/PartyCreationScreen";
+import PartyMarker from "../../screens/Map/PartyMarker/PartyMarker";
 
 const Stack = createNativeStackNavigator();
 export const MapNavigator = (props) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen component={Map} name="Map" />
-
       <Stack.Group
         screenOptions={{
           presentation: "fullScreenModal",
@@ -23,6 +23,7 @@ export const MapNavigator = (props) => {
         />
         <Stack.Screen component={AddCreatorsScreen} name="AddCreators" />
         <Stack.Screen component={ChooseLocation} name="ChooseLocation" />
+        <Stack.Screen component={PartyMarker} name={"PartyMarker"} />
       </Stack.Group>
       {/*<Stack.Group*/}
       {/*  screenOptions={{*/}

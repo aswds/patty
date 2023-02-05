@@ -4,12 +4,12 @@ import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetch_user } from "../../redux/actions/User";
 import Screen from "./components/Screen";
-import Loader from "./components/Loader";
 import Header from "./components/Header";
 import RenderItem from "./components/RenderItem";
 import { colors } from "../../src/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { onRefresh } from "./refreshControlFuncs";
+import Loader from "../../shared/Loaders/Loader";
 
 function Profile(props) {
   const { current_user, isLoading } = props;
