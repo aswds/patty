@@ -1,12 +1,10 @@
-import { MaterialIcons } from "@expo/vector-icons";
-import React, { useState } from "react";
-import { StyleSheet, Text, TextInput, View, Dimensions } from "react-native";
+import React from "react";
+import { StyleSheet } from "react-native";
 import { colors } from "../../../../src/colors";
-import { Input } from "../../components/Input";
-import { textStyle } from "../../style";
 import Container from "./EmailVerification/Container";
 import VerifyText from "./EmailVerification/VerifyText";
 import Verify from "./EmailVerification/Verify";
+
 export default function EmailVerification(props) {
   const { email } = props;
   return (

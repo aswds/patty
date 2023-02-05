@@ -11,7 +11,7 @@ import { colors } from "../../../src/colors";
 import { isAndroid } from "../../../src/platform";
 import { BackButton } from "../components/BackButton";
 import Button from "../components/button";
-import { Input } from "../components/Input";
+import Input from "../../../shared/Input/Input";
 import { Logo } from "../components/Logo";
 import { Screen } from "../components/Screen";
 import CustomAlert from "../CustomAlert";

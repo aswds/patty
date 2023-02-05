@@ -1,12 +1,13 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import MapView, { Callout, Marker, PROVIDER_GOOGLE } from "react-native-maps";
 import useUserLocation from "../../hooks/useUserLocation";
-import Loader from "../Register_LogIn/components/Loader";
+import Loader from "../../shared/Loaders/Loader";
 import DoPartyButton from "./components/DoPartyButton";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { colors } from "../../src/colors";
+import type { IDoc } from "../../Types/Type";
 
 const mapStyle = require("./mapStyle.json");
 export default function Map() {
@@ -18,6 +19,7 @@ export default function Map() {
   return (
     <View style={styles.container}>
       {isLoading && <Loader isVisible={isLoading} />}
+
       <MapView
         style={styles.container}
         provider={PROVIDER_GOOGLE}
@@ -32,15 +34,21 @@ export default function Map() {
           setMarkers([...markers, r.nativeEvent?.coordinate]);
         }}
       >
-        {parties?.map((doc, index) => {
-          console.log("Marker: " + doc.location.region);
+        {parties?.map((doc: IDoc, index) => {
           return (
-            <Marker coordinate={doc.location.region} key={index}>
+            <Marker
+              coordinate={doc.location.region}
+              key={index}
+              onPress={() => {
+                console.log("F");
+              }}
+            >
               <FontAwesome5
                 name="fire-alt"
                 size={30}
                 color={colors.accentColor}
               />
+              <Text>{doc.title}</Text>
             </Marker>
           );
         })}
@@ -73,4 +81,5 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  loaderStyle: { height: 100, zIndex: -1 },
 });
