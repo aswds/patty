@@ -1,17 +1,8 @@
-import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import {
-  StyleSheet,
-  TextInput,
-  View,
-  Dimensions,
-  Text,
-  TouchableOpacity,
-} from "react-native";
+import { Dimensions, Text, TouchableOpacity, View } from "react-native";
 import { colors } from "../../../../../src/colors";
-import { Input } from "../../../components/Input";
-import { textStyle } from "../../../style";
+
 export default function Verify({ email }) {
   const navigation = useNavigation();
   return (

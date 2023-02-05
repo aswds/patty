@@ -1,9 +1,7 @@
-import { BlurView } from "expo-blur";
-import React, { useState } from "react";
-import { View, ImageBackground, StyleSheet } from "react-native";
+import React from "react";
+import { ImageBackground, StyleSheet, View } from "react-native";
 import useUserImage from "../../../../hooks/useUserImage";
-import Followers from "../Follower_info";
-import Loader from "../Loader";
+
 export default function ContainerBG(props) {
   const { insets, image } = props;
   const { fetchableImage } = useUserImage(image);
@@ -29,18 +27,6 @@ export default function ContainerBG(props) {
         imageStyle={styles.imageStyle}
         defaultSource={require("../../../../../assets/images/noImage-01.png")}
       >
-        {/* <BlurView
-          style={{
-            paddingTop: insets.top,
-            width: "100%",
-            height: "110%",
-            alignItems: "center",
-            justifyContent: "space-evenly",
-            borderBottomLeftRadius: 30,
-          }}
-          tint={"dark"}
-          intensity={22}
-        > */}
         <View
           style={{
             paddingTop: insets.top,
@@ -53,8 +39,6 @@ export default function ContainerBG(props) {
         >
           {props.children}
         </View>
-
-        {/* </BlurView> */}
       </ImageBackground>
     </View>
   );
