@@ -1,12 +1,10 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import React, { useRef, useState } from "react";
-import { Alert, StyleSheet, TextInput, View, Dimensions } from "react-native";
+import React, { useState } from "react";
+import { Dimensions, StyleSheet, View } from "react-native";
 import { colors } from "../../../../src/colors";
 import { BackButton } from "../../components/BackButton";
-import { Input } from "../../components/Input";
-import NMAskName from "./components/NameModalComp/NMAskName";
-import NMNextButton from "./components/NameModalComp/NMNextButton";
+import Input from "../../../../shared/Input/Input";
 import { NMScreen } from "./components/NameModalComp/NMScreen";
 import AskUsername from "./components/Username/AskUsername";
 import NextButton from "./components/Username/NextButton";
@@ -20,7 +18,6 @@ export const Username = (props) => {
 
   const navigation = useNavigation();
   const route = useRoute();
-  const surname_input_ref = useRef();
   return (
     <NMScreen>
       <BackButton navigation={navigation} />

@@ -4,7 +4,7 @@ import React from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../../../src/colors";
 import Button from "../../../components/button";
-import { Input } from "../../../components/Input";
+import Input from "../../../../../shared/Input/Input";
 import { textStyle } from "../../../style";
 import Container from "./Container";
 

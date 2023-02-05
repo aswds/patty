@@ -1,33 +1,14 @@
-import { FontAwesome5 } from "@expo/vector-icons";
-import {
-  DarkTheme,
-  useNavigation,
-  useRoute,
-  useTheme,
-} from "@react-navigation/native";
+import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useRef, useState } from "react";
-import {
-  Dimensions,
-  ImageBackground,
-  Keyboard,
-  KeyboardAvoidingView,
-  Platform,
-  SafeAreaView,
-  ScrollView,
-  StyleSheet,
-  Text,
-  TextInput,
-  TouchableOpacity,
-  TouchableWithoutFeedback,
-  View,
-} from "react-native";
+import { StyleSheet, View } from "react-native";
 import { colors } from "../../../../src/colors";
-import { Input } from "../../components/Input";
+import Input from "../../../../shared/Input/Input";
 import { BackButton } from "../../components/BackButton";
 import NMAskName from "./components/NameModalComp/NMAskName";
 import NMNextButton from "./components/NameModalComp/NMNextButton";
 import { NMScreen } from "./components/NameModalComp/NMScreen";
 import { text_modifier_name } from "./Sign_up_Functions/text_modifier";
+
 export const NameModal = (props) => {
   const [fullName, setFullName] = useState({ name: null, surname: null });
   const [nameSkip, setNameSkip] = useState();
