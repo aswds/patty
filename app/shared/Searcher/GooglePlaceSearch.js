@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
-import { colors } from "../../../src/colors";
+import { colors } from "../../src/colors";
 
 export default function GooglePlaceSearch({ style }) {
   return (
