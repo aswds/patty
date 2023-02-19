@@ -4,7 +4,7 @@ interface ICoordinates {
   longitude: string;
   longitudeDelta: string;
 }
-interface IFullAddress {
+export interface IFullAddress {
   AdditionalData: { [key: string]: string };
   City: string;
   Country: string;
@@ -12,9 +12,10 @@ interface IFullAddress {
   District: string;
   Label: string;
   Street: string;
+  HouseNumber?: number;
 }
 
-interface ILocation {
+export interface ILocation {
   region: ICoordinates;
   address: string;
   fullAddressInfo: IFullAddress;
@@ -26,4 +27,5 @@ export interface IDoc {
   location: ILocation;
   time: string;
   access: string;
+  number_of_guests: number;
 }

@@ -1,8 +1,7 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { colors } from "../../../src/colors";
-import { isAndroid } from "../../../src/platform";
 
 export default function GooglePlaceSearch({ style }) {
   return (
@@ -37,6 +36,8 @@ const searchBarStyle = {
     alignItems: "center",
     backgroundColor: colors.input,
     borderRadius: 9999,
+    color: colors.text_2,
+
     width: "100%",
   },
   poweredContainer: {

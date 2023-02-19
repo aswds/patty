@@ -1,16 +1,13 @@
 import {
-  StyleSheet,
   Keyboard,
-  ImageBackground,
-  TouchableWithoutFeedback,
-  ScrollView,
-  View,
   KeyboardAvoidingView,
-  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../../src/colors";
-import { BackButton } from "./BackButton";
 
 export const Screen = (props) => {
   const insets = useSafeAreaInsets();
@@ -56,7 +53,6 @@ const makeStyles = (insets) =>
     },
     viewStyle: {
       flex: 1,
-
       justifyContent: "center",
     },
     keyboardAvoidingViewStyle: {

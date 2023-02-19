@@ -14,6 +14,7 @@ const Input = React.forwardRef(
         }}
       >
         <TextInput
+          keyboardAppearance={"dark"}
           style={{
             ...styles.textInput,
             ...inputStyle,

@@ -3,7 +3,7 @@ import React, { useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { colors } from "../../../../src/colors";
 import Input from "../../../../shared/Input/Input";
-import { BackButton } from "../../components/BackButton";
+import { BackButton } from "../../../../shared/Buttons/BackButton";
 import NMAskName from "./components/NameModalComp/NMAskName";
 import NMNextButton from "./components/NameModalComp/NMNextButton";
 import { NMScreen } from "./components/NameModalComp/NMScreen";

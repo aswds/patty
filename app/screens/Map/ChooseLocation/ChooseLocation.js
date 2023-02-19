@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 import MapView from "react-native-maps";
 import GooglePlaceSearch from "../components/GooglePlaceSearch";
 import AddressTitle from "./components/AddressTitle";
@@ -26,21 +26,25 @@ export default function ChooseLocation() {
   }
   return (
     <View style={[styles.container, {}]}>
-      <MapView
-        provider={"google"}
-        customMapStyle={mapStyle}
-        style={{ flex: 1 }}
-        showsUserLocation
-        showsMyLocationButton
-        onRegionChangeComplete={onRegionChange}
-        initialRegion={userLocation}
-      />
-      <GooglePlaceSearch
-        style={[styles.googlePlaceSearchStyle, { paddingTop: insets.top }]}
-      />
-      <FakeMarker />
-      <AddressTitle Address={addressInfo.Label} />
-      <ChooseLocationButton region={region} address={addressInfo} />
+      <TouchableWithoutFeedback>
+        <>
+          <MapView
+            provider={"google"}
+            customMapStyle={mapStyle}
+            style={{ flex: 1 }}
+            showsUserLocation
+            showsMyLocationButton
+            onRegionChangeComplete={onRegionChange}
+            initialRegion={userLocation}
+          />
+          <GooglePlaceSearch
+            style={[styles.googlePlaceSearchStyle, { paddingTop: insets.top }]}
+          />
+          <FakeMarker />
+          <AddressTitle Address={addressInfo.Label} />
+          <ChooseLocationButton region={region} address={addressInfo} />
+        </>
+      </TouchableWithoutFeedback>
     </View>
   );
 }

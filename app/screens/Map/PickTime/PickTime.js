@@ -1,11 +1,13 @@
 import DateTimePicker from "@react-native-community/datetimepicker";
 import React, { useState } from "react";
-import { Platform, StyleSheet, Text, View } from "react-native";
-import { colors } from "../../../src/colors";
-import SwitchDateType from "./components/SwitchDateType";
+import { StyleSheet, Text, View } from "react-native";
 import * as Haptics from "expo-haptics";
-import { Title } from "../PartyCreationScreen/components/TagList";
+import SwitchDateType from "./components/SwitchDateType";
 import { FontAwesome } from "@expo/vector-icons";
+import { Title } from "../PartyCreationScreen/components/TagList";
+import { colors } from "../../../src/colors";
+import { isAndroid } from "../../../src/platform";
+import moment from "moment/moment";
 
 export default function PickTime(props) {
   const { setTime, setToScrollBottom } = props;
@@ -20,7 +22,7 @@ export default function PickTime(props) {
   };
 
   const showMode = (currentMode) => {
-    if (Platform.OS === "android") {
+    if (isAndroid) {
       setShow(false);
       // for iOS, add a button that closes the picker
     }
@@ -38,13 +40,7 @@ export default function PickTime(props) {
   function SelectedTime() {
     return (
       <View style={styles.timeContainer}>
-        <Text style={styles.textStyle}>
-          Selected time:{" "}
-          {date.toLocaleString("ukr", {
-            dateStyle: "short",
-            timeStyle: "short", // fix
-          })}
-        </Text>
+        <Text style={styles.textStyle}>{moment(date).format("lll")}</Text>
       </View>
     );
   }
@@ -74,6 +70,7 @@ export default function PickTime(props) {
             timeZoneOffsetInSeconds={0}
             onChange={onChange}
             display="spinner"
+            textColor="white"
           />
         )}
         <SwitchDateType
@@ -97,6 +94,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   timeContainer: {
+    width: "100%",
     backgroundColor: colors.input,
     padding: "5%",
     marginVertical: 20,
@@ -108,6 +106,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     fontFamily: "WorkSans-Bold",
+    textAlign: "center",
     fontSize: 18,
     color: colors.iconColor,
   },

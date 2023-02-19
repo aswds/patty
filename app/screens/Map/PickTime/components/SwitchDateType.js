@@ -3,6 +3,7 @@ import { StyleSheet, TouchableOpacity, View } from "react-native";
 import CustomButton from "../../PartyCreationScreen/components/LocationAddButton";
 import { Entypo } from "@expo/vector-icons";
 import { colors } from "../../../../src/colors";
+
 export default function SwitchDateType({
   onPress,
   isConfirmButtonShown,
@@ -13,7 +14,7 @@ export default function SwitchDateType({
     <View style={styles.buttonContainer}>
       <CustomButton
         onPress={onPress}
-        title={dateMode == "date" ? "Pick a time" : "Pick a date"}
+        title={dateMode === "date" ? "Pick a time" : "Pick a date"}
       />
       {isConfirmButtonShown && (
         <TouchableOpacity style={styles.doneButton} onPress={onDone}>

@@ -1,12 +1,10 @@
-import React, { useState } from "react";
+import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { colors } from "../../../../src/colors";
 import { Title } from "./TagList";
 import { Feather } from "@expo/vector-icons";
 
-export default function PickTitle({ setTitle }) {
-  const [editing, setEditing] = useState(true);
-  const styles = makeStyle(editing);
+export default function PickTitle({ setTitle, title }) {
   return (
     <>
       <Title
@@ -23,37 +21,38 @@ export default function PickTitle({ setTitle }) {
 
       <View style={styles.container}>
         <TextInput
-          placeholder="Choose a title"
+          keyboardAppearance={"dark"}
+          placeholder="Pick a title"
           placeholderTextColor={colors.iconColor}
           style={styles.inputField}
-          onEndEditing={() => setEditing(false)}
-          onTouchStart={() => setEditing(true)}
+          // onEndEditing={() => setEditing(false)}
+          // onTouchStart={() => setEditing(true)}
           onChangeText={(text) => {
             setTitle(text);
           }}
           maxLength={35}
+          defaultValue={title}
         />
       </View>
     </>
   );
 }
-const makeStyle = (isEditing) => {
-  return StyleSheet.create({
-    container: {
-      width: isEditing ? "50%" : null,
-      maxHeight: 50,
-      backgroundColor: isEditing ? colors.input : null,
-      borderRadius: 50,
-      marginBottom: "5%",
-    },
-    inputField: {
-      padding: isEditing ? 10 : 0,
-      color: "white",
-      width: "100%",
-      height: "100%",
-      borderRadius: 50,
-      fontSize: isEditing ? 15 : 23,
-      fontFamily: "WorkSans-Bold",
-    },
-  });
-};
+const styles = StyleSheet.create({
+  container: {
+    width: "100%",
+    height: "4%",
+    marginBottom: "5%",
+  },
+  inputField: {
+    width: "50%",
+    color: colors.text,
+    height: "100%",
+    borderRadius: 50,
+    padding: 10,
+
+    backgroundColor: colors.input,
+    fontSize: 20,
+    fontFamily: "WorkSans-Bold",
+    textAlign: "flex-start",
+  },
+});

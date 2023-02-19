@@ -1,6 +1,6 @@
 import React from "react";
-import { TextInput, View, StyleSheet } from "react-native";
-import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
+import { StyleSheet, TextInput, View } from "react-native";
+
 export default function SearchBar({
   placeholderText,
   style,
@@ -10,9 +10,17 @@ export default function SearchBar({
   return (
     <View style={[styles.container, style]}>
       {isPlaceSearcher ? (
-        {}
+        <TextInput
+          placeholder={placeholderText}
+          {...rest}
+          keyboardAppearance={"dark"}
+        />
       ) : (
-        <TextInput placeholder={placeholderText} {...rest} />
+        <TextInput
+          placeholder={placeholderText}
+          {...rest}
+          keyboardAppearance={"dark"}
+        />
       )}
     </View>
   );

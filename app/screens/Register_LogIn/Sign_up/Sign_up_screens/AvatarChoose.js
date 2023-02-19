@@ -1,37 +1,18 @@
-import { FontAwesome5 } from "@expo/vector-icons";
-import {
-  DarkTheme,
-  useNavigation,
-  useRoute,
-  useTheme,
-} from "@react-navigation/native";
-import * as ImagePicker from "expo-image-picker";
+import { useNavigation, useRoute, useTheme } from "@react-navigation/native";
 import React, { useEffect, useState } from "react";
-import {
-  Image,
-  ImageBackground,
-  Platform,
-  SafeAreaView,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Dimensions,
-  ScrollView,
-} from "react-native";
+import { StyleSheet } from "react-native";
 import { colors } from "../../../../src/colors";
 import ACAskImage from "./components/AvatarChooseComp/ACAskImage";
 import ACImage from "./components/AvatarChooseComp/ACImage";
 import ACNextButton from "./components/AvatarChooseComp/ACNextButton";
 import { ACScreen } from "./components/AvatarChooseComp/ACScreen";
-import { BackButton } from "../../components/BackButton";
-import NMNextButton from "./components/NameModalComp/NMNextButton";
+import { BackButton } from "../../../../shared/Buttons/BackButton";
 import { ModalPhoto } from "./Modal";
-import { IOSModal } from "./IOSModal";
 import { _hideModal, _imagePropHandler } from "./AvatarFunctions/ACFunctions";
 import useGallery from "../../../../hooks/useGallery";
 import { isAndroid } from "../../../../src/platform";
 import { _showModalHandle } from "./Sign_up_Functions/_showModalHandel";
+
 export const AvatarChoose = (props) => {
   const route = useRoute();
   const { colors } = useTheme();

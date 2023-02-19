@@ -17,7 +17,7 @@ export function IOSModal(setImage) {
   };
   ActionSheetIOS.showActionSheetWithOptions(
     {
-      options: ["Pick a picture", "Cancle"],
+      options: ["Pick a picture", "Cancel"],
       cancelButtonIndex: 1,
       destructiveButtonIndex: 1,
       userInterfaceStyle: "dark",

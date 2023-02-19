@@ -1,15 +1,9 @@
 import React, { useState } from "react";
-import {
-  View,
-  Text,
-  StyleSheet,
-  TextInput,
-  TouchableWithoutFeedback,
-  Keyboard,
-} from "react-native";
+import { StyleSheet, TextInput, View } from "react-native";
 import { colors } from "../../../../src/colors";
 import { sameUsernames } from "../../../Register_LogIn/Sign_up/Sign_up_screens/Sign_up_Functions/sameUsername";
 import { text_modifier } from "../../../Register_LogIn/Sign_up/Sign_up_screens/Sign_up_Functions/text_modifier";
+
 export default function EditName({ user }) {
   const [userInfo, setUserInfo] = useState({
     name: user.name,
@@ -22,12 +16,14 @@ export default function EditName({ user }) {
       <View>
         <View style={styles.nameStyle}>
           <TextInput
+            keyboardAppearance={"dark"}
             style={styles.textStyle}
             placeholder=""
             onChangeText={(text) => setUserInfo({ ...userInfo, name: text })}
             defaultValue={userInfo.name}
           />
           <TextInput
+            keyboardAppearance={"dark"}
             style={styles.textStyle}
             placeholder=""
             onChangeText={(text) => setUserInfo({ ...userInfo, surname: text })}
@@ -36,6 +32,7 @@ export default function EditName({ user }) {
         </View>
         <View style={styles.usernameStyle}>
           <TextInput
+            keyboardAppearance={"dark"}
             style={[
               styles.textStyle,
               { color: colors.iconColor, fontSize: 14 },

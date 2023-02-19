@@ -1,19 +1,10 @@
-import React, { useState } from "react";
-import { Callout } from "react-native-maps";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  SafeAreaView,
-} from "react-native";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { colors } from "../../../src/colors";
 import { Ionicons } from "@expo/vector-icons";
 import { isAndroid } from "../../../src/platform";
-import { useNavigation } from "@react-navigation/native";
-export default function DoPartyButton(props) {
-  const navigation = useNavigation();
 
+export default function DoPartyButton(props) {
   return (
     <TouchableOpacity
       style={styles.button}

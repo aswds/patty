@@ -3,7 +3,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
 import { colors } from "../../../../src/colors";
-import { BackButton } from "../../components/BackButton";
+import { BackButton } from "../../../../shared/Buttons/BackButton";
 import Input from "../../../../shared/Input/Input";
 import { NMScreen } from "./components/NameModalComp/NMScreen";
 import AskUsername from "./components/Username/AskUsername";

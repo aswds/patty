@@ -54,39 +54,31 @@ export default function TagModal({ setTags, isVisible, hideModal }) {
   function CloseButton() {
     return (
       <TouchableOpacity style={styles.button} onPress={onClose}>
-        <Text style={[styles.textStyle, { color: colors.cancel }]}>Cancle</Text>
+        <Text style={[styles.textStyle, { color: colors.cancel }]}>Cancel</Text>
       </TouchableOpacity>
     );
   }
   return (
-    <Modal
-      transparent
-      style={styles.container}
-      visible={isVisible}
-      animationType="fade"
-    >
+    <Modal transparent visible={isVisible} animationType="fade">
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
           <View style={styles.modalView}>
-            <View>
-              <Input
-                style={{
-                  width: "60%",
-                  alignSelf: "center",
-                  borderRadius: 20,
-                }}
-                onChangeText={onChangeText}
-                icon={
-                  <AntDesign name="tago" size={25} color={colors.iconColor} />
-                }
-                isValid={true}
-                placeholder="Tag title"
-                defaultValue={tagTitle}
-                inputStyle={{ width: "80%" }}
-              />
-            </View>
-
-            <View style={styles.butonsContainer}>
+            <Input
+              style={{
+                width: "60%",
+                alignSelf: "center",
+                borderRadius: 20,
+              }}
+              onChangeText={onChangeText}
+              icon={
+                <AntDesign name="tago" size={25} color={colors.iconColor} />
+              }
+              isValid={true}
+              placeholder="Tag title"
+              defaultValue={tagTitle}
+              inputStyle={{ width: "80%" }}
+            />
+            <View style={styles.buttonsContainer}>
               <CloseButton />
               <AddButton />
             </View>
@@ -105,7 +97,7 @@ const styles = StyleSheet.create({
     backgroundColor: "rgba(0,0,0,0.35)",
   },
   textStyle: {},
-  butonsContainer: {
+  buttonsContainer: {
     width: "100%",
     height: "50%",
     justifyContent: "space-around",
@@ -121,7 +113,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   modalView: {
-    height: "25%",
+    height: 200,
     width: "80%",
     justifyContent: "center",
     backgroundColor: colors.background,

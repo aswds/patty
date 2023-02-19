@@ -1,5 +1,3 @@
-const firebaseAuth = require("firebase/auth");
-
 import { createUserWithEmailAndPassword } from "firebase/auth";
 import { doc, setDoc, Timestamp } from "firebase/firestore";
 import { uploadImage } from "./uploadImage";
@@ -34,6 +32,7 @@ export function set_errorMsg_errorType(error_code) {
           message:
             "The provided email is already in use by an existing user. Each user must have a unique email.",
         });
+        break;
       case "auth/weak-password":
         rej({
           error_type: "password",
@@ -52,18 +51,18 @@ async function setDocs(result, userInfo) {
   await setDoc(doc(db, `USERS`, `${auth.currentUser.uid}`), {
     userUID: auth.currentUser.uid,
     email: email,
-    verifiedEmail: false,
     username: username,
     searchUsername: username.toLowerCase(),
     name: name || "",
     surname: surname,
-    country: "",
-    city: "",
     phoneNumber: "",
     userImage: "",
     following: 0,
     followers: 0,
     bio: "",
+    parties: [],
+    partiesVisited: 0,
+    partiesCreated: 0,
     createdAt: Timestamp.fromDate(new Date()).toJSON() || new Date(),
   }).then(() => {
     uploadImage(image, auth.currentUser);
@@ -86,7 +85,7 @@ export const signUpHandle = async (
     image,
   };
   return new Promise((res, rej) => {
-    const { user } = createUserWithEmailAndPassword(auth, email, password)
+    createUserWithEmailAndPassword(auth, email, password)
       .then((result) => {
         setDocs(result, userInfo);
       })

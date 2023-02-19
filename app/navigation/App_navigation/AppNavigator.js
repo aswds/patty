@@ -1,11 +1,8 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import { Tabs } from "../../custom/navigation/tabs";
-import DirectMessage from "../../screens/Chat/components/DirectMessage/DirectMessage";
-import PartyCreationScreen from "../../screens/Map/PartyCreationScreen/PartyCreationScreen";
-import AddCreatorsScreen from "../../screens/Map/AddCreators/AddCreatorsScreen";
-import ChooseLocation from "../../screens/Map/ChooseLocation/ChooseLocation";
-import PartyMarker from "../../screens/Map/PartyMarker/PartyMarker";
+import Chat from "../../screens/Chat/Chat";
+import { ChatNavigator } from "../Navigators/ChatNavigator";
+import { MapNavigator } from "../Navigators/MapNavigator";
 
 const Stack = createNativeStackNavigator();
 /**
@@ -18,24 +15,8 @@ const Stack = createNativeStackNavigator();
 export const AppNavigator = (props) => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen component={Tabs} name="Tabs" />
-      <Stack.Group>
-        <Stack.Screen
-          component={DirectMessage}
-          name={"DirectMessage"}
-          options={({ route }) => ({})}
-        />
-      </Stack.Group>
-      <Stack.Group>
-        <Stack.Screen
-          component={PartyCreationScreen}
-          name="PartyCreationScreen"
-          options={{ gestureEnabled: false }}
-        />
-        <Stack.Screen component={AddCreatorsScreen} name="AddCreators" />
-        <Stack.Screen component={ChooseLocation} name="ChooseLocation" />
-        <Stack.Screen component={PartyMarker} name={"PartyMarker"} />
-      </Stack.Group>
+      <Stack.Screen component={MapNavigator} name={"MapNavigator"} />
+      <Stack.Screen component={ChatNavigator} name={"Chat"} />
     </Stack.Navigator>
   );
 };

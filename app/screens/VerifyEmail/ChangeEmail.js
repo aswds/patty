@@ -6,7 +6,7 @@ import Button from "../Register_LogIn/components/button";
 import { colors } from "../../src/colors";
 import Input from "../../shared/Input/Input";
 import Screen from "./components/Screen";
-import { BackButton } from "../Register_LogIn/components/BackButton";
+import { BackButton } from "../../shared/Buttons/BackButton";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { updateEmail } from "firebase/auth";
 import { auth } from "../../../firebase";

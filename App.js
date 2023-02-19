@@ -1,6 +1,7 @@
 import { StatusBar, StyleSheet, View } from "react-native";
 import { useFontsLoad } from "./app/hooks/useFontsLoad";
 import { ProvidedNavigator } from "./app/navigation/SignIn&SingUp/ProvidedNavigator";
+import { Asset } from "expo-asset";
 
 export default function App() {
   const { isLoaded, error } = useFontsLoad();

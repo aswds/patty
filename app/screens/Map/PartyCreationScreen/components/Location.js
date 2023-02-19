@@ -10,12 +10,6 @@ const mapStyle = require("../../mapStyle.json");
 export default function Location(props) {
   const route = useRoute();
 
-  // function Map() {
-  //   return (
-  //
-  //   );
-  // }
-
   function TitleIcon() {
     return (
       <View style={{ marginBottom: 5 }}>

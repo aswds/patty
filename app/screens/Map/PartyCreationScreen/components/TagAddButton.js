@@ -1,9 +1,16 @@
 import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import {
+  KeyboardAvoidingView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+} from "react-native";
 import { colors } from "../../../../src/colors";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import TagModal from "./TagModal";
+import { isAndroid } from "../../../../src/platform";
+
 export default function TagAddButton({ setTags }) {
   const [isModalVisible, setIsModalVisible] = useState(false);
   function onPress() {
@@ -19,11 +26,18 @@ export default function TagAddButton({ setTags }) {
         color={colors.iconColor}
         style={{ marginHorizontal: "2%" }}
       />
-      <TagModal
-        setTags={setTags}
-        isVisible={isModalVisible}
-        hideModal={() => setIsModalVisible(false)}
-      />
+      <KeyboardAvoidingView
+        style={{
+          height: "100%",
+        }}
+        behavior={isAndroid ? "padding" : "height"}
+      >
+        <TagModal
+          setTags={setTags}
+          isVisible={isModalVisible}
+          hideModal={() => setIsModalVisible(false)}
+        />
+      </KeyboardAvoidingView>
     </TouchableOpacity>
   );
 }

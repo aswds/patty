@@ -1,10 +1,11 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../../src/colors";
 import TagAddButton from "./TagAddButton";
-import TagItem from "./TagItem";
+import TagItem from "../../../../shared/Tag/TagItem";
 import { AntDesign } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
+
 export function Title({ title, icon }) {
   return (
     <View style={styles.titleContainer}>

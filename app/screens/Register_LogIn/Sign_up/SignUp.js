@@ -9,7 +9,7 @@ import { Dimensions, StyleSheet, View } from "react-native";
 import { AuthContext } from "../../../navigation/SignIn&SingUp/components/AuthContext";
 import { colors } from "../../../src/colors";
 import { isAndroid } from "../../../src/platform";
-import { BackButton } from "../components/BackButton";
+import { BackButton } from "../../../shared/Buttons/BackButton";
 import Button from "../components/button";
 import Input from "../../../shared/Input/Input";
 import { Logo } from "../components/Logo";

@@ -1,7 +1,8 @@
 import { AntDesign } from "@expo/vector-icons";
 import React from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { colors } from "../../../../src/colors";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { colors } from "../../src/colors";
+
 export default function TagItem({ tag, onDelete, id }) {
   return (
     <TouchableOpacity style={styles.tagStyle} onLongPress={() => onDelete(id)}>

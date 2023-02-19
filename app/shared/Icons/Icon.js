@@ -1,11 +1,18 @@
-import React, { useEffect, useState } from "react";
-import { Feather } from "@expo/vector-icons";
-import { StyleSheet, View, Text, Animated, Dimensions } from "react-native";
-import * as Haptics from "expo-haptics";
-export default function Icon({ Icon, icon_name, focused, title }) {
-  const [animation, setAnimation] = useState(new Animated.Value(0));
+import React from "react";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { colors } from "../../src/colors";
 
-  const color = focused ? "rgb(210, 4, 45)" : "black";
+export default function Icon({
+  Icon,
+  icon_name,
+  text,
+  focused,
+  onPress,
+  title,
+  style,
+  textStyle,
+}) {
+  const color = focused ? colors.accentColor : "black";
   const isMap = title === "Map";
   const DimensionWidth = Dimensions.get("window").width;
   return (
@@ -16,9 +23,12 @@ export default function Icon({ Icon, icon_name, focused, title }) {
           height: isMap ? DimensionWidth * 0.16 : DimensionWidth * 0.14,
           marginBottom: isMap ? 20 : 0,
         },
+        style,
       ]}
+      onPress={onPress}
     >
-      <Icon name={icon_name} size={title == "Map" ? 35 : 25} color={color} />
+      <Icon name={icon_name} size={isMap ? 35 : 25} color={color} />
+      {text && <Text style={textStyle}>{text}</Text>}
     </View>
   );
 }
