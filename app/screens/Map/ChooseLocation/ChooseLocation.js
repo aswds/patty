@@ -1,11 +1,11 @@
 import React, { useState } from "react";
 import { StyleSheet, TouchableWithoutFeedback, View } from "react-native";
 import MapView from "react-native-maps";
-import GooglePlaceSearch from "../components/GooglePlaceSearch";
+import GooglePlaceSearch from "../../../shared/Searcher/GooglePlaceSearch";
 import AddressTitle from "./components/AddressTitle";
 import ChooseLocationButton from "./components/ChooseLocationButton";
 import FakeMarker from "./components/Marker";
-import { getAddress } from "./getAddress";
+import { getAddress } from "../../../shared/GetLocationFunctions/getAddress";
 import { useRoute } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 

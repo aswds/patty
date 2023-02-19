@@ -5,10 +5,15 @@ import { useSelector } from "react-redux";
 import { useNavigation } from "@react-navigation/native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../../../src/colors";
+import useUserImage from "../../../hooks/useUserImage";
 
 // Button to navigate to profile screen
 const ProfileButton = () => {
-  const userImage = useSelector((state) => state.user_state.userImage);
+  const userImage = useSelector(
+    (state) => state.user_state.current_user.userImage
+  );
+  console.log(userImage);
+  const { image } = useUserImage();
   const navigation = useNavigation();
   function onPress() {
     navigation.navigate("ProfileNav");

@@ -1,8 +1,8 @@
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { Alert } from "react-native";
 import { partiesLoading, partiesReceived } from "../reducers/Parties";
-import { getUserLocation } from "../../screens/Map/components/getUserLocation";
-import { getAddress } from "../../screens/Map/ChooseLocation/getAddress";
+import { getUserLocation } from "../../shared/GetLocationFunctions/getUserLocation";
+import { getAddress } from "../../shared/GetLocationFunctions/getAddress";
 
 async function fetchCityParties(userLocation) {
   const db = getFirestore();

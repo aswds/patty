@@ -1,17 +1,15 @@
 import React, { useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import MapView, { Callout, Marker, PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
 import DoPartyButton from "./components/DoPartyButton";
 import PartyMarkerModal from "./PartyModal/PartyMarkerModal";
-import { Entypo } from "@expo/vector-icons";
-import type { IDoc } from "../../Types/Type";
-import { pickColor } from "./pickColor";
 import { connect } from "react-redux";
 import { fetch_parties } from "../../redux/actions/Parties";
 import { bindActionCreators } from "redux";
-import useUserLocation from "../../hooks/useUserLocation";
+import useUserLocation from "../../hooks/useUserLocation/useUserLocation";
 import Loader from "../../shared/Loaders/Loader";
 import ProfileButton from "./components/ProfileButton";
+import CustomMarker from "./components/Markers/CustomMarker";
 
 const mapStyle = require("./mapStyle.json");
 function Map({ navigation }) {
@@ -39,36 +37,30 @@ function Map({ navigation }) {
         }}
         ref={mapRef}
       >
-        {parties?.map((doc: IDoc, index) => {
+        {parties?.map((doc, index) => {
           return (
-            <Marker
-              coordinate={doc?.location?.region}
-              key={index}
+            <CustomMarker
+              doc={doc}
+              index={index}
               onPress={() => {
                 setVisibleModal(true);
                 setMarkerInfo(doc);
                 mapRef.current.animateToRegion(doc?.location?.region);
               }}
-            >
-              <Entypo
-                name="shareable"
-                size={31}
-                color={pickColor(doc.number_of_guests)}
-              />
-            </Marker>
+              key={index}
+            />
           );
         })}
-        <ProfileButton />
       </MapView>
-      <Callout style={styles.buttonsContainer}>
-        <DoPartyButton
-          onPress={() => {
-            navigation.navigate("PartyCreationScreen", {
-              userLocation: userLocation,
-            });
-          }}
-        />
-      </Callout>
+      <ProfileButton />
+
+      <DoPartyButton
+        onPress={() => {
+          navigation.navigate("PartyCreationScreen", {
+            userLocation: userLocation,
+          });
+        }}
+      />
       <PartyMarkerModal
         hideModal={() => {
           setVisibleModal(false);
@@ -80,11 +72,6 @@ function Map({ navigation }) {
   );
 }
 const styles = StyleSheet.create({
-  buttonsContainer: {
-    alignSelf: "center",
-    position: "absolute",
-    bottom: "5%",
-  },
   button: {
     height: "70%",
     width: "40%",

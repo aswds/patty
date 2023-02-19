@@ -1,8 +1,8 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import Chat from "../../screens/Chat/Chat";
 import { ChatNavigator } from "../Navigators/ChatNavigator";
 import { MapNavigator } from "../Navigators/MapNavigator";
+import { ProfileNavigator } from "../Navigators/ProfileNavigator";
 
 const Stack = createNativeStackNavigator();
 /**
@@ -14,9 +14,13 @@ const Stack = createNativeStackNavigator();
  * */
 export const AppNavigator = (props) => {
   return (
-    <Stack.Navigator screenOptions={{ headerShown: false }}>
-      <Stack.Screen component={MapNavigator} name={"MapNavigator"} />
-      <Stack.Screen component={ChatNavigator} name={"Chat"} />
+    <Stack.Navigator
+      screenOptions={{ headerShown: false }}
+      initialRouteName={"MapNav"}
+    >
+      <Stack.Screen component={ProfileNavigator} name={"ProfileNav"} />
+      <Stack.Screen component={MapNavigator} name={"MapNav"} />
+      <Stack.Screen component={ChatNavigator} name={"ChatNav"} />
     </Stack.Navigator>
   );
 };

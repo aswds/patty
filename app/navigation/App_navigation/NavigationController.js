@@ -8,7 +8,7 @@ import { eventEmitter } from "../../custom/EventEmitter";
 import { EMAIL_VERIFICATION } from "../../screens/constans";
 import Loader from "../../shared/Loaders/Loader";
 import { colors } from "../../src/colors";
-import useUserLocation from "../../hooks/useUserLocation";
+import useUserLocation from "../../hooks/useUserLocation/useUserLocation";
 
 /**
  *

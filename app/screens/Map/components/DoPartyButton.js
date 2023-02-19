@@ -7,7 +7,7 @@ import { isAndroid } from "../../../src/platform";
 export default function DoPartyButton(props) {
   return (
     <TouchableOpacity
-      style={styles.button}
+      style={styles.buttonsContainer}
       activeOpacity={0.8}
       onPress={props.onPress}
     >
@@ -23,6 +23,11 @@ export default function DoPartyButton(props) {
 }
 
 const styles = StyleSheet.create({
+  buttonsContainer: {
+    alignSelf: "center",
+    position: "absolute",
+    bottom: "5%",
+  },
   button: {},
   iconContainer: {
     shadowOffset: { height: 4, width: 0 },
