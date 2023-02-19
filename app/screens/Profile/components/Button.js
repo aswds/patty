@@ -1,7 +1,6 @@
-import { useNavigation } from "@react-navigation/native";
-import React, { Component } from "react";
-import { TouchableOpacity, Text, StyleSheet } from "react-native";
-import { colors } from "../../src/colors";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { colors } from "../../../src/colors";
 
 function Button({ style, onPress, text, textStyled }) {
   return (
