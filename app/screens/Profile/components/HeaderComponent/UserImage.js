@@ -1,32 +1,21 @@
-import React, { useState } from "react";
-import {
-  Dimensions,
-  Image,
-  StyleSheet,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import React from "react";
+import { Image, StyleSheet, View } from "react-native";
 import useUserImage from "../../../../hooks/useUserImage";
-import Container from "./Container";
-import Button from "../../Button";
+import Button from "../Button";
 import { useNavigation } from "@react-navigation/native";
 import { Skeleton } from "moti/skeleton";
 import { isAndroid } from "../../../../src/platform";
-export default function UserImage({ uri, Loader, user }) {
-  const { isLoading, setIsLoading } = Loader;
 
-  const { fetchableImage } = useUserImage(uri);
+export default function UserImage({ uri, Loader, user, style }) {
+  const { isLoading, setIsLoading } = Loader;
+  const { image } = useUserImage(uri);
 
   const navigation = useNavigation();
-
-  const source = fetchableImage
-    ? { uri: uri }
-    : require("../../../../../assets/images/noImage-01.png");
-
+  console.log(image);
   const onPress = () => {
     navigation.navigate("EditProfile", {
       user,
-      image: { source: source, isDefault: !fetchableImage },
+      image: { image },
     });
   };
 
@@ -39,17 +28,13 @@ export default function UserImage({ uri, Loader, user }) {
         height={100}
         width={100}
       >
-        <View>
-          <Image
-            source={source}
-            style={styles.imageStyle}
-            onLayout={() => {
-              setTimeout(() => {
-                setIsLoading(false);
-              }, 500);
-            }}
-          />
-        </View>
+        <Image
+          source={image}
+          style={[styles.imageStyle, style]}
+          onLoadEnd={() => {
+            setIsLoading(false);
+          }}
+        />
       </Skeleton>
 
       <View>
