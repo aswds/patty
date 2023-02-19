@@ -1,4 +1,3 @@
-import { useNavigationContainerRef, useTheme } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import EditProfile from "../../screens/Profile/EditProfile/EditProfile";
@@ -8,8 +7,6 @@ import { isAndroid } from "../../src/platform";
 const Stack = createNativeStackNavigator();
 
 export const ProfileNavigator = (props) => {
-  const { colors } = useTheme();
-  const navigation = useNavigationContainerRef();
   const radius = isAndroid ? 0 : 50;
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

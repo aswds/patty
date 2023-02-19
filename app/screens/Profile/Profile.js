@@ -1,24 +1,22 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
+import { FlatList, RefreshControl, View } from "react-native";
 import { connect } from "react-redux";
 import { bindActionCreators } from "redux";
 import { fetch_user } from "../../redux/actions/User";
 import Screen from "./components/Screen";
-import Header from "./components/Header";
 import RenderItem from "./components/RenderItem";
 import { colors } from "../../src/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { onRefresh } from "./refreshControlFuncs";
 import Loader from "../../shared/Loaders/Loader";
+import User from "./components/HeaderComponent/User";
 
 function Profile(props) {
-  const { current_user, isLoading } = props;
+  const { current_user, fetch_user } = props;
   const [refreshing, setRefreshing] = useState(false);
-  const [user, setUser] = useState(current_user);
   const insets = useSafeAreaInsets();
   useEffect(() => {
-    props.fetch_user();
-    setUser(props.current_user);
+    fetch_user();
   }, []);
   if (!current_user) {
     return <Loader />;
@@ -38,10 +36,8 @@ function Profile(props) {
             />
           </View>
         }
-        ListHeaderComponent={
-          <Header user={current_user} isLoading={isLoading} />
-        }
-        data={[user]}
+        ListHeaderComponent={<User user={current_user} />}
+        data={[current_user]}
         renderItem={(item) => {
           return <RenderItem item={item} />;
         }}
@@ -49,19 +45,8 @@ function Profile(props) {
     </Screen>
   );
 }
-const styles = StyleSheet.create({
-  headerContainer: {
-    width: "100%",
-    height: "35%",
-  },
-});
-
 const mapDispatchProps = (dispatch) => {
-  return bindActionCreators(
-    { fetch_user },
-    // fetchUserPosts, fetchUserFollowing, fetchUserFollowers
-    dispatch
-  );
+  return bindActionCreators({ fetch_user }, dispatch);
 };
 const mapStateToProps = (store) => ({
   current_user: store.user_state.current_user,
