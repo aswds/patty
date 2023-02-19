@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
-import { getUserLocation } from "../screens/Map/components/getUserLocation";
+import { getUserLocation } from "../../shared/GetLocationFunctions/getUserLocation";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { Alert } from "react-native";
-import { getAddress } from "../screens/Map/ChooseLocation/getAddress";
+import { getAddress } from "../../shared/GetLocationFunctions/getAddress";
 
 /**
  * Get all parties in user's city
