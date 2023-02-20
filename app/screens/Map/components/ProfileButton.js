@@ -1,39 +1,47 @@
 import React from "react";
 
-import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
-import { useSelector } from "react-redux";
+import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import { Ionicons } from "@expo/vector-icons";
-import { colors } from "../../../src/colors";
 import useUserImage from "../../../hooks/useUserImage";
-
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import * as Haptics from "expo-haptics";
+import { colors } from "../../../src/colors";
 // Button to navigate to profile screen
 const ProfileButton = () => {
-  const userImage = useSelector(
-    (state) => state.user_state.current_user.userImage
-  );
-  console.log(userImage);
   const { image } = useUserImage();
   const navigation = useNavigation();
+  const insets = useSafeAreaInsets();
   function onPress() {
     navigation.navigate("ProfileNav");
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   }
   return (
-    <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Image source={userImage} style={{ height: "100%", width: "100%" }} />
-      <View style={styles.iconContainer}>
-        <Ionicons name="add-circle" size={40} color={colors.accentColor} />
-      </View>
+    <TouchableOpacity
+      style={[styles.container, { marginTop: insets.top }]}
+      onPress={onPress}
+    >
+      <Image
+        source={image}
+        style={{
+          height: "100%",
+          width: "100%",
+          backgroundColor: colors.background,
+        }}
+      />
     </TouchableOpacity>
   );
 };
 const styles = StyleSheet.create({
   container: {
-    alignSelf: "center",
+    height: 55,
+    aspectRatio: 1,
     position: "absolute",
-    top: "5%",
+    top: "1%",
     right: "5%",
-    backgroundColor: "yellow",
+    borderWidth: 2,
+    borderColor: "white",
+    borderRadius: 99999,
+    overflow: "hidden",
   },
 });
 export default ProfileButton;

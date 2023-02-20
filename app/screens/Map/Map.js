@@ -52,6 +52,7 @@ function Map({ navigation }) {
           );
         })}
       </MapView>
+
       <ProfileButton />
 
       <DoPartyButton

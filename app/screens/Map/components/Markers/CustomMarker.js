@@ -5,7 +5,7 @@ import { Marker } from "react-native-maps";
 
 const CustomMarker = ({ doc, index, onPress }) => {
   return (
-    <Marker coordinate={doc?.location?.region} key={index} onPress={() => {}}>
+    <Marker coordinate={doc?.location?.region} key={index} onPress={onPress}>
       <Entypo
         name="shareable"
         size={31}

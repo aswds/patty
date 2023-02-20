@@ -8,7 +8,6 @@ import { eventEmitter } from "../../custom/EventEmitter";
 import { EMAIL_VERIFICATION } from "../../screens/constans";
 import Loader from "../../shared/Loaders/Loader";
 import { colors } from "../../src/colors";
-import useUserLocation from "../../hooks/useUserLocation/useUserLocation";
 
 /**
  *
@@ -29,7 +28,6 @@ export const NavigationController = (props) => {
   const [isLoading, setIsLoading] = useState(true);
 
   // for better user experience calling useUserLocation here and on map screen
-  const {} = useUserLocation();
   // listener for email verification screen
   useEffect(() => {
     if (!emailVerified) {
