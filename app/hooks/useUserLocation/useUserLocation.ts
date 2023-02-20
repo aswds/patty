@@ -1,15 +1,19 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getUserLocation } from "../../shared/GetLocationFunctions/getUserLocation";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { Alert } from "react-native";
 import { getAddress } from "../../shared/GetLocationFunctions/getAddress";
+import firebase from "firebase/compat";
+import { ICoordinates, IFullAddress } from "../../Types/Type";
+import { LocationObject } from "expo-location";
+import DocumentData = firebase.firestore.DocumentData;
 
 /**
  * Get all parties in user's city
  * @param userLocation
  * @returns {Promise<Array<QueryDocumentSnapshot<DocumentData>>|void>}
  */
-async function fetchCityParties(userLocation) {
+async function fetchCityParties(userLocation: string) {
   const db = getFirestore();
   const collectionRef = collection(
     db,
@@ -25,34 +29,31 @@ async function fetchCityParties(userLocation) {
     .catch((e) => Alert.alert(e));
 }
 
-/**
- *  Hook to get user location and fetch city parties
- * @returns {{isLoading: boolean, parties: undefined, userLocation: unknown, errorMsg: unknown}}
- */
-
 export default function useUserLocation() {
-  const [userLocation, setUserLocation] = useState(null);
-  const [errorMsg, setErrorMsg] = useState(null);
-  const [isLoading, setIsLoading] = useState(true);
-  const [parties, setParties] = useState();
+  const [userLocation, setUserLocation] = useState<ICoordinates>();
+  const [errorMsg, setErrorMsg] = useState<string>();
+  const [isLoading, setIsLoading] = useState<boolean>(true);
+  const [parties, setParties] = useState<DocumentData>();
   useEffect(() => {
     (async function fetchData() {
       try {
-        getUserLocation().then((res) => {
-          getAddress(res.latitude, res.longitude).then((r) => {
-            fetchCityParties(r?.City).then((parties) => {
-              setParties(parties.map((doc) => doc.data()));
-            });
-          });
+        getUserLocation().then((res: LocationObject) => {
+          getAddress(res.coords.latitude, res.coords.longitude).then(
+            (r: IFullAddress) => {
+              fetchCityParties(r?.City).then((parties) => {
+                setParties(parties?.map((doc) => doc.data()));
+              });
+            }
+          );
           setUserLocation({
-            latitude: res.latitude,
+            latitude: res.coords.latitude,
             latitudeDelta: 0,
-            longitude: res.longitude,
+            longitude: res.coords.longitude,
             longitudeDelta: -0.01,
           });
           setIsLoading(false);
         });
-      } catch (e) {
+      } catch (e: any) {
         setErrorMsg(e);
       }
     })();

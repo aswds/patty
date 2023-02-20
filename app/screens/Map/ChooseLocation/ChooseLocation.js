@@ -6,14 +6,12 @@ import AddressTitle from "./components/AddressTitle";
 import ChooseLocationButton from "./components/ChooseLocationButton";
 import FakeMarker from "./components/Marker";
 import { getAddress } from "../../../shared/GetLocationFunctions/getAddress";
-import { useRoute } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 const mapStyle = require("../mapStyle.json");
-export default function ChooseLocation() {
+export default function ChooseLocation({ route }) {
   const [region, setRegion] = useState();
   const [addressInfo, setAddressInfo] = useState({});
-  const route = useRoute();
   const { userLocation } = route.params;
   const insets = useSafeAreaInsets();
   function onRegionChange(region) {

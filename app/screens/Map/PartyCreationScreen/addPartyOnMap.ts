@@ -18,9 +18,9 @@ export async function addPartyOnMap(data: IDoc) {
       `PARTIES`,
       `${data?.location?.fullAddressInfo?.City}`,
       `UserParties`,
-      `${auth.currentUser.uid}`
+      `${auth?.currentUser?.uid}`
     ),
-    user: doc(db, "Users", auth.currentUser.uid),
+    user: doc(db, "Users", `${auth?.currentUser?.uid}`),
   };
 
   const addParty = new Promise(async () => {

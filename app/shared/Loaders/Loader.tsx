@@ -1,8 +1,24 @@
 import React from "react";
-import { ActivityIndicator, Modal, StyleSheet, View } from "react-native";
+import {
+  ActivityIndicator,
+  Modal,
+  StyleSheet,
+  View,
+  ViewStyle,
+} from "react-native";
 import { colors } from "../../src/colors";
 
-export default function Loader({ isVisible, style, containerStyle, ...other }) {
+interface LoaderProps {
+  isVisible: boolean;
+  style?: ViewStyle;
+  containerStyle?: ViewStyle;
+}
+export default function Loader({
+  isVisible,
+  style,
+  containerStyle,
+  ...other
+}: LoaderProps) {
   return (
     <View style={containerStyle}>
       <Modal animationType="fade" transparent={true} visible={isVisible}>

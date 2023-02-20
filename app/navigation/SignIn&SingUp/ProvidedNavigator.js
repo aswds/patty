@@ -1,15 +1,10 @@
-import {
-  NavigationContainer,
-  StackActions,
-  useNavigationContainerRef,
-  useTheme,
-} from "@react-navigation/native";
 import { AuthContextProvider } from "./components/AuthContext";
-import { NavigationController } from "../App_navigation/NavigationController";
+import { RootNavigator } from "../App_navigation/RootNavigator";
+
 export const ProvidedNavigator = (props) => {
   return (
     <AuthContextProvider>
-      <NavigationController />
+      <RootNavigator />
     </AuthContextProvider>
   );
 };

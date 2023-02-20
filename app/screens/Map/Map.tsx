@@ -1,43 +1,50 @@
 import React, { useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
-import MapView, { PROVIDER_GOOGLE } from "react-native-maps";
+import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
 import DoPartyButton from "./components/DoPartyButton";
 import PartyMarkerModal from "./PartyModal/PartyMarkerModal";
 import { connect } from "react-redux";
 import { fetch_parties } from "../../redux/actions/Parties";
-import { bindActionCreators } from "redux";
+import { AnyAction, bindActionCreators, Dispatch } from "redux";
 import useUserLocation from "../../hooks/useUserLocation/useUserLocation";
 import Loader from "../../shared/Loaders/Loader";
 import ProfileButton from "./components/ProfileButton";
 import CustomMarker from "./components/Markers/CustomMarker";
+import type { IDoc } from "../../Types/Type";
 
 const mapStyle = require("./mapStyle.json");
-function Map({ navigation }) {
-  const [markers, setMarkers] = useState([]);
+
+function Map({}) {
   const [visibleModal, setVisibleModal] = useState(false);
-  const [markerInfo, setMarkerInfo] = useState();
+  const [showSheet, setShowSheet] = useState(true);
+  const [markerInfo, setMarkerInfo] = useState<IDoc>();
+
   const { userLocation, parties, isLoading } = useUserLocation();
 
-  const mapRef = useRef(null);
+  const mapRef = useRef<MapView | null>(null);
+
   return (
     <View style={styles.container}>
-      {isLoading && <Loader isVisible={isLoading} />}
+      {isLoading && (
+        <Loader
+          isVisible={isLoading}
+          style={undefined}
+          containerStyle={undefined}
+        />
+      )}
       <MapView
         style={styles.container}
         provider={PROVIDER_GOOGLE}
         customMapStyle={mapStyle}
-        initialRegion={userLocation}
+        initialRegion={userLocation as Region}
         userLocationPriority={"low"}
         showsBuildings={true}
         loadingEnabled={true}
         showsUserLocation
         paddingAdjustmentBehavior="always"
-        onPress={(r) => {
-          setMarkers([...markers, r.nativeEvent?.coordinate]);
-        }}
         ref={mapRef}
       >
-        {parties?.map((doc, index) => {
+        {parties?.map((doc: IDoc, index: React.Key | null | undefined) => {
           return (
             <CustomMarker
               doc={doc}
@@ -45,7 +52,7 @@ function Map({ navigation }) {
               onPress={() => {
                 setVisibleModal(true);
                 setMarkerInfo(doc);
-                mapRef.current.animateToRegion(doc?.location?.region);
+                mapRef?.current?.animateToRegion(doc?.location?.region);
               }}
               key={index}
             />
@@ -57,11 +64,12 @@ function Map({ navigation }) {
 
       <DoPartyButton
         onPress={() => {
-          navigation.navigate("PartyCreationScreen", {
-            userLocation: userLocation,
-          });
+          // navigation.navigate("PartyCreationScreen", {
+          //   userLocation: userLocation,
+          // });
         }}
       />
+      {/*<DraggableBottomSheet ref={ref} />*/}
       <PartyMarkerModal
         hideModal={() => {
           setVisibleModal(false);
@@ -72,6 +80,7 @@ function Map({ navigation }) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   button: {
     height: "70%",
@@ -86,10 +95,12 @@ const styles = StyleSheet.create({
   loaderStyle: { height: 100, zIndex: -1 },
 });
 
-const mapDispatchProps = (dispatch) => {
+const mapDispatchProps = (dispatch: Dispatch<AnyAction>) => {
   return bindActionCreators({ fetch_parties }, dispatch);
 };
-const mapStateToProps = (store) => ({
+const mapStateToProps = (store: {
+  parties_state: { isLoading: any; parties: any };
+}) => ({
   isPartiesLoading: store.parties_state.isLoading,
   parties: store.parties_state.parties,
 });

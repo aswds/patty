@@ -38,9 +38,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: "1%",
     right: "5%",
-    borderWidth: 2,
+    borderWidth: 1,
     borderColor: "white",
-    borderRadius: 99999,
+    borderRadius: 9999,
     overflow: "hidden",
   },
 });

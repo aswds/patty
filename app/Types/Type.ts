@@ -1,8 +1,8 @@
-interface ICoordinates {
-  latitude: string;
-  latitudeDelta: string;
-  longitude: string;
-  longitudeDelta: string;
+export interface ICoordinates {
+  latitude: number;
+  latitudeDelta: number;
+  longitude: number;
+  longitudeDelta: number;
 }
 export interface IFullAddress {
   AdditionalData: { [key: string]: string };

@@ -20,12 +20,12 @@ import { colors } from "../../src/colors";
  * @constructor
  */
 
-export const NavigationController = (props) => {
-  const [isSignedIn, setIsSigned] = useState(false);
-  const [emailVerified, setEmailVerified] = useState(
+export const RootNavigator = () => {
+  const [isSignedIn, setIsSigned] = useState<boolean>(false);
+  const [emailVerified, setEmailVerified] = useState<boolean | undefined>(
     auth.currentUser?.emailVerified
   );
-  const [isLoading, setIsLoading] = useState(true);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
 
   // for better user experience calling useUserLocation here and on map screen
   // listener for email verification screen

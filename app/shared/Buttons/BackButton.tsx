@@ -1,9 +1,20 @@
 import { FontAwesome5 } from "@expo/vector-icons";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 import { colors } from "../../src/colors";
 import { isAndroid } from "../../src/platform";
+import React, { FC } from "react";
 
-export const BackButton = ({ navigation, style, iconColor }) => {
+interface BackButtonProps {
+  navigation: any;
+  style: ViewStyle;
+  iconColor: string;
+}
+
+export const BackButton: FC<BackButtonProps> = ({
+  navigation,
+  style,
+  iconColor,
+}) => {
   return (
     <TouchableOpacity
       style={[styles.arrowContainer, style]}
