@@ -1,22 +1,20 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import Map from "../../screens/Map/Map";
-import PartyCreationScreen from "../../screens/Map/PartyCreationScreen/PartyCreationScreen";
-import ChooseLocation from "../../screens/Map/ChooseLocation/ChooseLocation";
+import { MapStackNavigatorParamList } from "../../Types/MapStack/NavigationTypes";
+import { PartyCreationStack } from "./PartyCreationStack";
 
-const Stack = createNativeStackNavigator();
-export const MapNavigator = (props) => {
+const Stack = createNativeStackNavigator<MapStackNavigatorParamList>();
+export const MapNavigator = () => {
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>
       <Stack.Screen component={Map} name="Map" />
-
       <Stack.Screen
-        component={PartyCreationScreen}
-        name="PartyCreationScreen"
+        component={PartyCreationStack}
+        name="PartyCreationStack"
         options={{ gestureEnabled: false }}
       />
       {/*<Stack.Screen component={AddCreatorsScreen} name="AddCreators" />*/}
-      <Stack.Screen component={ChooseLocation} name="ChooseLocation" />
     </Stack.Navigator>
   );
 };

@@ -1,8 +1,9 @@
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { colors } from "../../../../src/colors";
-import { Title } from "./TagList";
 import { Feather } from "@expo/vector-icons";
+import { Title } from "../../../../shared/Title/Title";
+import { descriptionTexts } from "../descriptionTexts";
 
 export default function PickTitle({ setTitle, title }) {
   return (
@@ -17,6 +18,7 @@ export default function PickTitle({ setTitle, title }) {
             style={{ paddingBottom: 5, paddingLeft: 5 }}
           />
         }
+        description={descriptionTexts.title}
       />
 
       <View style={styles.container}>
@@ -40,7 +42,7 @@ export default function PickTitle({ setTitle, title }) {
 const styles = StyleSheet.create({
   container: {
     width: "100%",
-    height: "4%",
+    height: 50,
     marginBottom: "5%",
   },
   inputField: {

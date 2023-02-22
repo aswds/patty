@@ -18,7 +18,11 @@ export default function Screen(props) {
         }}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-        contentContainerStyle={{ paddingTop: insets.top, padding: 20 }}
+        contentContainerStyle={{
+          paddingTop: insets.top,
+          padding: 20,
+          backgroundColor: "yellow",
+        }}
       >
         <View style={{ flex: 1 }}>
           {React.Children.map(props.children, (child, i) => {

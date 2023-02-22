@@ -1,35 +1,17 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { colors } from "../../../../src/colors";
 import TagAddButton from "./TagAddButton";
 import TagItem from "../../../../shared/Tag/TagItem";
-import { AntDesign } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
+import { Title } from "../../../../shared/Title/Title";
+import { AntDesign } from "@expo/vector-icons";
+import { descriptionTexts } from "../descriptionTexts";
 
-export function Title({ title, icon }) {
-  return (
-    <View style={styles.titleContainer}>
-      <View>
-        <Text style={styles.textStyle}>{title ? title : "Tags"}</Text>
-      </View>
-
-      {icon ? (
-        icon
-      ) : (
-        <AntDesign
-          name="tago"
-          size={20}
-          color={colors.iconColor}
-          style={{ paddingHorizontal: 5 }}
-        />
-      )}
-    </View>
-  );
-}
 export default function TagList({ setTags, tags }) {
   function onDelete(id) {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    setTags((_tags) => _tags.filter((tag, tag_id) => tag_id !== id));
+    setTags((tags) => tags.filter((tag, tag_id) => tag_id !== id));
   }
 
   function Tags() {
@@ -44,7 +26,18 @@ export default function TagList({ setTags, tags }) {
   }
   return (
     <View style={styles.container}>
-      <Title />
+      <Title
+        icon={
+          <AntDesign
+            name="tago"
+            size={20}
+            color={colors.iconColor}
+            style={{ paddingHorizontal: 5 }}
+          />
+        }
+        title={"Tags"}
+        description={descriptionTexts.tags}
+      />
       <Tags />
     </View>
   );
@@ -69,5 +62,6 @@ const styles = StyleSheet.create({
   tagContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
+    gap: 10,
   },
 });

@@ -6,8 +6,8 @@ import React, { FC } from "react";
 
 interface BackButtonProps {
   navigation: any;
-  style: ViewStyle;
-  iconColor: string;
+  style?: ViewStyle;
+  iconColor?: string;
 }
 
 export const BackButton: FC<BackButtonProps> = ({

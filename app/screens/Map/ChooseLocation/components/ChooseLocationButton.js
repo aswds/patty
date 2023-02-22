@@ -14,10 +14,13 @@ export default function ChooseLocationButton({ region, address }) {
         onPress={() => {
           if (address.Label && region) {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-            navigation.navigate("PartyCreationScreen", {
-              region,
-              address: address.Label,
-              fullAddressInfo: address,
+            navigation.navigate("PartyCreationStack", {
+              screen: "PartyCreationScreen",
+              params: {
+                region,
+                address: address.Label,
+                fullAddressInfo: address,
+              },
             });
           } else {
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);

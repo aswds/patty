@@ -40,7 +40,7 @@ export const Tabs = () => {
 
       {/*<Tab.Screen*/}
       {/*  name="MapNav"*/}
-      {/*  component={MapNavigator}*/}
+      {/*  component={MapStack}*/}
       {/*  options={{*/}
       {/*    tabBarIcon: ({ focused }) => {*/}
       {/*      return (*/}

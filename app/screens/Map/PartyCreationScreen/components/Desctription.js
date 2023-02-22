@@ -1,8 +1,9 @@
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
-import { Title } from "./TagList";
+import { Title } from "../../../../shared/Title/Title";
 import { Entypo } from "@expo/vector-icons";
 import { colors } from "../../../../src/colors";
+import { descriptionTexts } from "../descriptionTexts";
 
 export default function Description({ setDescription, description }) {
   return (
@@ -17,6 +18,7 @@ export default function Description({ setDescription, description }) {
             style={{ paddingBottom: 5, paddingLeft: 5 }}
           />
         }
+        description={descriptionTexts.description}
       />
 
       <View style={styles.container}>

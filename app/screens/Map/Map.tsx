@@ -1,37 +1,29 @@
 import React, { useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
-import DoPartyButton from "./components/DoPartyButton";
 import PartyMarkerModal from "./PartyModal/PartyMarkerModal";
 import { connect } from "react-redux";
 import { fetch_parties } from "../../redux/actions/Parties";
 import { AnyAction, bindActionCreators, Dispatch } from "redux";
 import useUserLocation from "../../hooks/useUserLocation/useUserLocation";
 import Loader from "../../shared/Loaders/Loader";
-import ProfileButton from "./components/ProfileButton";
 import CustomMarker from "./components/Markers/CustomMarker";
 import type { IDoc } from "../../Types/Type";
+import { MapScreenNavigationProps } from "../../Types/MapStack/ScreenNavigationProps";
+import Buttons from "./components/Buttons/Buttons";
 
 const mapStyle = require("./mapStyle.json");
 
-function Map({}) {
-  const [visibleModal, setVisibleModal] = useState(false);
-  const [showSheet, setShowSheet] = useState(true);
+function Map({ navigation }: MapScreenNavigationProps) {
+  const [visibleModal, setVisibleModal] = useState<boolean>(false);
   const [markerInfo, setMarkerInfo] = useState<IDoc>();
-
   const { userLocation, parties, isLoading } = useUserLocation();
 
   const mapRef = useRef<MapView | null>(null);
 
   return (
     <View style={styles.container}>
-      {isLoading && (
-        <Loader
-          isVisible={isLoading}
-          style={undefined}
-          containerStyle={undefined}
-        />
-      )}
+      {isLoading && <Loader isVisible={isLoading} />}
       <MapView
         style={styles.container}
         provider={PROVIDER_GOOGLE}
@@ -60,16 +52,15 @@ function Map({}) {
         })}
       </MapView>
 
-      <ProfileButton />
-
-      <DoPartyButton
-        onPress={() => {
-          // navigation.navigate("PartyCreationScreen", {
-          //   userLocation: userLocation,
-          // });
+      <Buttons
+        onPressPartyCreationButton={() => {
+          navigation.navigate("PartyCreationStack", {
+            screen: "GeneralInformation",
+          });
         }}
+        onPressSearchPartyButton={() => {}}
       />
-      {/*<DraggableBottomSheet ref={ref} />*/}
+
       <PartyMarkerModal
         hideModal={() => {
           setVisibleModal(false);
