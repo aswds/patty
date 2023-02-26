@@ -1,15 +1,16 @@
 import React from "react";
 import {
+  Dimensions,
+  StyleSheet,
+  Text,
   TouchableOpacity,
   View,
-  Text,
-  StyleSheet,
-  Dimensions,
 } from "react-native";
-import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
 import { colors } from "../../../../../src/colors";
+import { FontFamily } from "../../../../../../assets/fonts/Fonts";
+
 export default function Buttons(props) {
   const { navigation } = props;
   return (
@@ -75,6 +76,6 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: colors.buttonTextColor,
-    fontFamily: "WorkSans-SemiBold",
+    fontFamily: FontFamily.semi_bold,
   },
 });

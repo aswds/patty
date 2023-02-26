@@ -13,7 +13,6 @@ export function AuthContextProvider({ children }) {
   const authContext = React.useMemo(
     () => ({
       verifyUserEmail: (data) => {
-        console.log(auth.currentUser.emailVerified);
         auth.currentUser?.reload();
       },
     }),

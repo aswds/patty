@@ -1,5 +1,6 @@
-import { View, ActivityIndicator } from "react-native";
+import { ActivityIndicator, View } from "react-native";
 import { colors } from "../../../src/colors";
+
 export const Loader = (isLoading) => {
   return (
     <View

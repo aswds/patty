@@ -1,5 +1,6 @@
-import { View, Image } from "react-native";
+import { Image, View } from "react-native";
 import { styles } from "../Sign_in/styles";
+
 export const Logo = () => {
   return (
     <View style={styles.imageContainer}>

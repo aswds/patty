@@ -1,6 +1,7 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../../../../src/colors";
+import { FontFamily } from "../../../../../../../assets/fonts/Fonts";
 
 export default function AskUsername(props) {
   return (
@@ -15,7 +16,7 @@ export default function AskUsername(props) {
         <Text style={styles.title}>Aye</Text>
         <Text
           style={{
-            fontFamily: "WorkSans-Regular",
+            fontFamily: FontFamily.regular,
             fontSize: 17,
             color: colors.iconColor,
           }}
@@ -28,13 +29,13 @@ export default function AskUsername(props) {
 }
 const styles = StyleSheet.create({
   title: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 35,
     color: colors.buttonTextColor,
   },
   textInput: {
     borderBottomColor: colors.iconColor,
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     paddingVertical: "5%",
     paddingHorizontal: 10,
     width: "100%",

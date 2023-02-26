@@ -1,7 +1,8 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
-import { View, TouchableOpacity, Text } from "react-native";
+import { Text, TouchableOpacity, View } from "react-native";
 import { colors } from "../../../../src/colors";
+
 export default function SignUpContainer(props) {
   const { styles, navigation, textStyle } = props;
 

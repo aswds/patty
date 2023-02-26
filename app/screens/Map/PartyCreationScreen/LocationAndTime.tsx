@@ -1,46 +1,49 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Screen from "./components/Screen";
 import Location from "./components/Location";
 import CustomButton from "./components/LocationAddButton";
 import PickTime from "../PickTime/PickTime";
 import CreatePartyButton from "./components/CreatePartyButton";
 import { LocationAndTimeScreenNavigationProps } from "../../../Types/MapStack/ScreenNavigationProps";
+import useUserLocation from "../../../hooks/useUserLocation/useUserLocation";
+import NavigationBar from "./NavigationBar";
+import { IDoc } from "../../../Types/Parties";
 
 const LocationAndTime = ({
   route,
   navigation,
 }: LocationAndTimeScreenNavigationProps) => {
-  const {
-    userLocation,
-    region,
-    address,
-    fullAddressInfo,
-    title,
-    tags,
-    description,
-  } = route.params;
-  const [time, setTime] = useState(new Date());
-
+  const { title, tags, description, fullAddressInfo, region } = route.params;
+  const [time, setTime] = useState<Date>(new Date());
   const [access, setAccess] = useState("public");
 
-  let data = {
-    title: title,
+  const [data, setData] = useState<IDoc>({
+    title: title!,
     description: description,
     tags: tags,
-    location: { region, address, fullAddressInfo },
+    location: {
+      region,
+      fullAddressInfo,
+    },
     time: time,
     access: access,
     number_of_guests: 1,
-  };
+  });
+
+  useEffect(() => {
+    setData({
+      ...data,
+      location: { fullAddressInfo, region },
+    });
+  }, [route.params]);
+
+  const { userLocation } = useUserLocation();
+
   return (
     <Screen>
-      {/*<Access setAccess={setAccess} />*/}
+      <NavigationBar navigation={navigation} text={"Location and time"} />
       <Location
         userLocation={userLocation}
-        locationInfo={{
-          addressInfo: address,
-          region: region,
-        }}
         locationAddButton={
           <CustomButton
             style={{ width: "100%" }}

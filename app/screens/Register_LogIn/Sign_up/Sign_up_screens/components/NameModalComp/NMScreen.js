@@ -1,15 +1,15 @@
 import {
-  ImageBackground,
-  TouchableWithoutFeedback,
-  View,
+  Keyboard,
   KeyboardAvoidingView,
   Platform,
-  Keyboard,
+  SafeAreaView,
   ScrollView,
   StyleSheet,
-  SafeAreaView,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { colors } from "../../../../../../src/colors";
+
 export const NMScreen = (props) => {
   return (
     <View

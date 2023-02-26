@@ -1,7 +1,8 @@
-import { Feather } from "@expo/vector-icons";
+import {Feather} from "@expo/vector-icons";
 import React from "react";
-import { View, TouchableOpacity, Alert } from "react-native";
-import { auth } from "../../../../../firebase";
+import {Alert, TouchableOpacity} from "react-native";
+import {auth} from "../../../../../firebase";
+
 export default function LogOutButton() {
   return (
     <TouchableOpacity

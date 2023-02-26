@@ -4,10 +4,19 @@ import { Title } from "../../../../shared/Title/Title";
 import { Entypo } from "@expo/vector-icons";
 import { colors } from "../../../../src/colors";
 import { descriptionTexts } from "../descriptionTexts";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
-export default function Description({ setDescription, description }) {
+interface DescriptionProps {
+  setDescription: (text: string) => void;
+  description: string | undefined;
+}
+
+export default function Description({
+  setDescription,
+  description,
+}: DescriptionProps) {
   return (
-    <View>
+    <>
       <Title
         title={"Description"}
         icon={
@@ -15,7 +24,7 @@ export default function Description({ setDescription, description }) {
             name="list"
             size={20}
             color={colors.iconColor}
-            style={{ paddingBottom: 5, paddingLeft: 5 }}
+            style={{ paddingLeft: 5 }}
           />
         }
         description={descriptionTexts.description}
@@ -24,18 +33,18 @@ export default function Description({ setDescription, description }) {
       <View style={styles.container}>
         <TextInput
           keyboardAppearance={"dark"}
-          placeholder="Provide information about your party"
+          placeholder="Write here"
           placeholderTextColor={colors.iconColor}
           style={[styles.inputField]}
           onChangeText={(text) => {
             setDescription(text);
           }}
-          maxLength={150}
+          maxLength={250}
           multiline
           defaultValue={description}
         />
       </View>
-    </View>
+    </>
   );
 }
 
@@ -47,11 +56,14 @@ const styles = StyleSheet.create({
     marginBottom: "5%",
   },
   inputField: {
-    padding: 10,
+    paddingTop: "5%",
+    paddingLeft: "5%",
+    paddingBottom: "5%",
+    paddingRight: "5%",
     color: "white",
     width: "100%",
     height: "100%",
     fontSize: 15,
-    fontFamily: "WorkSans-Medium",
+    fontFamily: FontFamily.medium,
   },
 });

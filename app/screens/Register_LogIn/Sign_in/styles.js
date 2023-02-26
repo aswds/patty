@@ -1,5 +1,6 @@
 import { Dimensions, Platform, StyleSheet } from "react-native";
 import { isAndroid } from "../../../src/platform";
+import { FontFamily } from "../../../../assets/fonts/Fonts";
 
 export const styles = StyleSheet.create({
   container: {
@@ -69,7 +70,7 @@ export const styles = StyleSheet.create({
     paddingVertical: 15,
     justifyContent: "center",
     color: "white",
-    fontFamily: "WorkSans-Regular",
+    fontFamily: FontFamily.regular,
   },
   linearGradientStyle: {
     flex: 1,

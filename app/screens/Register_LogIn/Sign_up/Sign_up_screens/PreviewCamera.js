@@ -3,10 +3,10 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
   ImageBackground,
+  Modal,
+  StyleSheet,
   TouchableOpacity,
   View,
-  StyleSheet,
-  Modal,
 } from "react-native";
 // import Modal from "react-native-modalbox";
 // import { uploadImage } from "../../../components/ProfileFunc/uploadImage";

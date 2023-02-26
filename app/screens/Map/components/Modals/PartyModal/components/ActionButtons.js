@@ -1,8 +1,9 @@
 import { StyleSheet, View } from "react-native";
 import { AntDesign, Entypo, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import IconButton from "../../../../shared/Icons/IconButton";
-import { colors } from "../../../../src/colors";
+import IconButton from "../../../../../../shared/Icons/IconButton";
+import { colors } from "../../../../../../src/colors";
+import { FontFamily } from "../../../../../../../assets/fonts/Fonts";
 
 export function ActionButtons() {
   return (
@@ -40,6 +41,6 @@ const styles = StyleSheet.create({
   },
   iconTextStyle: {
     color: colors.text,
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
   },
 });

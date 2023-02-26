@@ -1,6 +1,13 @@
 import { createSlice } from "@reduxjs/toolkit";
+import { IUser } from "../../Types/User";
 
-const initialState = {
+interface IState {
+  isLoading: boolean;
+  error: null | string;
+  current_user: IUser;
+}
+
+const initialState: IState = {
   isLoading: false,
   error: null,
   current_user: {},
@@ -15,7 +22,7 @@ const userSlice = createSlice({
       state.isLoading = true;
     },
     userReceived(state, action) {
-      state.user = action.payload;
+      state.current_user = action.payload;
       state.isLoading = false;
     },
   },

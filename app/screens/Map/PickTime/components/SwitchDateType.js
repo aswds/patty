@@ -1,8 +1,8 @@
 import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import {StyleSheet, TouchableOpacity, View} from "react-native";
 import CustomButton from "../../PartyCreationScreen/components/LocationAddButton";
-import { Entypo } from "@expo/vector-icons";
-import { colors } from "../../../../src/colors";
+import {Entypo} from "@expo/vector-icons";
+import {colors} from "../../../../src/colors";
 
 export default function SwitchDateType({
   onPress,

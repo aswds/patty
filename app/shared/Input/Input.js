@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { colors } from "../../src/colors";
+import { FontFamily } from "../../../assets/fonts/Fonts";
 
 const Input = React.forwardRef(
   ({ style, isValid, icon, children, inputStyle, ...props }, ref) => {
@@ -46,7 +47,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     borderBottomColor: colors.iconColor,
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     paddingVertical: "5%",
     paddingHorizontal: 10,
     width: "100%",

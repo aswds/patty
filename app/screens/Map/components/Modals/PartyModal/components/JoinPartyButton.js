@@ -1,6 +1,7 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { colors } from "../../../../src/colors";
+import { colors } from "../../../../../../src/colors";
+import { FontFamily } from "../../../../../../../assets/fonts/Fonts";
 
 export function JoinPartyButton() {
   function onPress() {}
@@ -27,7 +28,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   textTitleStyle: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 22,
     color: colors.text,
   },

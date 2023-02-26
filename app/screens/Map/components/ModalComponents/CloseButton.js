@@ -1,4 +1,4 @@
-import { TouchableOpacity, StyleSheet } from "react-native";
+import { StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 
 export function CloseButton({
@@ -12,7 +12,6 @@ export function CloseButton({
       onPress={() => closeModal(dataForCloseModal)}
       style={styles.iconContainer}
     >
-      {console.log(dataForCloseModal)}
       <Ionicons name="close" size={iconSize} color={color} />
     </TouchableOpacity>
   );

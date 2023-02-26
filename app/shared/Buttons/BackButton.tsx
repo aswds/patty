@@ -1,11 +1,12 @@
-import { FontAwesome5 } from "@expo/vector-icons";
-import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
-import { colors } from "../../src/colors";
-import { isAndroid } from "../../src/platform";
-import React, { FC } from "react";
+import {FontAwesome5} from "@expo/vector-icons";
+import {StyleSheet, TouchableOpacity, ViewStyle} from "react-native";
+import {colors} from "../../src/colors";
+import {isAndroid} from "../../src/platform";
+import React, {FC} from "react";
+import {NavigationProp} from "@react-navigation/native";
 
 interface BackButtonProps {
-  navigation: any;
+  navigation: NavigationProp<any, any>;
   style?: ViewStyle;
   iconColor?: string;
 }

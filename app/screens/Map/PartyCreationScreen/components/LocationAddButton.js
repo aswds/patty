@@ -1,8 +1,6 @@
-import { Ionicons } from "@expo/vector-icons";
-import { useNavigation } from "@react-navigation/native";
 import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
-import { colors } from "../../../../src/colors";
+import {StyleSheet, Text, TouchableOpacity} from "react-native";
+import {colors} from "../../../../src/colors";
 
 export default function CustomButton({ onPress, title, style }) {
   return (

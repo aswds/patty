@@ -3,15 +3,24 @@ import React from "react";
 import { colors } from "../../../../src/colors";
 import { addPartyOnMap } from "../addPartyOnMap";
 import { useNavigation } from "@react-navigation/native";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { IDoc } from "../../../../Types/Parties";
+import { MapNavigationProps } from "../../../../Types/MapStack/ScreenNavigationProps";
 
-export default function CreatePartyButton({ data }) {
-  const navigation = useNavigation();
+interface CreatePartyButtonProps {
+  data: IDoc;
+}
+
+export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
+  const navigation = useNavigation<MapNavigationProps>();
   const { time, location, title } = data;
   const allNecessaryDataPresent =
-    time && location.region && location.address && title;
+    time && location?.region && location?.fullAddressInfo && title;
   function onPress() {
     if (allNecessaryDataPresent) {
-      addPartyOnMap(data).then(() => navigation.goBack());
+      addPartyOnMap(data).then(() => {
+        navigation.navigate("Map");
+      });
     } else {
       Alert.alert("Please make sure you entered all data.");
     }
@@ -40,7 +49,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   textStyle: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 16,
     color: colors.buttonTextColor,
   },

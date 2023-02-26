@@ -1,12 +1,13 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
-import { colors } from "../../../../src/colors";
+import {StyleSheet, View} from "react-native";
+import {colors} from "../../../../src/colors";
 import TagAddButton from "./TagAddButton";
 import TagItem from "../../../../shared/Tag/TagItem";
 import * as Haptics from "expo-haptics";
-import { Title } from "../../../../shared/Title/Title";
-import { AntDesign } from "@expo/vector-icons";
-import { descriptionTexts } from "../descriptionTexts";
+import {Title} from "../../../../shared/Title/Title";
+import {AntDesign} from "@expo/vector-icons";
+import {descriptionTexts} from "../descriptionTexts";
+import {FontFamily} from "../../../../../assets/fonts/Fonts";
 
 export default function TagList({ setTags, tags }) {
   function onDelete(id) {
@@ -51,7 +52,7 @@ const styles = StyleSheet.create({
   textStyle: {
     color: colors.iconColor,
     fontSize: 20,
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     marginBottom: "5%",
   },
   titleContainer: {
@@ -62,6 +63,5 @@ const styles = StyleSheet.create({
   tagContainer: {
     flexDirection: "row",
     flexWrap: "wrap",
-    gap: 10,
   },
 });

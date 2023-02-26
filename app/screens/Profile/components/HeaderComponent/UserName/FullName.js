@@ -1,6 +1,7 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
-import { colors } from "../../../../../src/colors";
+import {StyleSheet, Text, View} from "react-native";
+import {FontFamily} from "../../../../../../assets/fonts/Fonts";
+
 export default function FullName({ user }) {
   return (
     <View style={styles.nameStyle}>
@@ -13,7 +14,7 @@ export default function FullName({ user }) {
 const styles = StyleSheet.create({
   textStyle: {
     color: "white",
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 18,
   },
   nameStyle: {},

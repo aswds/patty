@@ -1,4 +1,4 @@
-import { useAssets } from "expo-asset";
+import {useAssets} from "expo-asset";
 
 export const useAssetsLoad = () => {
   const [isLoaded, error] = useAssets([

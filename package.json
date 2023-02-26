@@ -20,6 +20,7 @@
     "dotenv": "^16.0.3",
     "eventemitter3": "^5.0.0",
     "expo": "^47.0.0",
+    "expo-app-loading": "^2.1.1",
     "expo-asset": "~8.7.0",
     "expo-blur": "~12.0.1",
     "expo-camera": "~13.1.0",
@@ -30,6 +31,7 @@
     "expo-linear-gradient": "~12.0.1",
     "expo-location": "~15.0.1",
     "expo-screen-orientation": "~5.0.1",
+    "expo-splash-screen": "^0.17.5",
     "expo-status-bar": "~1.4.2",
     "firebase": "^9.10.0",
     "geolib": "^3.3.3",
@@ -56,10 +58,11 @@
     "@redux-devtools/core": "^3.13.1",
     "@tsconfig/react-native": "^2.0.3",
     "@types/jest": "^29.4.0",
-    "@types/react": "^18.0.28",
-    "@types/react-native": "^0.71.3",
+    "@types/react": "~18.0.24",
+    "@types/react-native": "~0.70.6",
     "@types/react-test-renderer": "^18.0.0",
-    "typescript": "^4.9.5"
+    "@types/redux-logger": "^3.0.9",
+    "typescript": "^4.6.3"
   },
   "private": true
 }

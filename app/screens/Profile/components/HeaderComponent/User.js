@@ -1,11 +1,11 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import {StyleSheet, View} from "react-native";
 import UserBio from "./UserBio";
 import UserFollowers from "./UserFollowers";
 import UserImage from "./UserImage";
 import UserName from "./UserName/UserName";
-import { BackButton } from "../../../../shared/Buttons/BackButton";
-import { useNavigation } from "@react-navigation/native";
+import {BackButton} from "../../../../shared/Buttons/BackButton";
+import {useNavigation} from "@react-navigation/native";
 
 export default function User({ user }) {
   const [isLoading, setIsLoading] = React.useState(true);

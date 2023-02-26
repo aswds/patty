@@ -1,21 +1,27 @@
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
 import { colors } from "../../src/colors";
 import React from "react";
+import { FontFamily } from "../../../assets/fonts/Fonts";
 
 interface ITitle {
   title?: string;
   icon?: React.ReactNode;
   description?: string;
+  fontStyle?: TextStyle;
+  containerStyle?: ViewStyle;
 }
 
-export function Title({ title, icon, description }: ITitle) {
+export function Title({
+  title,
+  icon,
+  description,
+  fontStyle,
+  containerStyle,
+}: ITitle) {
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, containerStyle]}>
       <View style={styles.titleContainer}>
-        <View>
-          <Text style={styles.textStyle}>{title}</Text>
-        </View>
-
+        <Text style={[styles.textStyle, fontStyle]}>{title}</Text>
         {icon}
       </View>
       <Text style={styles.descriptionTextStyle}>{description}</Text>
@@ -26,11 +32,11 @@ const styles = StyleSheet.create({
   textStyle: {
     color: colors.iconColor,
     fontSize: 26,
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
   },
   descriptionTextStyle: {
-    fontFamily: "WorkSans-Medium",
-    fontSize: 15,
+    fontFamily: FontFamily.medium,
+    fontSize: 13,
     color: colors.iconColor,
   },
   titleContainer: {
@@ -39,5 +45,6 @@ const styles = StyleSheet.create({
   },
   container: {
     marginBottom: "5%",
+    justifyContent: "center",
   },
 });

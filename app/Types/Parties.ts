@@ -16,16 +16,21 @@ export interface IFullAddress {
 }
 
 export interface ILocation {
-  region: ICoordinates;
-  address: string;
-  fullAddressInfo: IFullAddress;
+  region?: ICoordinates | null | undefined;
+  address?: string | null | undefined;
+  fullAddressInfo?: IFullAddress | null | undefined;
+}
+export interface ITime {
+  nanoseconds?: number;
+  seconds?: number;
 }
 
 export interface IDoc {
   title: string;
+  description?: string;
   tags?: string[];
-  location: ILocation;
-  time: string;
+  location?: ILocation;
+  time: ITime | undefined;
   access: string;
   number_of_guests: number;
 }

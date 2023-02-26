@@ -1,10 +1,11 @@
 import React from "react";
 
-import { Image, StyleSheet, Text, View } from "react-native";
-import { colors } from "../../../../../src/colors";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { BackButton } from "../../../../../shared/Buttons/BackButton";
-import { useNavigation } from "@react-navigation/native";
+import {Image, StyleSheet, Text, View} from "react-native";
+import {colors} from "../../../../../src/colors";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
+import {BackButton} from "../../../../../shared/Buttons/BackButton";
+import {useNavigation} from "@react-navigation/native";
+import {FontFamily} from "../../../../../../assets/fonts/Fonts";
 
 const DirectMessageListHeader = ({ user }) => {
   const navigation = useNavigation();
@@ -60,12 +61,12 @@ const styles = StyleSheet.create({
   },
   userNameTextStyle: {
     textAlign: "center",
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 20,
     color: colors.text,
   },
   userUsernameTextStyle: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     color: colors.text_2,
     textAlign: "center",
     fontSize: 13,

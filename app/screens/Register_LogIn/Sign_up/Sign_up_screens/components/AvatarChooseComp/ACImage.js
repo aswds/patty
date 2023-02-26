@@ -1,7 +1,7 @@
 import React from "react";
-import { TouchableOpacity, Image, Text } from "react-native";
+import { Image, Text, TouchableOpacity } from "react-native";
 import { colors } from "../../../../../../src/colors";
-import { isAndroid } from "../../../../../../src/platform";
+
 export default function ACImage(props) {
   const { _showModalHandle, image } = props;
   return (

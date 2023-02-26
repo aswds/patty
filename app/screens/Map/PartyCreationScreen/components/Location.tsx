@@ -1,15 +1,27 @@
-import { useRoute } from "@react-navigation/native";
-import React from "react";
-import { StyleSheet, Text, View } from "react-native";
+import React, { ReactNode } from "react";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import { colors } from "../../../../src/colors";
-import { Title } from "./TagList";
+import { Title } from "../../../../shared/Title/Title";
 import { MaterialIcons } from "@expo/vector-icons";
+import { ICoordinates } from "../../../../Types/Parties";
+import { RouteProp, useRoute } from "@react-navigation/native";
+import { PartyCreationNavigatorParamList } from "../../../../Types/MapStack/NavigationTypes";
+import { descriptionTexts } from "../descriptionTexts";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
 const mapStyle = require("../../mapStyle.json");
-export default function Location(props) {
-  const route = useRoute();
 
+interface LocationProps {
+  userLocation: ICoordinates | undefined;
+  locationAddButton: ReactNode;
+}
+export default function Location({
+  userLocation,
+  locationAddButton,
+}: LocationProps): JSX.Element {
+  const route =
+    useRoute<RouteProp<PartyCreationNavigatorParamList, "LocationAndTime">>();
   function TitleIcon() {
     return (
       <View style={{ marginBottom: 5 }}>
@@ -26,7 +38,9 @@ export default function Location(props) {
   function Address() {
     return (
       <View style={styles.locationTitleContainer}>
-        <Text style={styles.locationAddressStyle}>{route.params?.address}</Text>
+        <Text style={styles.locationAddressStyle}>
+          {`${route.params?.addressTitle ?? ``}`}
+        </Text>
       </View>
     );
   }
@@ -34,13 +48,17 @@ export default function Location(props) {
   return (
     <View style={styles.container}>
       <View style={{ alignSelf: "flex-start" }}>
-        <Title title={"Location"} icon={<TitleIcon />} />
+        <Title
+          title={"Location"}
+          icon={<TitleIcon />}
+          description={descriptionTexts.location}
+        />
       </View>
       <View style={styles.map}>
         <MapView
           style={{ flex: 1 }}
           region={{
-            ...props?.userLocation,
+            ...userLocation!,
             ...route.params?.region,
             longitudeDelta: 0.003,
             latitudeDelta: 0.003,
@@ -53,7 +71,7 @@ export default function Location(props) {
         </MapView>
       </View>
       <Address />
-      {props.locationAddButton}
+      {locationAddButton}
     </View>
   );
 }
@@ -62,10 +80,9 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    marginVertical: 20,
-
-    height: 370,
+    marginBottom: "5%",
     width: "100%",
+    height: Dimensions.get("window").height * 0.45,
   },
   map: {
     height: "60%",
@@ -79,7 +96,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   locationAddressStyle: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     textAlign: "center",
     color: colors.text,
   },

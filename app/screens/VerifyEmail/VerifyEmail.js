@@ -16,6 +16,7 @@ import { useNavigation, useRoute } from "@react-navigation/native";
 import Button from "../Register_LogIn/components/button";
 import { eventEmitter } from "../../custom/EventEmitter";
 import { EMAIL_VERIFICATION } from "../constans";
+import { FontFamily } from "../../../assets/fonts/Fonts";
 
 function Title() {
   return (
@@ -31,7 +32,7 @@ function Title() {
           fontSize: 25,
           alignSelf: "center",
           color: colors.iconColor,
-          fontFamily: "WorkSans-Bold",
+          fontFamily: FontFamily.bold,
         }}
       >
         Verify email
@@ -47,12 +48,12 @@ function MainText({ email, text }) {
           fontSize: 16,
           alignSelf: "center",
           color: colors.iconColor,
-          fontFamily: "WorkSans-Regular",
+          fontFamily: FontFamily.regular,
           textAlign: "center",
         }}
       >
         {text}
-        <Text style={{ fontFamily: "WorkSans-Bold", marginVertical: 5 }}>
+        <Text style={{ fontFamily: FontFamily.bold, marginVertical: 5 }}>
           {email}
         </Text>
       </Text>
@@ -74,7 +75,7 @@ function ChangeEmailText() {
         <Text
           style={{
             ...styles.textTermsStyle,
-            fontFamily: "WorkSans-Medium",
+            fontFamily: FontFamily.medium,
             color: colors.accentColor,
           }}
         >
@@ -194,7 +195,7 @@ const styles = StyleSheet.create({
   textStyle: {
     color: colors.buttonTextColor,
     fontSize: 17,
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
   },
   textTerms: {
     height: "10%",

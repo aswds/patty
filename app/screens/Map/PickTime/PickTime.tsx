@@ -4,24 +4,32 @@ import { StyleSheet, Text, View } from "react-native";
 import * as Haptics from "expo-haptics";
 import SwitchDateType from "./components/SwitchDateType";
 import { FontAwesome } from "@expo/vector-icons";
-import { Title } from "../PartyCreationScreen/components/TagList";
 import { colors } from "../../../src/colors";
 import { isAndroid } from "../../../src/platform";
 import moment from "moment/moment";
+import { Title } from "../../../shared/Title/Title";
+import { descriptionTexts } from "../PartyCreationScreen/descriptionTexts";
+import { FontFamily } from "../../../../assets/fonts/Fonts";
 
-export default function PickTime(props) {
+interface PickTimeProps {
+  setTime: (time: any) => void;
+  setToScrollBottom?: (toScroll: boolean) => void;
+}
+
+export default function PickTime(props: PickTimeProps) {
+  type IOSMode = "date" | "time" | "datetime" | "countdown";
   const { setTime, setToScrollBottom } = props;
-  const [date, setDate] = useState(new Date(Date.now()));
-  const [mode, setMode] = useState("date");
+  const [date, setDate] = useState<Date | undefined>(new Date(Date.now()));
+  const [mode, setMode] = useState<IOSMode>("date");
   const [show, setShow] = useState(false);
   const minDate = new Date();
-  const onChange = (_, selectedDate) => {
+  const onChange = (_: any, selectedDate: Date | undefined) => {
     const currentDate = selectedDate;
     setTime(currentDate);
     setDate(currentDate);
   };
 
-  const showMode = (currentMode) => {
+  const showMode = (currentMode: IOSMode) => {
     if (isAndroid) {
       setShow(false);
       // for iOS, add a button that closes the picker
@@ -31,7 +39,9 @@ export default function PickTime(props) {
   function onPress() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setShow(true);
-    setToScrollBottom(true);
+    if (setToScrollBottom) {
+      setToScrollBottom(true);
+    }
     setMode((mode) => {
       return mode === "date" ? "time" : "date";
     });
@@ -56,6 +66,7 @@ export default function PickTime(props) {
             style={{ paddingBottom: 5, paddingLeft: 5 }}
           />
         }
+        description={descriptionTexts.dateAndTime}
       />
 
       <View style={styles.dateContainer}>
@@ -64,10 +75,10 @@ export default function PickTime(props) {
           <DateTimePicker
             testID="dateTimePicker"
             style={styles.datePickerStyle}
-            value={date}
+            value={date as Date}
             mode={mode}
             minimumDate={minDate}
-            timeZoneOffsetInSeconds={0}
+            minuteInterval={5}
             onChange={onChange}
             display="spinner"
             textColor="white"
@@ -80,7 +91,9 @@ export default function PickTime(props) {
           onDone={() => {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             setShow(false);
-            setToScrollBottom(false);
+            if (setToScrollBottom) {
+              setToScrollBottom(false);
+            }
           }}
         />
       </View>
@@ -97,7 +110,7 @@ const styles = StyleSheet.create({
     width: "100%",
     backgroundColor: colors.input,
     padding: "5%",
-    marginVertical: 20,
+    marginBottom: 20,
     borderRadius: 99999,
   },
   datePickerStyle: {
@@ -105,7 +118,7 @@ const styles = StyleSheet.create({
     height: 200,
   },
   textStyle: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     textAlign: "center",
     fontSize: 18,
     color: colors.iconColor,

@@ -1,25 +1,39 @@
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
-import PartyMarkerModal from "./PartyModal/PartyMarkerModal";
-import { connect } from "react-redux";
-import { fetch_parties } from "../../redux/actions/Parties";
-import { AnyAction, bindActionCreators, Dispatch } from "redux";
+import PartyMarkerModal from "./components/Modals/PartyModal/PartyMarkerModal";
 import useUserLocation from "../../hooks/useUserLocation/useUserLocation";
-import Loader from "../../shared/Loaders/Loader";
 import CustomMarker from "./components/Markers/CustomMarker";
-import type { IDoc } from "../../Types/Type";
+import type { IDoc } from "../../Types/Parties";
 import { MapScreenNavigationProps } from "../../Types/MapStack/ScreenNavigationProps";
 import Buttons from "./components/Buttons/Buttons";
+import Loader from "../../shared/Loaders/Loader";
+import ProfileButton from "./components/ProfileButton";
+import { RootState } from "../../redux/store/store";
+import { useActions } from "../../hooks/useActions";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { IModals } from "../../Types/Map";
+import FavoriteModal from "./components/Modals/MoreModal/MoreModal";
 
 const mapStyle = require("./mapStyle.json");
+interface MapProps extends MapScreenNavigationProps {}
 
-function Map({ navigation }: MapScreenNavigationProps) {
-  const [visibleModal, setVisibleModal] = useState<boolean>(false);
+function Map({ navigation }: MapProps) {
+  const [visibleModal, setVisibleModal] = useState<IModals>({
+    FavoriteModal: false,
+    partyMarkerModal: false,
+    searchModal: false,
+  });
+
   const [markerInfo, setMarkerInfo] = useState<IDoc>();
   const { userLocation, parties, isLoading } = useUserLocation();
-
+  const { fetch_user } = useActions();
   const mapRef = useRef<MapView | null>(null);
+  const { current_user } = useTypedSelector((state) => state.user_state);
+
+  useEffect(() => {
+    fetch_user();
+  }, []);
 
   return (
     <View style={styles.container}>
@@ -42,16 +56,18 @@ function Map({ navigation }: MapScreenNavigationProps) {
               doc={doc}
               index={index}
               onPress={() => {
-                setVisibleModal(true);
+                setVisibleModal({ ...visibleModal, partyMarkerModal: true });
                 setMarkerInfo(doc);
-                mapRef?.current?.animateToRegion(doc?.location?.region);
+                mapRef?.current?.animateToRegion(
+                  doc?.location?.region as Region
+                );
               }}
               key={index}
             />
           );
         })}
       </MapView>
-
+      <ProfileButton current_user={current_user} />
       <Buttons
         onPressPartyCreationButton={() => {
           navigation.navigate("PartyCreationStack", {
@@ -59,13 +75,21 @@ function Map({ navigation }: MapScreenNavigationProps) {
           });
         }}
         onPressSearchPartyButton={() => {}}
+        onPressMoreButton={() => {
+          setVisibleModal({ ...visibleModal, FavoriteModal: true });
+        }}
       />
-
+      <FavoriteModal
+        visible={visibleModal.FavoriteModal}
+        hideModal={() => {
+          setVisibleModal({ ...visibleModal, FavoriteModal: false });
+        }}
+      />
       <PartyMarkerModal
         hideModal={() => {
-          setVisibleModal(false);
+          setVisibleModal({ ...visibleModal, partyMarkerModal: false });
         }}
-        visible={visibleModal}
+        visible={visibleModal.partyMarkerModal}
         markerInfo={markerInfo}
       />
     </View>
@@ -86,13 +110,9 @@ const styles = StyleSheet.create({
   loaderStyle: { height: 100, zIndex: -1 },
 });
 
-const mapDispatchProps = (dispatch: Dispatch<AnyAction>) => {
-  return bindActionCreators({ fetch_parties }, dispatch);
-};
-const mapStateToProps = (store: {
-  parties_state: { isLoading: any; parties: any };
-}) => ({
+const mapStateToProps = (store: RootState) => ({
+  current_user: store.user_state.current_user,
   isPartiesLoading: store.parties_state.isLoading,
   parties: store.parties_state.parties,
 });
-export default connect(mapStateToProps, mapDispatchProps)(Map);
+export default Map;

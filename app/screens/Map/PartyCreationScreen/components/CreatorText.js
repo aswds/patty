@@ -1,5 +1,7 @@
 import React from "react";
-import { StyleSheet, View, Text } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
+
 export default function CreatorNames({ users }) {
   return (
     <View>
@@ -11,7 +13,7 @@ export default function CreatorNames({ users }) {
 }
 const styles = StyleSheet.create({
   textStyle: {
-    fontFamily: "WorkSans-Regular",
+    fontFamily: FontFamily.regular,
     textAlign: "center",
     color: "#6D6D6D",
   },

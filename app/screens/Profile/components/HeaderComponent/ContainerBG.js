@@ -1,6 +1,7 @@
 import React from "react";
-import { ImageBackground, StyleSheet, View } from "react-native";
+import {ImageBackground, StyleSheet, View} from "react-native";
 import useUserImage from "../../../../hooks/useUserImage";
+import {FontFamily} from "../../../../../assets/fonts/Fonts";
 
 export default function ContainerBG(props) {
   const { insets, image } = props;
@@ -59,7 +60,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: "white",
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 15,
   },
 });

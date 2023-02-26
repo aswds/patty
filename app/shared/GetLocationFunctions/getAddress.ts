@@ -1,4 +1,4 @@
-import { IFullAddress } from "../../Types/Type";
+import { IFullAddress } from "../../Types/Parties";
 
 const HERE_API_KEY = "1PKrIQtOybgseK4vquZR4lsHXlVpCASICK1Zg436Nwk";
 

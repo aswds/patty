@@ -20,6 +20,7 @@ import { Container } from "./Sign_up_components/Container";
 import { TermText } from "./Sign_up_components/TermText";
 import { error_handle } from "./Sign_up_screens/Sign_up_Functions/error_handle";
 import { signUpHandle } from "./Sign_up_screens/Sign_up_Functions/signUp";
+import { FontFamily } from "../../../../assets/fonts/Fonts";
 
 const SignUpScreen = (props) => {
   const { navigation } = props;
@@ -176,7 +177,7 @@ const SignUpScreen = (props) => {
           placeholderTextColor={textStyle.color}
           onChangeText={(text) => {
             setConfirmPass(text);
-            if (user.password != text) {
+            if (user.password !== text) {
               setValid({ ...valid, validConfirmPassword: false });
             } else {
               setValid({ ...valid, validConfirmPassword: true });
@@ -248,7 +249,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 10,
     fontSize: 13,
-    fontFamily: "WorkSans-Medium",
+    fontFamily: FontFamily.medium,
   },
   image: {
     height: "100%",

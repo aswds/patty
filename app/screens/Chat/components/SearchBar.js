@@ -1,8 +1,8 @@
 import React from "react";
 
-import { TextInput, View } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { colors } from "../../../src/colors";
+import {TextInput, View} from "react-native";
+import {Feather} from "@expo/vector-icons";
+import {colors} from "../../../src/colors";
 
 const SearchBar = ({ containerStyle, inputStyle, ...props }) => {
   return (

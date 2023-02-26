@@ -6,8 +6,7 @@ import { App_Navigation } from "./AppNavigation";
 import { VerifyEmailNav } from "../EmailVerification/VerifyEmailNav";
 import { eventEmitter } from "../../custom/EventEmitter";
 import { EMAIL_VERIFICATION } from "../../screens/constans";
-import Loader from "../../shared/Loaders/Loader";
-import { colors } from "../../src/colors";
+import * as SplashScreen from "expo-splash-screen";
 
 /**
  *
@@ -27,8 +26,7 @@ export const RootNavigator = () => {
   );
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
-  // for better user experience calling useUserLocation here and on map screen
-  // listener for email verification screen
+  // Listener for email verification screen
   useEffect(() => {
     if (!emailVerified) {
       eventEmitter.on(EMAIL_VERIFICATION, () => {
@@ -37,7 +35,7 @@ export const RootNavigator = () => {
       });
     }
   }, []);
-  //check if user is already signed up
+  // - Check if user is already signed up or signed in
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setIsSigned(true);
@@ -46,22 +44,18 @@ export const RootNavigator = () => {
     }
     setIsLoading(false);
   });
-  // navigate to verification screen
+  // - Navigate to verification screen if email is not verified
   if (isSignedIn && !auth.currentUser?.emailVerified) {
     return <VerifyEmailNav />;
   }
 
-  //if onAuthStateChanged didn't fire yet, the loader is shown
-  if (isLoading) {
-    return (
-      <Loader
-        isVisible={true}
-        containerStyle={{ backgroundColor: colors.background, flex: 1 }}
-      />
-    );
+  // - If onAuthStateChanged didn't fire yet, the splashscreen is shown
+  if (!isLoading) {
+    // - Hides splash screen
+    SplashScreen.hideAsync();
   }
 
-  // navigation between main navigator and LoginAndRegister navigator
+  // -Navigation between main navigator and LoginAndRegister navigator
   return (
     <>
       {isSignedIn && auth.currentUser?.emailVerified ? (

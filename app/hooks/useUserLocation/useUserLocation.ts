@@ -4,7 +4,7 @@ import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { Alert } from "react-native";
 import { getAddress } from "../../shared/GetLocationFunctions/getAddress";
 import firebase from "firebase/compat";
-import { ICoordinates, IFullAddress } from "../../Types/Type";
+import { ICoordinates, IFullAddress } from "../../Types/Parties";
 import { LocationObject } from "expo-location";
 import DocumentData = firebase.firestore.DocumentData;
 

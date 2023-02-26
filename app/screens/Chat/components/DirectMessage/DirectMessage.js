@@ -7,6 +7,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import Input from "../../../../shared/Input/Input";
 import { isAndroid } from "../../../../src/platform";
 import SendButton from "./components/SendButton";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
 const DirectMessage = ({ route }) => {
   const insets = useSafeAreaInsets();
@@ -58,7 +59,7 @@ const styles = StyleSheet.create({
     marginTop: 0,
     height: "100%",
   },
-  inputStyle: { color: colors.text, fontFamily: "WorkSans-Medium" },
+  inputStyle: { color: colors.text, fontFamily: FontFamily.medium },
   backButtonContainer: {
     position: "relative",
     top: 0,

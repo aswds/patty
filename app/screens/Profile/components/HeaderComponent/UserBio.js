@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
+
 export default function UserBio({ user }) {
   let NUM_OF_LINES = 5;
   const [style, setStyle] = useState({
@@ -28,7 +30,7 @@ export default function UserBio({ user }) {
 }
 const styles = StyleSheet.create({
   textStyle: {
-    fontFamily: "WorkSans-Medium",
+    fontFamily: FontFamily.medium,
     color: "white",
   },
 });

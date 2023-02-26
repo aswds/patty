@@ -1,4 +1,4 @@
-import { Alert } from "react-native";
+import {Alert} from "react-native";
 
 export function preventLeaving(navigation, hasUnsavedChanges) {
   navigation.addListener("beforeRemove", (e) => {

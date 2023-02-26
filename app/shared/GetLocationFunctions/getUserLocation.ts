@@ -1,6 +1,6 @@
 import * as Location from "expo-location";
-import { LocationObject } from "expo-location";
-import { Alert } from "react-native";
+import {LocationObject} from "expo-location";
+import {Alert} from "react-native";
 
 export async function getUserLocation(): Promise<LocationObject> {
   let { status } = await Location.requestForegroundPermissionsAsync();

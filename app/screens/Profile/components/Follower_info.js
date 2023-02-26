@@ -1,6 +1,6 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
-import { colors } from "../../../src/colors";
+import {StyleSheet, View} from "react-native";
+import {colors} from "../../../src/colors";
 import Following from "./FollowComponents/Following";
 import Followers from "./FollowComponents/Followers";
 

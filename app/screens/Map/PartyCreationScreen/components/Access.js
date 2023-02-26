@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { Title } from "./TagList";
-import { colors } from "../../../../src/colors";
+import React, {useState} from "react";
+import {StyleSheet, Text, TouchableOpacity, View} from "react-native";
+import {Title} from "./TagList";
+import {colors} from "../../../../src/colors";
 import * as Haptics from "expo-haptics";
-import { FontAwesome5 } from "@expo/vector-icons";
+import {FontAwesome5} from "@expo/vector-icons";
 
 const Access = ({ setAccess }) => {
   const [AccessType, setAccessType] = useState("public");

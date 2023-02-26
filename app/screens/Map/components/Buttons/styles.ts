@@ -1,6 +1,7 @@
 import { StyleSheet } from "react-native";
 import { colors } from "../../../../src/colors";
 import { isAndroid } from "../../../../src/platform";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
 export const styles = StyleSheet.create({
   buttonContainer: {
@@ -14,7 +15,7 @@ export const styles = StyleSheet.create({
     shadowRadius: 2,
   },
   mainButton: { padding: "5%" },
-  textStyle: { fontFamily: "WorkSans-Medium", color: colors.accentColor },
+  textStyle: { fontFamily: FontFamily.medium, color: colors.accentColor },
   iconContainer: {
     alignItems: "center",
     justifyContent: "center",

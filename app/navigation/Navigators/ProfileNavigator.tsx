@@ -6,7 +6,7 @@ import { isAndroid } from "../../src/platform";
 
 const Stack = createNativeStackNavigator();
 
-export const ProfileNavigator = (props) => {
+export const ProfileNavigator = () => {
   const radius = isAndroid ? 0 : 50;
   return (
     <Stack.Navigator screenOptions={{ headerShown: false }}>

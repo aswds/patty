@@ -3,6 +3,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import CreatorImage from "./CreatorImages";
 import { useSelector } from "react-redux";
 import { colors } from "../../../../src/colors";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
 export default function Creators() {
   const [creators, setCreators] = useState([]);
@@ -46,12 +47,12 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textStyle: {
-    fontFamily: "WorkSans-Regular",
+    fontFamily: FontFamily.regular,
     fontSize: 13,
     color: "#4C678F",
   },
   textStyle_CreatorsName: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 13,
     color: colors.iconColor,
   },

@@ -1,6 +1,7 @@
 import React from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
-import { isAndroid } from "../../../src/platform";
+import {Dimensions, StyleSheet, Text, View} from "react-native";
+import {isAndroid} from "../../../src/platform";
+import {FontFamily} from "../../../../assets/fonts/Fonts";
 
 export default function RenderItem(props) {
   const { item } = props;
@@ -42,16 +43,16 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   textNumberStyle: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     color: "white",
     fontSize: 20,
   },
   textStyle: {
     color: "white",
-    fontFamily: "WorkSans-Medium",
+    fontFamily: FontFamily.medium,
   },
   textStyleUsername: {
     color: "white",
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
   },
 });

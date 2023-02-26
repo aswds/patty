@@ -1,7 +1,7 @@
-import { doc, getDoc } from "firebase/firestore";
-import { Alert } from "react-native";
-import { auth, db } from "../../../firebase";
-import { userLoading, userReceived } from "../reducers/User";
+import {doc, getDoc} from "firebase/firestore";
+import {Alert} from "react-native";
+import {auth, db} from "../../../firebase";
+import {userLoading, userReceived} from "../reducers/User";
 
 export function fetch_user() {
   return async (dispatch) => {

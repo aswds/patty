@@ -15,11 +15,9 @@ function Profile(props) {
   const { current_user, fetch_user } = props;
   const [refreshing, setRefreshing] = useState(false);
   const insets = useSafeAreaInsets();
-  useEffect(() => {
-    fetch_user();
-  }, []);
+  useEffect(() => {}, []);
   if (!current_user) {
-    return <Loader />;
+    return <Loader isVisible />;
   }
   //https://reactjs.org/docs/context.html !!!
   return (

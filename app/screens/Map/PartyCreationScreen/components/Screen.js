@@ -1,7 +1,7 @@
-import React, { useRef, useState } from "react";
-import { ScrollView, StyleSheet, View } from "react-native";
-import { colors } from "../../../../src/colors";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import React, {useRef, useState} from "react";
+import {ScrollView, StyleSheet, View} from "react-native";
+import {colors} from "../../../../src/colors";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 
 export default function Screen(props) {
   const scrollView = useRef();
@@ -21,7 +21,7 @@ export default function Screen(props) {
         contentContainerStyle={{
           paddingTop: insets.top,
           padding: 20,
-          backgroundColor: "yellow",
+          flexGrow: 1,
         }}
       >
         <View style={{ flex: 1 }}>

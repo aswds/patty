@@ -3,24 +3,33 @@ import Screen from "./components/Screen";
 import PickTitle from "./components/PickTitle";
 import Description from "./components/Desctription";
 import TagList from "./components/TagList";
-import { BackButton } from "../../../shared/Buttons/BackButton";
 import { GeneralInformationScreenNavigationProps } from "../../../Types/MapStack/ScreenNavigationProps";
+import NextButton from "../../../shared/Buttons/NextButton";
+import NavigationBar from "./NavigationBar";
 
 const GeneralInformation = ({
   navigation,
 }: GeneralInformationScreenNavigationProps) => {
-  const [title, setTitle] = useState<string>();
+  const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>();
-  const [tags, setTags] = useState([]);
+  const [tags, setTags] = useState<string[]>([]);
+  const isValueEntered = Boolean(title && description && tags);
+
+  const onPress = () => {
+    navigation.navigate("LocationAndTime", { title, description, tags });
+  };
   return (
     <Screen>
-      <BackButton
-        navigation={navigation}
-        style={{ position: "relative", left: 0 }}
-      />
+      <NavigationBar navigation={navigation} text={"General information"} />
       <PickTitle setTitle={setTitle} title={title} />
       <Description setDescription={setDescription} description={description} />
       <TagList setTags={setTags} tags={tags} />
+      <NextButton
+        onPress={onPress}
+        style={{ position: "relative", marginTop: "auto" }}
+        isValueEntered={isValueEntered}
+        error={"information"}
+      />
     </Screen>
   );
 };

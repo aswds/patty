@@ -1,4 +1,4 @@
-import { colors } from "../../src/colors";
+import {colors} from "../../src/colors";
 
 export function pickColor(number_of_guests: number) {
   if (number_of_guests <= 10) {

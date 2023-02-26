@@ -5,13 +5,13 @@ import Button from "../Button";
 import { useNavigation } from "@react-navigation/native";
 import { Skeleton } from "moti/skeleton";
 import { isAndroid } from "../../../../src/platform";
+import { auth } from "../../../../../firebase";
 
 export default function UserImage({ uri, Loader, user, style }) {
   const { isLoading, setIsLoading } = Loader;
   const { image } = useUserImage(uri);
 
   const navigation = useNavigation();
-  console.log(image);
   const onPress = () => {
     navigation.navigate("EditProfile", {
       user,
@@ -36,7 +36,12 @@ export default function UserImage({ uri, Loader, user, style }) {
           }}
         />
       </Skeleton>
-
+      <Button
+        onPress={async () => {
+          await auth.signOut();
+        }}
+        text={"Log out"}
+      />
       <View>
         <Button onPress={onPress} text="Edit" />
       </View>

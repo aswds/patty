@@ -1,6 +1,8 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../../src/colors";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
+
 export default function UserFollowers(data) {
   const { user } = data;
   return (
@@ -23,11 +25,11 @@ export default function UserFollowers(data) {
 }
 const styles = StyleSheet.create({
   followTextStyle: {
-    fontFamily: "WorkSans-Regular",
+    fontFamily: FontFamily.regular,
     color: colors.iconColor,
   },
   textStyle: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     color: "white",
     height: 20,
     maxWidth: "90%",

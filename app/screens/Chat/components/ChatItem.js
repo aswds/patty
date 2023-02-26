@@ -11,6 +11,7 @@ import { colors } from "../../../src/colors";
 import UserPicture from "./UserPicture";
 import { Entypo } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
+import { FontFamily } from "../../../../assets/fonts/Fonts";
 
 const ChatItem = ({ user }) => {
   const navigation = useNavigation();
@@ -76,7 +77,7 @@ const styles = StyleSheet.create({
     margin: "5%",
   },
   textStyle: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 14,
     color: colors.accentColor,
   },
@@ -89,7 +90,7 @@ const styles = StyleSheet.create({
   },
   timeTextStyle: {
     color: colors.text_2,
-    fontFamily: "WorkSans-Regular",
+    fontFamily: FontFamily.regular,
     fontSize: 12.5,
   },
   textContainer: {
@@ -103,7 +104,7 @@ const styles = StyleSheet.create({
     flexWrap: "nowrap",
   },
   previousMessageTextStyle: {
-    fontFamily: "WorkSans-Regular",
+    fontFamily: FontFamily.regular,
     width: "85%",
     color: colors.text_2,
   },

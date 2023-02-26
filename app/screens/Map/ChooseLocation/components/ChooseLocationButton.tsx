@@ -4,23 +4,30 @@ import { colors } from "../../../../src/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as Haptics from "expo-haptics";
+import { PartyCreationNavigationProps } from "../../../../Types/MapStack/ScreenNavigationProps";
+import { ICoordinates, IFullAddress } from "../../../../Types/Parties";
 
-export default function ChooseLocationButton({ region, address }) {
-  const navigation = useNavigation();
+interface ChooseLocationButtonProps {
+  region: ICoordinates | undefined;
+  fullAddress: IFullAddress | undefined;
+}
+
+export default function ChooseLocationButton({
+  region,
+  fullAddress,
+}: ChooseLocationButtonProps) {
+  const navigation = useNavigation<PartyCreationNavigationProps>();
   return (
     <View style={styles.locationButtonCallout}>
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          if (address.Label && region) {
+          if (fullAddress?.Label && region) {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-            navigation.navigate("PartyCreationStack", {
-              screen: "PartyCreationScreen",
-              params: {
-                region,
-                address: address.Label,
-                fullAddressInfo: address,
-              },
+            navigation.navigate("LocationAndTime", {
+              region: region,
+              addressTitle: fullAddress.Label,
+              fullAddressInfo: fullAddress,
             });
           } else {
             Haptics.notificationAsync(Haptics.NotificationFeedbackType.Warning);

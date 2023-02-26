@@ -1,5 +1,6 @@
 import React from "react";
-import { View } from "react-native";
+import {View} from "react-native";
+
 export default function Container(props) {
   const { styles } = props;
   return (

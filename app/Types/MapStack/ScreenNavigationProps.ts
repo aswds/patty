@@ -7,8 +7,11 @@ import {
   PartyCreationNavigatorParamList,
 } from "./NavigationTypes";
 
-export type MapStackNavigationProps =
+export type MapNavigationProps =
   NativeStackNavigationProp<MapStackNavigatorParamList>;
+
+export type PartyCreationNavigationProps =
+  NativeStackNavigationProp<PartyCreationNavigatorParamList>;
 
 export type MapScreenNavigationProps = NativeStackScreenProps<
   MapStackNavigatorParamList,

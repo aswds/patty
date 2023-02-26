@@ -13,6 +13,7 @@ import { auth } from "../../../firebase";
 import { error_handle } from "../Register_LogIn/Sign_up/Sign_up_screens/Sign_up_Functions/error_handle";
 import CustomAlert from "../Register_LogIn/CustomAlert";
 import { set_errorMsg_errorType } from "../Register_LogIn/Sign_up/Sign_up_screens/Sign_up_Functions/signUp";
+import { FontFamily } from "../../../assets/fonts/Fonts";
 
 function ResetText({ isPasswordReset }) {
   const passRecoveryText = "Reset your password";
@@ -123,7 +124,7 @@ const styles = StyleSheet.create({
   textStyle: {
     color: colors.buttonTextColor,
     fontSize: 17,
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
   },
   buttonStyle: {},
   shadowButton: {

@@ -56,7 +56,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-evenly",
     alignItems: "center",
-    // margin: 5,
+    margin: 5,
     marginLeft: 0,
   },
   textStyle: {

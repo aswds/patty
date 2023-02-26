@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import * as ImagePicker from "expo-image-picker";
-import { Alert, Platform } from "react-native";
+import {Alert, Platform} from "react-native";
+
 export default function useGallery() {
   React.useEffect(() => {
     (async () => {

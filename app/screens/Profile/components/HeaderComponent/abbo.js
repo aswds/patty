@@ -1,6 +1,7 @@
 import React from "react";
-import { Text } from "react-native";
-import { MoreLessComponent } from "./MoreLess";
+import {Text} from "react-native";
+import {MoreLessComponent} from "./MoreLess";
+
 export const MoreInfo = ({ text, linesToTruncate }) => {
   const [clippedText, setClippedText] = React.useState(false);
   return clippedText ? (

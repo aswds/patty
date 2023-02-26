@@ -1,25 +1,30 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import type { IDoc } from "../../../../Types/Type";
+import { StyleSheet, Text, View } from "react-native";
+import type {
+  IDoc,
+  IFullAddress,
+  ITime,
+} from "../../../../../../Types/Parties";
 import moment from "moment/moment";
-import { colors } from "../../../../src/colors";
-import { Ionicons, Octicons } from "@expo/vector-icons";
+import { colors } from "../../../../../../src/colors";
+import { Octicons } from "@expo/vector-icons";
+import { FontFamily } from "../../../../../../../assets/fonts/Fonts";
 
 interface ITopInfo {
   markerInfo: IDoc;
   hideModal: () => void;
 }
-function Title({ title }) {
+function Title({ title }: { title: string }) {
   return <Text style={styles.textTitleStyle}>{title}</Text>;
 }
 
-function PartyDate({ date }) {
-  const createDate = new Date(date.seconds * 1000);
+function PartyDate({ seconds }: ITime) {
+  const createDate = new Date(seconds! * 1000);
   return (
     <Text style={styles.dateTextStyle}>{moment(createDate).format("lll")}</Text>
   );
 }
-const Address = ({ address }) => {
+const Address = ({ address }: { address: IFullAddress | null | undefined }) => {
   return (
     <Text style={styles.addressTextStyle}>
       {address?.Street}, {address?.HouseNumber}
@@ -27,7 +32,7 @@ const Address = ({ address }) => {
   );
 };
 
-function NumberOfGuests({ number_of_guests }) {
+function NumberOfGuests({ number_of_guests }: { number_of_guests: number }) {
   return (
     <View style={styles.numberOfGuestsContainer}>
       <Octicons
@@ -41,25 +46,18 @@ function NumberOfGuests({ number_of_guests }) {
     </View>
   );
 }
-function CloseButton({ onPress }) {
-  return (
-    <TouchableOpacity onPress={onPress}>
-      <Ionicons name="close" size={40} color={colors.iconColor} />
-    </TouchableOpacity>
-  );
-}
+
 export const TopInfo: React.FC<ITopInfo> = ({ markerInfo, hideModal }) => {
   return (
     <View style={styles.topInfoContainer}>
       <View style={styles.partyInfoContainer}>
         <Title title={markerInfo?.title} />
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <PartyDate date={markerInfo?.time} />
+          <PartyDate seconds={markerInfo?.time?.seconds} />
           <NumberOfGuests number_of_guests={markerInfo?.number_of_guests} />
         </View>
-        <Address address={markerInfo.location.fullAddressInfo} />
+        <Address address={markerInfo?.location?.fullAddressInfo} />
       </View>
-      <CloseButton onPress={hideModal} />
     </View>
   );
 };
@@ -77,7 +75,7 @@ const styles = StyleSheet.create({
     // maxWidth: "80%",
   },
   textTitleStyle: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 22,
     color: colors.text,
   },
@@ -87,18 +85,18 @@ const styles = StyleSheet.create({
     marginLeft: "5%",
   },
   numberOfGuests: {
-    fontFamily: "WorkSans-Medium",
+    fontFamily: FontFamily.medium,
     fontSize: 17,
     color: colors.iconColor,
   },
   addressTextStyle: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 15,
     color: colors.text_2,
   },
 
   dateTextStyle: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 17,
     color: colors.text_2,
   },

@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { colors } from "../../../../src/colors";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
 const AddressTitle = ({ Address }) => {
   return (
@@ -21,14 +22,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textStyle: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     maxWidth: "90%",
     fontSize: 16,
     textAlign: "center",
     color: colors.iconColor,
   },
   error: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     color: colors.cancel,
   },
 });

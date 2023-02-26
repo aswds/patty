@@ -2,7 +2,7 @@ export const colors = {
   background: "#202020",
   text: "white",
   text_2: "#AEAEAE",
-  accentColor: "rgba(155 , 50, 50 , 1)", // #9B3232
+  accentColor: "#9B3232", // #9B3232  rgba(155 , 50, 50 , 1)
   disabledButton: "#5F3937",
   disabledText: "#947A7A",
   input: "#2C2C2C",

@@ -1,12 +1,14 @@
 import React from "react";
 
-import { Modal, StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { colors } from "../../../src/colors";
-import TagItem from "../../../shared/Tag/TagItem";
+import { colors } from "../../../../../src/colors";
+import TagItem from "../../../../../shared/Tag/TagItem";
 import { ActionButtons } from "./components/ActionButtons";
 import { TopInfo } from "./components/TopInfo_modal";
 import { JoinPartyButton } from "./components/JoinPartyButton";
+import { FontFamily } from "../../../../../../assets/fonts/Fonts";
+import ModalLayout from "../ModalLayout";
 
 const borderRadius = 35;
 
@@ -31,22 +33,13 @@ const PartyMarkerModal = (props) => {
   const insets = useSafeAreaInsets();
   const { markerInfo, hideModal, visible } = props;
   return (
-    <Modal animationType={"slide"} visible={visible} transparent={true}>
-      <View style={styles.container}>
-        <View
-          style={[
-            styles.bottomSheetContainer,
-            { paddingBottom: insets.bottom },
-          ]}
-        >
-          <TopInfo markerInfo={markerInfo} hideModal={hideModal} />
-          <Description markerInfo={markerInfo} />
-          <TagList markerInfo={markerInfo} />
-          <ActionButtons />
-          <JoinPartyButton />
-        </View>
-      </View>
-    </Modal>
+    <ModalLayout visible={visible} hideModal={hideModal}>
+      <TopInfo markerInfo={markerInfo} hideModal={hideModal} />
+      <Description markerInfo={markerInfo} />
+      <TagList markerInfo={markerInfo} />
+      <ActionButtons />
+      <JoinPartyButton />
+    </ModalLayout>
   );
 };
 const styles = StyleSheet.create({
@@ -84,7 +77,7 @@ const styles = StyleSheet.create({
   },
 
   descriptionTextStyle: {
-    fontFamily: "WorkSans-Medium",
+    fontFamily: FontFamily.medium,
     fontSize: 14,
     color: colors.iconColor,
   },

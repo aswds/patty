@@ -1,5 +1,6 @@
 import React from "react";
-import { View, Image, StyleSheet, Text } from "react-native";
+import {Image, StyleSheet, View} from "react-native";
+
 export default function CreatorImage({ user, i = 1 }) {
   const userImage = user.userImage
     ? { uri: user.userImage }

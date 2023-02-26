@@ -1,13 +1,9 @@
-import { setDoc, doc, updateDoc } from "firebase/firestore";
+import { doc, updateDoc } from "firebase/firestore";
 import { Alert } from "react-native";
 import { app, auth, db, storage } from "../../../../../../firebase";
-import {
-  getDownloadURL,
-  ref,
-  uploadBytes,
-  uploadBytesResumable,
-} from "firebase/storage";
+import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
+
 export const uploadImage = async (uri, user) => {
   if (!uri) {
     return;
@@ -24,7 +20,7 @@ export const uploadImage = async (uri, user) => {
     .then(async (res) => await getDownloadURL(res.task.snapshot.ref))
     .then(async (snapshot) => {
       await updateDoc(doc(db, "USERS", userUID), {
-        userImage: snapshot,
+        image: snapshot,
       }).catch((err) => Alert.alert(err));
       await updateProfile(user, {
         photoURL: snapshot,

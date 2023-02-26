@@ -1,6 +1,6 @@
 import React from "react";
-import { Text, TouchableOpacity } from "react-native";
-import { styles } from "./styles";
+import {Text, TouchableOpacity} from "react-native";
+import {styles} from "./styles";
 
 interface DoPartyButtonProps {
   onPress: () => void;
@@ -32,7 +32,7 @@ export default function DoPartyButton(props: DoPartyButtonProps) {
 //     marginTop: 10,
 //   },
 //   textStyle: {
-//     fontFamily: "WorkSans-Bold",
+//     fontFamily: FontFamily.bold,
 //     color: colors.iconColor,
 //     fontSize: 15,
 //     opacity: 0.8,

@@ -12,6 +12,7 @@ import { _hideModal, _imagePropHandler } from "./AvatarFunctions/ACFunctions";
 import useGallery from "../../../../hooks/useGallery";
 import { isAndroid } from "../../../../src/platform";
 import { _showModalHandle } from "./Sign_up_Functions/_showModalHandel";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
 export const AvatarChoose = (props) => {
   const route = useRoute();
@@ -60,12 +61,12 @@ export const AvatarChoose = (props) => {
 };
 const styles = StyleSheet.create({
   title: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 20,
     color: colors.buttonTextColor,
   },
   textStyle: {
-    fontFamily: "WorkSans-Regular",
+    fontFamily: FontFamily.regular,
     fontSize: 20,
     color: colors.iconColor,
   },

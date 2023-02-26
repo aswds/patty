@@ -10,9 +10,7 @@ export default function GooglePlaceSearch({ style }) {
         placeholder={"Search location"}
         returnKeyType={"default"}
         fetchDetails={true}
-        onPress={(data, details = null) => {
-          console.log(data, details);
-        }}
+        onPress={(data, details = null) => {}}
         query={{
           key: "AIzaSyD8PXs45tVtd_dfEYD_iRwc6fJjQhDr-Po",
           //   location: "latitude,longitude",

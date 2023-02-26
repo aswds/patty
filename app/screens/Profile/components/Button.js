@@ -1,6 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { colors } from "../../../src/colors";
+import { FontFamily } from "../../../../assets/fonts/Fonts";
 
 function Button({ style, onPress, text, textStyled }) {
   return (
@@ -21,7 +22,7 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: colors.buttonText,
-    fontFamily: "WorkSans-Regular",
+    fontFamily: FontFamily.regular,
     fontSize: 13,
   },
 });
