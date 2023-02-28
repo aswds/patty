@@ -1,11 +1,17 @@
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../../../../src/colors";
 import React from "react";
 
-export function CloseButton({ onPress }: { onPress: () => void }) {
+export function CloseButton({
+  onPress,
+  style,
+}: {
+  onPress: () => void;
+  style?: ViewStyle;
+}) {
   return (
-    <TouchableOpacity onPress={onPress} style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={[styles.container, style]}>
       <Ionicons name="close" size={40} color={colors.iconColor} />
     </TouchableOpacity>
   );
@@ -13,9 +19,10 @@ export function CloseButton({ onPress }: { onPress: () => void }) {
 const styles = StyleSheet.create({
   container: {
     position: "absolute",
+
     alignSelf: "flex-end",
     top: "5%",
     right: "5%",
-    zIndex: 10,
+    zIndex: 1,
   },
 });

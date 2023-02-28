@@ -7,7 +7,7 @@ import CreatePartyButton from "./components/CreatePartyButton";
 import { LocationAndTimeScreenNavigationProps } from "../../../Types/MapStack/ScreenNavigationProps";
 import useUserLocation from "../../../hooks/useUserLocation/useUserLocation";
 import NavigationBar from "./NavigationBar";
-import { IDoc } from "../../../Types/Parties";
+import { IDoc, ITime } from "../../../Types/Parties";
 
 const LocationAndTime = ({
   route,
@@ -25,7 +25,7 @@ const LocationAndTime = ({
       region,
       fullAddressInfo,
     },
-    time: time,
+    time: time as ITime,
     access: access,
     number_of_guests: 1,
   });

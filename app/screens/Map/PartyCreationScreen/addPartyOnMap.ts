@@ -28,6 +28,7 @@ export async function addPartyOnMap(data: IDoc) {
       await setDoc(DB_references.parties, {
         ...data,
         createdAt: Timestamp.fromDate(new Date()).toJSON() || new Date(),
+        creator: auth?.currentUser?.uid,
       });
     });
   const addUserPartyCount = () =>

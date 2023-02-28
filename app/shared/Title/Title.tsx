@@ -6,6 +6,7 @@ import { FontFamily } from "../../../assets/fonts/Fonts";
 interface ITitle {
   title?: string;
   icon?: React.ReactNode;
+  modalIcon?: React.ReactNode;
   description?: string;
   fontStyle?: TextStyle;
   containerStyle?: ViewStyle;
@@ -14,17 +15,21 @@ interface ITitle {
 export function Title({
   title,
   icon,
+  modalIcon,
   description,
   fontStyle,
   containerStyle,
 }: ITitle) {
   return (
     <View style={[styles.container, containerStyle]}>
-      <View style={styles.titleContainer}>
-        <Text style={[styles.textStyle, fontStyle]}>{title}</Text>
-        {icon}
+      {modalIcon}
+      <View>
+        <View style={styles.titleContainer}>
+          <Text style={[styles.textStyle, fontStyle]}>{title}</Text>
+          {icon}
+        </View>
+        <Text style={styles.descriptionTextStyle}>{description}</Text>
       </View>
-      <Text style={styles.descriptionTextStyle}>{description}</Text>
     </View>
   );
 }
@@ -41,10 +46,11 @@ const styles = StyleSheet.create({
   },
   titleContainer: {
     flexDirection: "row",
+    justifyContent: "flex-start",
     alignItems: "center",
   },
   container: {
+    flexDirection: "row",
     marginBottom: "5%",
-    justifyContent: "center",
   },
 });

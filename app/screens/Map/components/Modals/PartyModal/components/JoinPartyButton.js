@@ -3,13 +3,13 @@ import React from "react";
 import { colors } from "../../../../../../src/colors";
 import { FontFamily } from "../../../../../../../assets/fonts/Fonts";
 
-export function JoinPartyButton() {
+export function JoinEventButton() {
   function onPress() {}
   return (
     <View style={{ width: "100%" }}>
       <TouchableOpacity style={styles.buttonBg} onPress={onPress}>
         <Text style={[styles.textTitleStyle, { fontSize: 18 }]}>
-          Join party
+          Join event
         </Text>
       </TouchableOpacity>
     </View>

@@ -13,7 +13,7 @@ import { RootState } from "../../redux/store/store";
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { IModals } from "../../Types/Map";
-import FavoriteModal from "./components/Modals/MoreModal/MoreModal";
+import FavoriteModal from "./components/Modals/SelectedModal/SelectedModal";
 
 const mapStyle = require("./mapStyle.json");
 interface MapProps extends MapScreenNavigationProps {}
@@ -67,7 +67,12 @@ function Map({ navigation }: MapProps) {
           );
         })}
       </MapView>
-      <ProfileButton current_user={current_user} />
+      <ProfileButton
+        current_user={current_user}
+        onLongPress={() =>
+          mapRef?.current?.animateToRegion(userLocation as Region)
+        }
+      />
       <Buttons
         onPressPartyCreationButton={() => {
           navigation.navigate("PartyCreationStack", {

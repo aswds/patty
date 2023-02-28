@@ -1,11 +1,11 @@
-import {doc, getDoc} from "firebase/firestore";
+import { doc, getDoc } from "firebase/firestore";
 
-export  function similarUser(username) {
-const docRef = doc(db, "USERS", "SF");
-const docSnap = await getDoc(docRef);
+export async function similarUser(username) {
+  const docRef = doc(db, "USERS", "SF");
+  const docSnap = await getDoc(docRef);
 
-if (docSnap.exists()) {
-} else {
-  // doc.data() will be undefined in this case
-}
+  if (docSnap.exists()) {
+  } else {
+    // doc.data() will be undefined in this case
+  }
 }

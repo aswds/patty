@@ -2,7 +2,7 @@ import React from "react";
 import DoPartyButton from "./DoPartyButton";
 import { StyleSheet, View } from "react-native";
 import SearchButton from "./SearchButton";
-import MoreButton from "./MoreButton";
+import SelectedButton from "./SelectedButton";
 
 interface ButtonsProps {
   onPressMoreButton: () => void;
@@ -17,7 +17,7 @@ const Buttons = ({
 }: ButtonsProps) => {
   return (
     <View style={styles.container}>
-      <MoreButton onPress={onPressMoreButton} />
+      <SelectedButton onPress={onPressMoreButton} />
       <DoPartyButton onPress={onPressPartyCreationButton} />
       <SearchButton onPress={onPressSearchPartyButton} />
     </View>

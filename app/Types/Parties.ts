@@ -33,4 +33,5 @@ export interface IDoc {
   time: ITime | undefined;
   access: string;
   number_of_guests: number;
+  user?: string;
 }

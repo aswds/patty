@@ -13,8 +13,9 @@ import { ProfileNavigationProps } from "../../../Types/ProfileStack/ScreenNaviga
 
 interface ProfileButtonProps {
   current_user: IUser;
+  onLongPress: () => void;
 }
-const ProfileButton = ({ current_user }: ProfileButtonProps) => {
+const ProfileButton = ({ current_user, onLongPress }: ProfileButtonProps) => {
   const { image } = useUserImage();
   const navigation = useNavigation<ProfileNavigationProps>();
   const insets = useSafeAreaInsets();
@@ -29,6 +30,7 @@ const ProfileButton = ({ current_user }: ProfileButtonProps) => {
     <TouchableOpacity
       style={[styles.container, { marginTop: insets.top }]}
       onPress={onPress}
+      onLongPress={onLongPress}
     >
       <Image
         source={
@@ -52,7 +54,7 @@ const styles = StyleSheet.create({
     top: "1%",
     right: "5%",
     borderWidth: 1,
-    borderColor: "white",
+    borderColor: colors.accentColor,
     borderRadius: 9999,
     overflow: "hidden",
   },

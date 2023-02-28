@@ -1,22 +1,22 @@
 import React from "react";
 
 import { TouchableOpacity } from "react-native";
-import { Feather } from "@expo/vector-icons";
+import { AntDesign } from "@expo/vector-icons";
 import { styles } from "./styles";
 import { colors } from "../../../../src/colors";
 
-interface MoreButtonProps {
+interface SelectedButtonProps {
   onPress: () => void;
 }
-const MoreButton = ({ onPress }: MoreButtonProps) => {
+const SelectedButton = ({ onPress }: SelectedButtonProps) => {
   return (
     <TouchableOpacity
       style={[styles.buttonContainer, styles.additionalButton]}
       onPress={onPress}
     >
-      <Feather name="more-horizontal" size={30} color={colors.accentColor} />
+      <AntDesign name="staro" size={30} color={colors.accentColor} />
     </TouchableOpacity>
   );
 };
 
-export default MoreButton;
+export default SelectedButton;

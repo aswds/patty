@@ -1,14 +1,13 @@
 import React from "react";
 
 import { StyleSheet, Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../../../../src/colors";
 import TagItem from "../../../../../shared/Tag/TagItem";
 import { ActionButtons } from "./components/ActionButtons";
-import { TopInfo } from "./components/TopInfo_modal";
-import { JoinPartyButton } from "./components/JoinPartyButton";
+import { Event } from "../../../../../shared/Title/TopInfo_modal";
 import { FontFamily } from "../../../../../../assets/fonts/Fonts";
 import ModalLayout from "../ModalLayout";
+import { JoinEventButton } from "./components/JoinPartyButton";
 
 const borderRadius = 35;
 
@@ -30,15 +29,18 @@ function TagList({ markerInfo }) {
 }
 
 const PartyMarkerModal = (props) => {
-  const insets = useSafeAreaInsets();
   const { markerInfo, hideModal, visible } = props;
   return (
-    <ModalLayout visible={visible} hideModal={hideModal}>
-      <TopInfo markerInfo={markerInfo} hideModal={hideModal} />
+    <ModalLayout
+      visible={visible}
+      hideModal={hideModal}
+      // title={<Title title={markerInfo.title} />}
+    >
+      <Event markerInfo={markerInfo} hideModal={hideModal} />
       <Description markerInfo={markerInfo} />
       <TagList markerInfo={markerInfo} />
       <ActionButtons />
-      <JoinPartyButton />
+      <JoinEventButton />
     </ModalLayout>
   );
 };
