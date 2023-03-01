@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { getUserLocation } from "../../shared/GetLocationFunctions/getUserLocation";
 import { collection, getDocs, getFirestore } from "firebase/firestore";
 import { Alert } from "react-native";
@@ -29,28 +29,31 @@ async function fetchCityParties(userLocation: string) {
     .catch((e) => Alert.alert(e));
 }
 
-export default function useUserLocation() {
-  const [userLocation, setUserLocation] = useState<ICoordinates>();
+export default function useUserLocation(
+  setUserLocation: Dispatch<SetStateAction<ICoordinates | undefined>>
+) {
+  // const [userLocation, setUserLocation] = useState<ICoordinates>();
   const [errorMsg, setErrorMsg] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [parties, setParties] = useState<DocumentData>();
+  const [events, setEvents] = useState<DocumentData>();
   useEffect(() => {
     (async function fetchData() {
       try {
         getUserLocation().then((res: LocationObject) => {
-          getAddress(res.coords.latitude, res.coords.longitude).then(
-            (r: IFullAddress) => {
-              fetchCityParties(r?.City).then((parties) => {
-                setParties(parties?.map((doc) => doc.data()));
-              });
-            }
-          );
           setUserLocation({
             latitude: res.coords.latitude,
             latitudeDelta: 0,
             longitude: res.coords.longitude,
             longitudeDelta: -0.01,
           });
+          getAddress(res.coords.latitude, res.coords.longitude).then(
+            (r: IFullAddress) => {
+              fetchCityParties(r?.City).then((events) => {
+                setEvents(events?.map((event) => event.data()));
+              });
+            }
+          );
+
           setIsLoading(false);
         });
       } catch (e: any) {
@@ -59,5 +62,5 @@ export default function useUserLocation() {
     })();
   }, []);
 
-  return { userLocation, parties, errorMsg, isLoading };
+  return { events, errorMsg, isLoading };
 }

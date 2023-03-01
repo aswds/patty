@@ -1,13 +1,12 @@
 import React, { useEffect, useRef, useState } from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, Text, View } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
 import PartyMarkerModal from "./components/Modals/PartyModal/PartyMarkerModal";
-import useUserLocation from "../../hooks/useUserLocation/useUserLocation";
+import getEventsInfo from "../../hooks/useUserLocation/useUserLocation";
 import CustomMarker from "./components/Markers/CustomMarker";
-import type { IDoc } from "../../Types/Parties";
+import type { ICoordinates, IDoc } from "../../Types/Parties";
 import { MapScreenNavigationProps } from "../../Types/MapStack/ScreenNavigationProps";
 import Buttons from "./components/Buttons/Buttons";
-import Loader from "../../shared/Loaders/Loader";
 import ProfileButton from "./components/ProfileButton";
 import { RootState } from "../../redux/store/store";
 import { useActions } from "../../hooks/useActions";
@@ -24,12 +23,14 @@ function Map({ navigation }: MapProps) {
     partyMarkerModal: false,
     searchModal: false,
   });
-
+  const [userLocation, setUserLocation] = useState<ICoordinates>();
   const [markerInfo, setMarkerInfo] = useState<IDoc>();
-  const { userLocation, parties, isLoading } = useUserLocation();
+  const { events, isLoading = false } = getEventsInfo(setUserLocation);
   const { fetch_user } = useActions();
   const mapRef = useRef<MapView | null>(null);
   const { current_user } = useTypedSelector((state) => state.user_state);
+
+  useEffect(() => {}, [events]);
 
   useEffect(() => {
     fetch_user();
@@ -37,7 +38,7 @@ function Map({ navigation }: MapProps) {
 
   return (
     <View style={styles.container}>
-      {isLoading && <Loader isVisible={isLoading} />}
+      {true && <Text>Fetching events</Text>}
       <MapView
         style={styles.container}
         provider={PROVIDER_GOOGLE}
@@ -50,7 +51,7 @@ function Map({ navigation }: MapProps) {
         paddingAdjustmentBehavior="always"
         ref={mapRef}
       >
-        {parties?.map((doc: IDoc, index: React.Key | null | undefined) => {
+        {events?.map((doc: IDoc, index?: React.Key | null) => {
           return (
             <CustomMarker
               doc={doc}
