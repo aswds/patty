@@ -1,0 +1,31 @@
+import React, { Key } from "react";
+import { Entypo } from "@expo/vector-icons";
+import { pickColor } from "../../pickColor";
+import { Marker, Region } from "react-native-maps";
+import { IDoc } from "../../../../Types/Parties";
+
+type CustomMarkerProps = {
+  doc: IDoc;
+  index?: Key | null;
+  onPress: () => void;
+};
+
+const CustomMarker = React.memo(
+  ({ doc, index, onPress }: CustomMarkerProps) => {
+    return (
+      <Marker
+        coordinate={doc?.location?.region as Region}
+        key={index}
+        onPress={onPress}
+      >
+        <Entypo
+          name="shareable"
+          size={31}
+          color={pickColor(doc.number_of_guests)}
+        />
+      </Marker>
+    );
+  }
+);
+
+export default CustomMarker;
