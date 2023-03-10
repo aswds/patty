@@ -2,10 +2,10 @@ import React, { Key } from "react";
 import { Entypo } from "@expo/vector-icons";
 import { pickColor } from "../../pickColor";
 import { Marker, Region } from "react-native-maps";
-import { IDoc } from "../../../../Types/Parties";
+import { IEvent } from "../../../../Types/Parties";
 
 type CustomMarkerProps = {
-  doc: IDoc;
+  doc: IEvent;
   index?: Key | null;
   onPress: () => void;
 };
