@@ -119,7 +119,6 @@ const SignUpScreen = (props) => {
               color={colors.iconColor}
             />
           }
-          autoComplete={false}
           isValid={valid.validEmail}
           autoCapitalize="none"
           keyboardType="email-address"

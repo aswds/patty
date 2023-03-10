@@ -22,7 +22,7 @@ export function Title({
 }: ITitle) {
   return (
     <View style={[styles.container, containerStyle]}>
-      {modalIcon}
+      {modalIcon && <View style={{ marginRight: "5%" }}>{modalIcon}</View>}
       <View>
         <View style={styles.titleContainer}>
           <Text style={[styles.textStyle, fontStyle]}>{title}</Text>
@@ -52,5 +52,6 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     marginBottom: "5%",
+    alignItems: "center",
   },
 });

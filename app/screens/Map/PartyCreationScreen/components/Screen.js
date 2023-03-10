@@ -1,7 +1,7 @@
-import React, {useRef, useState} from "react";
-import {ScrollView, StyleSheet, View} from "react-native";
-import {colors} from "../../../../src/colors";
-import {useSafeAreaInsets} from "react-native-safe-area-context";
+import React, { useRef, useState } from "react";
+import { ScrollView, StyleSheet, View } from "react-native";
+import { colors } from "../../../../src/colors";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 export default function Screen(props) {
   const scrollView = useRef();
@@ -25,7 +25,7 @@ export default function Screen(props) {
         }}
       >
         <View style={{ flex: 1 }}>
-          {React.Children.map(props.children, (child, i) => {
+          {React.Children.map(props.children, (child) => {
             if (child.type.name === "PickTime" && child.props.setTime) {
               return React.cloneElement(child, {
                 setToScrollBottom: setToScrollBottom,

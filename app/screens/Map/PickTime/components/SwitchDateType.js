@@ -1,8 +1,9 @@
 import React from "react";
-import {StyleSheet, TouchableOpacity, View} from "react-native";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import CustomButton from "../../PartyCreationScreen/components/LocationAddButton";
-import {Entypo} from "@expo/vector-icons";
-import {colors} from "../../../../src/colors";
+import { Entypo } from "@expo/vector-icons";
+import { colors } from "../../../../src/colors";
+import { isAndroid } from "../../../../src/platform";
 
 export default function SwitchDateType({
   onPress,
@@ -16,7 +17,7 @@ export default function SwitchDateType({
         onPress={onPress}
         title={dateMode === "date" ? "Pick a time" : "Pick a date"}
       />
-      {isConfirmButtonShown && (
+      {isConfirmButtonShown && !isAndroid && (
         <TouchableOpacity style={styles.doneButton} onPress={onDone}>
           <Entypo name="check" size={30} color={colors.doneButtonText} />
         </TouchableOpacity>

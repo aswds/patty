@@ -1,7 +1,7 @@
 import React from "react";
-import {Dimensions, StyleSheet, Text, View} from "react-native";
-import {isAndroid} from "../../../src/platform";
-import {FontFamily} from "../../../../assets/fonts/Fonts";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { isAndroid } from "../../../src/platform";
+import { FontFamily } from "../../../../assets/fonts/Fonts";
 
 export default function RenderItem(props) {
   const { item } = props;
@@ -9,16 +9,18 @@ export default function RenderItem(props) {
   if (user_info === undefined) {
     return;
   }
+
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.textNumberStyle}>128 🎉</Text>
+        <Text style={styles.textNumberStyle}>
+          {user_info.partiesCreated} 🎉
+        </Text>
       </View>
       <View>
         <Text style={styles.textStyle}>
-          Parties{" "}
-          <Text style={styles.textStyleUsername}>{user_info.username}</Text> has
-          visited{" "}
+          Parties were created by{" "}
+          <Text style={styles.textStyleUsername}>{user_info.username}</Text>
         </Text>
       </View>
     </View>

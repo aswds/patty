@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 // import forgotPassword from "../../components/forgotPassword";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
+import { Alert, Dimensions, StyleSheet, Text, View } from "react-native";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import Button from "../Register_LogIn/components/button";
 import { colors } from "../../src/colors";
@@ -34,6 +34,17 @@ function ResetText({ isPasswordReset }) {
   );
 }
 
+function AfterReset() {
+  return (
+    <View style={styles.textTerms}>
+      <Text style={styles.textTermsStyle}>
+        After changing your email, you will be directed to login with a new
+        credential
+      </Text>
+    </View>
+  );
+}
+
 export default function ChangeEmail({
   navigation,
   passRecoveryFunction,
@@ -51,8 +62,9 @@ export default function ChangeEmail({
   const insets = useSafeAreaInsets();
   function changeEmail(email) {
     updateEmail(auth.currentUser, email)
-      .then((r) => {
-        navigation.navigate("VerifyEmail", { changedEmail: email });
+      .then(() => {
+        Alert.alert("You'll have to login with changed email");
+        // navigation.navigate("VerifyEmail", { changedEmail: email });
       })
       .catch((e) => {
         set_errorMsg_errorType(e.code).catch((e) => {
@@ -106,6 +118,7 @@ export default function ChangeEmail({
             </Button>
           </View>
         </View>
+        <AfterReset />
       </Screen>
       <CustomAlert
         errorMsg={error.message}
@@ -159,5 +172,22 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
     borderRadius: 15,
     alignItems: "center",
+  },
+
+  textTerms: {
+    height: "10%",
+    marginTop: "10%",
+    alignSelf: "center",
+    width: "90%",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "center",
+  },
+  textTermsStyle: {
+    fontFamily: "Lato-Regular",
+    fontSize: 13,
+    fontWeight: "400",
+    color: "grey",
+    textAlign: "center",
   },
 });

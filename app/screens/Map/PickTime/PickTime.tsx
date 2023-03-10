@@ -1,8 +1,9 @@
-import DateTimePicker from "@react-native-community/datetimepicker";
+import DateTimePicker, {
+  DateTimePickerEvent,
+} from "@react-native-community/datetimepicker";
 import React, { useState } from "react";
 import { StyleSheet, Text, View } from "react-native";
 import * as Haptics from "expo-haptics";
-import SwitchDateType from "./components/SwitchDateType";
 import { FontAwesome } from "@expo/vector-icons";
 import { colors } from "../../../src/colors";
 import { isAndroid } from "../../../src/platform";
@@ -10,6 +11,7 @@ import moment from "moment/moment";
 import { Title } from "../../../shared/Title/Title";
 import { descriptionTexts } from "../PartyCreationScreen/descriptionTexts";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
+import SwitchDateType from "./components/SwitchDateType";
 
 interface PickTimeProps {
   setTime: (time: any) => void;
@@ -20,22 +22,19 @@ export default function PickTime(props: PickTimeProps) {
   type IOSMode = "date" | "time" | "datetime" | "countdown";
   const { setTime, setToScrollBottom } = props;
   const [date, setDate] = useState<Date | undefined>(new Date(Date.now()));
-  const [mode, setMode] = useState<IOSMode>("date");
+  const [mode, setMode] = useState<IOSMode | undefined>("date");
   const [show, setShow] = useState(false);
   const minDate = new Date();
-  const onChange = (_: any, selectedDate: Date | undefined) => {
+  const onChange = (event: DateTimePickerEvent, selectedDate?: Date) => {
+    if (isAndroid) {
+      setShow(false);
+    }
     const currentDate = selectedDate;
+
     setTime(currentDate);
     setDate(currentDate);
   };
 
-  const showMode = (currentMode: IOSMode) => {
-    if (isAndroid) {
-      setShow(false);
-      // for iOS, add a button that closes the picker
-    }
-    setMode(currentMode);
-  };
   function onPress() {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     setShow(true);
@@ -79,9 +78,10 @@ export default function PickTime(props: PickTimeProps) {
             mode={mode}
             minimumDate={minDate}
             minuteInterval={5}
+            // display={(!isAndroid && "spinner") || undefined}
+            display={"spinner"}
             onChange={onChange}
-            display="spinner"
-            textColor="white"
+            textColor={isAndroid ? "black" : "white"}
           />
         )}
         <SwitchDateType

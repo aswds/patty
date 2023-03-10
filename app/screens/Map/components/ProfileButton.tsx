@@ -2,7 +2,6 @@ import React from "react";
 
 import { Image, StyleSheet, TouchableOpacity } from "react-native";
 import { useNavigation } from "@react-navigation/native";
-import useUserImage from "../../../hooks/useUserImage";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 import { colors } from "../../../src/colors";
@@ -16,7 +15,6 @@ interface ProfileButtonProps {
   onLongPress: () => void;
 }
 const ProfileButton = ({ current_user, onLongPress }: ProfileButtonProps) => {
-  const { image } = useUserImage();
   const navigation = useNavigation<ProfileNavigationProps>();
   const insets = useSafeAreaInsets();
   function onPress() {

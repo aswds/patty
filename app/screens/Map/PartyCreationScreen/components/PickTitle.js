@@ -1,10 +1,10 @@
 import React from "react";
-import {StyleSheet, TextInput, View} from "react-native";
-import {colors} from "../../../../src/colors";
-import {Feather} from "@expo/vector-icons";
-import {Title} from "../../../../shared/Title/Title";
-import {descriptionTexts} from "../descriptionTexts";
-import {FontFamily} from "../../../../../assets/fonts/Fonts";
+import { StyleSheet, TextInput, View } from "react-native";
+import { colors } from "../../../../src/colors";
+import { Feather } from "@expo/vector-icons";
+import { Title } from "../../../../shared/Title/Title";
+import { descriptionTexts } from "../descriptionTexts";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
 export default function PickTitle({ setTitle, title }) {
   return (
@@ -56,6 +56,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.input,
     fontSize: 17,
     fontFamily: FontFamily.bold,
-    textAlign: "flex-start",
+    // textAlign: "flex-start",
   },
 });
