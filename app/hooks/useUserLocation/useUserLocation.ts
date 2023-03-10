@@ -1,11 +1,12 @@
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { getUserLocation } from "../../shared/GetLocationFunctions/getUserLocation";
-import { collection, getDocs, getFirestore } from "firebase/firestore";
-import { Alert } from "react-native";
+import { onSnapshot } from "firebase/firestore";
 import { getAddress } from "../../shared/GetLocationFunctions/getAddress";
 import firebase from "firebase/compat";
 import { ICoordinates, IFullAddress } from "../../Types/Parties";
 import { LocationObject } from "expo-location";
+import { Alert } from "react-native";
+import { eventReference } from "../../Firebase/References";
 import DocumentData = firebase.firestore.DocumentData;
 
 /**
@@ -13,26 +14,34 @@ import DocumentData = firebase.firestore.DocumentData;
  * @param userLocation
  * @returns {Promise<Array<QueryDocumentSnapshot<DocumentData>>|void>}
  */
-async function fetchCityParties(userLocation: string) {
-  const db = getFirestore();
-  const collectionRef = collection(
-    db,
-    "PARTIES",
-    `${userLocation}`,
-    "UserParties"
-  );
-
-  return await getDocs(collectionRef)
-    .then((r) => {
-      return r.docs;
-    })
-    .catch((e) => Alert.alert(e));
+export async function fetchCityParties(
+  userLocation: string
+): Promise<DocumentData[]> {
+  return new Promise((resolve, reject) => {
+    const collectionRef = eventReference(userLocation);
+    onSnapshot(
+      collectionRef,
+      async (querySnapshot) => {
+        if (querySnapshot.docs.length === 0)
+          reject(
+            Error(
+              "Sadly, no events we're found :(" +
+                "\nBecome the first who gonna create one 👽"
+            )
+          );
+        else resolve(querySnapshot.docs.map((e) => e.data()));
+      },
+      (error) => {
+        Alert.alert(error.message);
+        reject(Error("Something went wrong 👽"));
+      }
+    );
+  });
 }
 
-export default function useUserLocation(
-  setUserLocation: Dispatch<SetStateAction<ICoordinates | undefined>>
-) {
-  // const [userLocation, setUserLocation] = useState<ICoordinates>();
+export default function useUserLocation() {
+  // setUserLocation?: Dispatch<SetStateAction<ICoordinates | undefined>>
+  const [userLocation, setUserLocation] = useState<ICoordinates>();
   const [errorMsg, setErrorMsg] = useState<string>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const [events, setEvents] = useState<DocumentData>();
@@ -48,9 +57,7 @@ export default function useUserLocation(
           });
           getAddress(res.coords.latitude, res.coords.longitude).then(
             (r: IFullAddress) => {
-              fetchCityParties(r?.City).then((events) => {
-                setEvents(events?.map((event) => event.data()));
-              });
+              setEvents(fetchCityParties(r?.City));
             }
           );
 
@@ -62,5 +69,5 @@ export default function useUserLocation(
     })();
   }, []);
 
-  return { events, errorMsg, isLoading };
+  return { userLocation, events, errorMsg, isLoading };
 }

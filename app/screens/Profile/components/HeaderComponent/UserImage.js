@@ -1,5 +1,5 @@
 import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import { Alert, Image, StyleSheet, View } from "react-native";
 import useUserImage from "../../../../hooks/useUserImage";
 import Button from "../Button";
 import { useNavigation } from "@react-navigation/native";
@@ -7,18 +7,17 @@ import { Skeleton } from "moti/skeleton";
 import { isAndroid } from "../../../../src/platform";
 import { auth } from "../../../../../firebase";
 
-export default function UserImage({ uri, Loader, user, style }) {
+export default function UserImage({ Loader, user, style }) {
   const { isLoading, setIsLoading } = Loader;
-  const { image } = useUserImage(uri);
+  const { returnImage } = useUserImage(user.image);
 
   const navigation = useNavigation();
   const onPress = () => {
     navigation.navigate("EditProfile", {
       user,
-      image: { image },
+      image: { returnImage },
     });
   };
-
   return (
     <View style={styles.container}>
       {/* Loader */}
@@ -29,7 +28,7 @@ export default function UserImage({ uri, Loader, user, style }) {
         width={100}
       >
         <Image
-          source={image}
+          source={returnImage}
           style={[styles.imageStyle, style]}
           onLoadEnd={() => {
             setIsLoading(false);
@@ -38,7 +37,14 @@ export default function UserImage({ uri, Loader, user, style }) {
       </Skeleton>
       <Button
         onPress={async () => {
-          await auth.signOut();
+          Alert.alert("Are you sure?", "", [
+            {
+              text: "Log out",
+              onPress: async () => await auth.signOut(),
+              style: "destructive",
+            },
+            { text: "Cancel", onPress: () => {}, style: "default" },
+          ]);
         }}
         text={"Log out"}
       />

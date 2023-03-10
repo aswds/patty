@@ -2,22 +2,20 @@ import React, { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { useTypedSelector } from "./useTypedSelector";
 
-export default function useUserImage(uri) {
-  const [image, setImage] = useState();
-  const { userImage } = useTypedSelector(
-    (state) => state.user_state.current_user
-  );
+export default function useUserImage() {
+  const [returnImage, setReturnImage] = useState();
+  const { image } = useTypedSelector((state) => state.user_state.current_user);
   const noImage = require("../../assets/images/noImage-01.png");
   useEffect(() => {
-    if (userImage) {
-      fetch(userImage)
-        .then(() => setImage({ uri: userImage }))
+    if (image) {
+      fetch(image)
+        .then(() => setReturnImage({ uri: image }))
         .catch(() => {
           Alert.alert("Can`t load user image");
-          setImage(noImage);
+          setReturnImage(noImage);
         });
     }
   }, []);
 
-  return { image };
+  return { returnImage };
 }

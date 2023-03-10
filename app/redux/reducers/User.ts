@@ -30,23 +30,3 @@ const userSlice = createSlice({
 
 export const { userReceived, userLoading } = userSlice.actions;
 export default userSlice.reducer;
-//
-// export const user_reducer = (state = initialState, action) => {
-//   switch (action.type) {
-//     case USER_STATE_CHANGE:
-//       return {
-//         ...state,
-//         isLoading: true,
-//       };
-//     case USER_STATE_LOADED: {
-//       return {
-//         ...state,
-//         isLoading: false,
-//         current_user: action.current_user,
-//       };
-//     }
-//
-//     default:
-//       return state;
-//   }
-// };
