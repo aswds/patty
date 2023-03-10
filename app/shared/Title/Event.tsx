@@ -6,16 +6,15 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import type { IDoc, IFullAddress, ITime } from "../../Types/Parties";
+import type { IEvent, IFullAddress } from "../../Types/Parties";
 import moment from "moment/moment";
 import { colors } from "../../src/colors";
 import { AntDesign, Octicons } from "@expo/vector-icons";
 import { FontFamily } from "../../../assets/fonts/Fonts";
-import { CloseButton } from "../../screens/Map/components/Buttons/CloseButton";
 
 interface ITopInfo {
-  markerInfo: IDoc;
-  hideModal?: () => void;
+  markerInfo: IEvent;
+  isJoinedEvent?: boolean;
   style?: ViewStyle;
   onFavoritePress?: () => void;
 }
@@ -23,8 +22,8 @@ function Title({ title }: { title: string }) {
   return <Text style={styles.textTitleStyle}>{title}</Text>;
 }
 
-function PartyDate({ seconds }: ITime) {
-  const createDate = new Date(seconds! * 1000);
+function PartyDate({ date }: { date: Date }) {
+  const createDate = new Date(date);
   return (
     <Text style={styles.dateTextStyle}>{moment(createDate).format("lll")}</Text>
   );
@@ -54,7 +53,7 @@ function NumberOfGuests({ number_of_guests }: { number_of_guests: number }) {
 // if hideModal present
 export const Event: React.FC<ITopInfo> = ({
   markerInfo,
-  hideModal,
+  isJoinedEvent,
   style,
   onFavoritePress,
 }) => {
@@ -69,13 +68,13 @@ export const Event: React.FC<ITopInfo> = ({
         </View>
 
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <PartyDate seconds={markerInfo?.time?.seconds} />
+          <PartyDate date={markerInfo?.time as Date} />
           <NumberOfGuests number_of_guests={markerInfo?.number_of_guests} />
         </View>
         <Address address={markerInfo?.location?.fullAddressInfo} />
       </View>
 
-      {!hideModal && (
+      {isJoinedEvent && (
         <TouchableOpacity
           style={{ alignItems: "flex-end" }}
           onPress={onFavoritePress}
@@ -89,7 +88,7 @@ export const Event: React.FC<ITopInfo> = ({
         </TouchableOpacity>
       )}
 
-      {hideModal && <CloseButton onPress={hideModal} />}
+      {/*{hideModal && <CloseButton onPress={hideModal} />}*/}
     </View>
   );
 };
