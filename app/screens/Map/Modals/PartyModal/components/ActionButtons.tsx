@@ -1,20 +1,13 @@
 import { StyleSheet, View } from "react-native";
-import { AntDesign, Entypo, MaterialIcons } from "@expo/vector-icons";
+import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import IconButton from "../../../../../../shared/Icons/IconButton";
-import { colors } from "../../../../../../src/colors";
-import { FontFamily } from "../../../../../../../assets/fonts/Fonts";
+import IconButton from "../../../../../shared/Icons/IconButton";
+import { colors } from "../../../../../src/colors";
+import { FontFamily } from "../../../../../../assets/fonts/Fonts";
 
 export function ActionButtons() {
   return (
     <View style={styles.actionsButtonContainer}>
-      <IconButton
-        text={"Favorite"}
-        Icon={AntDesign}
-        name={"staro"}
-        textStyle={styles.iconTextStyle}
-        onPress={() => {}}
-      />
       <IconButton
         text={"Share"}
         Icon={Entypo}

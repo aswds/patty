@@ -1,12 +1,20 @@
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
-import { colors } from "../../../../../../src/colors";
-import { FontFamily } from "../../../../../../../assets/fonts/Fonts";
+import { colors } from "../../../../../src/colors";
+import { FontFamily } from "../../../../../../assets/fonts/Fonts";
+import { IEvent } from "../../../../../Types/Parties";
+import { joinEvent } from "../../../Firebase/fetchUserJoinedEvents";
 
-export function JoinEventButton() {
-  function onPress() {}
+interface JoinEventButtonProps {
+  data: IEvent;
+}
+
+export function JoinEventButton({ data }: JoinEventButtonProps): JSX.Element {
+  function onPress() {
+    joinEvent(data);
+  }
   return (
-    <View style={{ width: "100%" }}>
+    <View style={{ width: "100%", height: 50 }}>
       <TouchableOpacity style={styles.buttonBg} onPress={onPress}>
         <Text style={[styles.textTitleStyle, { fontSize: 18 }]}>
           Join event

@@ -1,12 +1,11 @@
-import React, {useState} from "react";
-import {Animated, ScrollView, StyleSheet, View} from "react-native";
-import {useSafeAreaInsets} from "react-native-safe-area-context";
-import {colors} from "../../../../src/colors";
-import {animationStart, closeModal} from "./animations";
-import {CloseButton} from "./CloseButton";
+import React, { useState } from "react";
+import { Animated, ScrollView, StyleSheet, View } from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { colors } from "../../../../src/colors";
+import { animationStart, closeModal } from "./animations";
+import { CloseButton } from "./CloseButton";
 
 export default function Screen(props) {
-  const { userCanScroll } = props;
   const [animation, setAnimation] = useState(new Animated.Value(0));
   const [animationBorder, setAnimationBorder] = useState(new Animated.Value(0));
 

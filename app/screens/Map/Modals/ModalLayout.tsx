@@ -2,7 +2,7 @@ import React, { PropsWithChildren, ReactNode } from "react";
 
 import { Modal, ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { CloseButton } from "../Buttons/CloseButton";
+import { CloseButton } from "../components/Buttons/CloseButton";
 
 const borderRadius = 35;
 
@@ -20,13 +20,18 @@ const ModalLayout = ({
 }: ModalLayoutProps) => {
   const insets = useSafeAreaInsets();
   return (
-    <Modal animationType={"slide"} visible={visible} transparent={true}>
+    <Modal
+      animationType={"slide"}
+      visible={visible}
+      transparent={true}
+      onRequestClose={hideModal}
+    >
       <View style={styles.container}>
         <View style={[styles.bottomSheetContainer]}>
           <ScrollView
             contentContainerStyle={{
               padding: 20,
-              paddingBottom: insets.bottom,
+              paddingBottom: insets.bottom + 50,
             }}
           >
             {title && (
@@ -40,7 +45,8 @@ const ModalLayout = ({
                 />
               </View>
             )}
-            {children}
+
+            <View style={{ flex: 1 }}>{children}</View>
           </ScrollView>
         </View>
       </View>
@@ -51,6 +57,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     justifyContent: "flex-end",
+    zIndex: 1,
   },
   bottomSheetContainer: {
     backgroundColor: "#1E1E1E",
