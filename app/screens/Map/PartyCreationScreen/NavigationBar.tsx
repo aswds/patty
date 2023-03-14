@@ -1,10 +1,10 @@
 import React from "react";
 
-import {StyleSheet, View} from "react-native";
-import {BackButton} from "../../../shared/Buttons/BackButton";
-import {Title} from "../../../shared/Title/Title";
-import {colors} from "../../../src/colors";
-import {NavigationProp} from "@react-navigation/native";
+import { StyleSheet, View } from "react-native";
+import { BackButton } from "../../../shared/Buttons/BackButton";
+import { Title } from "../../../shared/Title/Title";
+import { colors } from "../../../src/colors";
+import { NavigationProp } from "@react-navigation/native";
 
 interface NavigationBarProps {
   navigation: NavigationProp<any, any>;

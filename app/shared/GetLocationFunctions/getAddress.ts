@@ -1,4 +1,4 @@
-import { IFullAddress } from "../../Types/Parties";
+import { IFullAddress } from "../../Types/Events";
 
 const HERE_API_KEY = "1PKrIQtOybgseK4vquZR4lsHXlVpCASICK1Zg436Nwk";
 
@@ -6,9 +6,9 @@ export function getAddress(
   latitude: number,
   longitude: number
 ): Promise<IFullAddress> {
-  return new Promise((resolve, reject) => {
+  return new Promise(async (resolve, reject) => {
     const url = `https://reverse.geocoder.ls.hereapi.com/6.2/reversegeocode.json?apiKey=${HERE_API_KEY}&mode=retrieveAddresses&prox=${latitude},${longitude}`;
-    fetch(url)
+    await fetch(url)
       .then((res) => res.json())
       .then((resJson) => {
         if (

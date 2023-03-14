@@ -2,7 +2,7 @@ import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { colors } from "../../../../../src/colors";
 import { FontFamily } from "../../../../../../assets/fonts/Fonts";
-import { IEvent } from "../../../../../Types/Parties";
+import { IEvent } from "../../../../../Types/Events";
 import { joinEvent } from "../../../Firebase/fetchUserJoinedEvents";
 
 interface JoinEventButtonProps {

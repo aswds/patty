@@ -5,7 +5,7 @@ import TagItem from "../../../../shared/Tag/TagItem";
 import { ActionButtons } from "./components/ActionButtons";
 import { Event } from "../../../../shared/Title/Event";
 import { JoinEventButton } from "./components/JoinPartyButton";
-import { IEvent } from "../../../../Types/Parties";
+import { IEvent } from "../../../../Types/Events";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { ModalProps } from "../Types/Modals";
 import { colors } from "../../../../src/colors";

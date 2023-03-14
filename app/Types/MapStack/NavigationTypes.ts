@@ -1,4 +1,4 @@
-import { ICoordinates, IFullAddress } from "../Parties";
+import { ICoordinates, IFullAddress } from "../Events";
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { IAddress } from "../../screens/Map/ChooseLocation/types";
 

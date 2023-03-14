@@ -4,7 +4,7 @@ import MapView, { Marker } from "react-native-maps";
 import { colors } from "../../../../src/colors";
 import { Title } from "../../../../shared/Title/Title";
 import { MaterialIcons } from "@expo/vector-icons";
-import { ICoordinates } from "../../../../Types/Parties";
+import { ICoordinates } from "../../../../Types/Events";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { PartyCreationNavigatorParamList } from "../../../../Types/MapStack/NavigationTypes";
 import { descriptionTexts } from "../descriptionTexts";
@@ -82,10 +82,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginBottom: "5%",
     width: "100%",
-    height: Dimensions.get("window").height * 0.45,
   },
   map: {
-    height: "60%",
+    height: Dimensions.get("screen").height * 0.3,
     width: "100%",
     borderRadius: 30,
     overflow: "hidden",
