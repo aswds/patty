@@ -1,41 +1,45 @@
-import {
-  doc,
-  increment,
-  setDoc,
-  Timestamp,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, increment, setDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../../firebase";
-import type { IDoc } from "../../../Types/Parties";
+import type { IEvent } from "../../../Types/Events";
 import { getAuth } from "firebase/auth";
+import { Alert } from "react-native";
+import { formatISO } from "date-fns";
 
-export async function addPartyOnMap(data: IDoc) {
+export async function addPartyOnMap(data: IEvent) {
   const auth = getAuth();
 
   const DB_references = {
-    parties: doc(
+    events: doc(
       db,
-      `PARTIES`,
+      `EVENTS`,
       `${data?.location?.fullAddressInfo?.City}`,
-      `UserParties`,
+      `UserEvents`,
       `${auth?.currentUser?.uid}`
     ),
     user: doc(db, "USERS", `${auth?.currentUser?.uid}`),
   };
-
   const addParty = () =>
-    new Promise(async () => {
-      await setDoc(DB_references.parties, {
+    new Promise(async (resolve) => {
+      await setDoc(DB_references.events, {
         ...data,
-        createdAt: Timestamp.fromDate(new Date()).toJSON() || new Date(),
-        creator: auth?.currentUser?.uid,
+        guests: [],
+        time: formatISO(data.time as Date),
+        createdAt: formatISO(new Date()),
+      }).then(() => {
+        resolve("Success");
       });
     });
   const addUserPartyCount = () =>
-    new Promise(async () => {
+    new Promise(async (resolve, reject) => {
       await updateDoc(DB_references.user, {
-        partiesCreated: increment(1),
+        eventsCreated: increment(1),
+      }).then(() => {
+        resolve("Success");
       });
     });
-  return await Promise.all([addParty, addUserPartyCount]);
+  return await Promise.all([addParty(), addUserPartyCount()])
+    .then(() => {})
+    .catch((e) =>
+      Alert.alert("'We can't upload event due to error.", e.message)
+    );
 }

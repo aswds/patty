@@ -4,13 +4,15 @@ import { ProvidedNavigator } from "./app/navigation/SignIn&SingUp/ProvidedNaviga
 import { Asset } from "expo-asset";
 import { useCallback, useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
+import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
+import { getUserLocation } from "./app/shared/GetLocationFunctions/getUserLocation";
 // Setting splash screen
 SplashScreen.preventAutoHideAsync();
 export default function App() {
   const { isLoaded, error } = useFontsLoad();
   let cacheResources = async () => {
     const images = [
-      require("./assets/images/logoAuth.png"),
+      require("./assets/logo.png"),
       require("./assets/images/noImage-01.png"),
     ];
     const cacheImages = images.map((image) => {
@@ -27,6 +29,7 @@ export default function App() {
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Please remove this if you copy and paste the code!
         await cacheResources();
+        await getUserLocation();
         // await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
       } finally {
@@ -55,7 +58,9 @@ export default function App() {
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
       <StatusBar barStyle={"light-content"} />
-      <ProvidedNavigator />
+      <BottomSheetModalProvider>
+        <ProvidedNavigator />
+      </BottomSheetModalProvider>
     </View>
   );
 }

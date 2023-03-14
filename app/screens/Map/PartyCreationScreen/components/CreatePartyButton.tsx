@@ -4,11 +4,11 @@ import { colors } from "../../../../src/colors";
 import { addPartyOnMap } from "../addPartyOnMap";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
-import { IDoc } from "../../../../Types/Parties";
+import { IEvent } from "../../../../Types/Events";
 import { MapNavigationProps } from "../../../../Types/MapStack/ScreenNavigationProps";
 
 interface CreatePartyButtonProps {
-  data: IDoc;
+  data: IEvent;
 }
 
 export default function CreatePartyButton({ data }: CreatePartyButtonProps) {

@@ -47,7 +47,7 @@ const BottomSheetModal: React.FC<BottomSheetModalProps> = ({
       }}
     >
       <BottomSheetScrollView
-        showsVerticalScrollIndicator={false}
+        style={{ flex: 1 }}
         contentContainerStyle={[
           styles.contentContainer,
           { paddingBottom: insets.bottom },
@@ -74,7 +74,6 @@ const styles = StyleSheet.create({
   },
   contentContainer: {
     paddingHorizontal: 20,
-    justifyContent: "space-between",
   },
 });
 

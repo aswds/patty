@@ -33,7 +33,7 @@ export default function PickTitle({ setTitle, title }) {
           onChangeText={(text) => {
             setTitle(text);
           }}
-          maxLength={35}
+          maxLength={25}
           defaultValue={title}
         />
       </View>

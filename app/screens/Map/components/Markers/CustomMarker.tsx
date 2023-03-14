@@ -1,8 +1,8 @@
 import React, { Key } from "react";
-import { Entypo } from "@expo/vector-icons";
+import { Octicons } from "@expo/vector-icons";
 import { pickColor } from "../../pickColor";
 import { Marker, Region } from "react-native-maps";
-import { IEvent } from "../../../../Types/Parties";
+import { IEvent } from "../../../../Types/Events";
 
 type CustomMarkerProps = {
   doc: IEvent;
@@ -18,8 +18,8 @@ const CustomMarker = React.memo(
         key={index}
         onPress={onPress}
       >
-        <Entypo
-          name="shareable"
+        <Octicons
+          name="dot-fill"
           size={31}
           color={pickColor(doc.number_of_guests)}
         />
