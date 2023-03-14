@@ -7,9 +7,9 @@ import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
 export default function EditName({ user }) {
   const [userInfo, setUserInfo] = useState({
-    name: user.name,
-    surname: user.surname,
-    username: user.username,
+    name: user?.name,
+    surname: user?.surname,
+    username: user?.username,
   });
   const [errorMsg, setErrorMsg] = useState();
   return (
@@ -41,8 +41,8 @@ export default function EditName({ user }) {
             onChangeText={(text) => {
               sameUsernames(text_modifier(text), setErrorMsg)
                 .then((res) => {})
-                .catch((err) => {}),
-                setUserInfo({ ...userInfo, username: text_modifier(text) });
+                .catch((err) => {});
+              setUserInfo({ ...userInfo, username: text_modifier(text) });
             }}
             placeholder=""
             defaultValue={`@${userInfo.username}`}

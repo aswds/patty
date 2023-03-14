@@ -1,8 +1,6 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, RefreshControl, View } from "react-native";
-import { connect } from "react-redux";
-import { bindActionCreators } from "redux";
-import { fetch_user } from "../../redux/actions/User";
+import React, { useState } from "react";
+import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
+
 import Screen from "./components/Screen";
 import RenderItem from "./components/RenderItem";
 import { colors } from "../../src/colors";
@@ -10,22 +8,25 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { onRefresh } from "./refreshControlFuncs";
 import Loader from "../../shared/Loaders/Loader";
 import User from "./components/HeaderComponent/User";
+import { useRoute } from "@react-navigation/native";
+import { ProfileScreenRouteProps } from "../../Types/ProfileStack/RouteTypes";
 
-function Profile(props) {
-  const { current_user, fetch_user } = props;
+function Profile() {
+  const route = useRoute<ProfileScreenRouteProps>();
+  const { current_user } = route.params;
   const [refreshing, setRefreshing] = useState(false);
   const insets = useSafeAreaInsets();
-  useEffect(() => {}, []);
   if (!current_user) {
     return <Loader isVisible />;
   }
+  console.log(current_user);
   //https://reactjs.org/docs/context.html !!!
   return (
     <Screen>
       <FlatList
-        style={{ flex: 1 }}
+        style={styles.container}
         refreshControl={
-          <View style={{ marginTop: insets.top }}>
+          <View style={{}}>
             <RefreshControl
               refreshing={refreshing}
               onRefresh={onRefresh.bind(null, setRefreshing)}
@@ -34,23 +35,17 @@ function Profile(props) {
             />
           </View>
         }
+        contentContainerStyle={{ paddingTop: insets.top }}
         ListHeaderComponent={<User user={current_user} />}
         data={[current_user]}
-        renderItem={(item) => {
-          return <RenderItem item={item} />;
+        renderItem={({ item }) => {
+          return <RenderItem user={item} />;
         }}
       />
     </Screen>
   );
 }
-const mapDispatchProps = (dispatch) => {
-  return bindActionCreators({ fetch_user }, dispatch);
-};
-const mapStateToProps = (store) => ({
-  current_user: store.user_state.current_user,
-  isLoading: store.user_state.isLoading,
-  posts: store.user_state.posts,
-  following: store.user_state.following,
-  followers: store.user_state.followers,
+const styles = StyleSheet.create({
+  container: { flex: 1 },
 });
-export default connect(mapStateToProps, mapDispatchProps)(Profile);
+export default Profile;

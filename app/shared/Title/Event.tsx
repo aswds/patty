@@ -1,16 +1,11 @@
 import React from "react";
-import {
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  ViewStyle,
-} from "react-native";
-import type { IEvent, IFullAddress } from "../../Types/Parties";
+import { StyleSheet, Text, View, ViewStyle } from "react-native";
+import type { IEvent, IFullAddress } from "../../Types/Events";
 import moment from "moment/moment";
 import { colors } from "../../src/colors";
-import { AntDesign, Octicons } from "@expo/vector-icons";
+import { Octicons } from "@expo/vector-icons";
 import { FontFamily } from "../../../assets/fonts/Fonts";
+import UserInfo from "../Events/UserInfo";
 
 interface ITopInfo {
   markerInfo: IEvent;
@@ -55,16 +50,16 @@ export const Event: React.FC<ITopInfo> = ({
   markerInfo,
   isJoinedEvent,
   style,
-  onFavoritePress,
 }) => {
   return (
     <View style={[styles.topInfoContainer, style]}>
       <View style={styles.partyInfoContainer}>
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <Title title={markerInfo?.title} />
-          <Text style={styles.descriptionTextStyle}>
-            {markerInfo?.user && "by " + markerInfo?.user}
-          </Text>
+        <View style={styles.titleContainer}>
+          <View style={{ maxWidth: "50%" }}>
+            <Title title={markerInfo?.title} />
+          </View>
+
+          <UserInfo user={markerInfo?.user} />
         </View>
 
         <View style={{ flexDirection: "row", alignItems: "center" }}>
@@ -74,19 +69,19 @@ export const Event: React.FC<ITopInfo> = ({
         <Address address={markerInfo?.location?.fullAddressInfo} />
       </View>
 
-      {isJoinedEvent && (
-        <TouchableOpacity
-          style={{ alignItems: "flex-end" }}
-          onPress={onFavoritePress}
-        >
-          <AntDesign
-            name={"star"}
-            size={35}
-            color={colors.accentColor}
-            style={{ marginHorizontal: "5%" }}
-          />
-        </TouchableOpacity>
-      )}
+      {/*{isJoinedEvent && (*/}
+      {/*  <TouchableOpacity*/}
+      {/*    style={{ alignItems: "flex-end" }}*/}
+      {/*    onPress={onFavoritePress}*/}
+      {/*  >*/}
+      {/*    <AntDesign*/}
+      {/*      name={"star"}*/}
+      {/*      size={35}*/}
+      {/*      color={colors.accentColor}*/}
+      {/*      style={{ marginHorizontal: "5%" }}*/}
+      {/*    />*/}
+      {/*  </TouchableOpacity>*/}
+      {/*)}*/}
 
       {/*{hideModal && <CloseButton onPress={hideModal} />}*/}
     </View>
@@ -104,8 +99,16 @@ const styles = StyleSheet.create({
     flex: 1,
     marginVertical: 5,
     justifyContent: "center",
+    width: "100%",
 
     // maxWidth: "80%",
+  },
+  titleContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-between",
+    width: "100%",
+    marginBottom: "2%",
   },
   textTitleStyle: {
     fontFamily: FontFamily.bold,
@@ -132,6 +135,11 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.bold,
     fontSize: 17,
     color: colors.text_2,
+  },
+  usernameText: {
+    fontFamily: FontFamily.regular,
+    fontSize: 15,
+    color: colors.iconColor,
   },
   descriptionTextStyle: {
     fontFamily: FontFamily.medium,

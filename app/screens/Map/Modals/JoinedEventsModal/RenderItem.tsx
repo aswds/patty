@@ -1,7 +1,7 @@
 import React from "react";
-import { IEvent } from "../../../../Types/Parties";
+import { IEvent } from "../../../../Types/Events";
 import { Event } from "../../../../shared/Title/Event";
-import { TouchableOpacity } from "react-native";
+import { TouchableOpacity, View } from "react-native";
 
 interface RenderItemProps {
   item: IEvent;
@@ -10,9 +10,11 @@ interface RenderItemProps {
 
 const RenderItem = ({ item, onPress }: RenderItemProps) => {
   return (
-    <TouchableOpacity onPress={onPress}>
-      <Event markerInfo={item} isJoinedEvent={true} />
-    </TouchableOpacity>
+    <View style={{ marginBottom: 10 }}>
+      <TouchableOpacity onPress={onPress}>
+        <Event markerInfo={item} isJoinedEvent={true} />
+      </TouchableOpacity>
+    </View>
   );
 };
 

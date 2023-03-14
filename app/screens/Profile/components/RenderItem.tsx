@@ -2,20 +2,23 @@ import React from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { isAndroid } from "../../../src/platform";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
+import { IUser } from "../../../Types/User";
+import Loader from "../../../shared/Loaders/Loader";
 
-export default function RenderItem(props) {
-  const { item } = props;
-  const user_info = item.item;
+interface RenderItemProps {
+  user: Pick<IUser, "username" | "eventsCreated">;
+}
+
+export default function RenderItem({ user }: RenderItemProps): JSX.Element {
+  const user_info = user;
   if (user_info === undefined) {
-    return;
+    return <Loader isVisible={user_info} />;
   }
 
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.textNumberStyle}>
-          {user_info.partiesCreated} 🎉
-        </Text>
+        <Text style={styles.textNumberStyle}>{user_info.eventsCreated} 🎉</Text>
       </View>
       <View>
         <Text style={styles.textStyle}>

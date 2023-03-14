@@ -1,10 +1,10 @@
 import React, { useState } from "react";
 import Screen from "./components/Screen";
-import PickTitle from "./components/PickTitle";
-import Description from "./components/Desctription";
-import TagList from "./components/TagList";
 import { GeneralInformationScreenNavigationProps } from "../../../Types/MapStack/ScreenNavigationProps";
 import NextButton from "../../../shared/Buttons/NextButton";
+import TagList from "./components/TagList";
+import Description from "./components/Desctription";
+import PickTitle from "./components/PickTitle";
 import NavigationBar from "./NavigationBar";
 
 const GeneralInformation = ({

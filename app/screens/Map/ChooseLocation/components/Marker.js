@@ -1,6 +1,8 @@
 import React from "react";
-import {MaterialIcons} from "@expo/vector-icons";
-import {View} from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { View } from "react-native";
+import { colors } from "../../../../src/colors";
+import { isAndroid } from "../../../../src/platform";
 
 export default function FakeMarker() {
   const iconSize = 45;
@@ -10,7 +12,7 @@ export default function FakeMarker() {
       style={{
         position: "absolute",
         top: 0,
-        bottom: iconSize / 2,
+        bottom: isAndroid ? iconSize / 2 + 10 : iconSize / 2,
         left: 0,
         right: 0,
         justifyContent: "center",
@@ -19,9 +21,9 @@ export default function FakeMarker() {
       pointerEvents="none"
     >
       <MaterialIcons
-        name="location-history"
+        name="location-on"
         size={iconSize}
-        color="white"
+        color={colors.accentColor}
         style={{}}
       />
     </View>

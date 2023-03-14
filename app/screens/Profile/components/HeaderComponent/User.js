@@ -12,23 +12,11 @@ export default function User({ user }) {
   const [isLoading, setIsLoading] = React.useState(true);
   const navigation = useNavigation();
   return (
-    <View
-      style={{
-        justifyContent: "center",
-        paddingHorizontal: "5%",
-      }}
-    >
-      <BackButton
-        navigation={navigation}
-        style={{
-          position: "relative",
-          left: isAndroid ? -15 : 0,
-          marginBottom: 20,
-        }}
-      />
+    <View style={styles.container}>
+      <BackButton navigation={navigation} style={styles.backButtonStyle} />
 
       <UserImage Loader={{ isLoading, setIsLoading }} user={user} />
-      <UserName user={user} styles={styles} isLoading={isLoading} />
+      <UserName user={user} isLoading={isLoading} />
       {!isLoading && (
         <>
           <UserBio user={user} />
@@ -38,4 +26,14 @@ export default function User({ user }) {
     </View>
   );
 }
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  container: {
+    justifyContent: "center",
+    paddingHorizontal: "5%",
+  },
+  backButtonStyle: {
+    position: "relative",
+    left: isAndroid ? -15 : 0,
+    marginBottom: 20,
+  },
+});
