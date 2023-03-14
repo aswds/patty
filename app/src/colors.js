@@ -25,4 +25,5 @@ export const colors = {
     midGroupOfPeople: "#D04848",
     bigGroupOfPeople: "#FF0000",
   },
+  modalBackground: "#1c1c1c",
 };

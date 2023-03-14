@@ -5,19 +5,19 @@ import SearchButton from "./SearchButton";
 import SelectedButton from "./SelectedButton";
 
 interface ButtonsProps {
-  onPressMoreButton: () => void;
+  onPressSelectedButton: () => void;
   onPressPartyCreationButton: () => void;
   onPressSearchPartyButton: () => void;
 }
 
 const Buttons = ({
-  onPressMoreButton,
+  onPressSelectedButton,
   onPressPartyCreationButton,
   onPressSearchPartyButton,
 }: ButtonsProps) => {
   return (
     <View style={styles.container}>
-      <SelectedButton onPress={onPressMoreButton} />
+      <SelectedButton onPress={onPressSelectedButton} />
       <DoPartyButton onPress={onPressPartyCreationButton} />
       <SearchButton onPress={onPressSearchPartyButton} />
     </View>
@@ -25,7 +25,6 @@ const Buttons = ({
 };
 const styles = StyleSheet.create({
   container: {
-    height: "7%",
     width: "100%",
     flexDirection: "row",
     position: "absolute",

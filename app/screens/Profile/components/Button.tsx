@@ -1,9 +1,22 @@
 import React from "react";
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native";
 import { colors } from "../../../src/colors";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
 
-function Button({ style, onPress, text, textStyled }) {
+interface ButtonProps {
+  style?: ViewStyle;
+  onPress: () => void;
+  text: string;
+  textStyled?: TextStyle;
+}
+
+function Button({ style, onPress, text, textStyled }: ButtonProps) {
   return (
     <TouchableOpacity style={[styles.buttonBG, style]} onPress={onPress}>
       <Text style={[styles.textStyle, textStyled]}>{text}</Text>

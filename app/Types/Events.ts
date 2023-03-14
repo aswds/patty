@@ -1,3 +1,5 @@
+import { IUser } from "./User";
+
 export interface ICoordinates {
   latitude: number;
   latitudeDelta: number;
@@ -25,13 +27,18 @@ export interface ITime {
   seconds?: number;
 }
 
-export interface IDoc {
+export interface IEvent {
   title: string;
   description?: string;
   tags?: string[];
   location?: ILocation;
-  time: ITime | undefined;
+  time?: ITime | Date;
   access: string;
   number_of_guests: number;
-  user?: string;
+  user: IEvent_User;
 }
+
+export type IEvent_User = Pick<
+  IUser,
+  "username" | "surname" | "name" | "image" | "uid"
+>;
