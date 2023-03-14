@@ -12,7 +12,7 @@ import ChooseLocationButton from "./components/ChooseLocationButton";
 import FakeMarker from "./components/Marker";
 import { getAddress } from "../../../shared/GetLocationFunctions/getAddress";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ICoordinates, IFullAddress } from "../../../Types/Parties";
+import { ICoordinates, IFullAddress } from "../../../Types/Events";
 import { ChooseLocationScreenNavigationProps } from "../../../Types/MapStack/ScreenNavigationProps";
 import { BackButton } from "../../../shared/Buttons/BackButton";
 

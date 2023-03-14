@@ -5,7 +5,7 @@ import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as Haptics from "expo-haptics";
 import { PartyCreationNavigationProps } from "../../../../Types/MapStack/ScreenNavigationProps";
-import { ICoordinates, IFullAddress } from "../../../../Types/Parties";
+import { ICoordinates, IFullAddress } from "../../../../Types/Events";
 
 interface ChooseLocationButtonProps {
   region: ICoordinates | undefined;
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   button: {
     // make button bg
 
-    height: 70,
+    height: "100%",
     aspectRatio: 1,
     borderRadius: 100,
     backgroundColor: colors.accentColor,
@@ -59,5 +59,6 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: "10%",
     alignSelf: "center",
+    height: "7%",
   },
 });
