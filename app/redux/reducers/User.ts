@@ -1,5 +1,6 @@
-import { createSlice } from "@reduxjs/toolkit";
+import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IUser } from "../../Types/User";
+import { fetch_user } from "../actions/User";
 
 interface IState {
   isLoading: boolean;
@@ -16,17 +17,20 @@ const initialState: IState = {
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {
-    userLoading(state) {
-      // Use a "state machine" approach for loading state instead of booleans
+  reducers: {},
+  extraReducers: (builder) => {
+    builder.addCase(fetch_user.pending, (state) => {
       state.isLoading = true;
-    },
-    userReceived(state, action) {
-      state.current_user = action.payload;
-      state.isLoading = false;
-    },
+    });
+    builder.addCase(
+      fetch_user.fulfilled,
+      (state, action: PayloadAction<IUser>) => {
+        state.current_user = action.payload;
+        state.isLoading = false;
+      }
+    );
   },
 });
 
-export const { userReceived, userLoading } = userSlice.actions;
+export const {} = userSlice.actions;
 export default userSlice.reducer;
