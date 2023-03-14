@@ -21,8 +21,8 @@ const styles = StyleSheet.create({
     position: "absolute",
 
     alignSelf: "flex-end",
-    top: "5%",
-    right: "5%",
+    top: 0,
+    right: "1%",
     zIndex: 1,
   },
 });
