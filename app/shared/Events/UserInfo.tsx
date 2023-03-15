@@ -17,6 +17,7 @@ const UserInfo = ({ user }: UserInfoProps) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
 
   function onPress() {
+    console.log(user?.uid);
     getUserByUID(user?.uid).then((user) => {
       if (user)
         navigation.navigate("ProfileNav", {
@@ -25,6 +26,9 @@ const UserInfo = ({ user }: UserInfoProps) => {
             current_user: user,
           },
         });
+      else {
+        console.log("no user");
+      }
     });
   }
 

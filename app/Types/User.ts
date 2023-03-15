@@ -5,8 +5,8 @@ export interface IUser {
   bio?: string;
 
   email?: string;
-  followers?: number;
-  following?: number;
+  following: string[];
+  followers: string[];
   name?: string;
   surname?: string;
   image?: string;

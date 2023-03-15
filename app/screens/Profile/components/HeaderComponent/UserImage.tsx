@@ -1,21 +1,24 @@
-import React from "react";
-import { Image, StyleSheet, View } from "react-native";
+import React, { Dispatch, SetStateAction } from "react";
+import { Image, ImageStyle, StyleProp, StyleSheet, View } from "react-native";
 import { Skeleton } from "moti/skeleton";
-import { isAndroid } from "../../../../src/platform";
 import CurrentUserButtons from "../CurrentUserButtons";
+import { IUser } from "../../../../Types/User";
 
-export default function UserImage({ Loader, user, style }) {
+interface UserImageProps {
+  Loader: {
+    setIsLoading: Dispatch<SetStateAction<boolean>>;
+    isLoading: boolean;
+  };
+  user: IUser;
+  style?: StyleProp<ImageStyle>;
+}
+
+export default function UserImage({ Loader, user, style }: UserImageProps) {
   const { isLoading, setIsLoading } = Loader;
-
   return (
     <View style={styles.container}>
       {/* Loader */}
-      <Skeleton
-        show={isLoading}
-        radius={isAndroid ? 45 : "43%"}
-        height={100}
-        width={100}
-      >
+      <Skeleton show={isLoading} radius={45} height={100} width={100}>
         <Image
           source={{ uri: user.image }}
           style={[styles.imageStyle, style]}
@@ -24,6 +27,7 @@ export default function UserImage({ Loader, user, style }) {
           }}
         />
       </Skeleton>
+      {/*follow/unfollow buttons*/}
       <CurrentUserButtons user={user} />
     </View>
   );
@@ -38,7 +42,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-end",
   },
   imageStyle: {
-    borderRadius: isAndroid ? 45 : "45%",
+    borderRadius: 45,
     height: 100,
     aspectRatio: 1,
   },

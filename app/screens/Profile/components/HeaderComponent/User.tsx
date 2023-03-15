@@ -7,15 +7,22 @@ import UserName from "./UserName/UserName";
 import { BackButton } from "../../../../shared/Buttons/BackButton";
 import { useNavigation } from "@react-navigation/native";
 import { isAndroid } from "../../../../src/platform";
+import { IUser } from "../../../../Types/User";
+
 //
-export default function User({ user }) {
+interface UserProps {
+  user: IUser;
+}
+export default function User({ user }: UserProps) {
   const [isLoading, setIsLoading] = React.useState(true);
   const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <BackButton navigation={navigation} style={styles.backButtonStyle} />
 
+      {/*Component UserImage contains follow/unfollow buttons !!!*/}
       <UserImage Loader={{ isLoading, setIsLoading }} user={user} />
+
       <UserName user={user} isLoading={isLoading} />
       {!isLoading && (
         <>
