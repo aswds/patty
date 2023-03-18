@@ -1,7 +1,7 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Alert, StyleSheet, View } from "react-native";
 import MapView, { PROVIDER_GOOGLE, Region } from "react-native-maps";
-import PartyMarkerInfo from "./Modals/PartyModal/PartyMarkerInfo";
+import PartyMarkerInfo from "../Modals/PartyModal/PartyMarkerInfo";
 import type { ICoordinates, IEvent } from "../../Types/Events";
 import { MapScreenNavigationProps } from "../../Types/MapStack/ScreenNavigationProps";
 import Buttons from "./components/Buttons/Buttons";
@@ -14,7 +14,7 @@ import { useFocusEffect } from "@react-navigation/native";
 import { getUserLocation } from "../../shared/GetLocationFunctions/getUserLocation";
 import { LocationObject } from "expo-location";
 import BottomSheet from "@gorhom/bottom-sheet";
-import JoinedEventsModal from "./Modals/JoinedEventsModal/JoinedEventsModal";
+import JoinedEventsModal from "../Modals/JoinedEventsModal/JoinedEventsModal";
 import { Title } from "../../shared/Title/Title";
 import { AntDesign } from "@expo/vector-icons";
 import { colors } from "../../src/colors";
@@ -65,6 +65,11 @@ function Map({ navigation }: MapProps) {
   useEffect(() => {
     fetch_user();
   }, []);
+
+  // functions
+  function animateToRegion(region: Region) {
+    mapRef.current?.animateToRegion(region);
+  }
 
   //Render
   return (
@@ -123,6 +128,7 @@ function Map({ navigation }: MapProps) {
           }}
         />
         <JoinedEventsModal
+          animateToRegion={animateToRegion}
           modalRef={joinedEventsModalRef}
           onClose={() => {
             joinedEventsModalRef.current?.close();
