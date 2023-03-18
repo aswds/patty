@@ -11,9 +11,15 @@ interface UserImageProps {
   };
   user: IUser;
   style?: StyleProp<ImageStyle>;
+  updateUser: (newUser: Pick<IUser, "following" | "followers">) => void;
 }
 
-export default function UserImage({ Loader, user, style }: UserImageProps) {
+export default function UserImage({
+  Loader,
+  user,
+  style,
+  updateUser,
+}: UserImageProps) {
   const { isLoading, setIsLoading } = Loader;
   return (
     <View style={styles.container}>
@@ -28,7 +34,7 @@ export default function UserImage({ Loader, user, style }: UserImageProps) {
         />
       </Skeleton>
       {/*follow/unfollow buttons*/}
-      <CurrentUserButtons user={user} />
+      <CurrentUserButtons user={user} updateUser={updateUser} />
     </View>
   );
 }

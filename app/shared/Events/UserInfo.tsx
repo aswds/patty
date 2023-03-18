@@ -15,9 +15,8 @@ interface UserInfoProps {
 const UserInfo = ({ user }: UserInfoProps) => {
   const navigation = useNavigation<ProfileNavigationProps>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
-
+  console.log(user);
   function onPress() {
-    console.log(user?.uid);
     getUserByUID(user?.uid).then((user) => {
       if (user)
         navigation.navigate("ProfileNav", {

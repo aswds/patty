@@ -1,24 +1,32 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { colors } from "../../../../src/colors";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
-import Loader from "../../../../shared/Loaders/Loader";
+import { IUser } from "../../../../Types/User";
 
-export default function UserFollowers(data) {
-  const { user } = data;
-  if (!user) {
-    return <Loader isVisible={user} />;
-  }
-  console.log(user);
-  const userFollowNumbers = {
-    followers: user?.followers?.length ?? 0,
-    following: user?.following?.length ?? 0,
-  };
+interface IUserFollowNumbers {
+  followers?: number;
+  following?: number;
+}
+
+export default function UserFollowers({ user }: { user: IUser }) {
+  const [userFollowNumbers, setUserFollowNumbers] =
+    useState<IUserFollowNumbers>({
+      followers: user?.followers?.length ?? 0,
+      following: user?.following?.length ?? 0,
+    });
+  useEffect(() => {
+    setUserFollowNumbers({
+      followers: user?.followers?.length ?? 0,
+      following: user?.following?.length ?? 0,
+    });
+  }, [user]);
+
   return (
     <View style={styles.followersContainer}>
       <TouchableOpacity style={styles.textContainer}>
         <Text style={styles.numberTextStyle}>
-          {userFollowNumbers.followers}
+          {user?.followers?.length ?? 0}
         </Text>
 
         <Text style={styles.followTextStyle}>followers</Text>
@@ -34,7 +42,6 @@ export default function UserFollowers(data) {
 }
 const styles = StyleSheet.create({
   followersContainer: {
-    height: null,
     flexDirection: "row",
     marginVertical: "5%",
     justifyContent: "flex-start",
