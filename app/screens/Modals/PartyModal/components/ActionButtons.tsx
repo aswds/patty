@@ -1,9 +1,9 @@
 import { StyleSheet, View } from "react-native";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import React from "react";
-import IconButton from "../../../../../shared/Icons/IconButton";
-import { colors } from "../../../../../src/colors";
-import { FontFamily } from "../../../../../../assets/fonts/Fonts";
+import IconButton from "../../../../shared/Icons/IconButton";
+import { colors } from "../../../../src/colors";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
 export function ActionButtons() {
   return (
