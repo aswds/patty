@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import Screen from "./components/Screen";
 import Location from "./components/Location";
 import CustomButton from "./components/LocationAddButton";
-import PickTime from "../PickTime/PickTime";
 import CreatePartyButton from "./components/CreatePartyButton";
 import { LocationAndTimeScreenNavigationProps } from "../../../Types/MapStack/ScreenNavigationProps";
 import useUserLocation from "../../../hooks/useUserLocation/useUserLocation";
@@ -10,6 +9,7 @@ import NavigationBar from "./NavigationBar";
 import { IEvent } from "../../../Types/Events";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { IUser } from "../../../Types/User";
+import PickTime from "../PickTime/PickTime";
 
 interface IData extends IEvent {
   user: Pick<IUser, "name" | "surname" | "username" | "image" | "uid">;

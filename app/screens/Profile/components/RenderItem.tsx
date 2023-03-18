@@ -2,29 +2,25 @@ import React from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
 import { isAndroid } from "../../../src/platform";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
-import { IUser } from "../../../Types/User";
+import { IUserEvents } from "../../../Types/User";
 import Loader from "../../../shared/Loaders/Loader";
 
 interface RenderItemProps {
-  user: Pick<IUser, "username" | "eventsCreated">;
+  events: IUserEvents;
 }
 
-export default function RenderItem({ user }: RenderItemProps): JSX.Element {
-  const user_info = user;
-  if (user_info === undefined) {
-    return <Loader isVisible={user_info} />;
+export default function RenderItem({ events }: RenderItemProps): JSX.Element {
+  if (events === undefined) {
+    return <Loader isVisible={events} />;
   }
 
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.textNumberStyle}>{user_info.eventsCreated} 🎉</Text>
+        <Text style={styles.textNumberStyle}>{events?.eventsCreated} 🎉</Text>
       </View>
       <View>
-        <Text style={styles.textStyle}>
-          Parties were created by{" "}
-          <Text style={styles.textStyleUsername}>{user_info.username}</Text>
-        </Text>
+        <Text style={styles.textStyle}>Parties were created</Text>
       </View>
     </View>
   );

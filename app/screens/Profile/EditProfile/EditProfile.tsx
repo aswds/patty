@@ -7,7 +7,7 @@ import {
   View,
 } from "react-native";
 import { colors } from "../../../src/colors";
-import Button from "../components/Button";
+import Button from "../../../shared/Buttons/Button";
 import EditImage from "./components/EditImage";
 import EditName from "./components/EditName";
 import EditUserBio from "./components/EditUserBio";

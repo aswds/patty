@@ -7,7 +7,8 @@ export type ProfileNavNavigatorParamList = {
 
 export type ProfileNavigatorParamList = {
   Profile: {
-    current_user: IUser;
+    current_user?: IUser;
+    userUID?: string;
   };
   EditProfile: {
     current_user: IUser;

@@ -1,23 +1,11 @@
-import {
-  collection,
-  doc,
-  getDocs,
-  getFirestore,
-  setDoc,
-} from "firebase/firestore";
+import { addDoc, collection, getDocs, getFirestore } from "firebase/firestore";
 import { getAuth } from "firebase/auth";
-import { nanoid } from "@reduxjs/toolkit";
 import { IEvent } from "../../../Types/Events";
 
 export async function fetchUserJoinedEvents() {
   const current_user_uid = getAuth().currentUser?.uid;
   const db = getFirestore();
-  const doc_ref = collection(
-    db,
-    `JOINED_EVENTS`,
-    `${current_user_uid}`,
-    `Joined_Events`
-  );
+  const doc_ref = collection(db, `JOINED_EVENTS`, `${current_user_uid}`);
   const snapshot = await getDocs(doc_ref);
 
   return snapshot.docs.forEach((doc) => doc.data());
@@ -26,12 +14,11 @@ export async function fetchUserJoinedEvents() {
 export async function joinEvent(data: IEvent) {
   const current_user_uid = getAuth().currentUser?.uid;
   const db = getFirestore();
-  const doc_ref = doc(
+  const doc_ref = collection(
     db,
     `JOINED_EVENTS`,
     `${current_user_uid}`,
-    `Joined_Events`,
-    `${nanoid()}`
+    `Joined_Events`
   );
-  setDoc(doc_ref, { ...data }).then(() => console.log("Congratulation"));
+  await addDoc(doc_ref, { ...data }).then(() => console.log("Congratulation"));
 }
