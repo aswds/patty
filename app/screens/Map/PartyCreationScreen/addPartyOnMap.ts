@@ -22,6 +22,7 @@ export async function addPartyOnMap(data: IEvent) {
     new Promise(async (resolve) => {
       await setDoc(DB_references.events, {
         ...data,
+        partyID: DB_references.events.id,
         guests: [],
         time: formatISO(data.time as Date),
         createdAt: formatISO(new Date()),
@@ -32,7 +33,9 @@ export async function addPartyOnMap(data: IEvent) {
   const addUserPartyCount = () =>
     new Promise(async (resolve, reject) => {
       await updateDoc(DB_references.user, {
-        eventsCreated: increment(1),
+        events: {
+          eventsCreated: increment(1),
+        },
       }).then(() => {
         resolve("Success");
       });
