@@ -1,15 +1,15 @@
-import React, { Ref, useEffect, useState } from "react";
-import RenderItem from "./RenderItem";
-import { IEvent } from "../../../../Types/Events";
+import React, { useEffect, useState } from "react";
+import { IEvent } from "../../../Types/Events";
 import { ModalProps } from "../Types/Modals";
-import BottomSheet from "@gorhom/bottom-sheet";
 import { StyleSheet, View } from "react-native";
-import { fetch_joined_events } from "../../../../redux/actions/Events";
+import { fetch_joined_events } from "../../../redux/actions/Events";
 import BottomSheetModalJoinedEvents from "../BottomSheetModalJoinedEvents";
+import JoinedEventsList from "./JoinedEventsList";
+import { Region } from "react-native-maps";
 
 interface JoinedEventsModalProps extends ModalProps {
-  modalRef: Ref<BottomSheet>;
   title: React.ReactNode;
+  animateToRegion: (region: Region) => void;
 }
 
 const JoinedEventsModal = ({
@@ -17,12 +17,13 @@ const JoinedEventsModal = ({
   onClose,
   modalRef,
   title,
+  animateToRegion,
 }: JoinedEventsModalProps) => {
   useEffect(() => {
-    fetch_joined_events().then((docs) => setSelected(docs));
+    fetch_joined_events().then((docs) => setJoinedEvents(docs));
   }, []);
 
-  const [selected, setSelected] = useState<IEvent[]>([]);
+  const [joinedEvents, setJoinedEvents] = useState<IEvent[]>([]);
 
   return (
     <BottomSheetModalJoinedEvents
@@ -31,9 +32,11 @@ const JoinedEventsModal = ({
       visible={visible}
     >
       <View style={styles.titleContainer}>{title}</View>
-      {selected.map((item, index) => (
-        <RenderItem item={item} key={index} />
-      ))}
+
+      <JoinedEventsList
+        joinedEvents={joinedEvents}
+        animateToRegion={animateToRegion}
+      />
     </BottomSheetModalJoinedEvents>
   );
 };

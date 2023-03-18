@@ -1,28 +1,37 @@
-import React, { PropsWithChildren, Ref, useMemo } from "react";
+import React, { PropsWithChildren, useMemo } from "react";
 import { StyleSheet } from "react-native";
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import BottomSheet, {
+  BottomSheetScrollView,
+  useBottomSheetDynamicSnapPoints,
+} from "@gorhom/bottom-sheet";
 import { ModalProps } from "./Types/Modals";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { colors } from "../../../src/colors";
+import { colors } from "../../src/colors";
 
-interface BottomSheetModalProps extends PropsWithChildren, ModalProps {
-  modalRef: Ref<BottomSheet>;
-}
+interface BottomSheetModalProps extends PropsWithChildren, ModalProps {}
 
-const BottomSheetModalJoinedEvents: React.FC<BottomSheetModalProps> = ({
+const BottomSheetModal: React.FC<BottomSheetModalProps> = ({
   modalRef,
   children,
   onClose,
 }) => {
   // variables
-  const snapPoints = useMemo(() => ["30%", "60%"], []);
+  const snapPoints = useMemo(() => ["CONTENT_HEIGHT"], []);
   const insets = useSafeAreaInsets();
-  // render
+  // renders
+  const {
+    animatedHandleHeight,
+    animatedSnapPoints,
+    animatedContentHeight,
+    handleContentLayout,
+  } = useBottomSheetDynamicSnapPoints(snapPoints);
 
   return (
     <BottomSheet
       style={styles.container}
-      snapPoints={snapPoints}
+      snapPoints={animatedSnapPoints}
+      handleHeight={animatedHandleHeight}
+      contentHeight={animatedContentHeight}
       index={-1}
       enablePanDownToClose
       onClose={onClose}
@@ -41,8 +50,7 @@ const BottomSheetModalJoinedEvents: React.FC<BottomSheetModalProps> = ({
           styles.contentContainer,
           { paddingBottom: insets.bottom },
         ]}
-        showsHorizontalScrollIndicator={false}
-        showsVerticalScrollIndicator={false}
+        onLayout={handleContentLayout}
       >
         {children}
       </BottomSheetScrollView>
@@ -67,4 +75,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default BottomSheetModalJoinedEvents;
+export default BottomSheetModal;

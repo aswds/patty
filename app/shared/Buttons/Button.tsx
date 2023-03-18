@@ -6,8 +6,8 @@ import {
   TouchableOpacity,
   ViewStyle,
 } from "react-native";
-import { colors } from "../../../src/colors";
-import { FontFamily } from "../../../../assets/fonts/Fonts";
+import { colors } from "../../src/colors";
+import { FontFamily } from "../../../assets/fonts/Fonts";
 
 interface ButtonProps {
   style?: ViewStyle;

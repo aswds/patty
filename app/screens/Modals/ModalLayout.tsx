@@ -2,7 +2,7 @@ import React, { PropsWithChildren, ReactNode } from "react";
 
 import { Modal, ScrollView, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { CloseButton } from "../components/Buttons/CloseButton";
+import { CloseButton } from "../Map/components/Buttons/CloseButton";
 
 const borderRadius = 35;
 

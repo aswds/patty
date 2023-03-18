@@ -1,16 +1,17 @@
 import React, { Ref } from "react";
 
 import { StyleSheet, Text, View } from "react-native";
-import TagItem from "../../../../shared/Tag/TagItem";
+import TagItem from "../../../shared/Tag/TagItem";
 import { ActionButtons } from "./components/ActionButtons";
-import { Event } from "../../../../shared/Title/Event";
+import { Event } from "../../../shared/Title/Event";
 import { JoinEventButton } from "./components/JoinPartyButton";
-import { IEvent } from "../../../../Types/Events";
+import { IEvent } from "../../../Types/Events";
 import BottomSheet from "@gorhom/bottom-sheet";
 import { ModalProps } from "../Types/Modals";
-import { colors } from "../../../../src/colors";
-import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { colors } from "../../../src/colors";
+import { FontFamily } from "../../../../assets/fonts/Fonts";
 import BottomSheetModal from "../BottomSheetModal";
+import { joinEvent } from "../../Map/Firebase/fetchUserJoinedEvents";
 
 function Description({ markerInfo }: { markerInfo: IEvent }) {
   return (
@@ -39,13 +40,16 @@ const PartyMarkerInfo = ({
   onClose,
   modalRef,
 }: PartyMarkerModalProps) => {
+  function onPress(data: IEvent) {
+    joinEvent(data).then((r) => onClose!());
+  }
   return (
     <BottomSheetModal modalRef={modalRef} onClose={onClose}>
       <Event markerInfo={markerInfo} />
       <Description markerInfo={markerInfo} />
       <TagList markerInfo={markerInfo} />
       <ActionButtons />
-      <JoinEventButton data={markerInfo} />
+      <JoinEventButton data={markerInfo} onPress={onPress} />
     </BottomSheetModal>
   );
 };
