@@ -1,14 +1,19 @@
 import React from "react";
 
-import { Alert, View } from "react-native";
-import Button from "./Button";
+import { Alert } from "react-native";
+import Button from "../../../shared/Buttons/Button";
 import { auth } from "../../../../firebase";
 import { useNavigation } from "@react-navigation/native";
 import { ProfileNavigationProps } from "../../../Types/ProfileStack/ScreenNavigationProps";
 import { IUser } from "../../../Types/User";
-import { colors } from "../../../src/colors";
+import Follow_UnfollowButtons from "../Follow_UnfollowButtons";
 
-const CurrentUserButtons = ({ user }: { user: IUser }) => {
+interface CurrentUserButtonsProps {
+  user: IUser;
+  updateUser: (newUser: Pick<IUser, "following" | "followers">) => void;
+}
+
+const CurrentUserButtons = ({ user, updateUser }: CurrentUserButtonsProps) => {
   const navigation = useNavigation<ProfileNavigationProps>();
   const onPress = () => {
     navigation.navigate("ProfileNav", {
@@ -33,17 +38,10 @@ const CurrentUserButtons = ({ user }: { user: IUser }) => {
         }}
         text={"Log out"}
       />
-      <View>
-        <Button onPress={onPress} text="Edit" />
-      </View>
+      <Button onPress={onPress} text="Edit" />
     </>
   ) : (
-    <Button
-      onPress={() => {}}
-      text={"Follow"}
-      style={{ backgroundColor: colors.doneButtonBG }}
-      textStyled={{ color: colors.doneButtonText }}
-    />
+    <Follow_UnfollowButtons user={user} updateUser={updateUser} />
   );
 };
 
