@@ -10,16 +10,22 @@ import Loader from "../../shared/Loaders/Loader";
 import User from "./components/HeaderComponent/User";
 import { useRoute } from "@react-navigation/native";
 import { ProfileScreenRouteProps } from "../../Types/ProfileStack/RouteTypes";
+import { IUser } from "../../Types/User";
 
 function Profile() {
   const route = useRoute<ProfileScreenRouteProps>();
   const { current_user } = route.params;
+  console.log(current_user);
+  const [user, setUser] = useState<IUser>(current_user!);
+  const updateUser = (newUser: Pick<IUser, "following" | "followers">) => {
+    setUser({ ...user, ...newUser });
+  };
+
   const [refreshing, setRefreshing] = useState(false);
   const insets = useSafeAreaInsets();
-  if (!current_user) {
-    return <Loader isVisible />;
+  if (!user) {
+    return <Loader isVisible={Boolean(user)} />;
   }
-  console.log(current_user);
   //https://reactjs.org/docs/context.html !!!
   return (
     <Screen>
@@ -36,10 +42,10 @@ function Profile() {
           </View>
         }
         contentContainerStyle={{ paddingTop: insets.top }}
-        ListHeaderComponent={<User user={current_user} />}
-        data={[current_user]}
+        ListHeaderComponent={<User user={user} updateUser={updateUser} />}
+        data={[user.events]}
         renderItem={({ item }) => {
-          return <RenderItem user={item} />;
+          return <RenderItem events={item} />;
         }}
       />
     </Screen>
