@@ -12,7 +12,7 @@ import { AppNavigator } from "./AppNavigator";
  * Providing redux store for app
  * */
 
-export const App_Navigation = (props) => {
+export const App_Navigation = () => {
   const navigation = useNavigationContainerRef();
   return (
     <SafeAreaProvider>

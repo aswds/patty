@@ -1,22 +1,43 @@
-import React, { PropsWithChildren, useMemo } from "react";
+import React, { useMemo } from "react";
 import { StyleSheet } from "react-native";
-import BottomSheet, { BottomSheetScrollView } from "@gorhom/bottom-sheet";
+import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import { ModalProps } from "./Types/Modals";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../src/colors";
+import { IEvent } from "../../Types/Events";
+import RenderItem from "./JoinedEventsModal/RenderItem";
+import { Region } from "react-native-maps";
 
-interface BottomSheetModalProps extends PropsWithChildren, ModalProps {}
+interface BottomSheetModalProps extends ModalProps {
+  joinedEvents: IEvent[];
+  animateToRegion: (region: Region) => void;
+}
 
 const BottomSheetModalJoinedEvents: React.FC<BottomSheetModalProps> = ({
   modalRef,
-  children,
   onClose,
+  joinedEvents,
+  animateToRegion,
 }) => {
   // variables
   const snapPoints = useMemo(() => ["30%", "60%"], []);
   const insets = useSafeAreaInsets();
   // render
 
+  function onPress(region: Region) {
+    animateToRegion(region);
+  }
+  function renderItem({ item, index }: { item: IEvent; index: number }) {
+    return (
+      <RenderItem
+        item={item}
+        onPress={() => {
+          onPress(item.location?.region!);
+        }}
+        key={index}
+      />
+    );
+  }
   return (
     <BottomSheet
       style={styles.container}
@@ -33,7 +54,7 @@ const BottomSheetModalJoinedEvents: React.FC<BottomSheetModalProps> = ({
         overflow: "hidden",
       }}
     >
-      <BottomSheetScrollView
+      <BottomSheetFlatList
         style={{ flex: 1 }}
         contentContainerStyle={[
           styles.contentContainer,
@@ -41,9 +62,10 @@ const BottomSheetModalJoinedEvents: React.FC<BottomSheetModalProps> = ({
         ]}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
-      >
-        {children}
-      </BottomSheetScrollView>
+        keyExtractor={(event) => event.partyID!}
+        data={joinedEvents}
+        renderItem={renderItem}
+      />
     </BottomSheet>
   );
 };

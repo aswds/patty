@@ -1,5 +1,5 @@
 export const colors = {
-  background: "#202020",
+  background: "#202020", //#202020
   text: "white",
   text_2: "#AEAEAE",
   accentColor: "#9B3232", // #9B3232  rgba(155 , 50, 50 , 1)
