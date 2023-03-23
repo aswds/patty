@@ -1,11 +1,11 @@
 import React from "react";
 import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { colors } from "../../../../src/colors";
+import { colors } from "../../../../../src/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as Haptics from "expo-haptics";
-import { PartyCreationNavigationProps } from "../../../../Types/MapStack/ScreenNavigationProps";
-import { ICoordinates, IFullAddress } from "../../../../Types/Events";
+import { PartyCreationNavigationProps } from "../../../../../Types/MapStack/ScreenNavigationProps";
+import { ICoordinates, IFullAddress } from "../../../../../Types/Events";
 
 interface ChooseLocationButtonProps {
   region: ICoordinates | undefined;

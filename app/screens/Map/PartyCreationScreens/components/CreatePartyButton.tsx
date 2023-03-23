@@ -1,7 +1,7 @@
 import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import React from "react";
 import { colors } from "../../../../src/colors";
-import { addPartyOnMap } from "../addPartyOnMap";
+import { addPartyOnMap } from "../Firebase/addPartyOnMap";
 import { useNavigation } from "@react-navigation/native";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { IEvent } from "../../../../Types/Events";

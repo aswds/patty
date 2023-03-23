@@ -6,17 +6,17 @@ import {
   View,
 } from "react-native";
 import MapView, { Region } from "react-native-maps";
-import GooglePlaceSearch from "../../../shared/Searcher/GooglePlaceSearch";
+import GooglePlaceSearch from "../../../../shared/Searcher/GooglePlaceSearch";
 import AddressTitle from "./components/AddressTitle";
 import ChooseLocationButton from "./components/ChooseLocationButton";
 import FakeMarker from "./components/Marker";
-import { getAddress } from "../../../shared/GetLocationFunctions/getAddress";
+import { getAddress } from "../../../../shared/GetLocationFunctions/getAddress";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ICoordinates, IFullAddress } from "../../../Types/Events";
-import { ChooseLocationScreenNavigationProps } from "../../../Types/MapStack/ScreenNavigationProps";
-import { BackButton } from "../../../shared/Buttons/BackButton";
+import { ICoordinates, IFullAddress } from "../../../../Types/Events";
+import { ChooseLocationScreenNavigationProps } from "../../../../Types/MapStack/ScreenNavigationProps";
+import { BackButton } from "../../../../shared/Buttons/BackButton";
 
-const mapStyle = require("../mapStyle.json");
+const mapStyle = require("../../mapStyle.json");
 export default function ChooseLocation({
   route,
   navigation,

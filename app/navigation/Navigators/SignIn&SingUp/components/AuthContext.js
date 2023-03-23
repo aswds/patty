@@ -1,5 +1,5 @@
 import * as React from "react";
-import { authReducer } from "../../../redux/reducers/AuthReducer";
+import { authReducer } from "../../../../redux/reducers/AuthReducer";
 import { getAuth } from "firebase/auth";
 
 export const AuthContext = React.createContext();

@@ -1,7 +1,7 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { colors } from "../../../../src/colors";
-import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { colors } from "../../../../../src/colors";
+import { FontFamily } from "../../../../../../assets/fonts/Fonts";
 
 const AddressTitle = ({ Address }) => {
   return (

@@ -9,7 +9,7 @@ import NavigationBar from "./NavigationBar";
 import { IEvent } from "../../../Types/Events";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { IUser } from "../../../Types/User";
-import PickTime from "../PickTime/PickTime";
+import PickTime from "./PickTime/PickTime";
 
 interface IData extends IEvent {
   user: Pick<IUser, "name" | "surname" | "username" | "image" | "uid">;
@@ -35,7 +35,7 @@ const LocationAndTime = ({
     },
     time: time,
     access: access,
-    number_of_guests: 1,
+    guests: [uid!],
     user: {
       name,
       surname,

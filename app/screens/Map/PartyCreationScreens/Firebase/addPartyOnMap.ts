@@ -1,6 +1,6 @@
 import { doc, increment, setDoc, updateDoc } from "firebase/firestore";
-import { db } from "../../../../firebase";
-import type { IEvent } from "../../../Types/Events";
+import { db } from "../../../../../firebase";
+import type { IEvent } from "../../../../Types/Events";
 import { getAuth } from "firebase/auth";
 import { Alert } from "react-native";
 import { formatISO } from "date-fns";
@@ -23,7 +23,6 @@ export async function addPartyOnMap(data: IEvent) {
       await setDoc(DB_references.events, {
         ...data,
         partyID: DB_references.events.id,
-        guests: [],
         time: formatISO(data.time as Date),
         createdAt: formatISO(new Date()),
       }).then(() => {
