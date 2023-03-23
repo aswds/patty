@@ -8,7 +8,7 @@ interface RenderItemProps {
   onPress?: () => void;
 }
 
-const RenderItem = ({ item, onPress }: RenderItemProps) => {
+const RenderItem = ({ item, onPress }: RenderItemProps): JSX.Element => {
   return (
     <View style={{ marginBottom: 10 }}>
       <TouchableOpacity onPress={onPress}>

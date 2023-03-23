@@ -1,9 +1,9 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
-import ChooseLocation from "../../screens/Map/ChooseLocation/ChooseLocation";
+import ChooseLocation from "../../screens/Map/PartyCreationScreens/ChooseLocation/ChooseLocation";
 import { PartyCreationNavigatorParamList } from "../../Types/MapStack/NavigationTypes";
-import GeneralInformation from "../../screens/Map/PartyCreationScreen/GeneralInformation";
-import LocationAndTime from "../../screens/Map/PartyCreationScreen/LocationAndTime";
+import GeneralInformation from "../../screens/Map/PartyCreationScreens/GeneralInformation";
+import LocationAndTime from "../../screens/Map/PartyCreationScreens/LocationAndTime";
 
 const Stack = createNativeStackNavigator<PartyCreationNavigatorParamList>();
 export const PartyCreationStack = () => {

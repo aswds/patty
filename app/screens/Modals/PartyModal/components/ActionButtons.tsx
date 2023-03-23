@@ -4,8 +4,10 @@ import React from "react";
 import IconButton from "../../../../shared/Icons/IconButton";
 import { colors } from "../../../../src/colors";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 
-export function ActionButtons() {
+export function ActionButtons({ userUID }: { userUID: string }) {
+  const { uid } = useTypedSelector((state) => state.user_state.current_user);
   return (
     <View style={styles.actionsButtonContainer}>
       <IconButton
@@ -15,13 +17,24 @@ export function ActionButtons() {
         textStyle={styles.iconTextStyle}
         onPress={() => {}}
       />
-      <IconButton
-        text={"Report"}
-        Icon={MaterialIcons}
-        name={"report"}
-        textStyle={styles.iconTextStyle}
-        onPress={() => {}}
-      />
+      {userUID != uid && (
+        <IconButton
+          text={"Report"}
+          Icon={MaterialIcons}
+          name={"report"}
+          textStyle={styles.iconTextStyle}
+          onPress={() => {}}
+        />
+      )}
+      {userUID == uid && (
+        <IconButton
+          text={"Delete"}
+          Icon={MaterialIcons}
+          name={"delete-forever"}
+          textStyle={styles.iconTextStyle}
+          onPress={() => {}}
+        />
+      )}
     </View>
   );
 }

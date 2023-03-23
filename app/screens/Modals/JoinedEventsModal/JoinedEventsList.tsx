@@ -18,12 +18,13 @@ const JoinedEventsList: React.FC<JoinedEventsProps> = ({
   }
   return (
     <View>
-      {joinedEvents.map((event) => (
+      {joinedEvents.map((event, index) => (
         <RenderItem
           item={event}
           onPress={() => {
             onPress(event.location?.region!);
           }}
+          key={index}
         />
       ))}
     </View>

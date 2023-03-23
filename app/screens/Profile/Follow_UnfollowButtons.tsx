@@ -21,12 +21,12 @@ const Follow_UnfollowButtons = ({
   const [isFollowing, setIsFollowing] = useState<boolean>(false);
 
   useEffect(() => {
-    setIsFollowing(user?.followers.includes(uid!));
+    setIsFollowing(user?.followers?.includes(uid!));
   }, []);
 
   function follow_Unfollow_function() {
     if (isFollowing) {
-      const indexToUnfollow = user?.followers.indexOf(auth.currentUser?.uid!);
+      const indexToUnfollow = user?.followers?.indexOf(auth.currentUser?.uid!);
       unfollowUser(auth.currentUser?.uid!, user.uid!).then(() => {
         if (indexToUnfollow != -1) {
           updateUser({

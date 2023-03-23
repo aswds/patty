@@ -11,13 +11,17 @@ interface IState {
 const initialState: IState = {
   isLoading: false,
   error: null,
-  current_user: {},
+  current_user: {} as IUser,
 };
 
 const userSlice = createSlice({
   name: "user",
   initialState,
-  reducers: {},
+  reducers: {
+    updateUser: (state, action: PayloadAction<IUser>) => {
+      state.current_user = action.payload;
+    },
+  },
   extraReducers: (builder) => {
     builder.addCase(fetch_user.pending, (state) => {
       state.isLoading = true;
@@ -32,5 +36,5 @@ const userSlice = createSlice({
   },
 });
 
-export const {} = userSlice.actions;
+export const { updateUser } = userSlice.actions;
 export default userSlice.reducer;

@@ -8,8 +8,8 @@ export interface ICoordinates {
 }
 export interface IFullAddress {
   AdditionalData: { [key: string]: string };
-  City: string;
-  Country: string;
+  City?: string;
+  countryName: string;
   County: string;
   District: string;
   Label: string;
@@ -34,8 +34,9 @@ export interface IEvent {
   location?: ILocation;
   time?: ITime | Date;
   access: string;
-  number_of_guests: number;
+  guests: string[];
   user: IEvent_User;
+  partyID?: string;
 }
 
 export type IEvent_User = Pick<

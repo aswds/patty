@@ -7,12 +7,27 @@ import { IEvent } from "../../../../Types/Events";
 interface JoinEventButtonProps {
   data: IEvent;
   onPress: (data: IEvent) => void;
+  isJoinedEvent: boolean;
+  isCreator: boolean;
 }
-
-function JoinButton({ data, onPress }: JoinEventButtonProps) {
+function EventButtonText({ title }: { title: string }) {
+  return <Text style={[styles.textTitleStyle, { fontSize: 18 }]}>{title}</Text>;
+}
+function EventButton({
+  data,
+  onPress,
+  isJoinedEvent,
+  isCreator,
+}: JoinEventButtonProps) {
   return (
     <TouchableOpacity style={styles.buttonBg} onPress={() => onPress(data)}>
-      <Text style={[styles.textTitleStyle, { fontSize: 18 }]}>Join event</Text>
+      {isJoinedEvent ? (
+        <Text style={[styles.textTitleStyle, { fontSize: 18 }]}>Leave</Text>
+      ) : (
+        <Text style={[styles.textTitleStyle, { fontSize: 18 }]}>
+          Join event
+        </Text>
+      )}
     </TouchableOpacity>
   );
 }
@@ -20,10 +35,17 @@ function JoinButton({ data, onPress }: JoinEventButtonProps) {
 export function JoinEventButton({
   data,
   onPress,
+  isJoinedEvent,
+  isCreator,
 }: JoinEventButtonProps): JSX.Element {
   return (
-    <View style={{ width: "100%", height: 50 }}>
-      <JoinButton data={data} onPress={onPress} />
+    <View style={{ width: "100%", height: 50, marginBottom: 20 }}>
+      <EventButton
+        data={data}
+        onPress={onPress}
+        isJoinedEvent={isJoinedEvent}
+        isCreator={isCreator}
+      />
     </View>
   );
 }

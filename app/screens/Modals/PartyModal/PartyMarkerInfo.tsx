@@ -1,4 +1,4 @@
-import React, { Ref } from "react";
+import React, { Ref, useEffect, useState } from "react";
 
 import { StyleSheet, Text, View } from "react-native";
 import TagItem from "../../../shared/Tag/TagItem";
@@ -11,7 +11,11 @@ import { ModalProps } from "../Types/Modals";
 import { colors } from "../../../src/colors";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
 import BottomSheetModal from "../BottomSheetModal";
-import { joinEvent } from "../../Map/Firebase/fetchUserJoinedEvents";
+import {
+  joinEvent,
+  leaveEvent,
+} from "../../Map/Firebase/fetchUserJoinedEvents";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 function Description({ markerInfo }: { markerInfo: IEvent }) {
   return (
@@ -33,23 +37,52 @@ function TagList({ markerInfo }: { markerInfo: IEvent }) {
 type PartyMarkerModalProps = ModalProps & {
   markerInfo: IEvent;
   modalRef: Ref<BottomSheet>;
+  updateMarkerInfo: (newData: Pick<IEvent, "guests">) => void;
 };
 
 const PartyMarkerInfo = ({
   markerInfo,
   onClose,
   modalRef,
+  updateMarkerInfo,
 }: PartyMarkerModalProps) => {
+  const { uid } = useTypedSelector((state) => state.user_state.current_user);
+  const [isJoinedEvent, setIsJoinedEvent] = useState<boolean>(
+    markerInfo?.guests.includes(uid!)
+  );
+  const [isCreator, setIsCreator] = useState<boolean>(
+    markerInfo?.user?.uid == uid
+  );
+  useEffect(() => {
+    setIsJoinedEvent(markerInfo?.guests.includes(uid!));
+  }, [onClose]);
+
   function onPress(data: IEvent) {
-    joinEvent(data).then((r) => onClose!());
+    if (isJoinedEvent) {
+      const guestsArrayCopy = [...markerInfo.guests];
+      const indexToDelete = markerInfo.guests.indexOf(uid!);
+      updateMarkerInfo({
+        ...markerInfo,
+        guests: [...guestsArrayCopy.splice(indexToDelete, 0)],
+      });
+      leaveEvent(data).then(() => onClose!());
+    } else {
+      updateMarkerInfo({ guests: [...markerInfo.guests, uid!] });
+      joinEvent(data).then((r) => onClose!());
+    }
   }
   return (
     <BottomSheetModal modalRef={modalRef} onClose={onClose}>
       <Event markerInfo={markerInfo} />
       <Description markerInfo={markerInfo} />
       <TagList markerInfo={markerInfo} />
-      <ActionButtons />
-      <JoinEventButton data={markerInfo} onPress={onPress} />
+      <ActionButtons userUID={markerInfo?.user.uid!} />
+      <JoinEventButton
+        data={markerInfo}
+        onPress={onPress}
+        isJoinedEvent={isJoinedEvent}
+        isCreator={isCreator}
+      />
     </BottomSheetModal>
   );
 };

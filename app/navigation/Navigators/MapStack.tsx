@@ -3,6 +3,7 @@ import React from "react";
 import Map from "../../screens/Map/Map";
 import { MapStackNavigatorParamList } from "../../Types/MapStack/NavigationTypes";
 import { PartyCreationStack } from "./PartyCreationStack";
+import Guests from "../../screens/Modals/PartyModal/screen/Guests";
 
 const Stack = createNativeStackNavigator<MapStackNavigatorParamList>();
 export const MapNavigator = () => {
@@ -14,6 +15,7 @@ export const MapNavigator = () => {
         name="PartyCreationStack"
         options={{ gestureEnabled: false }}
       />
+      <Stack.Screen component={Guests} name={"Guests"} />
       {/*<Stack.Screen component={AddCreatorsScreen} name="AddCreators" />*/}
     </Stack.Navigator>
   );

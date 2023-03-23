@@ -1,56 +1,104 @@
-import React, { useEffect, useState } from "react";
-import { IEvent } from "../../../Types/Events";
-import { ModalProps } from "../Types/Modals";
-import { StyleSheet, View } from "react-native";
-import { fetch_joined_events } from "../../../redux/actions/Events";
-import BottomSheetModalJoinedEvents from "../BottomSheetModalJoinedEvents";
-import JoinedEventsList from "./JoinedEventsList";
-import { Region } from "react-native-maps";
+import React, { useEffect, useMemo, useState } from "react";
+import { StyleSheet } from "react-native";
+import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 
-interface JoinedEventsModalProps extends ModalProps {
-  title: React.ReactNode;
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Region } from "react-native-maps";
+import { ModalProps } from "../Types/Modals";
+import { colors } from "../../../src/colors";
+import { IEvent } from "../../../Types/Events";
+import RenderItem from "./RenderItem";
+import { fetch_joined_events } from "../../../redux/actions/Events";
+
+interface JoinedEventsModal extends ModalProps {
+  City: string;
   animateToRegion: (region: Region) => void;
+  title: JSX.Element;
 }
 
-const JoinedEventsModal = ({
-  visible,
-  onClose,
+const JoinedEventsModal: React.FC<JoinedEventsModal> = ({
   modalRef,
-  title,
+  onClose,
   animateToRegion,
-}: JoinedEventsModalProps) => {
-  useEffect(() => {
-    fetch_joined_events().then((docs) => setJoinedEvents(docs));
-  }, []);
+  title,
+  City,
+}) => {
+  //states
+  const [joinedEvents, setJoinedEvents] = useState<IEvent[]>();
 
-  const [joinedEvents, setJoinedEvents] = useState<IEvent[]>([]);
+  //useEffects
+
+  useEffect(() => {
+    fetch_joined_events(City).then(setJoinedEvents);
+  }, [onClose]);
+
+  // variables
+  const snapPoints = useMemo(() => ["30%", "60%"], []);
+  const insets = useSafeAreaInsets();
+  function onPress(region: Region) {
+    animateToRegion(region);
+  }
+  function renderItem({ item, index }: { item: IEvent; index: number }) {
+    return (
+      <RenderItem
+        item={item}
+        onPress={() => {
+          onPress(item.location?.region!);
+        }}
+        key={index}
+      />
+    );
+  }
+  // render
 
   return (
-    <BottomSheetModalJoinedEvents
-      modalRef={modalRef}
+    <BottomSheet
+      style={styles.container}
+      snapPoints={snapPoints}
+      index={-1}
+      enablePanDownToClose
       onClose={onClose}
-      visible={visible}
+      ref={modalRef}
+      backgroundStyle={styles.backgroundStyle}
+      handleIndicatorStyle={{
+        backgroundColor: "gray",
+      }}
+      containerStyle={{
+        overflow: "hidden",
+      }}
     >
-      <View style={styles.titleContainer}>{title}</View>
-
-      <JoinedEventsList
-        joinedEvents={joinedEvents}
-        animateToRegion={animateToRegion}
+      <BottomSheetFlatList
+        style={{ flex: 1 }}
+        contentContainerStyle={[
+          styles.contentContainer,
+          { paddingBottom: insets.bottom },
+        ]}
+        ListHeaderComponent={title}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
+        keyExtractor={(event) => event.partyID!}
+        data={joinedEvents}
+        renderItem={renderItem}
       />
-    </BottomSheetModalJoinedEvents>
+    </BottomSheet>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "flex-end",
-    zIndex: 1,
+    backgroundColor: "transparent",
   },
-
-  titleContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
+  backgroundStyle: {
+    backgroundColor: colors.modalBackground,
+    borderTopRightRadius: 25,
+    borderTopLeftRadius: 25,
+    overflow: "hidden",
+    justifyContent: "flex-end",
+  },
+  contentContainer: {
+    paddingHorizontal: 20,
   },
 });
+
 export default JoinedEventsModal;

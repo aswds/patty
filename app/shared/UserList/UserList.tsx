@@ -19,7 +19,7 @@ const UserList = ({ data }: UserListProps) => {
       stickyHeaderIndices={[0]}
       data={data}
       keyExtractor={(item) => item.uid!}
-      renderItem={({ item }) => <UserItem _user={item} />}
+      renderItem={({ item }) => <UserItem _`user={item} />}
       contentContainerStyle={{
         paddingBottom: insets.bottom + 110,
       }}

@@ -1,9 +1,9 @@
 import { onAuthStateChanged } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { auth } from "../../../firebase";
-import { LoginAndRegister } from "../SignIn&SingUp/SignIn_SignUp_nav";
+import { LoginAndRegister } from "../Navigators/SignIn&SingUp/SignIn_SignUp_nav";
 import { App_Navigation } from "./AppNavigation";
-import { VerifyEmailNav } from "../EmailVerification/VerifyEmailNav";
+import { VerifyEmailNav } from "../Navigators/EmailVerification/VerifyEmailNav";
 import { eventEmitter } from "../../custom/EventEmitter";
 import { EMAIL_VERIFICATION } from "../../screens/constans";
 import * as SplashScreen from "expo-splash-screen";
