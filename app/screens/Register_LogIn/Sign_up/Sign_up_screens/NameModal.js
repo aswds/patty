@@ -8,6 +8,7 @@ import NMAskName from "./components/NameModalComp/NMAskName";
 import NMNextButton from "./components/NameModalComp/NMNextButton";
 import { NMScreen } from "./components/NameModalComp/NMScreen";
 import { text_modifier_name } from "./Sign_up_Functions/text_modifier";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
 export const NameModal = (props) => {
   const [fullName, setFullName] = useState({ name: null, surname: null });
@@ -77,13 +78,13 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   title: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 35,
     color: colors.buttonTextColor,
   },
   textInput: {
     borderBottomColor: colors.iconColor,
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     paddingVertical: "5%",
     paddingHorizontal: 10,
     width: "100%",

@@ -1,7 +1,8 @@
 import { FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet, Alert } from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity } from "react-native";
 import { colors } from "../../../../../../src/colors";
+
 export default function NMNextButton(props) {
   const { navigation, name, surname } = props;
   const isValueEntered = name && surname;

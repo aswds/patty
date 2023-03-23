@@ -2,6 +2,7 @@ import { AntDesign } from "@expo/vector-icons";
 import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { colors } from "../../src/colors";
+import { FontFamily } from "../../../assets/fonts/Fonts";
 
 export default function TagItem({ tag, onDelete, id }) {
   return (
@@ -36,6 +37,6 @@ const styles = StyleSheet.create({
   },
   textStyle: {
     color: colors.iconColor,
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
   },
 });

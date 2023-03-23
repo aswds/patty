@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, {useEffect, useState} from "react";
 import ChatList from "./components/ChatList";
 import ChatScreen from "./components/ChatScreen";
 

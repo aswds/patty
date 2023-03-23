@@ -1,3 +1,5 @@
+import { FontFamily } from "../../../assets/fonts/Fonts";
+
 export const textStyle = {
   color: "grey",
   textContainer: {
@@ -19,7 +21,7 @@ export const textStyle = {
     justifyContent: "center",
   },
   textTermsStyle: {
-    fontFamily: "WorkSans-Regular",
+    fontFamily: FontFamily.regular,
     fontWeight: "400",
     color: "grey",
   },

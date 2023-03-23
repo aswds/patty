@@ -3,12 +3,13 @@ import { StyleSheet, TextInput, View } from "react-native";
 import { colors } from "../../../../src/colors";
 import { sameUsernames } from "../../../Register_LogIn/Sign_up/Sign_up_screens/Sign_up_Functions/sameUsername";
 import { text_modifier } from "../../../Register_LogIn/Sign_up/Sign_up_screens/Sign_up_Functions/text_modifier";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
 export default function EditName({ user }) {
   const [userInfo, setUserInfo] = useState({
-    name: user.name,
-    surname: user.surname,
-    username: user.username,
+    name: user?.name,
+    surname: user?.surname,
+    username: user?.username,
   });
   const [errorMsg, setErrorMsg] = useState();
   return (
@@ -40,8 +41,8 @@ export default function EditName({ user }) {
             onChangeText={(text) => {
               sameUsernames(text_modifier(text), setErrorMsg)
                 .then((res) => {})
-                .catch((err) => {}),
-                setUserInfo({ ...userInfo, username: text_modifier(text) });
+                .catch((err) => {});
+              setUserInfo({ ...userInfo, username: text_modifier(text) });
             }}
             placeholder=""
             defaultValue={`@${userInfo.username}`}
@@ -58,7 +59,7 @@ export default function EditName({ user }) {
 const styles = StyleSheet.create({
   textStyle: {
     color: "white",
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 18,
     marginHorizontal: "1%",
   },

@@ -1,11 +1,11 @@
 import React from "react";
 
-import { StyleSheet, View } from "react-native";
+import {StyleSheet, View} from "react-native";
 import SearchBar from "./SearchBar";
-import { colors } from "../../../src/colors";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { LinearGradient } from "expo-linear-gradient";
-import { isAndroid } from "../../../src/platform";
+import {colors} from "../../../src/colors";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
+import {LinearGradient} from "expo-linear-gradient";
+import {isAndroid} from "../../../src/platform";
 
 const ChatListHeader = () => {
   const insets = useSafeAreaInsets();

@@ -1,9 +1,9 @@
 import React from "react";
 import * as Haptics from "expo-haptics";
+
 export default function error_handle(props) {
   const { error, setErrorMsg, setPassword, setShowModal, setEmail } = props;
   Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-  console.log(error);
   switch (error) {
     case "auth/invalid-email":
       setErrorMsg(

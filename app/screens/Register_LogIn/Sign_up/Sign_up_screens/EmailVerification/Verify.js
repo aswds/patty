@@ -2,6 +2,7 @@ import { useNavigation } from "@react-navigation/native";
 import React from "react";
 import { Dimensions, Text, TouchableOpacity, View } from "react-native";
 import { colors } from "../../../../../src/colors";
+import { FontFamily } from "../../../../../../assets/fonts/Fonts";
 
 export default function Verify({ email }) {
   const navigation = useNavigation();
@@ -18,7 +19,7 @@ export default function Verify({ email }) {
           maxWidth: "80%",
           alignItems: "center",
           textAlign: "center",
-          fontFamily: "WorkSans-Medium",
+          fontFamily: FontFamily.medium,
           color: colors.iconColor,
           fontSize: 13,
         }}
@@ -30,7 +31,7 @@ export default function Verify({ email }) {
           <Text
             style={{
               textAlign: "center",
-              fontFamily: "WorkSans-Medium",
+              fontFamily: FontFamily.medium,
               color: colors.accentColor,
               fontSize: 13,
             }}

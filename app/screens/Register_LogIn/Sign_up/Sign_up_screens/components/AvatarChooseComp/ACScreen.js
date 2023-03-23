@@ -1,4 +1,4 @@
-import { ImageBackground, StyleSheet, View, SafeAreaView } from "react-native";
+import { SafeAreaView, StyleSheet, View } from "react-native";
 import { colors } from "../../../../../../src/colors";
 
 export const ACScreen = (props) => {

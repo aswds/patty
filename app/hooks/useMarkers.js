@@ -23,17 +23,10 @@ export function useMarkers(userLocation = "") {
       );
       await getDocs(queryCities)
         .then((r) => {
-          console.log(
-            "Docs:" +
-              r.docs.map((doc) => {
-                console.log(doc.data());
-              })
-          );
           setParties(r.docs);
         })
         .catch((e) => Alert.alert(e));
     })();
   }, []);
-  console.log("Parties before return: " + parties);
   return { parties };
 }

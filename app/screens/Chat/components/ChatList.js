@@ -1,6 +1,6 @@
 import React from "react";
-import { FlatList } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {FlatList} from "react-native";
+import {useSafeAreaInsets} from "react-native-safe-area-context";
 import ChatListHeader from "./ChatListHeader";
 import ChatItem from "./ChatItem";
 

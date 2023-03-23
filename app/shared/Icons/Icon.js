@@ -1,6 +1,6 @@
 import React from "react";
-import { Dimensions, StyleSheet, Text, View } from "react-native";
-import { colors } from "../../src/colors";
+import {Dimensions, StyleSheet, Text, View} from "react-native";
+import {colors} from "../../src/colors";
 
 export default function Icon({
   Icon,

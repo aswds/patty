@@ -1,11 +1,6 @@
-import {
-  KeyboardAvoidingView,
-  StyleSheet,
-  View,
-  Platform,
-  Dimensions,
-} from "react-native";
+import { Dimensions, StyleSheet, View } from "react-native";
 import { isAndroid } from "../../../../src/platform";
+
 export const Container = (props) => {
   return (
     <View style={styles.registerContainer}>

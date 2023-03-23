@@ -1,7 +1,8 @@
-import { collection, where, query, getDocs } from "firebase/firestore";
+import { collection, getDocs, query, where } from "firebase/firestore";
 import { Alert } from "react-native";
 
 import { db } from "../../../../../../firebase";
+
 export const sameUsernames = async (username, setErrorMsg) => {
   return new Promise(async (resolve, reject) => {
     if (username.length < 3) {

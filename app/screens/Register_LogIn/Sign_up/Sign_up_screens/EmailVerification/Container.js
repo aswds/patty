@@ -1,9 +1,9 @@
 import React from "react";
 import {
   Keyboard,
-  View,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
+  View,
 } from "react-native";
 import { colors } from "../../../../../src/colors";
 import { isAndroid } from "../../../../../src/platform";

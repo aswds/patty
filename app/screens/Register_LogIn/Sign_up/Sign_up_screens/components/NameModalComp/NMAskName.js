@@ -1,6 +1,8 @@
 import React from "react";
-import { View, Text } from "react-native";
+import { Text, View } from "react-native";
 import { colors } from "../../../../../../src/colors";
+import { FontFamily } from "../../../../../../../assets/fonts/Fonts";
+
 export default function NMAskName(props) {
   const { styles } = props;
   return (
@@ -15,7 +17,7 @@ export default function NMAskName(props) {
         <Text style={styles.title}>Hi! 👋</Text>
         <Text
           style={{
-            fontFamily: "WorkSans-Regular",
+            fontFamily: FontFamily.regular,
             fontSize: 17,
             color: colors.iconColor,
           }}

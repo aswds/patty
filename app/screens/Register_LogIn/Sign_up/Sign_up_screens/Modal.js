@@ -12,6 +12,7 @@ import {
   View,
 } from "react-native";
 import { colors } from "../../../../src/colors";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
 const color = colors.background;
 export const ModalPhoto = (props) => {
@@ -24,7 +25,6 @@ export const ModalPhoto = (props) => {
       aspect: [1, 1],
       quality: 1,
     });
-    console.log(result.assets);
     if (!result.canceled) {
       props.imageHandler(result.assets[0].uri);
       props.hideModal();
@@ -100,7 +100,7 @@ export const ModalPhoto = (props) => {
     </Modal>
   );
 };
-const makeStyles = (colors: any) =>
+const makeStyles = (colors) =>
   StyleSheet.create({
     centeredView: {
       flex: 1,
@@ -113,7 +113,7 @@ const makeStyles = (colors: any) =>
       flex: 1,
     },
     textStyle: {
-      fontFamily: "WorkSans-Bold",
+      fontFamily: FontFamily.bold,
       color: colors.background,
     },
     modalView: {

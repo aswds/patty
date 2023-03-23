@@ -4,6 +4,7 @@ import { colors } from "../../../../src/colors";
 import Container from "./EmailVerification/Container";
 import VerifyText from "./EmailVerification/VerifyText";
 import Verify from "./EmailVerification/Verify";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
 export default function EmailVerification(props) {
   const { email } = props;
@@ -22,7 +23,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.background,
   },
   textStyle: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 20,
     color: colors.buttonTextColor,
   },

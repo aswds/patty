@@ -1,7 +1,7 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import React from "react";
 import { ChatNavigator } from "../Navigators/ChatNavigator";
-import { MapNavigator } from "../Navigators/MapNavigator";
+import { MapNavigator } from "../Navigators/MapStack";
 import { ProfileNavigator } from "../Navigators/ProfileNavigator";
 
 const Stack = createNativeStackNavigator();

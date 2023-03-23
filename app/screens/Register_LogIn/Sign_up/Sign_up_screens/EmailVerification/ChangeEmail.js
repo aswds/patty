@@ -7,6 +7,7 @@ import Button from "../../../components/button";
 import Input from "../../../../../shared/Input/Input";
 import { textStyle } from "../../../style";
 import Container from "./Container";
+import { FontFamily } from "../../../../../../assets/fonts/Fonts";
 
 export default function ChangeEmail() {
   const route = useRoute();
@@ -72,11 +73,11 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 10,
     fontSize: 13,
-    fontFamily: "WorkSans-Medium",
+    fontFamily: FontFamily.medium,
   },
   textContainer: {},
   textStyle: {
-    fontFamily: "WorkSans-Medium",
+    fontFamily: FontFamily.medium,
     fontSize: 15,
     color: colors.text,
   },

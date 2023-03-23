@@ -1,8 +1,8 @@
 import React from "react";
 
-import { StyleSheet, TouchableOpacity } from "react-native";
-import { Feather } from "@expo/vector-icons";
-import { colors } from "../../../../../src/colors";
+import {StyleSheet, TouchableOpacity} from "react-native";
+import {Feather} from "@expo/vector-icons";
+import {colors} from "../../../../../src/colors";
 
 const SendButton = ({ onPress }) => {
   return (

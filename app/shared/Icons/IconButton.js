@@ -1,7 +1,7 @@
 import React from "react";
 
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { colors } from "../../src/colors";
+import {StyleSheet, Text, TouchableOpacity} from "react-native";
+import {colors} from "../../src/colors";
 
 export function IconButton({ Icon, name, text, textStyle, ...props }) {
   return (

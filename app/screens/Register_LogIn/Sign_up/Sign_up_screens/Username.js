@@ -10,6 +10,7 @@ import AskUsername from "./components/Username/AskUsername";
 import NextButton from "./components/Username/NextButton";
 import { sameUsernames } from "./Sign_up_Functions/sameUsername";
 import { text_modifier } from "./Sign_up_Functions/text_modifier";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
 export const Username = (props) => {
   const [username, setUsername] = useState("");
@@ -72,7 +73,7 @@ export const Username = (props) => {
 };
 const styles = StyleSheet.create({
   title: {
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     fontSize: 35,
     color: colors.buttonTextColor,
   },
@@ -83,7 +84,7 @@ const styles = StyleSheet.create({
   },
   textInput: {
     borderBottomColor: colors.iconColor,
-    fontFamily: "WorkSans-Bold",
+    fontFamily: FontFamily.bold,
     paddingVertical: "5%",
     paddingHorizontal: 10,
     width: "100%",

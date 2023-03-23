@@ -1,7 +1,8 @@
 import React from "react";
-import { TouchableOpacity, Text, View } from "react-native";
+import { Text, TouchableOpacity } from "react-native";
 import { FontAwesome5 } from "@expo/vector-icons";
 import { colors } from "../../../../../../src/colors";
+
 export default function ACNextButton(props) {
   const { navigation, image, styles, name, surname, username } = props;
   return (

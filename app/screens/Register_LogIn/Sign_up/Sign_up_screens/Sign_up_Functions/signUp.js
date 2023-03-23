@@ -56,7 +56,7 @@ async function setDocs(result, userInfo) {
     name: name || "",
     surname: surname,
     phoneNumber: "",
-    userImage: "",
+    image: "",
     following: 0,
     followers: 0,
     bio: "",

@@ -1,4 +1,4 @@
-import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
 
 const Tab = createBottomTabNavigator();
 
@@ -40,7 +40,7 @@ export const Tabs = () => {
 
       {/*<Tab.Screen*/}
       {/*  name="MapNav"*/}
-      {/*  component={MapNavigator}*/}
+      {/*  component={MapStack}*/}
       {/*  options={{*/}
       {/*    tabBarIcon: ({ focused }) => {*/}
       {/*      return (*/}
