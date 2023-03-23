@@ -21,7 +21,7 @@ const CustomMarker = React.memo(
         <Octicons
           name="dot-fill"
           size={31}
-          color={pickColor(doc.number_of_guests)}
+          color={pickColor(doc?.guests.length)}
         />
       </Marker>
     );

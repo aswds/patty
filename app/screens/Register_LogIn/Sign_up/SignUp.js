@@ -6,7 +6,7 @@ import {
 import { useRoute } from "@react-navigation/native";
 import React, { useContext, useRef, useState } from "react";
 import { Dimensions, StyleSheet, View } from "react-native";
-import { AuthContext } from "../../../navigation/SignIn&SingUp/components/AuthContext";
+import { AuthContext } from "../../../navigation/Navigators/SignIn&SingUp/components/AuthContext";
 import { colors } from "../../../src/colors";
 import { isAndroid } from "../../../src/platform";
 import { BackButton } from "../../../shared/Buttons/BackButton";

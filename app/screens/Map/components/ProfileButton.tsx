@@ -5,19 +5,27 @@ import { useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
 import { colors } from "../../../src/colors";
-import { IUser } from "../../../Types/User";
 import { ProfileNavigationProps } from "../../../Types/ProfileStack/ScreenNavigationProps";
+import { useActions } from "../../../hooks/useActions";
+import { IUser } from "../../../Types/User";
 
 // Button to navigate to profile screen
 
 interface ProfileButtonProps {
-  current_user: IUser;
   onLongPress: () => void;
+  onPressUser: () => void;
+  current_user: IUser;
 }
-const ProfileButton = ({ current_user, onLongPress }: ProfileButtonProps) => {
+const ProfileButton = ({
+  onLongPress,
+  onPressUser,
+  current_user,
+}: ProfileButtonProps) => {
   const navigation = useNavigation<ProfileNavigationProps>();
+  const { fetch_user } = useActions();
   const insets = useSafeAreaInsets();
   function onPress() {
+    onPressUser();
     navigation.navigate("ProfileNav", {
       screen: "Profile",
       params: { current_user },
