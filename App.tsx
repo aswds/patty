@@ -1,8 +1,8 @@
 import { StatusBar, StyleSheet, View } from "react-native";
 import { useFontsLoad } from "./app/hooks/useFontsLoad";
-import { ProvidedNavigator } from "./app/navigation/SignIn&SingUp/ProvidedNavigator";
+import { ProvidedNavigator } from "./app/navigation/Navigators/SignIn&SingUp/ProvidedNavigator";
 import { Asset } from "expo-asset";
-import { useCallback, useEffect, useState } from "react";
+import { StrictMode, useCallback, useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { getUserLocation } from "./app/shared/GetLocationFunctions/getUserLocation";
@@ -58,9 +58,11 @@ export default function App() {
   return (
     <View style={styles.container} onLayout={onLayoutRootView}>
       <StatusBar barStyle={"light-content"} />
-      <BottomSheetModalProvider>
-        <ProvidedNavigator />
-      </BottomSheetModalProvider>
+      <StrictMode>
+        <BottomSheetModalProvider>
+          <ProvidedNavigator />
+        </BottomSheetModalProvider>
+      </StrictMode>
     </View>
   );
 }
