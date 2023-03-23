@@ -1,11 +1,19 @@
 import React from "react";
-import { StyleSheet, Text, View, ViewStyle } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+  ViewStyle,
+} from "react-native";
 import type { IEvent, IFullAddress } from "../../Types/Events";
 import moment from "moment/moment";
 import { colors } from "../../src/colors";
 import { Octicons } from "@expo/vector-icons";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import UserInfo from "../Events/UserInfo";
+import { useNavigation } from "@react-navigation/native";
+import { MapNavigationProps } from "../../Types/MapStack/ScreenNavigationProps";
 
 interface ITopInfo {
   markerInfo: IEvent;
@@ -31,9 +39,13 @@ const Address = ({ address }: { address: IFullAddress | null | undefined }) => {
   );
 };
 
-function NumberOfGuests({ number_of_guests }: { number_of_guests: number }) {
+function NumberOfGuests({ guests }: { guests: string[] }) {
+  const navigation = useNavigation<MapNavigationProps>();
   return (
-    <View style={styles.numberOfGuestsContainer}>
+    <TouchableOpacity
+      style={styles.numberOfGuestsContainer}
+      onPress={() => navigation.navigate("Guests", { guests: guests })}
+    >
       <Octicons
         name="people"
         size={24}
@@ -41,8 +53,8 @@ function NumberOfGuests({ number_of_guests }: { number_of_guests: number }) {
         style={{ paddingHorizontal: 5 }}
       />
 
-      <Text style={styles.numberOfGuests}>{number_of_guests}</Text>
-    </View>
+      <Text style={styles.numberOfGuests}>{guests && guests?.length}</Text>
+    </TouchableOpacity>
   );
 }
 // if hideModal present
@@ -64,7 +76,7 @@ export const Event: React.FC<ITopInfo> = ({
 
         <View style={{ flexDirection: "row", alignItems: "center" }}>
           <PartyDate date={markerInfo?.time as Date} />
-          <NumberOfGuests number_of_guests={markerInfo?.number_of_guests} />
+          <NumberOfGuests guests={markerInfo?.guests} />
         </View>
         <Address address={markerInfo?.location?.fullAddressInfo} />
       </View>
