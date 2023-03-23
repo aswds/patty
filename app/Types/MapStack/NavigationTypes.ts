@@ -1,6 +1,6 @@
 import { ICoordinates, IFullAddress } from "../Events";
 import { NavigatorScreenParams } from "@react-navigation/native";
-import { IAddress } from "../../screens/Map/ChooseLocation/types";
+import { IAddress } from "../../screens/Map/PartyCreationScreens/ChooseLocation/types";
 
 export type MapNavNavigatorParamList = {
   MapNav: NavigatorScreenParams<MapStackNavigatorParamList>;
@@ -9,6 +9,11 @@ export type MapNavNavigatorParamList = {
 export type MapStackNavigatorParamList = {
   Map: undefined;
   PartyCreationStack: NavigatorScreenParams<PartyCreationNavigatorParamList>;
+  Guests: GuestsNavigatorParamList;
+};
+
+type GuestsNavigatorParamList = {
+  guests: string[];
 };
 
 export type PartyCreationNavigatorParamList = {
