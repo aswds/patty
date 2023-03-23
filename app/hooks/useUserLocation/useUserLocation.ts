@@ -6,8 +6,6 @@ import { ICoordinates, IEvent, IFullAddress } from "../../Types/Events";
 import { LocationObject } from "expo-location";
 import { Alert } from "react-native";
 import { eventReference } from "../../Firebase/References";
-import firebase from "firebase/compat";
-import DocumentData = firebase.firestore.DocumentData;
 
 /**
  * Get all parties in user's city
@@ -43,8 +41,7 @@ export default function useUserLocation() {
   // setUserLocation?: Dispatch<SetStateAction<ICoordinates | undefined>>
   const [userLocation, setUserLocation] = useState<ICoordinates>();
   const [errorMsg, setErrorMsg] = useState<string>();
-  const [isLoading, setIsLoading] = useState<boolean>(true);
-  const [events, setEvents] = useState<DocumentData>();
+  const [city, setCity] = useState<string>();
   useEffect(() => {
     (async function fetchData() {
       try {
@@ -57,11 +54,9 @@ export default function useUserLocation() {
           });
           getAddress(res.coords.latitude, res.coords.longitude).then(
             (r: IFullAddress) => {
-              setEvents(fetchCityParties(r?.City));
+              setCity(r?.City);
             }
           );
-
-          setIsLoading(false);
         });
       } catch (e: any) {
         setErrorMsg(e);
@@ -69,5 +64,5 @@ export default function useUserLocation() {
     })();
   }, []);
 
-  return { userLocation, events, errorMsg, isLoading };
+  return { userLocation, city, errorMsg };
 }

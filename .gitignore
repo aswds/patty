@@ -145,9 +145,8 @@ web_modules/
 
 # Optional npm cache directory
 .npm
-package-lock.json
-package.json
-yarn.lock
+
+
 # Optional eslint cache
 .eslintcache
 
