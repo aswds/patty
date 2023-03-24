@@ -13,7 +13,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { auth } from "../../../firebase";
 import { sendEmailVerification } from "firebase/auth";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import Button from "../Authorization/components/button";
+import Button from "../Authorization/components/Button";
 import { eventEmitter } from "../../custom/EventEmitter";
 import { EMAIL_VERIFICATION } from "../constans";
 import { FontFamily } from "../../../assets/fonts/Fonts";
@@ -141,9 +141,8 @@ const VerifyEmail = (props) => {
           backgroundColor: canSend ? colors.accentColor : colors.disabledButton,
         }}
         onPress={sendVerificationLetter}
-      >
-        Send again
-      </Button>
+        title={"Send again"}
+      />
     );
   }
 

@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // import forgotPassword from "../../components/forgotPassword";
 import { Alert, Dimensions, StyleSheet, Text, View } from "react-native";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import Button from "../Authorization/components/button";
+import Button from "../Authorization/components/Button";
 import { colors } from "../../src/colors";
 import Input from "../../shared/Input/Input";
 import Screen from "./components/Screen";
@@ -113,9 +113,8 @@ export default function ChangeEmail({
                 }
               }}
               textStyle={styles.textStyle}
-            >
-              Submit
-            </Button>
+              title={"Submit"}
+            />
           </View>
         </View>
         <AfterReset />

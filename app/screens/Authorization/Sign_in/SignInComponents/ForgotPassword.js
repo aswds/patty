@@ -9,7 +9,7 @@ export default function ForgotPassword({ navigation, styles }) {
       }}
       style={styles.forgotPasswordContainer}
     >
-      <Text style={styles.forgotPasswordTextStyle}>Forgot a password ?</Text>
+      <Text style={styles.forgotPasswordTextStyle}>Forgot password?</Text>
     </TouchableOpacity>
   );
 }

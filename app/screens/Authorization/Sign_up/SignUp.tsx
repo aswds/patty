@@ -9,7 +9,7 @@ import { Dimensions, StyleSheet, TextInput, View } from "react-native";
 import { colors } from "../../../src/colors";
 import { isAndroid } from "../../../src/platform";
 import { BackButton } from "../../../shared/Buttons/BackButton";
-import Button from "../components/button";
+import Button from "../components/Button";
 import Input from "../../../shared/Input/Input";
 import { Logo } from "../components/Logo";
 import { Screen } from "../components/Screen";
@@ -199,9 +199,9 @@ const SignUpScreen = ({ navigation }: SignUpNavigationProps) => {
         }}
         style={styles.styledButton}
         onPress={signUp_handle}
-      >
-        Sign Up
-      </Button>
+        title={"Sign up"}
+      />
+
       {/* Fix */}
       <TermText />
       {/* Fix */}

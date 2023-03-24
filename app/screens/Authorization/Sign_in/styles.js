@@ -20,7 +20,11 @@ export const styles = StyleSheet.create({
     color: "#E7E0C9",
   },
   forgotPasswordContainer: { alignSelf: "flex-end", paddingVertical: 10 },
-  forgotPasswordTextStyle: { color: "#416194", fontSize: 13 },
+  forgotPasswordTextStyle: {
+    color: "#416194",
+    fontSize: 13,
+    fontFamily: FontFamily.extra_bold,
+  },
   logoContainer: {
     height:
       Platform.OS === "android"

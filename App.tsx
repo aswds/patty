@@ -6,6 +6,8 @@ import { StrictMode, useCallback, useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { getUserLocation } from "./app/shared/GetLocationFunctions/getUserLocation";
+import React from "react";
+import { SafeAreaProvider } from "react-native-safe-area-context";
 // Setting splash screen
 SplashScreen.preventAutoHideAsync();
 export default function App() {
@@ -60,7 +62,9 @@ export default function App() {
       <StatusBar barStyle={"light-content"} />
       <StrictMode>
         <BottomSheetModalProvider>
-          <ProvidedNavigator />
+          <SafeAreaProvider>
+            <ProvidedNavigator />
+          </SafeAreaProvider>
         </BottomSheetModalProvider>
       </StrictMode>
     </View>

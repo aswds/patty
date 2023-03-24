@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Keyboard, View } from "react-native";
 import { colors } from "../../../src/colors";
 import { BackButton } from "../../../shared/Buttons/BackButton";
-import Button from "../components/button";
+import Button from "../components/Button";
 import Input from "../../../shared/Input/Input";
 import { Logo } from "../components/Logo";
 import { Screen } from "../components/Screen";
@@ -99,9 +99,8 @@ const SignInScreen = ({ navigation }: SignInScreenNavigationProps) => {
             }}
             style={styles.styledButtonStyle}
             textStyle={styles.styledButtonTextStyle}
-          >
-            Sign in
-          </Button>
+            title={"Sign in"}
+          />
         </View>
       </Screen>
 

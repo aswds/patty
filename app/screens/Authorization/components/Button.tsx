@@ -1,23 +1,38 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import {
   Dimensions,
   StyleSheet,
   Text,
+  TextStyle,
   TouchableOpacity,
+  TouchableOpacityProps,
   View,
+  ViewStyle,
 } from "react-native";
 import { colors } from "../../../src/colors";
 
-const Button = (props) => {
+interface ButtonProps extends PropsWithChildren, TouchableOpacityProps {
+  textStyle: TextStyle;
+  style: ViewStyle;
+  title?: string;
+}
+
+const Button = ({
+  textStyle,
+  style,
+  children,
+  title,
+  ...props
+}: ButtonProps) => {
   return (
     <TouchableOpacity
       {...props}
       activeOpacity={0.7}
-      style={[styles.container, props.style]}
+      style={[styles.container, style]}
     >
       <View style={{ justifyContent: "center" }}>
-        <Text style={{ ...props.textStyle, color: colors.buttonTextColor }}>
-          {props.children}
+        <Text style={{ ...textStyle, color: colors.buttonTextColor }}>
+          {title}
         </Text>
       </View>
     </TouchableOpacity>
