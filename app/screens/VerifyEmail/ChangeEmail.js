@@ -2,7 +2,7 @@ import React, { useState } from "react";
 // import forgotPassword from "../../components/forgotPassword";
 import { Alert, Dimensions, StyleSheet, Text, View } from "react-native";
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import Button from "../Register_LogIn/components/button";
+import Button from "../Authorization/components/button";
 import { colors } from "../../src/colors";
 import Input from "../../shared/Input/Input";
 import Screen from "./components/Screen";
@@ -10,9 +10,9 @@ import { BackButton } from "../../shared/Buttons/BackButton";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { updateEmail } from "firebase/auth";
 import { auth } from "../../../firebase";
-import { error_handle } from "../Register_LogIn/Sign_up/Sign_up_screens/Sign_up_Functions/error_handle";
-import CustomAlert from "../Register_LogIn/CustomAlert";
-import { set_errorMsg_errorType } from "../Register_LogIn/Sign_up/Sign_up_screens/Sign_up_Functions/signUp";
+import { error_handle } from "../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/error_handle";
+import CustomAlert from "../Authorization/CustomAlert";
+import { set_errorMsg_errorType } from "../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/signUp";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 
 function ResetText({ isPasswordReset }) {

@@ -14,7 +14,7 @@ import { colors } from "../../../../src/colors";
 import { AntDesign } from "@expo/vector-icons";
 import Input from "../../../../shared/Input/Input";
 import * as Haptics from "expo-haptics";
-import { text_modifier_tags } from "../../../Register_LogIn/Sign_up/Sign_up_screens/Sign_up_Functions/text_modifier";
+import { text_modifier_tags } from "../../../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/text_modifier";
 
 export default function TagModal({ setTags, isVisible, hideModal }) {
   const [tagTitle, setTagTitle] = useState("");

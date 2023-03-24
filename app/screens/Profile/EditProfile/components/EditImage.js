@@ -1,12 +1,12 @@
 import React, { useState } from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
-import { ModalPhoto } from "../../../Register_LogIn/Sign_up/Sign_up_screens/Modal";
+import { ModalPhoto } from "../../../Authorization/Sign_up/Sign_up_screens/Modal";
 import {
   _hideModal,
   _imagePropHandler,
-} from "../../../Register_LogIn/Sign_up/Sign_up_screens/AvatarFunctions/ACFunctions";
-import { _showModalHandle } from "../../../Register_LogIn/Sign_up/Sign_up_screens/Sign_up_Functions/_showModalHandel";
+} from "../../../Authorization/Sign_up/Sign_up_screens/AvatarFunctions/ACFunctions";
+import { _showModalHandle } from "../../../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/_showModalHandel";
 
 export default function EditImage({ source }) {
   const route = useRoute();

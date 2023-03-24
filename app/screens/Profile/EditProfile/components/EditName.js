@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { StyleSheet, TextInput, View } from "react-native";
 import { colors } from "../../../../src/colors";
-import { sameUsernames } from "../../../Register_LogIn/Sign_up/Sign_up_screens/Sign_up_Functions/sameUsername";
-import { text_modifier } from "../../../Register_LogIn/Sign_up/Sign_up_screens/Sign_up_Functions/text_modifier";
+import { sameUsernames } from "../../../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/sameUsername";
+import { text_modifier } from "../../../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/text_modifier";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
 
 export default function EditName({ user }) {

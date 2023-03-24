@@ -1,7 +1,8 @@
-import React, { PropsWithChildren, Ref } from "react";
+import React, { ForwardedRef, PropsWithChildren } from "react";
 import {
   StyleSheet,
   TextInput,
+  TextInputProps,
   TextStyle,
   View,
   ViewStyle,
@@ -9,17 +10,17 @@ import {
 import { colors } from "../../src/colors";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 
-interface InputProps extends PropsWithChildren {
-  style: ViewStyle;
-  isValid: boolean;
-  icon: React.ReactNode;
-  inputStyle: TextStyle;
+interface InputProps extends PropsWithChildren, TextInputProps {
+  style?: ViewStyle;
+  isValid?: boolean;
+  icon?: React.ReactNode;
+  inputStyle?: TextStyle;
 }
 
 const Input = React.forwardRef(
   (
     { style, isValid, icon, children, inputStyle, ...props }: InputProps,
-    ref: Ref<TextInput>
+    ref: ForwardedRef<TextInput>
   ) => {
     return (
       <View
