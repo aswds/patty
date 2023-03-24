@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import Input from "../../shared/Input/Input";
-import Button from "../Register_LogIn/components/button";
+import Button from "../Authorization/components/button";
 import { colors } from "../../src/colors";
 
 const SignInModal = (props) => {
