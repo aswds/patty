@@ -1,6 +1,6 @@
 import { StatusBar, StyleSheet, View } from "react-native";
 import { useFontsLoad } from "./app/hooks/useFontsLoad";
-import { ProvidedNavigator } from "./app/navigation/Navigators/SignIn&SingUp/ProvidedNavigator";
+import { ProvidedNavigator } from "./app/navigation/Navigators/Authorization/ProvidedNavigator";
 import { Asset } from "expo-asset";
 import { StrictMode, useCallback, useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";

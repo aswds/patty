@@ -1,7 +1,7 @@
 import { onAuthStateChanged } from "firebase/auth";
 import React, { useEffect, useState } from "react";
 import { auth } from "../../../firebase";
-import { LoginAndRegister } from "../Navigators/SignIn&SingUp/SignIn_SignUp_nav";
+import { Authorization } from "../Navigators/Authorization/Authorization";
 import { App_Navigation } from "./AppNavigation";
 import { VerifyEmailNav } from "../Navigators/EmailVerification/VerifyEmailNav";
 import { eventEmitter } from "../../custom/EventEmitter";
@@ -61,7 +61,7 @@ export const RootNavigator = () => {
       {isSignedIn && auth.currentUser?.emailVerified ? (
         <App_Navigation />
       ) : (
-        <LoginAndRegister />
+        <Authorization />
       )}
     </>
   );
