@@ -1,10 +1,13 @@
-const FontFamily = {
-  bold: "WorkSans-Bold",
-  regular: "WorkSans-Regular",
+import { IFonts } from "../../app/Types/Fonts/FontTypes";
 
-  medium: "WorkSans-Medium",
+const FontFamily: IFonts = {
+  bold: "Nunito-Bold",
+  regular: "Nunito-Regular",
 
-  semi_bold: "WorkSans-SemiBold",
+  medium: "Nunito-Medium",
+
+  semi_bold: "Nunito-SemiBold",
+  extra_bold: "Nunito-ExtraBold",
 };
 
 export { FontFamily };

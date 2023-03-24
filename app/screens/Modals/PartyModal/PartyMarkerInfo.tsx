@@ -1,4 +1,4 @@
-import React, { Ref, useEffect, useState } from "react";
+import React, { MutableRefObject, useEffect, useState } from "react";
 
 import { StyleSheet, Text, View } from "react-native";
 import TagItem from "../../../shared/Tag/TagItem";
@@ -36,7 +36,7 @@ function TagList({ markerInfo }: { markerInfo: IEvent }) {
 
 type PartyMarkerModalProps = ModalProps & {
   markerInfo: IEvent;
-  modalRef: Ref<BottomSheet>;
+  modalRef: MutableRefObject<BottomSheet>;
   updateMarkerInfo: (newData: Pick<IEvent, "guests">) => void;
 };
 

@@ -1,8 +1,8 @@
-import { Ref } from "react";
+import { MutableRefObject } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
 
 export type ModalProps = {
-  modalRef?: Ref<BottomSheet>;
+  modalRef?: MutableRefObject<BottomSheet>;
   onClose?: () => void;
   visible?: boolean;
 };
