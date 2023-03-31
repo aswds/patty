@@ -4,6 +4,7 @@ import Map from "../../screens/Map/Map";
 import { MapStackNavigatorParamList } from "../../Types/MapStack/NavigationTypes";
 import { PartyCreationStack } from "./PartyCreationStack";
 import Guests from "../../screens/Modals/PartyModal/screen/Guests";
+import JoinedEvents from "../../screens/Map/JoinedEvents/JoinedEvents";
 
 const Stack = createNativeStackNavigator<MapStackNavigatorParamList>();
 export const MapNavigator = () => {
@@ -15,7 +16,14 @@ export const MapNavigator = () => {
         name="PartyCreationStack"
         options={{ gestureEnabled: false }}
       />
-      <Stack.Screen component={Guests} name={"Guests"} />
+      <Stack.Screen component={Guests} name={"Guests"} options={{}} />
+
+      <Stack.Screen
+        component={JoinedEvents}
+        name={"JoinedEvents"}
+        options={{}}
+      />
+
       {/*<Stack.Screen component={AddCreatorsScreen} name="AddCreators" />*/}
     </Stack.Navigator>
   );

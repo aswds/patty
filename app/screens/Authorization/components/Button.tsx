@@ -1,6 +1,7 @@
 import React, { PropsWithChildren } from "react";
 import {
   Dimensions,
+  StyleProp,
   StyleSheet,
   Text,
   TextStyle,
@@ -12,8 +13,8 @@ import {
 import { colors } from "../../../src/colors";
 
 interface ButtonProps extends PropsWithChildren, TouchableOpacityProps {
-  textStyle: TextStyle;
-  style: ViewStyle;
+  textStyle?: TextStyle;
+  style?: StyleProp<ViewStyle>;
   title?: string;
 }
 

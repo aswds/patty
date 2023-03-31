@@ -1,3 +1,4 @@
+import { GuestsScreenRouteProps } from "./RouteTypes";
 import {
   NativeStackNavigationProp,
   NativeStackScreenProps,
@@ -28,4 +29,12 @@ export type LocationAndTimeScreenNavigationProps = NativeStackScreenProps<
 export type ChooseLocationScreenNavigationProps = NativeStackScreenProps<
   PartyCreationNavigatorParamList,
   "ChooseLocation"
+>;
+export type JoinedEventsScreenNavigationProps = NativeStackScreenProps<
+  MapStackNavigatorParamList,
+  "JoinedEvents"
+>;
+export type GuestsScreenNavigationProps = NativeStackScreenProps<
+  MapStackNavigatorParamList,
+  "Guests"
 >;

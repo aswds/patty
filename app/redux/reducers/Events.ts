@@ -42,7 +42,6 @@ export const eventsSlice = createSlice({
     builder.addCase(
       fetch_events.rejected,
       (state, action: PayloadAction<any>) => {
-        console.log(action.payload);
         state.error = action.payload || "Something went wrong";
         state.isLoading = false;
       }

@@ -1,3 +1,4 @@
+import { UserLocation } from "./../../Types/User";
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IUser } from "../../Types/User";
 import { fetch_user } from "../actions/User";
@@ -20,6 +21,9 @@ const userSlice = createSlice({
   reducers: {
     updateUser: (state, action: PayloadAction<IUser>) => {
       state.current_user = action.payload;
+    },
+    updateUserLocation: (state, action: PayloadAction<UserLocation>) => {
+      state.current_user.userLocation = action.payload;
     },
   },
   extraReducers: (builder) => {
