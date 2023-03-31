@@ -29,9 +29,9 @@ export async function joinEvent(data: IEvent) {
   const updateRef = doc(
     db,
     `EVENTS`,
-    `${data.location?.fullAddressInfo?.City}`,
+    `${data.location?.fullAddressInfo?.city}`,
     `UserEvents`,
-    `${data.partyID}`
+    `${data.partyID ?? data.user.uid}`
   );
   //functions
   await updateDoc(updateRef, {
@@ -50,7 +50,7 @@ export async function leaveEvent(data: IEvent) {
   const eventDoc_ref = doc(
     db,
     `EVENTS`,
-    `${data.location?.fullAddressInfo?.City}`,
+    `${data.location?.fullAddressInfo?.city}`,
     `UserEvents`,
     `${data.partyID}`
   );

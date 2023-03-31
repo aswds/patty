@@ -56,7 +56,7 @@ export default function ChooseLocation({
             style={{ marginTop: insets.top, backgroundColor: "", left: 0 }}
           />
           <FakeMarker />
-          <AddressTitle Address={addressInfo?.Label} />
+          <AddressTitle Address={addressInfo?.label} />
           <ChooseLocationButton region={region} fullAddress={addressInfo} />
         </View>
       </TouchableWithoutFeedback>

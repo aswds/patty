@@ -10,6 +10,6 @@ export async function fetchEventsByCity(
     userLocation.coords.latitude,
     userLocation.coords.longitude
   ).then((r: IFullAddress) => {
-    return fetchCityParties(r.City!).then((events) => events);
+    return fetchCityParties(r.city!).then((events) => events);
   });
 }

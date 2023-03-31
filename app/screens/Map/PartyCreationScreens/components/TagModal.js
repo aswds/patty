@@ -34,7 +34,7 @@ export default function TagModal({ setTags, isVisible, hideModal }) {
     }
   }
   function onAdd() {
-    if (tagTitle.length > 0 && tagTitle.length < 20) {
+    if (tagTitle.length > 0 && tagTitle.length <= 20) {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       setTags(addTag);
       hideModal();

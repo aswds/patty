@@ -22,11 +22,11 @@ export default function ChooseLocationButton({
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          if (fullAddress?.Label && region) {
+          if (fullAddress?.label && region) {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             navigation.navigate("LocationAndTime", {
               region: region,
-              addressTitle: fullAddress.Label,
+              addressTitle: fullAddress.label,
               fullAddressInfo: fullAddress,
             });
           } else {

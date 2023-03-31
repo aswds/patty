@@ -12,7 +12,7 @@ export async function addPartyOnMap(data: IEvent) {
     events: doc(
       db,
       `EVENTS`,
-      `${data?.location?.fullAddressInfo?.City}`,
+      `${data?.location?.fullAddressInfo?.city}`,
       `UserEvents`,
       `${auth?.currentUser?.uid}`
     ),

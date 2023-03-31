@@ -53,7 +53,6 @@ const LocationAndTime = ({
       location: { fullAddressInfo, region },
     });
   }, [route.params]);
-
   const { userLocation } = useUserLocation();
   return (
     <Screen>
@@ -68,7 +67,7 @@ const LocationAndTime = ({
                 userLocation: userLocation,
               })
             }
-            title="Choose a location"
+            title="Select a location"
           />
         }
       />

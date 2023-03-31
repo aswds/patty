@@ -6,6 +6,7 @@ import { useNavigation } from "@react-navigation/native";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { IEvent } from "../../../../Types/Events";
 import { MapNavigationProps } from "../../../../Types/MapStack/ScreenNavigationProps";
+import { joinEvent } from "../../Firebase/fetchUserJoinedEvents";
 
 interface CreatePartyButtonProps {
   data: IEvent;
@@ -18,6 +19,7 @@ export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
     time && location?.region && location?.fullAddressInfo && title;
   function onPress() {
     if (allNecessaryDataPresent) {
+      joinEvent(data);
       addPartyOnMap(data).then(() => {
         navigation.navigate("Map");
       });
