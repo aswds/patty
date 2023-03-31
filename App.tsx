@@ -58,16 +58,16 @@ export default function App() {
     return null;
   }
   return (
-    <View style={styles.container} onLayout={onLayoutRootView}>
-      <StatusBar barStyle={"light-content"} />
-      <StrictMode>
+    <SafeAreaProvider>
+      <View style={styles.container} onLayout={onLayoutRootView}>
+        <StatusBar barStyle={"light-content"} />
+        {/* <StrictMode> */}
         <BottomSheetModalProvider>
-          <SafeAreaProvider>
-            <ProvidedNavigator />
-          </SafeAreaProvider>
+          <ProvidedNavigator />
         </BottomSheetModalProvider>
-      </StrictMode>
-    </View>
+        {/* </StrictMode> */}
+      </View>
+    </SafeAreaProvider>
   );
 }
 
