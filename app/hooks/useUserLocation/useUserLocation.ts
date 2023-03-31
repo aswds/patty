@@ -46,6 +46,7 @@ export default function useUserLocation() {
     (async function fetchData() {
       try {
         getUserLocation().then((res: LocationObject) => {
+          console.log(res);
           setUserLocation({
             latitude: res.coords.latitude,
             latitudeDelta: 0,
@@ -54,7 +55,7 @@ export default function useUserLocation() {
           });
           getAddress(res.coords.latitude, res.coords.longitude).then(
             (r: IFullAddress) => {
-              setCity(r?.City);
+              setCity(r?.city);
             }
           );
         });
