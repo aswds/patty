@@ -15,22 +15,31 @@ import { styles } from "./styles";
 import { SignInScreenNavigationProps } from "../../../Types/Authorization/SignIn/ScreenNavigationProps";
 
 const SignInScreen = ({ navigation }: SignInScreenNavigationProps) => {
+  // States for email and password validation
   const [email, setEmail] = useState({ isValid: true, errorMsg: "" });
   const [password, setPassword] = useState({ isValid: true, errorMsg: "" });
+  // State for error message
   const [errorMsg, setErrorMsg] = useState<string>();
+  // States for user login and password
   const [userPassword, setUserPassword] = useState<string>("");
   const [userLogin, setUserLogin] = useState<string>("");
+  // State for show password
   const [showPassword, setShowPassword] = useState<boolean>(true);
+  // State for show modal
   const [_showModal, setShowModal] = useState<boolean>(false);
 
+  // Function to hide modal
   const _hideModal = () => {
     setShowModal(false);
   };
 
+  // Function to clear error message
   const _clearMsg = () => {
     setErrorMsg("");
   };
+  // Icon size
   const iconSize = 24;
+  // Icons for input fields
   const UserIcon = (
     <FontAwesome name="user-o" size={iconSize} color={colors.iconColor} />
   );

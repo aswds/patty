@@ -12,6 +12,7 @@ const Recovery = ({ navigation }) => {
     sendPasswordResetEmail(auth, userEmail)
       .then(() => {
         Alert.alert("We've sent you a letter to reset password");
+        navigation.navigate("SignInScreen");
       })
       .catch((e) => {
         set_errorMsg_errorType(e.code).catch((e) => {

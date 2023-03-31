@@ -1,16 +1,33 @@
-import React from "react";
-import { StyleSheet, TextInput, View } from "react-native";
+import React, { ForwardedRef, PropsWithChildren } from "react";
+import {
+  StyleSheet,
+  TextInput,
+  TextStyle,
+  View,
+  ViewStyle,
+  StyleProp,
+} from "react-native";
 import { colors } from "../../../src/colors";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
 
-export const Input = React.forwardRef(
-  ({ style, isValid, icon, children, inputStyle, ...props }, ref) => {
+interface InputProps extends PropsWithChildren {
+  style: ViewStyle;
+  isValid?: boolean;
+  icon?: JSX.Element;
+  inputStyle?: TextStyle;
+}
+
+export const Input: React.FC<InputProps> = React.forwardRef(
+  (
+    { style, isValid, icon, children, inputStyle, ...props },
+    ref: ForwardedRef<TextInput>
+  ) => {
     return (
       <View
         style={{
           ...styles.userInput,
           ...style,
-          borderWidth: isValid ? null : 1,
+          borderWidth: isValid ? 0 : 1,
           borderColor: isValid ? "black" : colors.accentColor,
         }}
       >

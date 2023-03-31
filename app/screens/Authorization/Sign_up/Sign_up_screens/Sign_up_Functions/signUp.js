@@ -29,8 +29,7 @@ export function set_errorMsg_errorType(error_code) {
       case "auth/email-already-in-use":
         rej({
           error_type: "email",
-          message:
-            "The provided email is already in use by an existing user. Each user must have a unique email.",
+          message: "The provided email is already in use by an existing user.",
         });
         break;
       case "auth/weak-password":
@@ -49,18 +48,22 @@ export function set_errorMsg_errorType(error_code) {
 async function setDocs(result, userInfo) {
   const { email, username, name, surname, image } = userInfo;
   await setDoc(doc(db, `USERS`, `${auth.currentUser.uid}`), {
-    userUID: auth.currentUser.uid,
+    uid: auth.currentUser.uid,
     email: email,
     username: username,
     searchUsername: username.toLowerCase(),
-    name: name || "",
+    name: name,
     surname: surname,
     phoneNumber: "",
     image: "",
-    following: 0,
-    followers: 0,
+    following: [],
+    followers: [],
     bio: "",
-    parties: [],
+    events: {
+      eventsCreated: 0,
+      eventsVisited: 0,
+      onEvent: [],
+    },
     partiesVisited: 0,
     partiesCreated: 0,
     createdAt: Timestamp.fromDate(new Date()).toJSON() || new Date(),
@@ -93,9 +96,12 @@ export const signUpHandle = async (
       .catch((error) => {
         set_errorMsg_errorType(error.code)
           .then((result) => {
+            // nothing
             res(result);
           })
           .catch((e) => {
+            //sets error
+            console.log(e);
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             rej(e);
           });

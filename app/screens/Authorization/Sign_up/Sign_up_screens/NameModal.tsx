@@ -11,7 +11,7 @@ import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { NameInfoNavigationProps } from "../../../../Types/Authorization/SignUp/ScreenNavigationProps";
 
 export const NameModal = ({ navigation }: NameInfoNavigationProps) => {
-  const [fullName, setFullName] = useState({ name: null, surname: null });
+  const [fullName, setFullName] = useState({ name: "", surname: "" });
   const surname_input_ref = useRef<TextInput | null>(null);
   function refHandle(ref_input: MutableRefObject<TextInput | null>) {
     ref_input?.current?.focus();
@@ -30,8 +30,9 @@ export const NameModal = ({ navigation }: NameInfoNavigationProps) => {
               placeholder="name"
               placeholderTextColor={colors.iconColor}
               onChangeText={(text) => {
-                setFullName({ ...fullName, name: text_modifier_name(text) });
+                setFullName({ ...fullName, name: text });
               }}
+              autoCapitalize={"words"}
               value={fullName.name!}
               onSubmitEditing={() => {
                 refHandle(surname_input_ref);
@@ -48,9 +49,10 @@ export const NameModal = ({ navigation }: NameInfoNavigationProps) => {
               onChangeText={(text) => {
                 setFullName({
                   ...fullName,
-                  surname: text_modifier_name(text),
+                  surname: text,
                 });
               }}
+              autoCapitalize={"words"}
               value={fullName.surname!}
               ref={surname_input_ref}
               autoCorrect={false}
