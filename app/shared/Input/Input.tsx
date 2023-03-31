@@ -38,6 +38,7 @@ const Input = React.forwardRef(
             ...inputStyle,
           }}
           autoCapitalize={"none"}
+          autoCorrect={false}
           ref={ref}
           {...props}
         />

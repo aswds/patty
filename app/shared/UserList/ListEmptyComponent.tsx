@@ -4,8 +4,15 @@ import { StyleSheet, Text, View } from "react-native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import { colors } from "../../src/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import Loader from "../Loaders/Loader";
+import ListLoader from "../Loaders/ListLoader";
 
-const ListEmptyComponent = () => {
+interface ListEmptyComponentProps {
+  title: string;
+  isLoading?: boolean;
+}
+
+const ListEmptyComponent = ({ title, isLoading }: ListEmptyComponentProps) => {
   return (
     <View style={styles.container}>
       <View style={styles.iconContainer}>
@@ -16,7 +23,7 @@ const ListEmptyComponent = () => {
         />
       </View>
       <View style={{}}>
-        <Text style={styles.textStyle}>looks like there's no one here</Text>
+        <Text style={styles.textStyle}>{title}</Text>
       </View>
     </View>
   );

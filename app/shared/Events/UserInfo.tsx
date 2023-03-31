@@ -8,11 +8,12 @@ import { useNavigation } from "@react-navigation/native";
 import { ProfileNavigationProps } from "../../Types/ProfileStack/ScreenNavigationProps";
 import { getUserByUID } from "../../services/getUserByUID";
 import { Skeleton } from "moti/skeleton";
+import { image } from "../../../assets/images";
 
 interface UserInfoProps {
   user: IEvent_User;
 }
-const UserInfo = ({ user }: UserInfoProps) => {
+const UserInfo: React.FC<UserInfoProps> = ({ user }) => {
   const navigation = useNavigation<ProfileNavigationProps>();
   const [isLoading, setIsLoading] = useState<boolean>(true);
   function onPress() {
@@ -32,14 +33,13 @@ const UserInfo = ({ user }: UserInfoProps) => {
 
   return (
     <TouchableOpacity style={styles.container} onPress={onPress}>
-      <Text style={styles.usernameText}>by {user?.username}</Text>
+      <Text style={styles.usernameText} numberOfLines={1}>
+        by {user?.username}
+      </Text>
       <View style={styles.imageContainer}>
         <Skeleton show={isLoading} radius={"round"} height={27} width={27}>
           <Image
-            source={
-              { uri: user?.image } ??
-              require("../../../assets/images/noImage-01.png")
-            }
+            source={user?.image ? { uri: user?.image } : image.noImage}
             style={styles.imageStyle}
             onLoadEnd={() => setIsLoading(false)}
           />
@@ -52,11 +52,13 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
     alignItems: "center",
+    flexShrink: 1,
   },
   usernameText: {
     fontFamily: FontFamily.regular,
     fontSize: 15,
     color: colors.iconColor,
+    flexShrink: 1,
   },
   imageContainer: {
     height: 25,

@@ -1,10 +1,17 @@
 import React, { ComponentProps } from "react";
 
-import { StyleProp, TextInput, TextStyle, View, ViewStyle } from "react-native";
+import {
+  StyleProp,
+  TextInput,
+  TextInputProps,
+  TextStyle,
+  View,
+  ViewStyle,
+} from "react-native";
 import { Feather } from "@expo/vector-icons";
 import { colors } from "../../src/colors";
 
-interface SearchBarProps extends ComponentProps<typeof TextInput> {
+interface SearchBarProps extends TextInputProps {
   containerStyle: ViewStyle;
   inputStyle: StyleProp<TextStyle>;
 }

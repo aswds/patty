@@ -25,8 +25,12 @@ const UserItem = ({ _user }: UserItemProps) => {
   const [show, setShow] = useState<boolean>(true);
   const [user, setUser] = useState<IUser>(_user);
   const { uid } = useTypedSelector((state) => state.user_state.current_user);
+
   const updateUser = (newUser: Pick<IUser, "following" | "followers">) => {
-    setUser({ ...user, ...newUser });
+    setUser({
+      ...user,
+      ...newUser,
+    });
   };
   useFocusEffect(
     useCallback(() => {
@@ -91,7 +95,7 @@ const styles = StyleSheet.create({
   container: {
     marginVertical: 10,
     borderRadius: 25,
-    width: "90%",
+    width: "100%",
     alignSelf: "center",
   },
   innerContainer: {

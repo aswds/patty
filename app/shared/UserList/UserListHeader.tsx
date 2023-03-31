@@ -9,43 +9,39 @@ import SearchBar from "./SearchBar";
 import { BackButton } from "../Buttons/BackButton";
 import { useNavigation } from "@react-navigation/native";
 import { MapNavigationProps } from "../../Types/MapStack/ScreenNavigationProps";
+import { Title } from "../Title/Title";
 
 const UserListHeader = () => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<MapNavigationProps>();
   return (
-    <LinearGradient
-      style={{
-        paddingTop: isAndroid ? 10 : 0,
-        paddingBottom: 10,
-      }}
-      colors={["transparent"]}
-    >
-      <View style={[styles.container, { paddingTop: insets.top }]}>
-        <BackButton
-          navigation={navigation}
-          style={styles.backButtonStyle}
-          iconColor={colors.accentColor}
-        />
-        <SearchBar
-          containerStyle={styles.inputContainer}
-          inputStyle={styles.inputStyle}
-          placeholder={"Search"}
-          placeholderTextColor={colors.iconColor}
-        />
+    <View style={[styles.container, { paddingTop: insets.top }]}>
+      <Title
+        title="Guests"
+        navigation={navigation}
+        containerStyle={{
+          alignContent: "flex-start",
+          justifyContent: "flex-start",
+        }}
+      />
 
-        {/*<TouchableOpacity style={styles.editGroupStyle}>*/}
-        {/*  <Feather name="edit" size={30} color={colors.accentColor} />*/}
-        {/*</TouchableOpacity>*/}
-      </View>
-    </LinearGradient>
+      <SearchBar
+        containerStyle={styles.inputContainer}
+        inputStyle={styles.inputStyle}
+        placeholder={"Search"}
+        placeholderTextColor={colors.iconColor}
+      />
+
+      {/*<TouchableOpacity style={styles.editGroupStyle}>*/}
+      {/*  <Feather name="edit" size={30} color={colors.accentColor} />*/}
+      {/*</TouchableOpacity>*/}
+    </View>
   );
 };
 const styles = StyleSheet.create({
   container: {
     alignSelf: "center",
     alignItems: "center",
-    flexDirection: "row",
     width: "90%",
     justifyContent: "center",
   },
