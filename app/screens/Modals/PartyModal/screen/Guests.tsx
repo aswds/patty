@@ -1,15 +1,18 @@
-import React, { useCallback, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import UserList from "../../../../shared/UserList/UserList";
-import { useFocusEffect, useRoute } from "@react-navigation/native";
-import { GuestsScreenRouteProps } from "../../../../Types/MapStack/RouteTypes";
+import { useFocusEffect } from "@react-navigation/native";
 import { IUser } from "../../../../Types/User";
 import Screen from "../components/Screen";
 import { fetchGuests } from "../fetchGuests";
+import { GuestsScreenNavigationProps } from "../../../../Types/MapStack/ScreenNavigationProps";
+import UserItem from "../../../../shared/UserList/UserItem";
 
-export default function Guests() {
-  const route = useRoute<GuestsScreenRouteProps>();
+export default function Guests({
+  route,
+  navigation,
+}: GuestsScreenNavigationProps) {
   const [guestsUIDs, _] = useState<string[]>(route.params?.guests);
-  const [guests, setGuests] = useState<IUser[]>();
+  const [guests, setGuests] = useState<IUser[]>([]);
   useFocusEffect(
     useCallback(() => {
       if (guestsUIDs.length > 0) {
@@ -19,10 +22,13 @@ export default function Guests() {
       }
     }, [])
   );
-
   return (
     <Screen>
-      <UserList data={guests} />
+      <UserList
+        data={guests}
+        renderItem={({ item, index }) => <UserItem _user={item} key={index} />}
+        keyExtractor={(item, index) => item.uid!}
+      />
     </Screen>
   );
 }

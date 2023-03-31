@@ -3,6 +3,8 @@ import React from "react";
 import { colors } from "../../../../src/colors";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { IEvent } from "../../../../Types/Events";
+import { isAndroid } from "../../../../src/platform";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface JoinEventButtonProps {
   data: IEvent;
@@ -13,12 +15,7 @@ interface JoinEventButtonProps {
 function EventButtonText({ title }: { title: string }) {
   return <Text style={[styles.textTitleStyle, { fontSize: 18 }]}>{title}</Text>;
 }
-function EventButton({
-  data,
-  onPress,
-  isJoinedEvent,
-  isCreator,
-}: JoinEventButtonProps) {
+function EventButton({ data, onPress, isJoinedEvent }: JoinEventButtonProps) {
   return (
     <TouchableOpacity style={styles.buttonBg} onPress={() => onPress(data)}>
       {isJoinedEvent ? (
@@ -38,8 +35,9 @@ export function JoinEventButton({
   isJoinedEvent,
   isCreator,
 }: JoinEventButtonProps): JSX.Element {
+  const insets = useSafeAreaInsets();
   return (
-    <View style={{ width: "100%", height: 50, marginBottom: 20 }}>
+    <View style={{ width: "100%", height: 50 + insets.bottom }}>
       <EventButton
         data={data}
         onPress={onPress}
@@ -54,7 +52,7 @@ const styles = StyleSheet.create({
   buttonBg: {
     backgroundColor: colors.accentColor,
     height: 50,
-    marginBottom: "5%",
+    marginBottom: isAndroid ? "5%" : 0,
     width: "100%",
     borderRadius: 999999,
     justifyContent: "center",

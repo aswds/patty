@@ -1,13 +1,21 @@
 import React, { PropsWithChildren, useMemo } from "react";
-import { StyleSheet } from "react-native";
+import {
+  Dimensions,
+  SafeAreaView,
+  ScrollView,
+  StyleSheet,
+  StatusBar,
+  View,
+} from "react-native";
 import BottomSheet, {
   BottomSheetScrollView,
+  BottomSheetView,
   useBottomSheetDynamicSnapPoints,
 } from "@gorhom/bottom-sheet";
 import { ModalProps } from "./Types/Modals";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../src/colors";
-
+import { useSharedValue } from "react-native-reanimated";
 interface BottomSheetModalProps extends PropsWithChildren, ModalProps {}
 
 const BottomSheetModal: React.FC<BottomSheetModalProps> = ({
@@ -25,13 +33,11 @@ const BottomSheetModal: React.FC<BottomSheetModalProps> = ({
     animatedContentHeight,
     handleContentLayout,
   } = useBottomSheetDynamicSnapPoints(snapPoints);
-
   return (
     <BottomSheet
       style={styles.container}
       snapPoints={animatedSnapPoints}
       handleHeight={animatedHandleHeight}
-      contentHeight={animatedContentHeight}
       index={-1}
       enablePanDownToClose
       onClose={onClose}
@@ -40,19 +46,20 @@ const BottomSheetModal: React.FC<BottomSheetModalProps> = ({
       handleIndicatorStyle={{
         backgroundColor: "gray",
       }}
-      containerStyle={{
-        overflow: "hidden",
-      }}
+      topInset={insets.top}
+      animateOnMount
     >
       <BottomSheetScrollView
-        style={{ flex: 1 }}
-        contentContainerStyle={[
-          styles.contentContainer,
-          { paddingBottom: insets.bottom },
-        ]}
-        onLayout={handleContentLayout}
+        contentContainerStyle={[styles.contentContainer]}
+        style={{
+          ...styles.container,
+        }}
+        showsHorizontalScrollIndicator={false}
+        showsVerticalScrollIndicator={false}
       >
-        {children}
+        <BottomSheetView onLayout={handleContentLayout}>
+          {children}
+        </BottomSheetView>
       </BottomSheetScrollView>
     </BottomSheet>
   );
@@ -61,14 +68,14 @@ const BottomSheetModal: React.FC<BottomSheetModalProps> = ({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "transparent",
   },
   backgroundStyle: {
     backgroundColor: colors.modalBackground,
     borderTopRightRadius: 25,
     borderTopLeftRadius: 25,
-    overflow: "hidden",
     justifyContent: "flex-end",
+    flex: 1,
+    paddingBottom: 25,
   },
   contentContainer: {
     paddingHorizontal: 20,

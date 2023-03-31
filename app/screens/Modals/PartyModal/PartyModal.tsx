@@ -1,6 +1,12 @@
-import React, { MutableRefObject, useEffect, useState } from "react";
+import React, {
+  ForwardedRef,
+  MutableRefObject,
+  RefObject,
+  useEffect,
+  useState,
+} from "react";
 
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import TagItem from "../../../shared/Tag/TagItem";
 import { ActionButtons } from "./components/ActionButtons";
 import { Event } from "../../../shared/Title/Event";
@@ -16,6 +22,7 @@ import {
   leaveEvent,
 } from "../../Map/Firebase/fetchUserJoinedEvents";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { removeItemOnce } from "../../../helpers/removeItemOnce";
 
 function Description({ markerInfo }: { markerInfo: IEvent }) {
   return (
@@ -36,34 +43,29 @@ function TagList({ markerInfo }: { markerInfo: IEvent }) {
 
 type PartyMarkerModalProps = ModalProps & {
   markerInfo: IEvent;
-  modalRef: MutableRefObject<BottomSheet>;
+  modalRef: RefObject<BottomSheet>;
   updateMarkerInfo: (newData: Pick<IEvent, "guests">) => void;
 };
 
-const PartyMarkerInfo = ({
+const PartyModal: React.FC<PartyMarkerModalProps> = ({
   markerInfo,
   onClose,
   modalRef,
   updateMarkerInfo,
-}: PartyMarkerModalProps) => {
+}) => {
   const { uid } = useTypedSelector((state) => state.user_state.current_user);
   const [isJoinedEvent, setIsJoinedEvent] = useState<boolean>(
     markerInfo?.guests.includes(uid!)
   );
-  const [isCreator, setIsCreator] = useState<boolean>(
-    markerInfo?.user?.uid == uid
-  );
+  const [isCreator, _] = useState<boolean>(markerInfo?.user?.uid == uid);
   useEffect(() => {
     setIsJoinedEvent(markerInfo?.guests.includes(uid!));
   }, [onClose]);
 
   function onPress(data: IEvent) {
     if (isJoinedEvent) {
-      const guestsArrayCopy = [...markerInfo.guests];
-      const indexToDelete = markerInfo.guests.indexOf(uid!);
       updateMarkerInfo({
-        ...markerInfo,
-        guests: [...guestsArrayCopy.splice(indexToDelete, 0)],
+        guests: removeItemOnce([...markerInfo.guests], uid!),
       });
       leaveEvent(data).then(() => onClose!());
     } else {
@@ -71,12 +73,22 @@ const PartyMarkerInfo = ({
       joinEvent(data).then((r) => onClose!());
     }
   }
+
+  function closeModal() {
+    modalRef.current?.close;
+  }
+
   return (
     <BottomSheetModal modalRef={modalRef} onClose={onClose}>
       <Event markerInfo={markerInfo} />
       <Description markerInfo={markerInfo} />
       <TagList markerInfo={markerInfo} />
-      <ActionButtons userUID={markerInfo?.user.uid!} />
+      <ActionButtons
+        userUID={markerInfo?.user.uid!}
+        partyID={markerInfo?.partyID}
+        city={markerInfo?.location?.fullAddressInfo?.city}
+        closeModal={closeModal}
+      />
       <JoinEventButton
         data={markerInfo}
         onPress={onPress}
@@ -96,6 +108,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     flexWrap: "wrap",
     width: "100%",
+    margin: -5,
   },
   descriptionTextStyle: {
     fontFamily: FontFamily.medium,
@@ -108,4 +121,4 @@ const styles = StyleSheet.create({
     width: "100%",
   },
 });
-export default PartyMarkerInfo;
+export default PartyModal;

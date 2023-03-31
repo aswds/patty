@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 
 import { useSafeAreaInsets } from "react-native-safe-area-context";
@@ -7,50 +7,67 @@ import { Region } from "react-native-maps";
 import { ModalProps } from "../Types/Modals";
 import { colors } from "../../../src/colors";
 import { IEvent } from "../../../Types/Events";
-import RenderItem from "./RenderItem";
 import { fetch_joined_events } from "../../../redux/actions/Events";
-
+import RenderItem from "../../Map/JoinedEvents/RenderItem";
+import SearchBar from "../../../shared/Searcher/SearchBar";
+import { Feather } from "@expo/vector-icons";
 interface JoinedEventsModal extends ModalProps {
-  City: string;
+  city: string;
   animateToRegion: (region: Region) => void;
   title: JSX.Element;
 }
 
-const JoinedEventsModal: React.FC<JoinedEventsModal> = ({
+const SearchEventsModal: React.FC<JoinedEventsModal> = ({
   modalRef,
   onClose,
   animateToRegion,
   title,
-  City,
+  city,
 }) => {
   //states
   const [joinedEvents, setJoinedEvents] = useState<IEvent[]>();
 
   //useEffects
-
-  useEffect(() => {
-    fetch_joined_events(City).then(setJoinedEvents);
-  }, [onClose]);
+  useEffect(() => {}, [onClose]);
 
   // variables
   const snapPoints = useMemo(() => ["30%", "60%"], []);
   const insets = useSafeAreaInsets();
-  function onPress(region: Region) {
-    animateToRegion(region);
-  }
   function renderItem({ item, index }: { item: IEvent; index: number }) {
     return (
       <RenderItem
         item={item}
         onPress={() => {
-          onPress(item.location?.region!);
+          animateToRegion(item.location?.region!);
         }}
         key={index}
       />
     );
   }
   // render
-
+  function ListHeaderComponent() {
+    return (
+      <View style={{ marginVertical: "2%" }}>
+        <SearchBar
+          icon={
+            <Feather
+              name="search"
+              size={24}
+              color={colors.accentColor}
+              style={{ paddingRight: 5 }}
+            />
+          }
+          containerStyle={styles.searchBarContainerStyle}
+          style={{
+            flex: 1,
+            color: colors.text,
+          }}
+          placeholder={"Search parties by tag or title"}
+        />
+        {title}
+      </View>
+    );
+  }
   return (
     <BottomSheet
       style={styles.container}
@@ -73,7 +90,7 @@ const JoinedEventsModal: React.FC<JoinedEventsModal> = ({
           styles.contentContainer,
           { paddingBottom: insets.bottom },
         ]}
-        ListHeaderComponent={title}
+        ListHeaderComponent={ListHeaderComponent}
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
         keyExtractor={(event) => event.partyID!}
@@ -89,6 +106,7 @@ const styles = StyleSheet.create({
     flex: 1,
     backgroundColor: "transparent",
   },
+  searchBarContainerStyle: { width: "100%", justifyContent: "center" },
   backgroundStyle: {
     backgroundColor: colors.modalBackground,
     borderTopRightRadius: 25,
@@ -101,4 +119,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default JoinedEventsModal;
+export default SearchEventsModal;

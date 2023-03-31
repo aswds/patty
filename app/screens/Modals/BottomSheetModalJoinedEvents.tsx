@@ -5,9 +5,8 @@ import { ModalProps } from "./Types/Modals";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../src/colors";
 import { IEvent } from "../../Types/Events";
-import RenderItem from "./JoinedEventsModal/RenderItem";
 import { Region } from "react-native-maps";
-
+import RenderItem from "../Map/JoinedEvents/RenderItem";
 interface BottomSheetModalProps extends ModalProps {
   joinedEvents: IEvent[];
   animateToRegion: (region: Region) => void;
