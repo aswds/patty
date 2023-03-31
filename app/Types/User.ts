@@ -1,3 +1,4 @@
+import { Region } from "react-native-maps";
 import { ITime } from "./Events";
 
 export interface IUserEvents {
@@ -6,10 +7,15 @@ export interface IUserEvents {
   eventsVisited: number;
 }
 
+export interface UserLocation {
+  city?: string;
+  location?: Region;
+}
+
 export interface IUser {
   username?: string;
+  userLocation?: UserLocation;
   bio?: string;
-
   email?: string;
   following: string[];
   followers: string[];

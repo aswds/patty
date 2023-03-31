@@ -5,3 +5,8 @@ export type GuestsScreenRouteProps = RouteProp<
   MapStackNavigatorParamList,
   "Guests"
 >;
+
+export type JoinedEventsRouteProps = RouteProp<
+  MapStackNavigatorParamList,
+  "JoinedEvents"
+>;

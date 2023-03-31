@@ -1,3 +1,5 @@
+import { IUser } from "./../User";
+import { IEvent } from "./../Events";
 import { ICoordinates, IFullAddress } from "../Events";
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { IAddress } from "../../screens/Map/PartyCreationScreens/ChooseLocation/types";
@@ -10,10 +12,15 @@ export type MapStackNavigatorParamList = {
   Map: undefined;
   PartyCreationStack: NavigatorScreenParams<PartyCreationNavigatorParamList>;
   Guests: GuestsNavigatorParamList;
+  JoinedEvents: JoinedEventsParamList;
 };
 
 type GuestsNavigatorParamList = {
   guests: string[];
+  guest: IUser;
+};
+type JoinedEventsParamList = {
+  city: IFullAddress["city"];
 };
 
 export type PartyCreationNavigatorParamList = {

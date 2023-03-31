@@ -7,14 +7,14 @@ export interface ICoordinates {
   longitudeDelta: number;
 }
 export interface IFullAddress {
-  AdditionalData: { [key: string]: string };
-  City?: string;
+  additionalData: { [key: string]: string };
+  city?: string;
   countryName: string;
-  County: string;
-  District: string;
-  Label: string;
-  Street: string;
-  HouseNumber?: number;
+  county: string;
+  district: string;
+  label: string;
+  street: string;
+  houseNumber?: number;
 }
 
 export interface ILocation {
