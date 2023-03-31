@@ -1,31 +1,41 @@
-import {FontAwesome5} from "@expo/vector-icons";
-import {StyleSheet, TouchableOpacity, ViewStyle} from "react-native";
-import {colors} from "../../src/colors";
-import {isAndroid} from "../../src/platform";
-import React, {FC} from "react";
-import {NavigationProp} from "@react-navigation/native";
+import { FontAwesome, FontAwesome5 } from "@expo/vector-icons";
+import {
+  StyleProp,
+  StyleSheet,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native";
+import { colors } from "../../src/colors";
+import { isAndroid } from "../../src/platform";
+import React, { FC } from "react";
+import { NavigationProp } from "@react-navigation/native";
 
 interface BackButtonProps {
   navigation: NavigationProp<any, any>;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   iconColor?: string;
+  iconName?: keyof typeof FontAwesome.glyphMap;
+  onPress?: () => void;
 }
 
 export const BackButton: FC<BackButtonProps> = ({
   navigation,
   style,
   iconColor,
+  iconName,
+  onPress,
 }) => {
+  function goBack() {
+    navigation.goBack();
+  }
   return (
     <TouchableOpacity
       style={[styles.arrowContainer, style]}
-      onPress={() => {
-        navigation.goBack();
-      }}
+      onPress={onPress ?? goBack}
     >
-      <FontAwesome5
-        name="arrow-left"
-        size={isAndroid ? 25 : 30}
+      <FontAwesome
+        name={iconName ? iconName : "arrow-left"}
+        size={25}
         color={iconColor ?? colors.buttonTextColor}
       />
     </TouchableOpacity>

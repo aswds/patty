@@ -1,5 +1,6 @@
 import React from "react";
 import {
+  StyleProp,
   StyleSheet,
   Text,
   TextStyle,
@@ -10,7 +11,7 @@ import { colors } from "../../src/colors";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 
 interface ButtonProps {
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   onPress: () => void;
   text: string;
   textStyled?: TextStyle;

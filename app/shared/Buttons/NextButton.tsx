@@ -2,6 +2,7 @@ import { FontAwesome5 } from "@expo/vector-icons";
 import React from "react";
 import {
   Alert,
+  StyleProp,
   StyleSheet,
   Text,
   TouchableOpacity,
@@ -11,7 +12,7 @@ import { colors } from "../../src/colors";
 
 interface NextButtonProps {
   onPress: () => void;
-  style?: ViewStyle;
+  style?: StyleProp<ViewStyle>;
   isValueEntered?: boolean;
   error?: string | null;
 }
