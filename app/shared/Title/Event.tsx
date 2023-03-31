@@ -22,7 +22,11 @@ interface ITopInfo {
   onFavoritePress?: () => void;
 }
 function Title({ title }: { title: string }) {
-  return <Text style={styles.textTitleStyle}>{title}</Text>;
+  return (
+    <Text style={styles.textTitleStyle} numberOfLines={1}>
+      {title}
+    </Text>
+  );
 }
 
 function PartyDate({ date }: { date: Date }) {
@@ -34,7 +38,7 @@ function PartyDate({ date }: { date: Date }) {
 const Address = ({ address }: { address: IFullAddress | null | undefined }) => {
   return (
     <Text style={styles.addressTextStyle}>
-      {address?.Street}, {address?.HouseNumber}
+      {address?.street} {"," && address?.houseNumber}
     </Text>
   );
 };
@@ -57,19 +61,12 @@ function NumberOfGuests({ guests }: { guests: string[] }) {
     </TouchableOpacity>
   );
 }
-// if hideModal present
-export const Event: React.FC<ITopInfo> = ({
-  markerInfo,
-  isJoinedEvent,
-  style,
-}) => {
+export const Event: React.FC<ITopInfo> = ({ markerInfo, style }) => {
   return (
     <View style={[styles.topInfoContainer, style]}>
       <View style={styles.partyInfoContainer}>
         <View style={styles.titleContainer}>
-          <View style={{ maxWidth: "50%" }}>
-            <Title title={markerInfo?.title} />
-          </View>
+          <Title title={markerInfo?.title} />
 
           <UserInfo user={markerInfo?.user} />
         </View>
@@ -126,6 +123,8 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.bold,
     fontSize: 22,
     color: colors.text,
+    maxWidth: "70%",
+    marginRight: 10,
   },
   numberOfGuestsContainer: {
     flexDirection: "row",
