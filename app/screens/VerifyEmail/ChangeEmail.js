@@ -64,9 +64,14 @@ export default function ChangeEmail({
     updateEmail(auth.currentUser, email)
       .then(() => {
         Alert.alert("You'll have to login with changed email");
-        // navigation.navigate("VerifyEmail", { changedEmail: email });
+        navigation.navigate("VerifyEmail", { changedEmail: email });
       })
       .catch((e) => {
+        if (e.code === "auth/requires-recent-login") {
+          Alert.alert("You'll have to login with changed email.", "", [
+            { text: "Ok" },
+          ]);
+        }
         set_errorMsg_errorType(e.code).catch((e) => {
           error_handle("email", e.message, { valid, setValid }).catch((e) => {
             setError({ message: e, showErrorModal: true });
@@ -83,40 +88,42 @@ export default function ChangeEmail({
         <BackButton navigation={navigation} style={{ marginTop: insets.top }} />
         <View style={styles.container}>
           <ResetText isPasswordReset={isPasswordReset} />
-          <View style={styles.inputsContainer}>
-            <Input
-              isValid={valid.validEmail}
-              icon={
-                <MaterialIcons
-                  name="alternate-email"
-                  size={Dimensions.get("window").height >= 800 ? 24 : 20}
-                  color={colors.iconColor}
-                />
+          <Input
+            isValid={valid.validEmail}
+            icon={
+              <MaterialIcons
+                name="alternate-email"
+                size={Dimensions.get("window").height >= 800 ? 24 : 20}
+                color={colors.iconColor}
+              />
+            }
+            autoCapitalize="none"
+            keyboardType="email-address"
+            style={{ ...styles.inputField, alignSelf: "center" }}
+            placeholderTextColor={"grey"}
+            placeholder="Email"
+            onChangeText={(text) => {
+              setUserEmail(text), setValid({ ...valid, validEmail: true });
+            }}
+            // defaultValue={user.email}
+          />
+          {/* kemibrtoik@gmail.com */}
+          <Button
+            style={{
+              ...styles.shadowButton,
+            }}
+            onPress={() => {
+              if (userEmail) {
+                isPasswordReset
+                  ? passRecoveryFunction(userEmail)
+                  : changeEmail(userEmail);
               }
-              autoCapitalize="none"
-              keyboardType="email-address"
-              style={{ ...styles.inputField }}
-              placeholderTextColor={"grey"}
-              placeholder="Email"
-              onChangeText={(text) => setUserEmail(text)}
-              // defaultValue={user.email}
-            />
-            <Button
-              style={{
-                ...styles.shadowButton,
-              }}
-              onPress={() => {
-                if (userEmail) {
-                  isPasswordReset
-                    ? passRecoveryFunction(userEmail)
-                    : changeEmail(userEmail);
-                }
-              }}
-              textStyle={styles.textStyle}
-              title={"Submit"}
-            />
-          </View>
+            }}
+            textStyle={styles.textStyle}
+            title={"Submit"}
+          />
         </View>
+
         <AfterReset />
       </Screen>
       <CustomAlert

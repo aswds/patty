@@ -6,6 +6,7 @@ import Button from "../../shared/Buttons/Button";
 import { IUser } from "../../Types/User";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { unfollowUser } from "../Map/Firebase/unfollowUser";
+import { removeItemOnce } from "../../helpers/removeItemOnce";
 
 interface Follow_UnfollowButtonsProps {
   user: IUser;
@@ -26,17 +27,16 @@ const Follow_UnfollowButtons = ({
 
   function follow_Unfollow_function() {
     if (isFollowing) {
-      const indexToUnfollow = user?.followers?.indexOf(auth.currentUser?.uid!);
+      //unfollow user
       unfollowUser(auth.currentUser?.uid!, user.uid!).then(() => {
-        if (indexToUnfollow != -1) {
-          updateUser({
-            ...user,
-            followers: [...user?.followers.splice(indexToUnfollow, 0)],
-          });
-          setIsFollowing(false);
-        }
+        updateUser({
+          ...user,
+          followers: removeItemOnce(user.followers, auth.currentUser?.uid!),
+        });
+        setIsFollowing(false);
       });
     } else {
+      //follow user
       followUser(auth.currentUser?.uid!, user.uid!).then(() => {
         updateUser({
           ...user,

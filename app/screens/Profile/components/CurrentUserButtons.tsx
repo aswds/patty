@@ -1,6 +1,6 @@
 import React from "react";
 
-import { Alert } from "react-native";
+import { Alert, Text } from "react-native";
 import Button from "../../../shared/Buttons/Button";
 import { auth } from "../../../../firebase";
 import { useNavigation } from "@react-navigation/native";
