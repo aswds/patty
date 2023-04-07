@@ -108,12 +108,12 @@ const SignUpScreen = ({ navigation }: SignUpNavigationProps) => {
 
   return (
     <Screen>
-      <View>
-        <Logo />
-      </View>
       <BackButton navigation={navigation} />
 
-      <Container>
+      <View style={{ marginBottom: "10%" }}>
+        <Logo />
+      </View>
+      <View>
         <Input
           style={styles.inputStyle}
           icon={
@@ -190,27 +190,29 @@ const SignUpScreen = ({ navigation }: SignUpNavigationProps) => {
           ref={ref_input4}
           inputStyle={styles.inputField}
         />
-      </Container>
-      <Button
-        textStyle={{
-          fontFamily: "Nunito-Bold",
-          fontSize: 20,
-          color: "#E7E0C9",
-        }}
-        style={styles.styledButton}
-        onPress={signUp_handle}
-        title={"Sign up"}
-      />
+      </View>
+      <View style={{ width: "100%", alignItems: "center" }}>
+        <Button
+          textStyle={{
+            fontFamily: "Nunito-Bold",
+            fontSize: 20,
+            color: colors.buttonText,
+          }}
+          style={styles.styledButton}
+          onPress={signUp_handle}
+          title={"Sign up"}
+        />
 
-      {/* Fix */}
-      <TermText />
-      {/* Fix */}
-      <CustomAlert
-        errorMsg={errorMsg}
-        hideModal={_hideModal}
-        showModal={showModal}
-        setErrorMsg={setErrorMsg}
-      />
+        {/* Fix */}
+        <TermText />
+        {/* Fix */}
+        <CustomAlert
+          errorMsg={errorMsg}
+          hideModal={_hideModal}
+          showModal={showModal}
+          setErrorMsg={setErrorMsg}
+        />
+      </View>
     </Screen>
   );
 };
@@ -222,16 +224,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   inputStyle: {
-    width: "100%",
-    height: isAndroid ? Dimensions.get("window").height * 0.1 : "20%",
+    width: "80%",
+    height: 60,
+    color: colors.text,
   },
   errorMsg: {
     color: "red",
   },
   registerContainer: {
     marginTop: "5%",
-    height: Dimensions.get("window").height / 2.2,
-    width: Dimensions.get("window").width / 1.3,
     justifyContent: "center",
   },
 
@@ -246,7 +247,7 @@ const styles = StyleSheet.create({
   },
 
   inputField: {
-    color: "white",
+    color: colors.text,
     width: "100%",
     height: "100%",
     justifyContent: "center",
@@ -272,9 +273,12 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   styledButton: {
+    marginTop: "20%",
     marginBottom: 20,
-    borderRadius: 13,
-    backgroundColor: "rgba(155 , 50, 50 , 1)",
+    borderRadius: 20,
+    borderWidth: 1,
+
+    backgroundColor: colors.accentColor,
     height: isAndroid ? "10%" : 70,
     width: "80%",
     alignSelf: "center",

@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
   title: {
     fontFamily: FontFamily.bold,
     fontSize: 35,
-    color: colors.buttonTextColor,
+    color: colors.text,
   },
   textInput: {
     borderBottomColor: colors.iconColor,

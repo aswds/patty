@@ -74,7 +74,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: 15,
     paddingVertical: 15,
     justifyContent: "center",
-    color: "white",
+    color: colors.text,
     fontFamily: FontFamily.regular,
   },
   linearGradientStyle: {

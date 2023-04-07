@@ -54,9 +54,9 @@ export const AvatarChoose = ({ navigation, route }: AvatarNavigationProps) => {
 };
 const styles = StyleSheet.create({
   title: {
-    fontFamily: FontFamily.bold,
+    fontFamily: FontFamily.extra_bold,
     fontSize: 20,
-    color: colors.buttonTextColor,
+    color: colors.text,
   },
   textStyle: {
     fontFamily: FontFamily.regular,

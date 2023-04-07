@@ -12,12 +12,12 @@ export const Container = (props) => {
 const styles = StyleSheet.create({
   registerContainer: {
     marginBottom: isAndroid ? 0 : "5%",
-    height: isAndroid ? null : Dimensions.get("window").height / 2.2,
+    flex: 1,
     width: "80%",
     justifyContent: "center",
   },
   innerStyle: {
+    backgroundColor: "yellow",
     alignItems: "center",
-    marginVertical: isAndroid ? "5%" : 0,
   },
 });

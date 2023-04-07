@@ -32,7 +32,7 @@ export default function Buttons(props) {
           navigation.navigate("SignInNav", { screen: "SignInScreen" });
         }}
       >
-        <Text style={styles.textStyle}>Log in</Text>
+        <Text style={[styles.textStyle, { color: colors.text }]}>Log in</Text>
       </TouchableOpacity>
     </View>
   );
@@ -57,10 +57,12 @@ const styles = StyleSheet.create({
     height: 45,
     marginTop: "10%",
     width: "50%",
-    backgroundColor: "#363636",
+    backgroundColor: colors.initialScreenButton,
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
+    borderWidth: 0.5,
+    borderColor: "#C2C2C2",
   },
   textStyle: {
     color: colors.buttonTextColor,

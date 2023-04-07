@@ -15,6 +15,7 @@ export default function ACImage(props) {
         justifyContent: "center",
         alignItems: "center",
         overflow: "hidden",
+        borderWidth: 1,
       }}
       onPress={_showModalHandle}
     >

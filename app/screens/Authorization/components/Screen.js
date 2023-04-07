@@ -15,26 +15,21 @@ export const Screen = (props) => {
   return (
     <View style={styles.container}>
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View
-          style={{
-            flex: 1,
-          }}
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={styles.viewStyle}
         >
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={styles.viewStyle}
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{
+              flex: 1,
+              paddingTop: insets.top,
+            }}
+            contentContainerStyle={styles.scrollViewContainer}
           >
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              style={{
-                paddingTop: insets.top,
-              }}
-              contentContainerStyle={styles.scrollViewContainer}
-            >
-              {props.children}
-            </ScrollView>
-          </KeyboardAvoidingView>
-        </View>
+            {props.children}
+          </ScrollView>
+        </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
     </View>
   );

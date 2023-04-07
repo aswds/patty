@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import { Logo } from "../components/Logo";
 import Buttons from "./components/Buttons";
+import { colors } from "../../../src/colors";
 
 export default function InitialScreen({ navigation }) {
   return (
@@ -18,7 +19,7 @@ export default function InitialScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#202020",
+    backgroundColor: colors.background,
     justifyContent: "space-around",
   },
   subContainer: {
