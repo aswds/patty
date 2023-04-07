@@ -15,7 +15,7 @@ export const fetch_user = createAsyncThunk(
           // eventEmitter.emit("user_change");
         } else {
           Alert.alert(
-            "User not found",
+            "User not found.",
             "We can't find user with that credentials."
           );
           await auth.signOut();
