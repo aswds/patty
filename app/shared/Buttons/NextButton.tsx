@@ -60,7 +60,7 @@ export default function NextButton({
 const styles = StyleSheet.create({
   nextButtonContainer: {
     width: "35%",
-    position: "absolute",
+    marginTop: "10%",
     bottom: 10,
     right: 0,
     alignSelf: "flex-end",

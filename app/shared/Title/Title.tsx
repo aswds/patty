@@ -67,7 +67,7 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   textStyle: {
-    color: colors.iconColor,
+    color: colors.text,
     fontSize: 26,
     fontFamily: FontFamily.bold,
   },

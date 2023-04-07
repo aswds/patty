@@ -33,10 +33,8 @@ const Input = React.forwardRef(
       >
         <TextInput
           keyboardAppearance={"dark"}
-          style={{
-            ...styles.textInput,
-            ...inputStyle,
-          }}
+          style={[styles.textInput, inputStyle]}
+          placeholderTextColor={"grey"}
           autoCapitalize={"none"}
           autoCorrect={false}
           ref={ref}
