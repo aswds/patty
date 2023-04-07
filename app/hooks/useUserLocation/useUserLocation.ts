@@ -1,3 +1,4 @@
+import { UserLocation } from "./../../Types/User";
 import { useEffect, useState } from "react";
 import { getUserLocation } from "../../shared/GetLocationFunctions/getUserLocation";
 import { onSnapshot } from "firebase/firestore";
@@ -6,6 +7,9 @@ import { ICoordinates, IEvent, IFullAddress } from "../../Types/Events";
 import { LocationObject } from "expo-location";
 import { Alert } from "react-native";
 import { eventReference } from "../../Firebase/References";
+import { useActions } from "../useActions";
+import { useAppDispatch } from "../useAppDispatch";
+import { updateUserLocation } from "../../redux/reducers/User";
 
 /**
  * Get all parties in user's city
@@ -42,11 +46,11 @@ export default function useUserLocation() {
   const [userLocation, setUserLocation] = useState<ICoordinates>();
   const [errorMsg, setErrorMsg] = useState<string>();
   const [city, setCity] = useState<string>();
+  const dispatch = useAppDispatch();
   useEffect(() => {
     (async function fetchData() {
       try {
         getUserLocation().then((res: LocationObject) => {
-          console.log(res);
           setUserLocation({
             latitude: res.coords.latitude,
             latitudeDelta: 0,
@@ -58,6 +62,7 @@ export default function useUserLocation() {
               setCity(r?.city);
             }
           );
+          dispatch(updateUserLocation({ city: city, location: userLocation }));
         });
       } catch (e: any) {
         setErrorMsg(e);
