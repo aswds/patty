@@ -31,7 +31,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-between",
-    marginBottom: "5%",
   },
 });
 export default NavigationBar;

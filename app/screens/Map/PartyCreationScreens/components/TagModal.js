@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import {
   Alert,
   Keyboard,
+  KeyboardAvoidingView,
   Modal,
   StyleSheet,
   Text,
@@ -39,7 +40,12 @@ export default function TagModal({ setTags, isVisible, hideModal }) {
       setTags(addTag);
       hideModal();
     } else {
-      Alert.alert(`Tag can't be longer than 20 characters or less than 1`);
+      if (!tagTitle.length > 0) {
+        Alert.alert(`Tag can't be smaller than 1.😶‍🌫️`);
+      }
+      if (tagTitle.length > 0 && tagTitle.length <= 20) {
+        Alert.alert(`Tag can't be longer than 20 characters.😶‍🌫️`);
+      }
     }
     setTagTitle("");
   }
@@ -62,27 +68,29 @@ export default function TagModal({ setTags, isVisible, hideModal }) {
     <Modal transparent visible={isVisible} animationType="fade">
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
-          <View style={styles.modalView}>
-            <Input
-              style={{
-                width: "60%",
-                alignSelf: "center",
-                borderRadius: 20,
-              }}
-              onChangeText={onChangeText}
-              icon={
-                <AntDesign name="tago" size={25} color={colors.iconColor} />
-              }
-              isValid={true}
-              placeholder="Tag title"
-              defaultValue={tagTitle}
-              inputStyle={{ width: "80%" }}
-            />
-            <View style={styles.buttonsContainer}>
-              <CloseButton />
-              <AddButton />
+          <KeyboardAvoidingView behavior="padding">
+            <View style={styles.modalView}>
+              <Input
+                style={{
+                  width: "70%",
+                  alignSelf: "center",
+                  borderRadius: 20,
+                }}
+                onChangeText={onChangeText}
+                icon={
+                  <AntDesign name="tago" size={25} color={colors.iconColor} />
+                }
+                isValid={true}
+                placeholder="Tag title"
+                defaultValue={tagTitle}
+                inputStyle={{ width: "80%" }}
+              />
+              <View style={styles.buttonsContainer}>
+                <CloseButton />
+                <AddButton />
+              </View>
             </View>
-          </View>
+          </KeyboardAvoidingView>
         </View>
       </TouchableWithoutFeedback>
     </Modal>
@@ -100,7 +108,7 @@ const styles = StyleSheet.create({
   buttonsContainer: {
     width: "100%",
     height: "50%",
-    justifyContent: "space-around",
+    justifyContent: "space-evenly",
     alignItems: "center",
     flexDirection: "row",
   },
@@ -116,6 +124,7 @@ const styles = StyleSheet.create({
     height: 200,
     width: "80%",
     justifyContent: "center",
+    alignItems: "center",
     backgroundColor: colors.background,
     borderRadius: 40,
   },

@@ -1,10 +1,12 @@
-import React, { useRef, useState } from "react";
+import React, { PropsWithChildren, useRef, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
 import { colors } from "../../../../src/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
-export default function Screen(props) {
-  const scrollView = useRef();
+interface ScreenProps extends PropsWithChildren {}
+
+export default function Screen({ children }: ScreenProps) {
+  const scrollView = useRef<ScrollView>(null);
   const insets = useSafeAreaInsets();
   const [toScrollBottom, setToScrollBottom] = useState(false);
   return (
@@ -13,7 +15,7 @@ export default function Screen(props) {
         ref={scrollView}
         onContentSizeChange={() => {
           if (toScrollBottom) {
-            scrollView.current.scrollToEnd({ animated: true });
+            scrollView.current?.scrollToEnd({ animated: true });
           }
         }}
         showsHorizontalScrollIndicator={false}
@@ -25,14 +27,16 @@ export default function Screen(props) {
         }}
       >
         <View style={{ flex: 1 }}>
-          {React.Children.map(props.children, (child) => {
-            if (child.type.name === "PickTime" && child.props.setTime) {
-              return React.cloneElement(child, {
-                setToScrollBottom: setToScrollBottom,
-              });
-            }
-            return child;
-          })}
+          {children &&
+            React.Children.map(children, (child) => {
+              if (React.isValidElement(child) && child.props.setTime) {
+                return React.cloneElement(child, {
+                  // @ts-ignore
+                  setToScrollBottom: setToScrollBottom,
+                });
+              }
+              return <View style={{ marginBottom: "7%" }}>{child}</View>;
+            })}
         </View>
       </ScrollView>
     </View>

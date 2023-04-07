@@ -1,30 +1,26 @@
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Dimensions, SafeAreaView, StyleSheet, View } from "react-native";
-import MapView, { Region } from "react-native-maps";
+import MapView, { PROVIDER_DEFAULT, Region } from "react-native-maps";
 import PartyModal from "../Modals/PartyModal/PartyModal";
 import type { IEvent } from "../../Types/Events";
-import { MapScreenNavigationProps } from "../../Types/MapStack/ScreenNavigationProps";
+import { MapStackScreenProps } from "../../Types/MapStack/ScreenNavigationProps";
 import Buttons from "./components/Buttons/Buttons";
 import ProfileButton from "./components/ProfileButton";
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import CustomMarker from "./components/Markers/CustomMarker";
 import BottomSheet from "@gorhom/bottom-sheet";
-import { Feather } from "@expo/vector-icons";
-import { colors } from "../../src/colors";
 import useUserLocation from "../../hooks/useUserLocation/useUserLocation";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SearchEventsModal from "../Modals/SearchEventsModal/SearchEventsModal";
-import { Title } from "../../shared/Title/Title";
-
-const mapStyle = require("./mapStyle.json");
-interface MapProps extends MapScreenNavigationProps {}
+import mapStyle from "./mapStyle.json";
+interface MapProps extends MapStackScreenProps<"Map"> {}
 
 function Map({ navigation }: MapProps) {
   //States
   const [markerInfo, setMarkerInfo] = useState<IEvent>();
-  const [markers, setMarkers] = useState<[]>();
   const { userLocation, city } = useUserLocation();
+
   // Redux
   const { events, isLoading, error } = useTypedSelector(
     (state) => state.events_state
@@ -46,8 +42,6 @@ function Map({ navigation }: MapProps) {
     fetch_user();
   }, []);
 
-  //testing
-
   // functions
   function animateToRegion(region: Region) {
     mapRef.current?.animateToRegion(
@@ -65,21 +59,6 @@ function Map({ navigation }: MapProps) {
       setMarkerInfo({ ...markerInfo, ...newData });
     }
   }
-  const user_Locatoin_test = {
-    latitude: 48.61965488741035,
-    longitude: 22.24872194315266,
-  };
-
-  useEffect(() => {
-    async function fetchMarkers() {
-      await fetch(
-        "https://api.json-generator.com/templates/c-mHA4z9JyAr/data?access_token=o0hz6idbpk7bnh4uz6agak8cxuuilb5fzzv3mj6u"
-      )
-        .then((res) => res.json())
-        .then((res) => setMarkers(res));
-    }
-    fetchMarkers();
-  }, []);
 
   //Render
   return (
@@ -87,31 +66,30 @@ function Map({ navigation }: MapProps) {
       <View style={styles.container}>
         {/* {isLoading && <EventLoader isLoading={true} />} */}
         <MapView
-          provider="google"
+          testID="map"
+          provider={PROVIDER_DEFAULT}
           style={StyleSheet.absoluteFill}
           customMapStyle={mapStyle}
-          initialRegion={userLocation}
+          // initialRegion={userLocation}
           paddingAdjustmentBehavior={"automatic"}
           showsUserLocation
           ref={mapRef}
         >
-          {events
-            .concat(markers!)
-            ?.map((doc: IEvent, index?: React.Key | null) => {
-              return (
-                <CustomMarker
-                  doc={doc}
-                  index={index}
-                  onPress={async () => {
-                    animateToRegion(doc?.location?.region as Region);
-                    setMarkerInfo(doc);
-                    partyMarkerModalRef.current?.snapToIndex(0);
-                  }}
-                  key={index}
-                  tracksViewChanges={false}
-                />
-              );
-            })}
+          {events?.map((doc: IEvent, index?: React.Key | null) => {
+            return (
+              <CustomMarker
+                doc={doc}
+                index={index}
+                onPress={async () => {
+                  setMarkerInfo(doc);
+                  animateToRegion(doc?.location?.region as Region);
+                  partyMarkerModalRef.current?.snapToIndex(0);
+                }}
+                key={index}
+                tracksViewChanges={false}
+              />
+            );
+          })}
         </MapView>
         <ProfileButton
           onPressUser={() => fetch_user()}
@@ -141,6 +119,7 @@ function Map({ navigation }: MapProps) {
           modalRef={searchEventsModalRef}
           city={city!}
           animateToRegion={animateToRegion}
+          events={events}
         />
         <PartyModal
           updateMarkerInfo={updateMarkerInfo}

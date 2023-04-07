@@ -81,7 +81,7 @@ export default function PickTime(props: PickTimeProps) {
             // display={(!isAndroid && "spinner") || undefined}
             display={"spinner"}
             onChange={onChange}
-            textColor={isAndroid ? "black" : "white"}
+            textColor={isAndroid ? "black" : colors.text}
           />
         )}
         <SwitchDateType

@@ -1,21 +1,27 @@
-import React from "react";
-import {StyleSheet, View} from "react-native";
-import {colors} from "../../../../src/colors";
+import React, { Dispatch, SetStateAction } from "react";
+import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
+import { colors } from "../../../../src/colors";
 import TagAddButton from "./TagAddButton";
 import TagItem from "../../../../shared/Tag/TagItem";
 import * as Haptics from "expo-haptics";
-import {Title} from "../../../../shared/Title/Title";
-import {AntDesign} from "@expo/vector-icons";
-import {descriptionTexts} from "../descriptionTexts";
-import {FontFamily} from "../../../../../assets/fonts/Fonts";
+import { Title } from "../../../../shared/Title/Title";
+import { AntDesign } from "@expo/vector-icons";
+import { descriptionTexts } from "../descriptionTexts";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { IEvent } from "../../../../Types/Events";
 
-export default function TagList({ setTags, tags }) {
-  function onDelete(id) {
+interface Props {
+  setTags: Dispatch<SetStateAction<IEvent["tags"]>>;
+  tags: IEvent["tags"];
+}
+
+export default function TagList({ setTags, tags }: Props): JSX.Element {
+  function onDelete(id: number) {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-    setTags((tags) => tags.filter((tag, tag_id) => tag_id !== id));
+    setTags((tags) => tags!.filter((tag, tag_id) => tag_id !== id));
   }
 
-  function Tags() {
+  function Tags(): JSX.Element {
     return (
       <View style={styles.tagContainer}>
         <TagAddButton setTags={setTags} />
@@ -46,19 +52,16 @@ export default function TagList({ setTags, tags }) {
 
 const styles = StyleSheet.create({
   container: {
-    height: null,
     width: "100%",
   },
   textStyle: {
     color: colors.iconColor,
     fontSize: 20,
     fontFamily: FontFamily.bold,
-    marginBottom: "5%",
   },
   titleContainer: {
     flexDirection: "row",
     alignItems: "center",
-    marginBottom: "2%",
   },
   tagContainer: {
     flexDirection: "row",

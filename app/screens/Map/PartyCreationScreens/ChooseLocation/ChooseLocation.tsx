@@ -5,7 +5,7 @@ import {
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import MapView, { Region } from "react-native-maps";
+import MapView, { PROVIDER_DEFAULT, Region } from "react-native-maps";
 import GooglePlaceSearch from "../../../../shared/Searcher/GooglePlaceSearch";
 import AddressTitle from "./components/AddressTitle";
 import ChooseLocationButton from "./components/ChooseLocationButton";
@@ -13,14 +13,14 @@ import FakeMarker from "./components/Marker";
 import { getAddress } from "../../../../shared/GetLocationFunctions/getAddress";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ICoordinates, IFullAddress } from "../../../../Types/Events";
-import { ChooseLocationScreenNavigationProps } from "../../../../Types/MapStack/ScreenNavigationProps";
 import { BackButton } from "../../../../shared/Buttons/BackButton";
+import { PartyCreationStackScreenProps } from "../../../../Types/MapStack/ScreenNavigationProps";
 
 const mapStyle = require("../../mapStyle.json");
 export default function ChooseLocation({
   route,
   navigation,
-}: ChooseLocationScreenNavigationProps) {
+}: PartyCreationStackScreenProps<"ChooseLocation">) {
   const [region, setRegion] = useState<ICoordinates>();
   const [addressInfo, setAddressInfo] = useState<IFullAddress>();
   const { userLocation } = route?.params;
@@ -40,13 +40,12 @@ export default function ChooseLocation({
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <View style={styles.container}>
           <MapView
-            provider={"google"}
-            customMapStyle={mapStyle}
+            provider={PROVIDER_DEFAULT}
             style={{ flex: 1 }}
             showsUserLocation
             showsMyLocationButton
             onRegionChangeComplete={onRegionChange}
-            initialRegion={userLocation as Region}
+            // initialRegion={userLocation as Region}
           />
           <GooglePlaceSearch
             style={[styles.googlePlaceSearchStyle, { paddingTop: insets.top }]}

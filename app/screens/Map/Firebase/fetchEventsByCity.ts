@@ -9,7 +9,8 @@ export async function fetchEventsByCity(
   return await getAddress(
     userLocation.coords.latitude,
     userLocation.coords.longitude
-  ).then((r: IFullAddress) => {
-    return fetchCityParties(r.city!).then((events) => events);
+  ).then(async (r: IFullAddress) => {
+    const events = await fetchCityParties(r.city!);
+    return events;
   });
 }

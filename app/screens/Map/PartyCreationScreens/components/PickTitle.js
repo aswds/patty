@@ -15,8 +15,8 @@ export default function PickTitle({ setTitle, title }) {
           <Feather
             name="edit-2"
             size={20}
-            color={colors.iconColor}
-            style={{ paddingBottom: 5, paddingLeft: 5 }}
+            color={colors.text}
+            style={{ paddingLeft: 5 }}
           />
         }
         description={descriptionTexts.title}
@@ -44,7 +44,6 @@ const styles = StyleSheet.create({
   container: {
     width: "100%",
     height: 50,
-    marginBottom: "5%",
   },
   inputField: {
     width: "100%",

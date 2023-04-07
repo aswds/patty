@@ -3,57 +3,49 @@ import Screen from "./components/Screen";
 import Location from "./components/Location";
 import CustomButton from "./components/LocationAddButton";
 import CreatePartyButton from "./components/CreatePartyButton";
-import { LocationAndTimeScreenNavigationProps } from "../../../Types/MapStack/ScreenNavigationProps";
 import useUserLocation from "../../../hooks/useUserLocation/useUserLocation";
 import NavigationBar from "./NavigationBar";
-import { IEvent } from "../../../Types/Events";
-import { useTypedSelector } from "../../../hooks/useTypedSelector";
-import { IUser } from "../../../Types/User";
+import {
+  IGifts,
+  IEvent,
+  GiftsRequireTextTypes,
+  PartyPlace,
+  ILocation,
+} from "../../../Types/Events";
 import PickTime from "./PickTime/PickTime";
-
-interface IData extends IEvent {
-  user: Pick<IUser, "name" | "surname" | "username" | "image" | "uid">;
-}
+import PartyPlaces from "./Place/PartyPlace";
+import { PartyCreationStackScreenProps } from "../../../Types/MapStack/ScreenNavigationProps";
+import NextButton from "../../../shared/Buttons/NextButton";
+import { useActions } from "../../../hooks/useActions";
 
 const LocationAndTime = ({
   route,
   navigation,
-}: LocationAndTimeScreenNavigationProps) => {
-  const { title, tags, description, fullAddressInfo, region } = route.params;
+}: PartyCreationStackScreenProps<"LocationAndTime">) => {
+  const { fullAddressInfo, region } = route.params;
+  const { createEventsLocationAndTimeUpdate } = useActions();
   const [time, setTime] = useState<Date>(new Date());
-  const [access, _] = useState("public");
-  const { name, surname, username, image, uid } = useTypedSelector(
-    (state) => state.user_state.current_user
-  );
-  const [data, setData] = useState<IData>({
-    title: title!,
-    description: description,
-    tags: tags,
-    location: {
-      region,
-      fullAddressInfo,
-    },
-    time: time,
-    access: access,
-    guests: [uid!],
-    user: {
-      name,
-      surname,
-      username,
-      image,
-      uid,
-    },
-  });
+  const [partyPlace, setPartyPlace] = useState<PartyPlace>("House");
+  const [location, setLocation] = useState<ILocation>({});
+  // handlers
 
-  useEffect(() => {}, []);
+  function handlePartyPlaceUpdate(place: PartyPlace) {
+    setPartyPlace(place);
+  }
 
   useEffect(() => {
-    setData({
-      ...data,
-      location: { fullAddressInfo, region },
+    setLocation({
+      fullAddressInfo,
+      region,
     });
-  }, [route.params]);
+  }, [route.params.region]);
   const { userLocation } = useUserLocation();
+
+  const onPress = () => {
+    createEventsLocationAndTimeUpdate({ location, partyPlace, time });
+    navigation.navigate("AdditionalInformation");
+  };
+
   return (
     <Screen>
       <NavigationBar navigation={navigation} text={"Location and time"} />
@@ -71,8 +63,9 @@ const LocationAndTime = ({
           />
         }
       />
+      <PartyPlaces handlePartyPlaceUpdate={handlePartyPlaceUpdate} />
       <PickTime setTime={setTime} />
-      <CreatePartyButton data={data} />
+      <NextButton onPress={onPress} />
     </Screen>
   );
 };

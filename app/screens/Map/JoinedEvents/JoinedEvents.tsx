@@ -10,12 +10,10 @@ import { Title } from "../../../shared/Title/Title";
 import { colors } from "../../../src/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import ListEmptyComponent from "../../../shared/UserList/ListEmptyComponent";
-import { JoinedEventsScreenNavigationProps } from "../../../Types/MapStack/ScreenNavigationProps";
+import { MapStackScreenProps } from "../../../Types/MapStack/ScreenNavigationProps";
 import CustomRefreshControl from "../../../shared/RefreshControl/RefreshControl";
-import ListLoader from "../../../shared/Loaders/ListLoader";
-import Loader from "../../../shared/Loaders/Loader";
 
-const JoinedEvents = ({ navigation }: JoinedEventsScreenNavigationProps) => {
+const JoinedEvents = ({ navigation }: MapStackScreenProps<"JoinedEvents">) => {
   const route = useRoute<JoinedEventsRouteProps>();
   const [joinedEvents, setJoinedEvents] = useState<IEvent[]>();
   const [refreshing, setRefreshing] = useState<boolean>(false);

@@ -7,20 +7,29 @@ import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { IEvent } from "../../../../Types/Events";
 import { MapNavigationProps } from "../../../../Types/MapStack/ScreenNavigationProps";
 import { joinEvent } from "../../Firebase/fetchUserJoinedEvents";
+import { AdditionalInformationData } from "../../../../redux/reducers/CreateEvent";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { useActions } from "../../../../hooks/useActions";
 
 interface CreatePartyButtonProps {
-  data: IEvent;
+  data: AdditionalInformationData;
 }
 
 export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
   const navigation = useNavigation<MapNavigationProps>();
-  const { time, location, title } = data;
-  const allNecessaryDataPresent =
-    time && location?.region && location?.fullAddressInfo && title;
+  const { clearCreateEvents } = useActions();
+  const { general_data, location_time_data } = useTypedSelector(
+    (state) => state.create_events_state
+  );
+  const _data = { ...data, ...general_data, ...location_time_data };
+
+  const allNecessaryDataPresent = general_data && location_time_data;
+
   function onPress() {
     if (allNecessaryDataPresent) {
-      joinEvent(data);
-      addPartyOnMap(data).then(() => {
+      joinEvent(_data);
+      addPartyOnMap(_data).then(() => {
+        clearCreateEvents();
         navigation.navigate("Map");
       });
     } else {
@@ -38,12 +47,13 @@ export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
 
 const styles = StyleSheet.create({
   container: {
+    marginTop: "auto",
     width: "100%",
   },
   buttonBg: {
     backgroundColor: colors.accentColor,
     height: 50,
-    marginVertical: "10%",
+    marginTop: "10%",
     width: "100%",
     borderRadius: 999999,
     justifyContent: "center",

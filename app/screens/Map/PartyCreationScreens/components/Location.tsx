@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import MapView, { Marker } from "react-native-maps";
+import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
 import { colors } from "../../../../src/colors";
 import { Title } from "../../../../shared/Title/Title";
 import { MaterialIcons } from "@expo/vector-icons";
@@ -63,7 +63,7 @@ export default function Location({
             longitudeDelta: 0.003,
             latitudeDelta: 0.003,
           }}
-          provider="google"
+          provider={PROVIDER_DEFAULT}
           pointerEvents="none"
           customMapStyle={mapStyle}
         >
@@ -80,7 +80,6 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     alignItems: "center",
-    marginBottom: "5%",
     width: "100%",
   },
   map: {

@@ -26,18 +26,12 @@ export default function TagAddButton({ setTags }) {
         color={colors.iconColor}
         style={{ marginHorizontal: "2%" }}
       />
-      <KeyboardAvoidingView
-        style={{
-          height: "100%",
-        }}
-        behavior={isAndroid ? "padding" : "height"}
-      >
-        <TagModal
-          setTags={setTags}
-          isVisible={isModalVisible}
-          hideModal={() => setIsModalVisible(false)}
-        />
-      </KeyboardAvoidingView>
+
+      <TagModal
+        setTags={setTags}
+        isVisible={isModalVisible}
+        hideModal={() => setIsModalVisible(false)}
+      />
     </TouchableOpacity>
   );
 }

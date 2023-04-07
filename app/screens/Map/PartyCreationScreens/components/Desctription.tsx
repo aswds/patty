@@ -23,7 +23,7 @@ export default function Description({
           <Entypo
             name="list"
             size={20}
-            color={colors.iconColor}
+            color={colors.text}
             style={{ paddingLeft: 5 }}
           />
         }
@@ -53,14 +53,13 @@ const styles = StyleSheet.create({
     maxHeight: 100,
     backgroundColor: colors.input,
     borderRadius: 10,
-    marginBottom: "5%",
   },
   inputField: {
     paddingTop: "5%",
     paddingLeft: "5%",
     paddingBottom: "5%",
     paddingRight: "5%",
-    color: "white",
+    color: colors.text,
     width: "100%",
     height: "100%",
     fontSize: 15,

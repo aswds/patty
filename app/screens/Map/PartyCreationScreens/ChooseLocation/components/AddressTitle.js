@@ -26,7 +26,9 @@ const styles = StyleSheet.create({
     maxWidth: "90%",
     fontSize: 16,
     textAlign: "center",
-    color: colors.iconColor,
+    color: "white",
+    textShadowColor: "white",
+    textShadowRadius: 1,
   },
   error: {
     fontFamily: FontFamily.bold,
