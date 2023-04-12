@@ -7,7 +7,14 @@ import * as SplashScreen from "expo-splash-screen";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
 import { getUserLocation } from "./app/shared/GetLocationFunctions/getUserLocation";
 import React from "react";
-import { SafeAreaProvider } from "react-native-safe-area-context";
+import {
+  SafeAreaProvider,
+  initialWindowMetrics,
+} from "react-native-safe-area-context";
+import { getAddress } from "./app/shared/GetLocationFunctions/getAddress";
+import { UserLocation } from "./app/Types/User";
+import { useActions } from "./app/hooks/useActions";
+import { isDarkTheme } from "./app/src/theme";
 // Setting splash screen
 SplashScreen.preventAutoHideAsync();
 export default function App() {
@@ -27,6 +34,15 @@ export default function App() {
   useEffect(() => {
     async function prepare() {
       try {
+        let userLocation: UserLocation = {
+          city: "",
+          location: {
+            longitude: 0,
+            latitude: 0,
+            latitudeDelta: 0,
+            longitudeDelta: 0,
+          },
+        };
         // Pre-load fonts, make any API calls you need to do here
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Please remove this if you copy and paste the code!
@@ -58,13 +74,14 @@ export default function App() {
     return null;
   }
   return (
-    <SafeAreaProvider>
+    <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <View style={styles.container} onLayout={onLayoutRootView}>
-        <StatusBar barStyle={"light-content"} />
+        <StatusBar barStyle={isDarkTheme ? "light-content" : "dark-content"} />
         {/* <StrictMode> */}
         <BottomSheetModalProvider>
           <ProvidedNavigator />
         </BottomSheetModalProvider>
+
         {/* </StrictMode> */}
       </View>
     </SafeAreaProvider>
