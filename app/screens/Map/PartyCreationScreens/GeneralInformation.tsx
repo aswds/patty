@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Screen from "./components/Screen";
+import { Screen } from "../../../shared/Screen/Screen";
 import { PartyCreationStackScreenProps } from "../../../Types/MapStack/ScreenNavigationProps";
 import NextButton from "../../../shared/Buttons/NextButton";
 import TagList from "./components/TagList";

@@ -6,7 +6,7 @@ import { FontFamily } from "../../../../../assets/fonts/Fonts";
 export const styles = StyleSheet.create({
   buttonContainer: {
     height: "100%",
-    backgroundColor: colors.input,
+    backgroundColor: colors.mapButtons,
     borderRadius: 999,
     justifyContent: "center",
     alignItems: "center",
@@ -21,7 +21,6 @@ export const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 30,
     backgroundColor: colors.background,
-    shadowColor: isAndroid ? "white" : "rgba(0, 0, 0, 0.7)",
   },
   additionalButton: {
     aspectRatio: 1,

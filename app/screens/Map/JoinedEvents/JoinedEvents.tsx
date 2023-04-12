@@ -29,7 +29,8 @@ const JoinedEvents = ({ navigation }: MapStackScreenProps<"JoinedEvents">) => {
         setIsLoading(false);
       });
   }, [refreshing]);
-  function onPress(region: Region) {
+  function onPress(item: IEvent) {
+    navigation.navigate("Party", { partyData: item });
     // animateToRegion(region);
   }
   function onRefresh() {
@@ -40,7 +41,7 @@ const JoinedEvents = ({ navigation }: MapStackScreenProps<"JoinedEvents">) => {
       <RenderItem
         item={item}
         onPress={() => {
-          onPress(item.location?.region!);
+          onPress(item);
         }}
         key={index}
       />

@@ -14,20 +14,22 @@ import useUserLocation from "../../hooks/useUserLocation/useUserLocation";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SearchEventsModal from "../Modals/SearchEventsModal/SearchEventsModal";
 import mapStyle from "./mapStyle.json";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 interface MapProps extends MapStackScreenProps<"Map"> {}
 
 function Map({ navigation }: MapProps) {
   //States
   const [markerInfo, setMarkerInfo] = useState<IEvent>();
   const { userLocation, city } = useUserLocation();
-
+  const insets = useSafeAreaInsets();
   // Redux
   const { events, isLoading, error } = useTypedSelector(
     (state) => state.events_state
   );
-  const { current_user } = useTypedSelector((state) => state.user_state);
+  const { uid, image } = useTypedSelector(
+    (state) => state.user_state.current_user
+  );
   const { fetch_user, fetch_events } = useActions();
-
   //References
   const mapRef = useRef<MapView | null>(null);
   const partyMarkerModalRef = useRef<BottomSheet>(null);
@@ -70,6 +72,7 @@ function Map({ navigation }: MapProps) {
           provider={PROVIDER_DEFAULT}
           style={StyleSheet.absoluteFill}
           customMapStyle={mapStyle}
+          onMapReady={() => animateToRegion(userLocation!)}
           // initialRegion={userLocation}
           paddingAdjustmentBehavior={"automatic"}
           showsUserLocation
@@ -92,11 +95,12 @@ function Map({ navigation }: MapProps) {
           })}
         </MapView>
         <ProfileButton
-          onPressUser={() => fetch_user()}
-          current_user={current_user}
+          userUID={uid!}
+          userImage={image}
           onLongPress={() =>
             mapRef?.current?.animateToRegion(userLocation as Region)
           }
+          containerStyle={{ right: "5%", top: "1%", marginTop: insets.top }}
         />
 
         <Buttons

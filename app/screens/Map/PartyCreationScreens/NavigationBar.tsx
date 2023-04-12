@@ -1,6 +1,6 @@
 import React from "react";
 
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, Text } from "react-native";
 import { BackButton } from "../../../shared/Buttons/BackButton";
 import { Title } from "../../../shared/Title/Title";
 import { colors } from "../../../src/colors";
@@ -20,8 +20,14 @@ const NavigationBar = ({ navigation, text }: NavigationBarProps) => {
       />
       <Title
         title={text}
-        fontStyle={{ fontSize: 22, color: colors.text_2 }}
-        containerStyle={{ marginBottom: 0 }}
+        fontStyle={{}}
+        containerStyle={{
+          flex: 1,
+          justifyContent: "flex-end",
+          marginBottom: 0,
+
+          flexShrink: 1,
+        }}
       />
     </View>
   );
@@ -32,5 +38,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-between",
   },
+  title: {},
 });
 export default NavigationBar;

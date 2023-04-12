@@ -31,7 +31,7 @@ export async function joinEvent(data: IEvent) {
     `EVENTS`,
     `${data.location?.fullAddressInfo?.city}`,
     `UserEvents`,
-    `${data.partyID ?? data.user.uid}`
+    `${data.partyID}`
   );
   //functions
   await updateDoc(updateRef, {
@@ -39,7 +39,7 @@ export async function joinEvent(data: IEvent) {
   });
   await updateDoc(userDoc_ref, {
     "events.onEvent": FieldValue.arrayUnion(data.partyID),
-  }).then(() => console.log("Congratulation"));
+  });
 }
 
 export async function leaveEvent(data: IEvent) {

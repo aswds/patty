@@ -1,6 +1,6 @@
 import React from "react";
 import { IEvent } from "../../../Types/Events";
-import { Event } from "../../../shared/Title/Event";
+import { Event } from "../../../shared/Events/Event";
 import { TouchableOpacity, View } from "react-native";
 import TagList from "../PartyCreationScreens/components/TagList";
 import Tags from "../PartyCreationScreens/components/Tags";

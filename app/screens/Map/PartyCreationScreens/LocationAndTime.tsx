@@ -1,28 +1,25 @@
 import React, { useEffect, useState } from "react";
-import Screen from "./components/Screen";
+import Screen from "../../../shared/Screen/Screen_MappingChildren";
 import Location from "./components/Location";
 import CustomButton from "./components/LocationAddButton";
-import CreatePartyButton from "./components/CreatePartyButton";
 import useUserLocation from "../../../hooks/useUserLocation/useUserLocation";
 import NavigationBar from "./NavigationBar";
-import {
-  IGifts,
-  IEvent,
-  GiftsRequireTextTypes,
-  PartyPlace,
-  ILocation,
-} from "../../../Types/Events";
+import { PartyPlace, ILocation } from "../../../Types/Events";
 import PickTime from "./PickTime/PickTime";
 import PartyPlaces from "./Place/PartyPlace";
 import { PartyCreationStackScreenProps } from "../../../Types/MapStack/ScreenNavigationProps";
 import NextButton from "../../../shared/Buttons/NextButton";
 import { useActions } from "../../../hooks/useActions";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 const LocationAndTime = ({
   route,
   navigation,
 }: PartyCreationStackScreenProps<"LocationAndTime">) => {
   const { fullAddressInfo, region } = route.params;
+  const { city } = useTypedSelector(
+    (state) => state.user_state.current_user.userLocation!
+  );
   const { createEventsLocationAndTimeUpdate } = useActions();
   const [time, setTime] = useState<Date>(new Date());
   const [partyPlace, setPartyPlace] = useState<PartyPlace>("House");
@@ -57,6 +54,7 @@ const LocationAndTime = ({
             onPress={() =>
               navigation.navigate("ChooseLocation", {
                 userLocation: userLocation,
+                city: city,
               })
             }
             title="Select a location"

@@ -8,7 +8,7 @@ import {
 } from "../../../Types/Events";
 import FoodAndDrinkList from "./FoodAndDrinks/FoodAndDrinks";
 import Gifts from "./Gifts/Gifts";
-import Screen from "./components/Screen";
+import { Screen } from "../../../shared/Screen/Screen";
 import NavigationBar from "./NavigationBar";
 import { PartyCreationStackScreenProps } from "../../../Types/MapStack/ScreenNavigationProps";
 import CreatePartyButton from "./components/CreatePartyButton";
