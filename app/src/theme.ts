@@ -1,1 +1,1 @@
-export const isDarkTheme = false;
+export const isDarkTheme = true;
