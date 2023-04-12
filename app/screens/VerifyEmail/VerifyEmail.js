@@ -11,7 +11,7 @@ import Screen from "./components/Screen";
 import { colors } from "../../src/colors";
 import { MaterialIcons } from "@expo/vector-icons";
 import { auth } from "../../../firebase";
-import { sendEmailVerification } from "firebase/auth";
+import { sendEmailVerification, updateCurrentUser } from "firebase/auth";
 import { useNavigation, useRoute } from "@react-navigation/native";
 import Button from "../Authorization/components/Button";
 import { eventEmitter } from "../../custom/EventEmitter";
@@ -98,7 +98,7 @@ const VerifyEmail = (props) => {
     const unsubscribe = setInterval(() => {
       auth.currentUser?.reload();
       if (auth.currentUser?.emailVerified) {
-        console.log("f");
+        updateCurrentUser(auth, { email: email });
         eventEmitter.emit(EMAIL_VERIFICATION);
       }
     }, 1000);
@@ -132,7 +132,7 @@ const VerifyEmail = (props) => {
           setCanSend(true);
         }, 10000);
       } else {
-        Alert.alert("Can`t send an email");
+        Alert.alert("Wait 10 seconds to resend an email.");
       }
     }
     return (

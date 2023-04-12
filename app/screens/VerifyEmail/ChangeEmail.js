@@ -5,7 +5,6 @@ import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 import Button from "../Authorization/components/Button";
 import { colors } from "../../src/colors";
 import Input from "../../shared/Input/Input";
-import Screen from "./components/Screen";
 import { BackButton } from "../../shared/Buttons/BackButton";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { updateEmail } from "firebase/auth";
@@ -14,6 +13,7 @@ import { error_handle } from "../Authorization/Sign_up/Sign_up_screens/Sign_up_F
 import CustomAlert from "../Authorization/CustomAlert";
 import { set_errorMsg_errorType } from "../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/signUp";
 import { FontFamily } from "../../../assets/fonts/Fonts";
+import { Screen } from "../../shared/Screen/Screen";
 
 function ResetText({ isPasswordReset }) {
   const passRecoveryText = "Reset your password";
