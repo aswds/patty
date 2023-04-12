@@ -1,5 +1,5 @@
 import { UserLocation } from "./../../Types/User";
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createSlice, current, PayloadAction } from "@reduxjs/toolkit";
 import { IUser } from "../../Types/User";
 import { fetch_user } from "../actions/User";
 

@@ -18,6 +18,14 @@ interface InitialStateType {
   location_time_data?: LocationAndTimeData;
   additional_information?: AdditionalInformationData;
 }
+
+const defaultState: InitialStateType = {
+  general_data: {},
+  location_time_data: {},
+  //@ts-ignore
+  additional_information: {},
+};
+
 const initialState: InitialStateType = {
   general_data: {},
   location_time_data: {},
@@ -45,7 +53,7 @@ export const createEventsSlice = createSlice({
       state.additional_information = action.payload;
     },
     clearCreateEvents(state) {
-      state = initialState;
+      return initialState;
     },
   },
 });
