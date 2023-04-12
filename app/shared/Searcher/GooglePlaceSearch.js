@@ -3,19 +3,25 @@ import { StyleSheet, View } from "react-native";
 import { GooglePlacesAutocomplete } from "react-native-google-places-autocomplete";
 import { colors } from "../../src/colors";
 
-export default function GooglePlaceSearch({ style }) {
+export default function GooglePlaceSearch({ style, setLocation }) {
   return (
     <View style={[styles.container, style]}>
       <GooglePlacesAutocomplete
         placeholder={"Search location"}
         returnKeyType={"default"}
         fetchDetails={true}
-        onPress={(data, details = null) => {}}
         query={{
-          key: "AIzaSyD8PXs45tVtd_dfEYD_iRwc6fJjQhDr-Po",
+          key: "AIzaSyCPNfHc1tXamJ5l-ujrjrW8ZNrQ5iw4STk",
+
           //   location: "latitude,longitude",
         }}
         styles={searchBarStyle}
+        onPress={(data, details = null) =>
+          console.log(data.description, setLocation(details.geometry.location))
+        }
+        onFail={(error) => console.log(error)}
+        onNotFound={() => console.log("no results")}
+        enablePoweredByContainer={false}
       />
     </View>
   );
@@ -23,10 +29,7 @@ export default function GooglePlaceSearch({ style }) {
 
 const searchBarStyle = {
   textInputContainer: {
-    width: "80%",
-    height: "100%",
     paddingHorizontal: 10,
-    top: "10%",
   },
   textInput: {
     flexDirection: "row",
@@ -35,21 +38,18 @@ const searchBarStyle = {
     backgroundColor: colors.input,
     borderRadius: 9999,
     color: colors.text_2,
-
+    padding: 20,
     width: "100%",
   },
   poweredContainer: {
     justifyContent: "flex-end",
     alignItems: "center",
-    borderBottomRightRadius: 5,
-    borderBottomLeftRadius: 5,
     borderColor: "#c8c7cc",
     borderTopWidth: 0.5,
   },
 
   row: {
     backgroundColor: "#FFFFFF",
-    padding: 13,
     height: 44,
     flexDirection: "row",
   },
@@ -67,10 +67,8 @@ const searchBarStyle = {
 
 const styles = StyleSheet.create({
   container: {
-    height: "15%",
     width: "100%",
     position: "absolute",
-    alignItems: "center",
   },
   searchBarContainer: { height: "45%", width: "75%" },
   textInputContainer: {
