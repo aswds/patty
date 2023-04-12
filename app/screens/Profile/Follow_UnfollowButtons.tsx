@@ -51,7 +51,11 @@ const Follow_UnfollowButtons = ({
     <Button
       onPress={follow_Unfollow_function}
       text={isFollowing ? "Unfollow" : "Follow"}
-      style={{ backgroundColor: colors.doneButtonBG }}
+      style={{
+        backgroundColor: isFollowing
+          ? colors.follow_unfollow_buttons.unfollow_button
+          : colors.follow_unfollow_buttons.follow_button,
+      }}
       textStyled={{ color: colors.doneButtonText }}
     />
   );

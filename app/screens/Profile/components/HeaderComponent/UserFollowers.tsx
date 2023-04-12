@@ -12,13 +12,13 @@ interface IUserFollowNumbers {
 export default function UserFollowers({ user }: { user: IUser }) {
   const [userFollowNumbers, setUserFollowNumbers] =
     useState<IUserFollowNumbers>({
-      followers: user?.followers?.length ?? 0,
-      following: user?.following?.length ?? 0,
+      followers: user.followers?.length ?? 0,
+      following: user.following?.length ?? 0,
     });
   useEffect(() => {
     setUserFollowNumbers({
-      followers: user?.followers?.length ?? 0,
-      following: user?.following?.length ?? 0,
+      followers: user.followers?.length ?? 0,
+      following: user.following?.length ?? 0,
     });
   }, [user]);
 
@@ -52,7 +52,7 @@ const styles = StyleSheet.create({
   },
   numberTextStyle: {
     fontFamily: FontFamily.bold,
-    color: "white",
+    color: colors.text,
     marginRight: "5%",
   },
   textContainer: {

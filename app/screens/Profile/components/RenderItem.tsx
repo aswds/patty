@@ -4,6 +4,7 @@ import { isAndroid } from "../../../src/platform";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
 import { IUserEvents } from "../../../Types/User";
 import Loader from "../../../shared/Loaders/Loader";
+import { colors } from "../../../src/colors";
 
 interface RenderItemProps {
   events: IUserEvents;
@@ -34,7 +35,7 @@ const styles = StyleSheet.create({
     height: isAndroid
       ? Dimensions.get("window").height * 0.2
       : Dimensions.get("window").height * 0.15,
-    backgroundColor: "#1E1E1E",
+    backgroundColor: colors.input,
     shadowOffset: { height: 4, width: 0 },
     shadowOpacity: 1,
     shadowRadius: 2,
@@ -45,15 +46,15 @@ const styles = StyleSheet.create({
   },
   textNumberStyle: {
     fontFamily: FontFamily.bold,
-    color: "white",
+    color: colors.text,
     fontSize: 20,
   },
   textStyle: {
-    color: "white",
+    color: colors.text,
     fontFamily: FontFamily.medium,
   },
   textStyleUsername: {
-    color: "white",
+    color: colors.text,
     fontFamily: FontFamily.bold,
   },
 });
