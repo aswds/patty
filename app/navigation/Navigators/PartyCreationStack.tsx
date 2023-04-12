@@ -4,6 +4,7 @@ import ChooseLocation from "../../screens/Map/PartyCreationScreens/ChooseLocatio
 import { PartyCreationNavigatorParamList } from "../../Types/MapStack/NavigationTypes";
 import GeneralInformation from "../../screens/Map/PartyCreationScreens/GeneralInformation";
 import LocationAndTime from "../../screens/Map/PartyCreationScreens/LocationAndTime";
+import AdditionalInformation from "../../screens/Map/PartyCreationScreens/AdditionalInformation";
 
 const Stack = createNativeStackNavigator<PartyCreationNavigatorParamList>();
 export const PartyCreationStack = () => {
@@ -14,6 +15,10 @@ export const PartyCreationStack = () => {
       <Stack.Screen
         component={GeneralInformation}
         name={"GeneralInformation"}
+      />
+      <Stack.Screen
+        component={AdditionalInformation}
+        name="AdditionalInformation"
       />
     </Stack.Navigator>
   );
