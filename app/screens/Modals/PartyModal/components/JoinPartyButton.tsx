@@ -62,6 +62,6 @@ const styles = StyleSheet.create({
   textTitleStyle: {
     fontFamily: FontFamily.bold,
     fontSize: 22,
-    color: colors.text,
+    color: colors.buttonTextColor,
   },
 });

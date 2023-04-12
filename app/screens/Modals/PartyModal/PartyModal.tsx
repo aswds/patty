@@ -9,7 +9,7 @@ import React, {
 import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import TagItem from "../../../shared/Tag/TagItem";
 import { ActionButtons } from "./components/ActionButtons";
-import { Event } from "../../../shared/Title/Event";
+import { Event } from "../../../shared/Events/Event";
 import { JoinEventButton } from "./components/JoinPartyButton";
 import { IEvent } from "../../../Types/Events";
 import BottomSheet from "@gorhom/bottom-sheet";
