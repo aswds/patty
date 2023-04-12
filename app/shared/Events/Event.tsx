@@ -11,7 +11,7 @@ import moment from "moment/moment";
 import { colors } from "../../src/colors";
 import { Octicons } from "@expo/vector-icons";
 import { FontFamily } from "../../../assets/fonts/Fonts";
-import UserInfo from "../Events/UserInfo";
+import UserInfo from "./UserInfo";
 import { useNavigation } from "@react-navigation/native";
 import { MapNavigationProps } from "../../Types/MapStack/ScreenNavigationProps";
 
@@ -35,11 +35,57 @@ function PartyDate({ date }: { date: Date }) {
     <Text style={styles.dateTextStyle}>{moment(createDate).format("lll")}</Text>
   );
 }
-const Address = ({ address }: { address: IFullAddress | null | undefined }) => {
+const Address = ({
+  address,
+  partyPlace,
+}: {
+  address: IFullAddress | null | undefined;
+  partyPlace: IEvent["partyPlace"];
+}) => {
   return (
     <Text style={styles.addressTextStyle}>
-      {address?.street} {"," && address?.houseNumber}
+      {address?.street} {"," && address?.houseNumber}{" "}
+      <Text
+        style={[
+          styles.highlightedText,
+          { color: colors.accentColor, fontSize: 13 },
+        ]}
+      >
+        - {partyPlace}
+      </Text>
     </Text>
+  );
+};
+const DrinksAndFood = ({
+  drinks,
+  food,
+}: {
+  drinks: IEvent["drinksType"];
+  food: IEvent["foodProvided"];
+}) => {
+  return (
+    <View
+      style={{
+        justifyContent: "space-evenly",
+      }}
+    >
+      <Text style={styles.subtitle}>
+        food: <Text style={styles.highlightedText}>{food}</Text>
+      </Text>
+      <Text style={styles.subtitle}>
+        drinks: <Text style={styles.highlightedText}>{drinks}</Text>
+      </Text>
+    </View>
+  );
+};
+
+const Gift = ({ giftRequired }: { giftRequired: IEvent["giftRequired"] }) => {
+  return (
+    <View>
+      <Text style={styles.subtitle}>
+        gift:<Text style={styles.highlightedText}> {giftRequired}</Text>
+      </Text>
+    </View>
   );
 };
 
@@ -66,8 +112,7 @@ export const Event: React.FC<ITopInfo> = ({ markerInfo, style }) => {
     <View style={[styles.topInfoContainer, style]}>
       <View style={styles.partyInfoContainer}>
         <View style={styles.titleContainer}>
-          <Title title={markerInfo?.title} />
-
+          <Title title={markerInfo?.title!} />
           <UserInfo user={markerInfo?.user} />
         </View>
 
@@ -75,24 +120,18 @@ export const Event: React.FC<ITopInfo> = ({ markerInfo, style }) => {
           <PartyDate date={markerInfo?.time as Date} />
           <NumberOfGuests guests={markerInfo?.guests} />
         </View>
-        <Address address={markerInfo?.location?.fullAddressInfo} />
+        <Address
+          address={markerInfo?.location?.fullAddressInfo}
+          partyPlace={markerInfo?.partyPlace}
+        />
+        <View style={{ marginVertical: "1%" }}>
+          <DrinksAndFood
+            drinks={markerInfo?.drinksType}
+            food={markerInfo?.foodProvided}
+          />
+          <Gift giftRequired={markerInfo?.giftRequired} />
+        </View>
       </View>
-
-      {/*{isJoinedEvent && (*/}
-      {/*  <TouchableOpacity*/}
-      {/*    style={{ alignItems: "flex-end" }}*/}
-      {/*    onPress={onFavoritePress}*/}
-      {/*  >*/}
-      {/*    <AntDesign*/}
-      {/*      name={"star"}*/}
-      {/*      size={35}*/}
-      {/*      color={colors.accentColor}*/}
-      {/*      style={{ marginHorizontal: "5%" }}*/}
-      {/*    />*/}
-      {/*  </TouchableOpacity>*/}
-      {/*)}*/}
-
-      {/*{hideModal && <CloseButton onPress={hideModal} />}*/}
     </View>
   );
 };
@@ -103,6 +142,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     alignItems: "center",
     width: "100%",
+    flex: 1,
   },
   partyInfoContainer: {
     flex: 1,
@@ -111,6 +151,13 @@ const styles = StyleSheet.create({
     width: "100%",
 
     // maxWidth: "80%",
+  },
+  subtitle: { fontFamily: FontFamily.medium, color: colors.text, fontSize: 15 },
+
+  highlightedText: {
+    color: colors.accentColor,
+    fontFamily: FontFamily.bold,
+    fontSize: 15,
   },
   titleContainer: {
     flexDirection: "row",
@@ -138,6 +185,7 @@ const styles = StyleSheet.create({
   },
   addressTextStyle: {
     fontFamily: FontFamily.bold,
+    flexShrink: 1,
     fontSize: 15,
     color: colors.text_2,
   },

@@ -42,7 +42,9 @@ export function Title({
       <View style={{ flexShrink: 1 }}>
         {title && (
           <View style={styles.titleContainer}>
-            <Text style={[styles.textStyle, fontStyle]}>{title}</Text>
+            <Text style={[styles.textStyle, fontStyle]} numberOfLines={1}>
+              {title}
+            </Text>
             {icon}
           </View>
         )}

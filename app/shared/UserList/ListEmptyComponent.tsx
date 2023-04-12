@@ -1,6 +1,6 @@
 import React from "react";
 
-import { StyleSheet, Text, View } from "react-native";
+import { StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import { colors } from "../../src/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -9,22 +9,38 @@ import ListLoader from "../Loaders/ListLoader";
 
 interface ListEmptyComponentProps {
   title: string;
-  isLoading?: boolean;
+  style?: ViewStyle;
+  icon?: React.ReactNode;
+  textStyle?: TextStyle;
+  buttonContainer?: ViewStyle;
+  button?: React.ReactNode;
 }
 
-const ListEmptyComponent = ({ title, isLoading }: ListEmptyComponentProps) => {
+const ListEmptyComponent = ({
+  title,
+  style,
+  icon,
+  textStyle,
+  buttonContainer,
+  button,
+}: ListEmptyComponentProps) => {
   return (
-    <View style={styles.container}>
+    <View style={(styles.container, style)}>
       <View style={styles.iconContainer}>
-        <MaterialCommunityIcons
-          name="emoticon-sad-outline"
-          size={55}
-          color={colors.iconColor}
-        />
+        {icon ? (
+          icon
+        ) : (
+          <MaterialCommunityIcons
+            name="emoticon-sad-outline"
+            size={55}
+            color={colors.iconColor}
+          />
+        )}
       </View>
       <View style={{}}>
-        <Text style={styles.textStyle}>{title}</Text>
+        <Text style={[styles.textStyle, textStyle]}>{title}</Text>
       </View>
+      <View style={buttonContainer}>{button}</View>
     </View>
   );
 };
@@ -32,12 +48,12 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     width: "100%",
-    justifyContent: "space-evenly",
+    justifyContent: "center",
     alignItems: "center",
     marginTop: "10%",
   },
   iconContainer: {
-    marginVertical: "5%",
+    marginVertical: "1%",
     alignSelf: "center",
   },
   textStyle: {
