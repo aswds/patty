@@ -57,12 +57,23 @@ export default function useUserLocation() {
             longitude: res.coords.longitude,
             longitudeDelta: -0.01,
           });
+
           getAddress(res.coords.latitude, res.coords.longitude).then(
             (r: IFullAddress) => {
               setCity(r?.city);
+              dispatch(
+                updateUserLocation({
+                  city: r?.city,
+                  location: {
+                    latitude: res.coords.latitude,
+                    latitudeDelta: 0,
+                    longitude: res.coords.longitude,
+                    longitudeDelta: -0.01,
+                  },
+                })
+              );
             }
           );
-          dispatch(updateUserLocation({ city: city, location: userLocation }));
         });
       } catch (e: any) {
         setErrorMsg(e);
