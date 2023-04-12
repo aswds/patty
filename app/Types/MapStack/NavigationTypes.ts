@@ -1,5 +1,5 @@
-import { IUser } from "./../User";
-import { IEvent } from "./../Events";
+import { IUser, UserLocation } from "./../User";
+import { GiftsRequireTextTypes, IEvent, RSVP_Types } from "./../Events";
 import { ICoordinates, IFullAddress } from "../Events";
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { IAddress } from "../../screens/Map/PartyCreationScreens/ChooseLocation/types";
@@ -13,29 +13,32 @@ export type MapStackNavigatorParamList = {
   PartyCreationStack: NavigatorScreenParams<PartyCreationNavigatorParamList>;
   Guests: GuestsNavigatorParamList;
   JoinedEvents: JoinedEventsParamList;
+  Party: PartyParamList;
 };
-
+type PartyParamList = {
+  partyData: IEvent;
+};
 type GuestsNavigatorParamList = {
   guests: string[];
-  guest: IUser;
 };
 type JoinedEventsParamList = {
   city: IFullAddress["city"];
 };
 
+type LocationAndTimeParamList = {
+  region?: ICoordinates;
+  address?: IAddress;
+  addressTitle?: string;
+  fullAddressInfo?: IFullAddress;
+  userLocation?: ICoordinates | undefined;
+};
+
 export type PartyCreationNavigatorParamList = {
-  LocationAndTime: {
-    region?: ICoordinates;
-    address?: IAddress;
-    addressTitle?: string;
-    fullAddressInfo?: IFullAddress;
-    userLocation?: ICoordinates | undefined;
-    tags?: string[];
-    title?: string;
-    description?: string;
-  };
+  LocationAndTime: LocationAndTimeParamList;
   ChooseLocation: {
     userLocation?: ICoordinates | undefined;
+    city?: UserLocation["city"];
   };
+  AdditionalInformation: undefined;
   GeneralInformation?: undefined;
 };

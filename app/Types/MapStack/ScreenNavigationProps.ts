@@ -4,6 +4,7 @@ import {
   NativeStackScreenProps,
 } from "@react-navigation/native-stack";
 import {
+  MapNavNavigatorParamList,
   MapStackNavigatorParamList,
   PartyCreationNavigatorParamList,
 } from "./NavigationTypes";
@@ -11,29 +12,16 @@ import {
 export type MapNavigationProps =
   NativeStackNavigationProp<MapStackNavigatorParamList>;
 
+export type MapStackScreenProps<T extends keyof MapStackNavigatorParamList> =
+  NativeStackScreenProps<MapStackNavigatorParamList, T>;
+
+export type PartyCreationStackScreenProps<
+  T extends keyof PartyCreationNavigatorParamList
+> = NativeStackScreenProps<PartyCreationNavigatorParamList, T>;
+
 export type PartyCreationNavigationProps =
   NativeStackNavigationProp<PartyCreationNavigatorParamList>;
 
-export type MapScreenNavigationProps = NativeStackScreenProps<
-  MapStackNavigatorParamList,
-  "Map"
->;
-export type GeneralInformationScreenNavigationProps = NativeStackScreenProps<
-  PartyCreationNavigatorParamList,
-  "GeneralInformation"
->;
-export type LocationAndTimeScreenNavigationProps = NativeStackScreenProps<
-  PartyCreationNavigatorParamList,
-  "LocationAndTime"
->;
-export type ChooseLocationScreenNavigationProps = NativeStackScreenProps<
-  PartyCreationNavigatorParamList,
-  "ChooseLocation"
->;
-export type JoinedEventsScreenNavigationProps = NativeStackScreenProps<
-  MapStackNavigatorParamList,
-  "JoinedEvents"
->;
 export type GuestsScreenNavigationProps = NativeStackScreenProps<
   MapStackNavigatorParamList,
   "Guests"

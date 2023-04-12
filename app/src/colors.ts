@@ -11,16 +11,20 @@ export const colors = {
   iconColor: isDarkTheme ? "#6D6D6D" : "#9d9d9d",
   buttonTextColor: "white",
   mapAccentColor: "rgb(210, 40, 45)", //#D2282D
-  doneButtonBG: isDarkTheme ? "#2B3526" : "#9CC08A", // Profile screen // Edit button
+  doneButtonBG: isDarkTheme ? "#2B3526" : "#000080", // Profile screen // Edit button
   doneButtonText: isDarkTheme ? "#9FC084" : "white", // Profile screen // Edit button
   buttonBG: isDarkTheme ? "rgba(47, 37, 36, 1)" : "rgba(109, 109, 109, 0.1)", // rgba(47, 37, 36,) Profile screen // Edit button
-  buttonText: isDarkTheme ? "rgba(255, 84, 84)" : "black", // Profile screen // Edit button
+  buttonText: isDarkTheme ? "rgba(255, 84, 84, 1)" : "black", // Profile screen // Edit button
   cancel: "#A85959", //TypeError
   blue_text: "#0A67FF",
   partyCreateScreenColors: {
     button: {
       backgroundColor: "#722424",
     },
+  },
+  follow_unfollow_buttons: {
+    follow_button: isDarkTheme ? "#2B3526" : "#000080",
+    unfollow_button: isDarkTheme ? "#2B3526" : "#000080",
   },
   partyMarkerColors: {
     smallGroupOfPeople: "#FF8A8A",
@@ -29,6 +33,7 @@ export const colors = {
   },
   initialScreenButton: isDarkTheme ? "#363636" : "#F6F6F6",
   modalBackground: isDarkTheme ? "#1c1c1c" : "#FFFFFF",
+  mapButtons: isDarkTheme ? "#202020" : "white",
 };
 
 const lightColor = {

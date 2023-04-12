@@ -28,18 +28,34 @@ export interface ITime {
 }
 
 export interface IEvent {
-  title: string;
+  title?: string;
   description?: string;
   tags?: string[];
   location?: ILocation;
   time?: ITime | Date;
-  access: string;
+  rsvp?: RSVP_Types;
+  giftRequired?: GiftsRequireTextTypes;
+  partyPlace?: PartyPlace;
+  foodProvided?: FoodProvided;
+  drinksType?: DrinkTypes;
   guests: string[];
   user: IEvent_User;
   partyID?: string;
 }
-
+export interface IGifts {
+  required: boolean;
+}
 export type IEvent_User = Pick<
   IUser,
   "username" | "surname" | "name" | "image" | "uid"
 >;
+export type RSVP_Types = "Public" | "Via Invite";
+export type GiftsRequireTextTypes = "Required" | "Not Required";
+export type FoodProvided = "Provided" | "Not Provided";
+export type DrinkTypes = "Alcohol" | "Soft";
+export type PartyPlace =
+  | "House"
+  | "Restaurant/Bar"
+  | "Club"
+  | "Event Space"
+  | "Beach/Park";
