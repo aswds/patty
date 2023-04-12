@@ -25,13 +25,12 @@ export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
 
   const allNecessaryDataPresent = general_data && location_time_data;
 
-  function onPress() {
+  async function onPress() {
     if (allNecessaryDataPresent) {
-      joinEvent(_data);
-      addPartyOnMap(_data).then(() => {
-        clearCreateEvents();
-        navigation.navigate("Map");
-      });
+      await addPartyOnMap(_data).then(() => {});
+      await joinEvent(_data);
+      navigation.navigate("Map");
+      clearCreateEvents();
     } else {
       Alert.alert("Please make sure you entered all data.");
     }

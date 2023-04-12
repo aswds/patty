@@ -32,9 +32,7 @@ export async function addPartyOnMap(data: IEvent) {
   const addUserPartyCount = () =>
     new Promise(async (resolve, reject) => {
       await updateDoc(DB_references.user, {
-        events: {
-          eventsCreated: increment(1),
-        },
+        "events.eventsCreated": increment(1),
       }).then(() => {
         resolve("Success");
       });
