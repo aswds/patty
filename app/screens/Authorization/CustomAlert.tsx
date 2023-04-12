@@ -9,27 +9,38 @@ import {
   View,
 } from "react-native";
 
-const CustomAlert = (props) => {
+interface CustomAlertProps {
+  showModal: boolean;
+  hideModal: () => void;
+  errorMsg: string;
+  testID?: string;
+}
+
+const CustomAlert: React.FC<CustomAlertProps> = ({
+  showModal,
+  hideModal,
+  errorMsg,
+}) => {
   return (
-    <View>
+    <View testID="alert">
       <Modal
         animationType="fade"
         transparent={true}
-        visible={props.showModal}
-        onRequestClose={props.hideModal}
+        visible={showModal}
+        onRequestClose={hideModal}
       >
         <Pressable
           style={[
             Platform.OS === "ios" ? styles.iOSBackdrop : styles.androidBackdrop,
             styles.backdrop,
           ]}
-          onPress={props.hideModal}
+          onPress={hideModal}
         />
 
         <SafeAreaView>
           <View style={styles.modalContainer}>
             <View style={styles.textContainer}>
-              <Text style={styles.textStyle}>{props.errorMsg}</Text>
+              <Text style={styles.textStyle}>{errorMsg}</Text>
             </View>
           </View>
         </SafeAreaView>

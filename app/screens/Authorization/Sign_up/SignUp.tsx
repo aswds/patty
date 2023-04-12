@@ -12,7 +12,6 @@ import { BackButton } from "../../../shared/Buttons/BackButton";
 import Button from "../components/Button";
 import Input from "../../../shared/Input/Input";
 import { Logo } from "../components/Logo";
-import { Screen } from "../components/Screen";
 import CustomAlert from "../CustomAlert";
 import { textStyle } from "../style";
 import { Container } from "./Sign_up_components/Container";
@@ -22,6 +21,7 @@ import { signUpHandle } from "./Sign_up_screens/Sign_up_Functions/signUp";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
 import { SignUpRouteProps } from "../../../Types/Authorization/SignUp/RouteTypes";
 import { SignUpNavigationProps } from "../../../Types/Authorization/SignUp/ScreenNavigationProps";
+import { ScreenWithoutMapping } from "../../../shared/Screen/ScreenWithoutMapping";
 
 type SignUpUser = {
   email: string | null;
@@ -107,13 +107,13 @@ const SignUpScreen = ({ navigation }: SignUpNavigationProps) => {
   }
 
   return (
-    <Screen>
+    <ScreenWithoutMapping>
       <BackButton navigation={navigation} />
 
-      <View style={{ marginBottom: "10%" }}>
+      <View style={{ marginBottom: "10%", alignItems: "center" }}>
         <Logo />
       </View>
-      <View>
+      <View style={{ alignItems: "center" }}>
         <Input
           style={styles.inputStyle}
           icon={
@@ -207,13 +207,12 @@ const SignUpScreen = ({ navigation }: SignUpNavigationProps) => {
         <TermText />
         {/* Fix */}
         <CustomAlert
-          errorMsg={errorMsg}
+          errorMsg={errorMsg!}
           hideModal={_hideModal}
           showModal={showModal}
-          setErrorMsg={setErrorMsg}
         />
       </View>
-    </Screen>
+    </ScreenWithoutMapping>
   );
 };
 
@@ -224,7 +223,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   inputStyle: {
-    width: "80%",
+    width: "90%",
     height: 60,
     color: colors.text,
   },
@@ -280,7 +279,7 @@ const styles = StyleSheet.create({
 
     backgroundColor: colors.accentColor,
     height: isAndroid ? "10%" : 70,
-    width: "80%",
+    width: "90%",
     alignSelf: "center",
   },
 });

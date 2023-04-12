@@ -13,7 +13,7 @@ export default function Buttons(props) {
         style={styles.button1}
         onPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
-          navigation.navigate("SignUpNav", { screen: "NameInfo" });
+          navigation.navigate("SignUpNav", { screen: "SignUpScreen" });
         }}
       >
         <Text style={styles.textStyle}>Sign up</Text>

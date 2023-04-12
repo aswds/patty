@@ -6,13 +6,13 @@ import { BackButton } from "../../../shared/Buttons/BackButton";
 import Button from "../components/Button";
 import Input from "../../../shared/Input/Input";
 import { Logo } from "../components/Logo";
-import { Screen } from "../components/Screen";
 import CustomAlert from "../CustomAlert";
 import { textStyle } from "../style";
 import ForgotPassword from "./SignInComponents/ForgotPassword";
 import { user_signIn } from "./SignInComponents/SignInFuncs/signInFunction";
 import { styles } from "./styles";
 import { SignInScreenNavigationProps } from "../../../Types/Authorization/SignIn/ScreenNavigationProps";
+import { Screen } from "../../../shared/Screen/Screen";
 
 const SignInScreen = ({ navigation }: SignInScreenNavigationProps) => {
   // States for email and password validation
@@ -54,7 +54,7 @@ const SignInScreen = ({ navigation }: SignInScreenNavigationProps) => {
 
   return (
     <>
-      <Screen styles={styles} keyboardDismiss={Keyboard.dismiss}>
+      <Screen>
         <BackButton navigation={navigation} />
         <View style={styles.logoContainer}>
           <Logo />
@@ -96,6 +96,7 @@ const SignInScreen = ({ navigation }: SignInScreenNavigationProps) => {
         </View>
         <View style={styles.styledButtonContainer}>
           <Button
+            testID="sign-in-button"
             onPress={() => {
               user_signIn(
                 setEmail,
@@ -114,10 +115,9 @@ const SignInScreen = ({ navigation }: SignInScreenNavigationProps) => {
       </Screen>
 
       <CustomAlert
-        errorMsg={errorMsg}
+        errorMsg={errorMsg!}
         hideModal={_hideModal}
         showModal={_showModal}
-        clearMsg={_clearMsg}
       />
     </>
   );
