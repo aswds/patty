@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { FlatList, StyleSheet } from "react-native";
 
 import Screen from "./components/Screen";
@@ -8,12 +8,15 @@ import Loader from "../../shared/Loaders/Loader";
 import User from "./components/HeaderComponent/User";
 import { IUser } from "../../Types/User";
 import CustomRefreshControl from "../../shared/RefreshControl/RefreshControl";
-import { ProfileScreenNavigationProps } from "../../Types/ProfileStack/ScreenNavigationProps";
 import { BackButton } from "../../shared/Buttons/BackButton";
 import { isAndroid } from "../../src/platform";
+import { ProfileStackScreenNavigationProps } from "../../Types/ProfileStack/ScreenNavigationProps";
 
-function Profile({ navigation, route }: ProfileScreenNavigationProps) {
-  const { current_user, previous_screen } = route.params;
+function Profile({
+  navigation,
+  route,
+}: ProfileStackScreenNavigationProps<"Profile">) {
+  const { current_user } = route.params;
   const [user, setUser] = useState<IUser>(current_user!);
   const updateUser = (newUser: Pick<IUser, "following" | "followers">) => {
     setUser({ ...user, ...newUser });
@@ -23,12 +26,9 @@ function Profile({ navigation, route }: ProfileScreenNavigationProps) {
   if (!user) {
     return <Loader isVisible={Boolean(user)} />;
   }
-  function onPress() {
-    if (previous_screen === "Guests") {
-    } else {
-      return;
-    }
-  }
+  useEffect(() => {
+    setUser(current_user!);
+  }, [current_user]);
   //https://reactjs.org/docs/context.html !!!
   return (
     <Screen>
