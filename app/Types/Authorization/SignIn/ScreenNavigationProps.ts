@@ -1,12 +1,11 @@
-import { NativeStackScreenProps } from "@react-navigation/native-stack";
+import {
+  NativeStackNavigationProp,
+  NativeStackScreenProps,
+} from "@react-navigation/native-stack";
 import { SignInNavigatorParamList } from "./NavigationTypes";
 
-export type SignInScreenNavigationProps = NativeStackScreenProps<
-  SignInNavigatorParamList,
-  "SignInScreen"
->;
+export type SignInStackScreenProps<T extends keyof SignInNavigatorParamList> =
+  NativeStackScreenProps<SignInNavigatorParamList, T>;
 
-export type RecoveryScreenNavigationProps = NativeStackScreenProps<
-  SignInNavigatorParamList,
-  "Recovery"
->;
+export type SignInNavigationProp =
+  NativeStackNavigationProp<SignInNavigatorParamList>;

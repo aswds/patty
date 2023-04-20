@@ -12,6 +12,11 @@ export type ProfileNavigatorParamList = {
     previous_screen?: "Guests";
   };
   EditProfile: {
-    current_user: IUser;
+    current_user?: IUser;
+    bio?: IUser["bio"];
+  };
+  ChangeEmail: {};
+  ChangeBio: {
+    bio?: string;
   };
 };

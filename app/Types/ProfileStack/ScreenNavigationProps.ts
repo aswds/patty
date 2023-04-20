@@ -10,11 +10,6 @@ import {
 export type ProfileNavigationProps =
   NativeStackNavigationProp<ProfileNavNavigatorParamList>;
 
-export type ProfileScreenNavigationProps = NativeStackScreenProps<
-  ProfileNavigatorParamList,
-  "Profile"
->;
-export type EditProfileScreenNavigationProps = NativeStackScreenProps<
-  ProfileNavigatorParamList,
-  "EditProfile"
->;
+export type ProfileStackScreenNavigationProps<
+  T extends keyof ProfileNavigatorParamList
+> = NativeStackScreenProps<ProfileNavigatorParamList, T>;

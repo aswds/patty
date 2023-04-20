@@ -1,8 +1,7 @@
 import { NavigatorScreenParams } from "@react-navigation/native";
 
-export type SignUpNavNavigatorParamList = {
-  SignUp: NavigatorScreenParams<SignUpNavigatorParamList>;
-};
+export type SignUpNavNavigatorParamList =
+  NavigatorScreenParams<SignUpNavigatorParamList>;
 
 type Username = {
   name: string;

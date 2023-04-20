@@ -1,10 +1,8 @@
-import { GuestsScreenRouteProps } from "./RouteTypes";
 import {
   NativeStackNavigationProp,
   NativeStackScreenProps,
 } from "@react-navigation/native-stack";
 import {
-  MapNavNavigatorParamList,
   MapStackNavigatorParamList,
   PartyCreationNavigatorParamList,
 } from "./NavigationTypes";

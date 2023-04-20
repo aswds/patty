@@ -12,6 +12,12 @@ export interface UserLocation {
   location?: Region;
 }
 
+export interface EditUser {
+  username: IUser["username"];
+  name: IUser["name"];
+  surname: IUser["surname"];
+}
+
 export interface IUser {
   username?: string;
   userLocation?: UserLocation;
