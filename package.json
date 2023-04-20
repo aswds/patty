@@ -36,6 +36,7 @@
     "expo-splash-screen": "^0.17.5",
     "expo-status-bar": "~1.4.2",
     "firebase": "^9.10.0",
+    "firebase-admin": "^11.6.0",
     "geolib": "^3.3.3",
     "jest": "^26.6.3",
     "jest-expo": "^48.0.2",

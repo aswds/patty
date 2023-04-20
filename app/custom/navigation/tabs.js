@@ -1,4 +1,6 @@
-import {createBottomTabNavigator} from "@react-navigation/bottom-tabs";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import Icon from "../../shared/Icons/Icon";
+import { Feather } from "@expo/vector-icons";
 
 const Tab = createBottomTabNavigator();
 
@@ -37,7 +39,6 @@ export const Tabs = () => {
       {/*    },*/}
       {/*  }}*/}
       {/*/>*/}
-
       {/*<Tab.Screen*/}
       {/*  name="MapNav"*/}
       {/*  component={MapStack}*/}

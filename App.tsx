@@ -11,9 +11,6 @@ import {
   SafeAreaProvider,
   initialWindowMetrics,
 } from "react-native-safe-area-context";
-import { getAddress } from "./app/shared/GetLocationFunctions/getAddress";
-import { UserLocation } from "./app/Types/User";
-import { useActions } from "./app/hooks/useActions";
 import { isDarkTheme } from "./app/src/theme";
 // Setting splash screen
 SplashScreen.preventAutoHideAsync();
@@ -34,20 +31,10 @@ export default function App() {
   useEffect(() => {
     async function prepare() {
       try {
-        let userLocation: UserLocation = {
-          city: "",
-          location: {
-            longitude: 0,
-            latitude: 0,
-            latitudeDelta: 0,
-            longitudeDelta: 0,
-          },
-        };
         // Pre-load fonts, make any API calls you need to do here
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Please remove this if you copy and paste the code!
         await cacheResources();
-        await getUserLocation();
         // await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
       } finally {
@@ -66,7 +53,7 @@ export default function App() {
       // loading its initial state and rendering its first pixels. So instead,
       // we hide the splash screen once we know the root view has already
       // performed layout.
-      // await SplashScreen.hideAsync();
+      // SplashScreen.hideAsync()
     }
   }, [appIsReady]);
 
