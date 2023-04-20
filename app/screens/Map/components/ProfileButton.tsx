@@ -1,6 +1,12 @@
 import React from "react";
 
-import { Image, StyleSheet, TouchableOpacity, ViewStyle } from "react-native";
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ViewStyle,
+} from "react-native";
 import { useNavigation } from "@react-navigation/native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import * as Haptics from "expo-haptics";
@@ -37,7 +43,10 @@ const ProfileButton = ({
           },
         });
       else {
-        console.log("no user");
+        Alert.alert(
+          "Oops!",
+          "It looks like the user you're trying to reach doesn't exist in our system."
+        );
       }
     });
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);

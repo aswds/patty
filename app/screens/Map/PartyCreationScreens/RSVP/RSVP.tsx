@@ -12,7 +12,6 @@ interface RsvpProps {
 
 const Rsvp: React.FC<RsvpProps> = ({ onRsvpUpdate }) => {
   const handleRsvp = (value: RSVP_Types) => {
-    console.log(value);
     onRsvpUpdate(value);
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
   };

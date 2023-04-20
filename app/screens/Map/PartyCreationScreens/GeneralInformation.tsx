@@ -9,6 +9,7 @@ import NavigationBar from "./NavigationBar";
 import { IEvent, RSVP_Types } from "../../../Types/Events";
 import RSVP from "./RSVP/RSVP";
 import { useActions } from "../../../hooks/useActions";
+import { ScreenCreateParty } from "../../../shared/Screen/ScreenCreateParty";
 
 const GeneralInformation = ({
   navigation,
@@ -35,7 +36,7 @@ const GeneralInformation = ({
     navigation.navigate("LocationAndTime", {});
   };
   return (
-    <Screen>
+    <ScreenCreateParty>
       <NavigationBar navigation={navigation} text={"General information"} />
       <PickTitle setTitle={setTitle} title={title} />
       <Description setDescription={setDescription} description={description} />
@@ -48,7 +49,7 @@ const GeneralInformation = ({
         isValueEntered={isValueEntered}
         error={"information"}
       />
-    </Screen>
+    </ScreenCreateParty>
   );
 };
 

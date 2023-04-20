@@ -5,6 +5,7 @@ import { TwoButtonsText } from "../../../../shared/Buttons/Types/TwoButtonsType"
 import { GiftsRequireTextTypes } from "../../../../Types/Events";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { colors } from "../../../../src/colors";
+import { Title } from "../../../../shared/Title/Title";
 
 interface GiftsProps {
   onGiftUpdate: (value: GiftsRequireTextTypes) => void;
@@ -18,7 +19,7 @@ const Gifts: React.FC<GiftsProps> = ({ onGiftUpdate }) => {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.heading}>Gift:</Text>
+      <Title title="Gift" />
       <TwoButtons
         onButtonUpdate={onGiftUpdate}
         buttonsText={buttonsText}

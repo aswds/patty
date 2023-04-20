@@ -71,7 +71,11 @@ export default function ChooseLocation({
             Address={addressInfo?.label}
             showOutsideCityError={addressInfo?.city != city}
           />
-          <ChooseLocationButton region={region} fullAddress={addressInfo} />
+          <ChooseLocationButton
+            region={region}
+            fullAddress={addressInfo}
+            outsideCity={addressInfo?.city != city}
+          />
         </View>
       </TouchableWithoutFeedback>
     </View>

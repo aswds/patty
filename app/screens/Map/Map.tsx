@@ -15,6 +15,8 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import SearchEventsModal from "../Modals/SearchEventsModal/SearchEventsModal";
 import mapStyle from "./mapStyle.json";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { useFocusEffect } from "@react-navigation/native";
+import { clearCreateEvents } from "../../redux/reducers/CreateEvent";
 interface MapProps extends MapStackScreenProps<"Map"> {}
 
 function Map({ navigation }: MapProps) {
@@ -43,8 +45,12 @@ function Map({ navigation }: MapProps) {
   useEffect(() => {
     fetch_user();
   }, []);
-
+  useEffect(() => {}, [userLocation]);
+  useFocusEffect(() => {
+    clearCreateEvents();
+  });
   // functions
+
   function animateToRegion(region: Region) {
     mapRef.current?.animateToRegion(
       {
@@ -61,7 +67,9 @@ function Map({ navigation }: MapProps) {
       setMarkerInfo({ ...markerInfo, ...newData });
     }
   }
-
+  function snapTo(index: number) {
+    searchEventsModalRef.current?.snapToIndex(index);
+  }
   //Render
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -72,7 +80,10 @@ function Map({ navigation }: MapProps) {
           provider={PROVIDER_DEFAULT}
           style={StyleSheet.absoluteFill}
           customMapStyle={mapStyle}
-          onMapReady={() => animateToRegion(userLocation!)}
+          onMapReady={() => {
+            console.log(userLocation);
+            animateToRegion(userLocation!);
+          }}
           // initialRegion={userLocation}
           paddingAdjustmentBehavior={"automatic"}
           showsUserLocation
@@ -122,6 +133,7 @@ function Map({ navigation }: MapProps) {
         <SearchEventsModal
           modalRef={searchEventsModalRef}
           city={city!}
+          snapTo={snapTo}
           animateToRegion={animateToRegion}
           events={events}
         />

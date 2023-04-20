@@ -10,6 +10,7 @@ import { joinEvent } from "../../Firebase/fetchUserJoinedEvents";
 import { AdditionalInformationData } from "../../../../redux/reducers/CreateEvent";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { useActions } from "../../../../hooks/useActions";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
 
 interface CreatePartyButtonProps {
   data: AdditionalInformationData;
@@ -17,6 +18,7 @@ interface CreatePartyButtonProps {
 
 export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
   const navigation = useNavigation<MapNavigationProps>();
+  const insets = useSafeAreaInsets();
   const { clearCreateEvents } = useActions();
   const { general_data, location_time_data } = useTypedSelector(
     (state) => state.create_events_state
@@ -36,7 +38,7 @@ export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
     }
   }
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { bottom: insets.bottom }]}>
       <TouchableOpacity style={styles.buttonBg} onPress={onPress}>
         <Text style={styles.textStyle}>Create</Text>
       </TouchableOpacity>
@@ -46,18 +48,23 @@ export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: "auto",
-    width: "100%",
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    left: 0,
+    alignItems: "center",
   },
   buttonBg: {
     backgroundColor: colors.accentColor,
     height: 50,
-    marginTop: "10%",
-    width: "100%",
+    width: "90%",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.5,
+    shadowRadius: 5,
+    elevation: 5,
     borderRadius: 999999,
     justifyContent: "center",
     alignItems: "center",
-    alignSelf: "center",
   },
   textStyle: {
     fontFamily: FontFamily.bold,

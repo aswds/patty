@@ -10,11 +10,13 @@ import { ICoordinates, IFullAddress } from "../../../../../Types/Events";
 interface ChooseLocationButtonProps {
   region: ICoordinates | undefined;
   fullAddress: IFullAddress | undefined;
+  outsideCity: boolean;
 }
 
 export default function ChooseLocationButton({
   region,
   fullAddress,
+  outsideCity,
 }: ChooseLocationButtonProps) {
   const navigation = useNavigation<PartyCreationNavigationProps>();
   return (
@@ -22,7 +24,7 @@ export default function ChooseLocationButton({
       <TouchableOpacity
         style={styles.button}
         onPress={() => {
-          if (fullAddress?.label && region) {
+          if (fullAddress?.label && region && !outsideCity) {
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             navigation.navigate("LocationAndTime", {
               region: region,

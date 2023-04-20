@@ -13,6 +13,7 @@ import NavigationBar from "./NavigationBar";
 import { PartyCreationStackScreenProps } from "../../../Types/MapStack/ScreenNavigationProps";
 import CreatePartyButton from "./components/CreatePartyButton";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { ScreenCreateParty } from "../../../shared/Screen/ScreenCreateParty";
 
 const AdditionalInformation = ({
   navigation,
@@ -49,23 +50,17 @@ const AdditionalInformation = ({
     setFoodProvided,
   };
 
-  // const handleFoodAndDrinkUpdate = (foodAndDrinkData: {
-  //   drinksType: DrinkTypes;
-  //   foodProvided: FoodProvided;
-  // }) => {
-  //   setDrinksType(drinksType);
-  //   setFoodProvided(foodProvided);
-  // };
   function onGiftUpdate(value: GiftsRequireTextTypes) {
     setGiftsRequired(value);
   }
   return (
-    <Screen>
+    <ScreenCreateParty
+      createPartyButton={<CreatePartyButton data={eventData} />}
+    >
       <NavigationBar navigation={navigation} text="Additional information" />
       <FoodAndDrinkList onUpdate={updateFunctions} />
       <Gifts onGiftUpdate={onGiftUpdate} />
-      <CreatePartyButton data={eventData} />
-    </Screen>
+    </ScreenCreateParty>
   );
 };
 
