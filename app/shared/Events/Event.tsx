@@ -9,11 +9,19 @@ import {
 import type { IEvent, IFullAddress } from "../../Types/Events";
 import moment from "moment/moment";
 import { colors } from "../../src/colors";
-import { Octicons } from "@expo/vector-icons";
+import {
+  AntDesign,
+  Entypo,
+  Feather,
+  FontAwesome5,
+  MaterialCommunityIcons,
+  Octicons,
+} from "@expo/vector-icons";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import UserInfo from "./UserInfo";
 import { useNavigation } from "@react-navigation/native";
 import { MapNavigationProps } from "../../Types/MapStack/ScreenNavigationProps";
+import PartyInfoIcon from "../Icons/PartyInfoIcon";
 
 interface ITopInfo {
   markerInfo: IEvent;
@@ -21,6 +29,11 @@ interface ITopInfo {
   style?: ViewStyle;
   onFavoritePress?: () => void;
 }
+
+const mainIconSize = 34;
+
+const additionalInfoIcons = 20;
+
 function Title({ title }: { title: string }) {
   return (
     <Text style={styles.textTitleStyle} numberOfLines={1}>
@@ -32,7 +45,12 @@ function Title({ title }: { title: string }) {
 function PartyDate({ date }: { date: Date }) {
   const createDate = new Date(date);
   return (
-    <Text style={styles.dateTextStyle}>{moment(createDate).format("lll")}</Text>
+    <PartyInfoIcon
+      Icon={MaterialCommunityIcons}
+      name={"calendar-month"}
+      text={moment(createDate).format("lll")}
+      textStyle={styles.dateTextStyle}
+    />
   );
 }
 const Address = ({
@@ -43,17 +61,24 @@ const Address = ({
   partyPlace: IEvent["partyPlace"];
 }) => {
   return (
-    <Text style={styles.addressTextStyle}>
-      {address?.street} {"," && address?.houseNumber}{" "}
-      <Text
-        style={[
-          styles.highlightedText,
-          { color: colors.accentColor, fontSize: 13 },
-        ]}
-      >
-        - {partyPlace}
-      </Text>
-    </Text>
+    <PartyInfoIcon
+      Icon={MaterialCommunityIcons}
+      name={"map-marker"}
+      text={
+        <Text style={styles.addressTextStyle}>
+          {address?.street} {"," && address?.houseNumber}{" "}
+          <Text
+            style={[
+              styles.highlightedText,
+              { color: colors.accentColor, fontSize: 13 },
+            ]}
+          >
+            - {partyPlace}
+          </Text>
+        </Text>
+      }
+      textStyle={styles.dateTextStyle}
+    />
   );
 };
 const DrinksAndFood = ({
@@ -69,23 +94,42 @@ const DrinksAndFood = ({
         justifyContent: "space-evenly",
       }}
     >
-      <Text style={styles.subtitle}>
-        food: <Text style={styles.highlightedText}>{food}</Text>
-      </Text>
-      <Text style={styles.subtitle}>
-        drinks: <Text style={styles.highlightedText}>{drinks}</Text>
-      </Text>
+      <PartyInfoIcon
+        Icon={MaterialCommunityIcons}
+        name="food-outline"
+        text={
+          <Text style={styles.subtitle}>
+            food: <Text style={styles.highlightedText}>{food}</Text>
+          </Text>
+        }
+        iconSize={additionalInfoIcons}
+      />
+      <PartyInfoIcon
+        Icon={FontAwesome5}
+        name="wine-bottle"
+        text={
+          <Text style={styles.subtitle}>
+            drinks: <Text style={styles.highlightedText}>{drinks}</Text>
+          </Text>
+        }
+        iconSize={additionalInfoIcons}
+      />
     </View>
   );
 };
 
 const Gift = ({ giftRequired }: { giftRequired: IEvent["giftRequired"] }) => {
   return (
-    <View>
-      <Text style={styles.subtitle}>
-        gift:<Text style={styles.highlightedText}> {giftRequired}</Text>
-      </Text>
-    </View>
+    <PartyInfoIcon
+      Icon={AntDesign}
+      name="gift"
+      text={
+        <Text style={styles.subtitle}>
+          gift:<Text style={styles.highlightedText}> {giftRequired}</Text>
+        </Text>
+      }
+      iconSize={additionalInfoIcons}
+    />
   );
 };
 
@@ -144,6 +188,7 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
   },
+
   partyInfoContainer: {
     flex: 1,
     marginVertical: 5,
@@ -152,7 +197,11 @@ const styles = StyleSheet.create({
 
     // maxWidth: "80%",
   },
-  subtitle: { fontFamily: FontFamily.medium, color: colors.text, fontSize: 15 },
+  subtitle: {
+    fontFamily: FontFamily.medium,
+    color: colors.text_2,
+    fontSize: 15,
+  },
 
   highlightedText: {
     color: colors.accentColor,
@@ -188,8 +237,9 @@ const styles = StyleSheet.create({
     flexShrink: 1,
     fontSize: 15,
     color: colors.text_2,
+    marginLeft: 10,
   },
-
+  textWithIconStyle: { marginLeft: 10 },
   dateTextStyle: {
     fontFamily: FontFamily.bold,
     fontSize: 17,

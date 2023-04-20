@@ -1,5 +1,6 @@
-import React, { Dispatch, SetStateAction } from "react";
+import React, { Dispatch, SetStateAction, useEffect } from "react";
 import {
+  Keyboard,
   StyleSheet,
   TextInput,
   TextInputProps,
@@ -14,18 +15,26 @@ interface SearchBarProps extends TextInputProps {
   icon?: React.ReactNode;
   containerStyle: ViewStyle;
   onPressClear: () => void;
+  snapTo: any;
 }
 
 export default function SearchBar({
   containerStyle,
   icon,
   onPressClear,
+  snapTo,
   ...textInputProps
 }: SearchBarProps) {
   return (
     <View style={[styles.container, containerStyle]}>
       {icon}
-      <BottomSheetTextInput {...textInputProps} keyboardAppearance={"dark"} />
+      <BottomSheetTextInput
+        {...textInputProps}
+        keyboardAppearance={"dark"}
+        onBlur={() => {
+          snapTo(1);
+        }}
+      />
       <TouchableOpacity style={{}} onPress={onPressClear}>
         <Ionicons name="close-circle" size={24} color={colors.iconColor} />
       </TouchableOpacity>

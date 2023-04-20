@@ -6,30 +6,52 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   View,
+  ViewStyle,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../src/colors";
 import { isAndroid } from "../../src/platform";
 import { PropsWithChildren } from "react";
-interface ScreenProps extends PropsWithChildren {}
-export const ScreenWithoutMapping = ({ children }: ScreenProps) => {
+interface ScreenProps extends PropsWithChildren {
+  createPartyButton?: React.ReactNode;
+  containerStyle?: ViewStyle;
+  keyboardOffset?: number;
+}
+export const ScreenCreateParty = ({
+  children,
+  createPartyButton,
+  containerStyle,
+  keyboardOffset,
+}: ScreenProps) => {
   const insets = useSafeAreaInsets();
   return (
-    <View style={styles.container}>
+    <View style={styles.container} testID="screen">
       <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
         <KeyboardAvoidingView
           behavior={!isAndroid ? "padding" : "height"}
           style={styles.viewStyle}
+          keyboardVerticalOffset={keyboardOffset}
         >
           <ScrollView
             showsVerticalScrollIndicator={false}
             style={{
               flex: 1,
-              paddingTop: insets.top,
             }}
-            contentContainerStyle={styles.scrollViewContainer}
+            contentContainerStyle={[
+              styles.scrollViewContainer,
+              {
+                paddingTop: insets.top,
+              },
+              containerStyle,
+            ]}
+            showsHorizontalScrollIndicator={false}
           >
-            {children}
+            {React.Children.map(children, (children) => (
+              <View style={{ marginBottom: "5%" }} pointerEvents="auto">
+                {children}
+              </View>
+            ))}
+            {createPartyButton}
           </ScrollView>
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
@@ -39,12 +61,9 @@ export const ScreenWithoutMapping = ({ children }: ScreenProps) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
     backgroundColor: colors.background,
   },
   scrollViewContainer: {
-    flexGrow: 1,
-    justifyContent: "center",
     padding: 20,
   },
   viewStyle: {

@@ -6,13 +6,16 @@ import {
   StyleSheet,
   TouchableWithoutFeedback,
   View,
+  ViewStyle,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../src/colors";
 import { isAndroid } from "../../src/platform";
 import { PropsWithChildren } from "react";
-interface ScreenProps extends PropsWithChildren {}
-export const Screen = ({ children }: ScreenProps) => {
+interface ScreenProps extends PropsWithChildren {
+  style?: ViewStyle;
+}
+export const Screen = ({ children, style }: ScreenProps) => {
   const insets = useSafeAreaInsets();
   return (
     <View style={styles.container}>
@@ -27,7 +30,8 @@ export const Screen = ({ children }: ScreenProps) => {
               flex: 1,
               paddingTop: insets.top,
             }}
-            contentContainerStyle={styles.scrollViewContainer}
+            contentContainerStyle={[styles.scrollViewContainer, style]}
+            pointerEvents="auto"
           >
             {children}
           </ScrollView>

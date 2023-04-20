@@ -2,16 +2,16 @@ import React, { useState } from "react";
 import { FlatList, FlatListProps } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import UserListHeader from "./UserListHeader";
-import UserItem from "./UserItem";
 import { IUser } from "../../Types/User";
 import ListEmptyComponent from "./ListEmptyComponent";
-import { useFocusEffect } from "@react-navigation/native";
+import ListLoader from "../Loaders/ListLoader";
 
-interface UserListProps extends FlatListProps<IUser> {}
+interface UserListProps extends FlatListProps<IUser> {
+  isLoading: boolean;
+}
 
-const UserList = ({ ...flatlistProps }: UserListProps) => {
+const UserList = ({ isLoading, ...flatlistProps }: UserListProps) => {
   const insets = useSafeAreaInsets();
-  useFocusEffect(() => {});
   return (
     <FlatList
       ListHeaderComponent={UserListHeader}
@@ -20,9 +20,13 @@ const UserList = ({ ...flatlistProps }: UserListProps) => {
         paddingBottom: insets.bottom + 110,
       }}
       showsVerticalScrollIndicator={false}
-      ListEmptyComponent={
-        <ListEmptyComponent title="It looks like there's no one here" />
-      }
+      ListEmptyComponent={() => {
+        return isLoading ? (
+          <ListLoader />
+        ) : (
+          <ListEmptyComponent title="It looks like there's no one here" />
+        );
+      }}
       {...flatlistProps}
     />
   );

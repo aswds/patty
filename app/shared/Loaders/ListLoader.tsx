@@ -17,6 +17,7 @@ export default ListLoader;
 const styles = StyleSheet.create({
   loaderContainer: {
     flex: 1,
+    marginVertical: "5%",
     justifyContent: "center",
     alignItems: "center",
     backgroundColor: "transparent",

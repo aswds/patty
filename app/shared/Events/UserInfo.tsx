@@ -1,6 +1,13 @@
 import React, { useState } from "react";
 
-import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import {
+  Alert,
+  Image,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from "react-native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import { colors } from "../../src/colors";
 import { IEvent_User } from "../../Types/Events";
@@ -26,7 +33,10 @@ const UserInfo: React.FC<UserInfoProps> = ({ user }) => {
           },
         });
       else {
-        console.log("no user");
+        Alert.alert(
+          "Oops!",
+          "It looks like the user you're trying to find doesn't exist in our system."
+        );
       }
     });
   }

@@ -28,16 +28,15 @@ export function Title({
 }: ITitle) {
   return (
     <View style={[styles.container, containerStyle]}>
-      <View style={styles.backButtonContainer}>
-        {!navigation && modalIcon}
-        {navigation && !modalIcon && (
+      {navigation && !modalIcon && (
+        <View style={styles.backButtonContainer}>
           <BackButton
             navigation={navigation}
             style={[backButtonStyle, { left: 0, position: "relative" }]}
             iconName="arrow-left"
           />
-        )}
-      </View>
+        </View>
+      )}
 
       <View style={{ flexShrink: 1 }}>
         {title && (
