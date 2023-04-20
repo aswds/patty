@@ -29,7 +29,6 @@ const PartyScreen = ({ navigation, route }: MapStackScreenProps<"Party">) => {
         <Header navigation={navigation} title={party.title} user={party.user} />
         {/* <CollaborativePlaylistScreen /> */}
         <TrackInfo trackInfo={trackInfo} />
-        <Announcements />
         {/* <TrackInfo trackInfo={trackInfo} /> */}
         <View></View>
       </View>
