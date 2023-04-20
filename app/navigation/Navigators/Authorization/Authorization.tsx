@@ -7,13 +7,7 @@ import React from "react";
 import InitialScreen from "../../../screens/Authorization/Initial_Screen/InitialScreen";
 import SignUpNav from "./SignUpNav";
 import SignInNav from "./SignInNav";
-import { SignUpNavNavigatorParamList } from "../../../Types/Authorization/SignUp/NavigationTypes";
-
-type AuthorizationParamList = {
-  InitialScreen: undefined;
-  SignInNav: undefined;
-  SignUpNav: SignUpNavNavigatorParamList;
-};
+import { AuthorizationParamList } from "../../../Types/Authorization/Auth/NavigationTypes";
 
 const Stack = createNativeStackNavigator<AuthorizationParamList>();
 
