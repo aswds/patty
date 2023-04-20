@@ -13,11 +13,14 @@ export default function Guests({
 }: GuestsScreenNavigationProps) {
   const [guestsUIDs, _] = useState<string[]>(route.params?.guests);
   const [guests, setGuests] = useState<IUser[]>([]);
+  const [isLoading, setIsLoading] = useState<boolean>(true);
   useFocusEffect(
     useCallback(() => {
+      setIsLoading(true);
       if (guestsUIDs.length > 0) {
         fetchGuests(guestsUIDs).then((guests) => {
           setGuests(guests);
+          setIsLoading(false);
         });
       }
     }, [])
@@ -25,6 +28,7 @@ export default function Guests({
   return (
     <Screen>
       <UserList
+        isLoading={isLoading}
         data={guests}
         renderItem={({ item, index }) => <UserItem _user={item} key={index} />}
         keyExtractor={(item, index) => item.uid!}

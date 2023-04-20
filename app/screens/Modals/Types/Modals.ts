@@ -1,4 +1,4 @@
-import { ForwardedRef, MutableRefObject } from "react";
+import { ForwardedRef, MutableRefObject, RefObject } from "react";
 import BottomSheet from "@gorhom/bottom-sheet";
 
 export type ModalProps = {

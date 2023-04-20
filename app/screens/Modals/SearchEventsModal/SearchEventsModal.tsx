@@ -1,10 +1,17 @@
-import React, { useEffect, useMemo, useState } from "react";
-import { StyleSheet, View, Text } from "react-native";
+import React, {
+  MutableRefObject,
+  RefObject,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from "react";
+import { StyleSheet, View, Text, Keyboard } from "react-native";
 import BottomSheet, {
   BottomSheetFlatList,
   BottomSheetTextInput,
 } from "@gorhom/bottom-sheet";
-
+import { Fontisto } from "@expo/vector-icons";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Region } from "react-native-maps";
 import { ModalProps } from "../Types/Modals";
@@ -14,23 +21,31 @@ import RenderItem from "../../Map/JoinedEvents/RenderItem";
 import SearchBar from "../../../shared/Searcher/SearchBar";
 import { Feather } from "@expo/vector-icons";
 import _ from "lodash";
+import ListEmptyComponent from "../../../shared/UserList/ListEmptyComponent";
 interface SearchEventsModalProps extends ModalProps {
   city: string;
   animateToRegion: (region: Region) => void;
   title?: JSX.Element;
   events: IEvent[];
+  snapTo: (index: number) => void;
 }
 
 const SearchEventsModal: React.FC<SearchEventsModalProps> = ({
   modalRef,
   onClose,
   animateToRegion,
-  title,
+  snapTo,
   events,
 }) => {
   //states
   const [searchText, setSearchText] = useState<string>();
   const [_events, setEvents] = useState<IEvent[]>(events);
+  const searchModalRef = useRef<BottomSheet>();
+
+  //useEffects
+  useEffect(() => {
+    setEvents(events);
+  }, [events]);
 
   // variables
   const snapPoints = useMemo(() => ["50%", "70%"], []);
@@ -49,7 +64,6 @@ const SearchEventsModal: React.FC<SearchEventsModalProps> = ({
 
   function includesValue(tags: IEvent["tags"], formatQuery: string) {
     return tags!.some((element) => {
-      console.log(element.toLowerCase().search(new RegExp(formatQuery, "i")));
       return element.search(new RegExp(formatQuery, "i")) >= 0;
     });
   }
@@ -104,7 +118,9 @@ const SearchEventsModal: React.FC<SearchEventsModalProps> = ({
                 style={{ paddingRight: 5 }}
               />
             }
-            onPressClear={() => setSearchText("")}
+            onPressClear={() => {
+              setSearchText(""), setEvents(events);
+            }}
             containerStyle={styles.searchBarContainerStyle}
             style={{
               flex: 1,
@@ -113,10 +129,24 @@ const SearchEventsModal: React.FC<SearchEventsModalProps> = ({
             placeholder={"Search parties by tag or title"}
             onChangeText={handleSearch}
             value={searchText}
+            snapTo={snapTo}
           />
         }
         showsHorizontalScrollIndicator={false}
         showsVerticalScrollIndicator={false}
+        ListEmptyComponent={
+          <ListEmptyComponent
+            title="sorry, no results found."
+            icon={
+              <Fontisto
+                name="cloudy-gusts"
+                size={40}
+                color={colors.text}
+                style={{ marginVertical: "5%" }}
+              />
+            }
+          />
+        }
         data={_events}
         renderItem={renderItem}
       />
