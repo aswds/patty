@@ -3,6 +3,7 @@ import {
   Keyboard,
   KeyboardAvoidingView,
   Platform,
+  ScrollView,
   StyleSheet,
   TouchableWithoutFeedback,
   View,
@@ -11,7 +12,10 @@ import { colors } from "../../../src/colors";
 
 const Screen = ({ children }) => {
   return (
-    <View style={styles.container}>
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={{ flexGrow: 1 }}
+    >
       <TouchableWithoutFeedback
         onPress={() => {
           Keyboard.dismiss();
@@ -24,7 +28,7 @@ const Screen = ({ children }) => {
           {children}
         </KeyboardAvoidingView>
       </TouchableWithoutFeedback>
-    </View>
+    </ScrollView>
   );
 };
 const styles = StyleSheet.create({

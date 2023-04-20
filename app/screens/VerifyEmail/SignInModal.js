@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import Input from "../../shared/Input/Input";
-import Button from "../Authorization/components/Button";
+import BigButton from "../Authorization/components/BigButton";
 import { colors } from "../../src/colors";
 
 const SignInModal = (props) => {
@@ -43,7 +43,7 @@ const SignInModal = (props) => {
                 <Input style={styles.inputStyle} />
                 <Input style={styles.inputStyle} />
               </View>
-              <Button>Hello</Button>
+              <BigButton>Hello</BigButton>
             </View>
           </View>
         </SafeAreaView>

@@ -13,7 +13,7 @@ import { MaterialIcons } from "@expo/vector-icons";
 import { auth } from "../../../firebase";
 import { sendEmailVerification, updateCurrentUser } from "firebase/auth";
 import { useNavigation, useRoute } from "@react-navigation/native";
-import Button from "../Authorization/components/Button";
+import BigButton from "../Authorization/components/BigButton";
 import { eventEmitter } from "../../custom/EventEmitter";
 import { EMAIL_VERIFICATION } from "../constans";
 import { FontFamily } from "../../../assets/fonts/Fonts";
@@ -136,7 +136,7 @@ const VerifyEmail = (props) => {
       }
     }
     return (
-      <Button
+      <BigButton
         style={{
           backgroundColor: canSend ? colors.accentColor : colors.disabledButton,
         }}

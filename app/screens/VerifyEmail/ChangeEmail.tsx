@@ -1,21 +1,29 @@
+// import React and necessary components from react-native
 import React, { useState } from "react";
-// import forgotPassword from "../../components/forgotPassword";
 import { Alert, Dimensions, StyleSheet, Text, View } from "react-native";
+// import vector icons from expo
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
-import Button from "../Authorization/components/Button";
-import { colors } from "../../src/colors";
+// import custom components
+import BigButton from "../Authorization/components/BigButton";
 import Input from "../../shared/Input/Input";
 import { BackButton } from "../../shared/Buttons/BackButton";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { updateEmail } from "firebase/auth";
-import { auth } from "../../../firebase";
-import { error_handle } from "../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/error_handle";
-import CustomAlert from "../Authorization/CustomAlert";
-import { set_errorMsg_errorType } from "../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/signUp";
-import { FontFamily } from "../../../assets/fonts/Fonts";
+import CustomAlert from "../../shared/Alert/CustomAlert";
 import { Screen } from "../../shared/Screen/Screen";
-
-function ResetText({ isPasswordReset }) {
+// import colors from colors file
+import { colors } from "../../src/colors";
+// import firebase functions
+import { auth } from "../../../firebase";
+// import error handling functions
+import { error_handle } from "../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/error_handle";
+import { set_errorMsg_errorType } from "../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/signUp";
+// import font family
+import { FontFamily } from "../../../assets/fonts/Fonts";
+// import safe area insets
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { VerificationStackScreenProp } from "../../Types/Authorization/Verification/NavigationTypes";
+import { updateEmail } from "firebase/auth";
+// ResetText component to render text based on isPasswordReset boolean value
+function ResetText({ isPasswordReset }: { isPasswordReset?: boolean }) {
   const passRecoveryText = "Reset your password";
   const emailResetText = "Reset your email";
   return (
@@ -34,6 +42,7 @@ function ResetText({ isPasswordReset }) {
   );
 }
 
+// AfterReset component to render text after resetting the email
 function AfterReset() {
   return (
     <View style={styles.textTerms}>
@@ -45,12 +54,19 @@ function AfterReset() {
   );
 }
 
+interface ChangeEmailProps extends VerificationStackScreenProp<"ChangeEmail"> {
+  passRecoveryFunction?: (userEmail: string) => {};
+  isPasswordReset?: boolean;
+}
+// ChangeEmail component to change user's email
 export default function ChangeEmail({
   navigation,
-  passRecoveryFunction,
+  route,
   isPasswordReset,
-}) {
-  const [userEmail, setUserEmail] = useState("");
+  passRecoveryFunction,
+}: ChangeEmailProps) {
+  // declare state variables
+  const [userEmail, setUserEmail] = useState<string>("");
   const [valid, setValid] = useState({
     validEmail: true,
     validPassword: true,
@@ -59,9 +75,12 @@ export default function ChangeEmail({
     message: "",
     showErrorModal: false,
   });
+  // get safe area insets
   const insets = useSafeAreaInsets();
-  function changeEmail(email) {
-    updateEmail(auth.currentUser, email)
+
+  // changeEmail function to update user's email
+  function changeEmail(email: string) {
+    updateEmail(auth.currentUser!, email)
       .then(() => {
         Alert.alert("You'll have to login with changed email");
         navigation.navigate("VerifyEmail", { changedEmail: email });
@@ -69,9 +88,10 @@ export default function ChangeEmail({
       .catch((e) => {
         if (e.code === "auth/requires-recent-login") {
           Alert.alert("You'll have to login with changed email.", "", [
-            { text: "Ok" },
+            { text: "Ok", onPress: async () => await auth.signOut() },
           ]);
         }
+        // error handling
         set_errorMsg_errorType(e.code).catch((e) => {
           error_handle("email", e.message, { valid, setValid }).catch((e) => {
             setError({ message: e, showErrorModal: true });
@@ -79,13 +99,18 @@ export default function ChangeEmail({
         });
       });
   }
+
+  // _hideModal function to hide error modal
   function _hideModal() {
     setError({ ...error, showErrorModal: false });
   }
+
+  // render ChangeEmail component
   return (
     <>
       <Screen>
-        <BackButton navigation={navigation} style={{ marginTop: insets.top }} />
+        <BackButton navigation={navigation} style={{}} />
+
         <View style={styles.container}>
           <ResetText isPasswordReset={isPasswordReset} />
           <Input
@@ -108,20 +133,22 @@ export default function ChangeEmail({
             // defaultValue={user.email}
           />
           {/* kemibrtoik@gmail.com */}
-          <Button
-            style={{
-              ...styles.shadowButton,
-            }}
-            onPress={() => {
-              if (userEmail) {
-                isPasswordReset
-                  ? passRecoveryFunction(userEmail)
-                  : changeEmail(userEmail);
-              }
-            }}
-            textStyle={styles.textStyle}
-            title={"Submit"}
-          />
+          <View>
+            <BigButton
+              style={{
+                ...styles.shadowButton,
+              }}
+              onPress={() => {
+                if (userEmail) {
+                  isPasswordReset && passRecoveryFunction
+                    ? passRecoveryFunction(userEmail)
+                    : changeEmail(userEmail);
+                }
+              }}
+              textStyle={styles.textStyle}
+              title={"Submit"}
+            />
+          </View>
         </View>
 
         <AfterReset />
@@ -155,7 +182,7 @@ const styles = StyleSheet.create({
     height: 60,
     alignSelf: "center",
     marginTop: 30,
-    width: "80%",
+    width: "100%",
   },
   inputField: {
     width: "80%",
