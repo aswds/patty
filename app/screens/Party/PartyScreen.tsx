@@ -9,6 +9,7 @@ import TrackInfo from "./components/TrackInfo";
 import _ from "lodash";
 import Announcements from "./components/Announcements";
 import Buttons from "../Map/components/Buttons/Buttons";
+import PartyStats from "./components/PartyStats";
 const PartyScreen = ({ navigation, route }: MapStackScreenProps<"Party">) => {
   const [party] = useState<IEvent>(route.params.partyData);
   const insets = useSafeAreaInsets();
@@ -27,6 +28,7 @@ const PartyScreen = ({ navigation, route }: MapStackScreenProps<"Party">) => {
     >
       <View style={styles.container}>
         <Header navigation={navigation} title={party.title} user={party.user} />
+        <PartyStats />
         {/* <CollaborativePlaylistScreen /> */}
         <TrackInfo trackInfo={trackInfo} />
         {/* <TrackInfo trackInfo={trackInfo} /> */}
