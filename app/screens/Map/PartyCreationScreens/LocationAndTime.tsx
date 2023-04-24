@@ -17,9 +17,7 @@ const LocationAndTime = ({
   navigation,
 }: PartyCreationStackScreenProps<"LocationAndTime">) => {
   const { fullAddressInfo, region } = route.params;
-  const { city } = useTypedSelector(
-    (state) => state.user_state.current_user.userLocation!
-  );
+
   const { createEventsLocationAndTimeUpdate } = useActions();
   const [time, setTime] = useState<Date>(new Date());
   const [partyPlace, setPartyPlace] = useState<PartyPlace>("House");
@@ -36,11 +34,17 @@ const LocationAndTime = ({
       region,
     });
   }, [route.params.region]);
-  const { userLocation } = useUserLocation();
+  const { userLocation, city } = useUserLocation();
 
   const onPress = () => {
-    createEventsLocationAndTimeUpdate({ location, partyPlace, time });
-    navigation.navigate("AdditionalInformation");
+    if (location && time) {
+      createEventsLocationAndTimeUpdate({
+        location,
+        partyPlace,
+        time: time.toISOString(),
+      });
+      navigation.navigate("AdditionalInformation");
+    }
   };
 
   return (
@@ -63,7 +67,10 @@ const LocationAndTime = ({
       />
       <PartyPlaces handlePartyPlaceUpdate={handlePartyPlaceUpdate} />
       <PickTime setTime={setTime} />
-      <NextButton onPress={onPress} />
+      <NextButton
+        onPress={onPress}
+        isValueEntered={Boolean(location.region && time)}
+      />
     </Screen>
   );
 };

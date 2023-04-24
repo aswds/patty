@@ -36,8 +36,11 @@ const GeneralInformation = ({
     navigation.navigate("LocationAndTime", {});
   };
   return (
-    <ScreenCreateParty>
-      <NavigationBar navigation={navigation} text={"General information"} />
+    <ScreenCreateParty
+      navigationBar={
+        <NavigationBar navigation={navigation} text={"General information"} />
+      }
+    >
       <PickTitle setTitle={setTitle} title={title} />
       <Description setDescription={setDescription} description={description} />
       <RSVP onRsvpUpdate={handleRsvpUpdate} />

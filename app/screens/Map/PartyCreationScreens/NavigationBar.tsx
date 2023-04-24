@@ -12,13 +12,16 @@ import { BackButton } from "../../../shared/Buttons/BackButton";
 import { Title } from "../../../shared/Title/Title";
 import { colors } from "../../../src/colors";
 import { NavigationProp } from "@react-navigation/native";
+import { FontAwesome } from "@expo/vector-icons";
 
 interface NavigationBarProps {
   navigation: NavigationProp<any, any>;
   text: string;
   onPress?: () => void;
   style?: ViewStyle;
+  safeAreaViewStyle?: ViewStyle;
   fontStyle?: TextStyle;
+  iconName?: keyof typeof FontAwesome.glyphMap;
 }
 
 const NavigationBar = ({
@@ -27,14 +30,17 @@ const NavigationBar = ({
   style,
   fontStyle,
   onPress,
+  safeAreaViewStyle,
+  iconName,
 }: NavigationBarProps) => {
   return (
-    <SafeAreaView>
+    <SafeAreaView style={[safeAreaViewStyle]}>
       <View style={[styles.titleContainer, style]}>
         <BackButton
           navigation={navigation}
           onPress={onPress}
           style={{ position: "relative", left: 0 }}
+          iconName={iconName}
         />
         <Title
           title={text}

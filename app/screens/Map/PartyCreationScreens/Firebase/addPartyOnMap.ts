@@ -23,7 +23,7 @@ export async function addPartyOnMap(data: IEvent) {
       await setDoc(DB_references.events, {
         ...data,
         partyID: DB_references.events.id,
-        time: formatISO(data.time as Date),
+        time: data.time as string,
         createdAt: formatISO(new Date()),
       }).then(() => {
         resolve("Success");

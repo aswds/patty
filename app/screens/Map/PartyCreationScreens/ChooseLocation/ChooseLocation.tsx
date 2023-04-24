@@ -18,6 +18,7 @@ import { PartyCreationStackScreenProps } from "../../../../Types/MapStack/Screen
 import { GooglePlaceDetail } from "react-native-google-places-autocomplete";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { UserLocation } from "../../../../Types/User";
+import NavigationBar from "../NavigationBar";
 
 export default function ChooseLocation({
   route,
@@ -56,15 +57,13 @@ export default function ChooseLocation({
             showsMyLocationButton
             onRegionChangeComplete={onRegionChange}
             ref={mapRef}
+            showsCompass={false}
             // initialRegion={userLocation as Region}
           />
+
           <GooglePlaceSearch
             style={[styles.googlePlaceSearchStyle, { paddingTop: insets.top }]}
-            setLocation={regionUpdate}
-          />
-          <BackButton
-            navigation={navigation}
-            style={{ marginTop: insets.top, backgroundColor: "", left: 0 }}
+            regionUpdate={regionUpdate}
           />
           <FakeMarker />
           <AddressTitle

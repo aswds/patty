@@ -11,6 +11,7 @@ import { AdditionalInformationData } from "../../../../redux/reducers/CreateEven
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { useActions } from "../../../../hooks/useActions";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Timestamp, serverTimestamp } from "firebase/firestore";
 
 interface CreatePartyButtonProps {
   data: AdditionalInformationData;
@@ -29,7 +30,13 @@ export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
 
   async function onPress() {
     if (allNecessaryDataPresent) {
-      await addPartyOnMap(_data).then(() => {});
+      await addPartyOnMap(_data)
+        .then(() => {
+          console.log("then");
+        })
+        .catch(() => {
+          console.log("error");
+        });
       await joinEvent(_data);
       navigation.navigate("Map");
       clearCreateEvents();
@@ -48,8 +55,6 @@ export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
 
 const styles = StyleSheet.create({
   container: {
-    position: "absolute",
-    bottom: 0,
     right: 0,
     left: 0,
     alignItems: "center",

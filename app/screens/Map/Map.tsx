@@ -17,12 +17,14 @@ import mapStyle from "./mapStyle.json";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { useFocusEffect } from "@react-navigation/native";
 import { clearCreateEvents } from "../../redux/reducers/CreateEvent";
+import EventLoader from "../../shared/Loaders/EventsLoader";
+import LocationLoader from "../../shared/Loaders/LocationLoader";
 interface MapProps extends MapStackScreenProps<"Map"> {}
 
 function Map({ navigation }: MapProps) {
   //States
   const [markerInfo, setMarkerInfo] = useState<IEvent>();
-  const { userLocation, city } = useUserLocation();
+  const { userLocation, city, isLocationLoading } = useUserLocation();
   const insets = useSafeAreaInsets();
   // Redux
   const { events, isLoading, error } = useTypedSelector(
@@ -38,6 +40,7 @@ function Map({ navigation }: MapProps) {
   const searchEventsModalRef = useRef<BottomSheet>(null);
 
   // useEffects
+
   useEffect(() => {
     fetch_events();
   }, []);
@@ -45,7 +48,9 @@ function Map({ navigation }: MapProps) {
   useEffect(() => {
     fetch_user();
   }, []);
-  useEffect(() => {}, [userLocation]);
+  useEffect(() => {
+    animateToRegion(userLocation!);
+  }, [userLocation]);
   useFocusEffect(() => {
     clearCreateEvents();
   });
@@ -74,7 +79,7 @@ function Map({ navigation }: MapProps) {
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
-        {/* {isLoading && <EventLoader isLoading={true} />} */}
+        {isLocationLoading && <LocationLoader isLoading={true} />}
         <MapView
           testID="map"
           provider={PROVIDER_DEFAULT}
@@ -87,6 +92,7 @@ function Map({ navigation }: MapProps) {
           // initialRegion={userLocation}
           paddingAdjustmentBehavior={"automatic"}
           showsUserLocation
+          showsCompass={false}
           ref={mapRef}
         >
           {events?.map((doc: IEvent, index?: React.Key | null) => {

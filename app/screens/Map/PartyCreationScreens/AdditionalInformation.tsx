@@ -14,6 +14,7 @@ import { PartyCreationStackScreenProps } from "../../../Types/MapStack/ScreenNav
 import CreatePartyButton from "./components/CreatePartyButton";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { ScreenCreateParty } from "../../../shared/Screen/ScreenCreateParty";
+import { colors } from "../../../src/colors";
 
 const AdditionalInformation = ({
   navigation,
@@ -54,13 +55,21 @@ const AdditionalInformation = ({
     setGiftsRequired(value);
   }
   return (
-    <ScreenCreateParty
-      createPartyButton={<CreatePartyButton data={eventData} />}
-    >
-      <NavigationBar navigation={navigation} text="Additional information" />
-      <FoodAndDrinkList onUpdate={updateFunctions} />
-      <Gifts onGiftUpdate={onGiftUpdate} />
-    </ScreenCreateParty>
+    <View style={{ flex: 1, backgroundColor: colors.background }}>
+      <ScreenCreateParty
+        containerStyle={{}}
+        navigationBar={
+          <NavigationBar
+            navigation={navigation}
+            text="Additional information"
+          />
+        }
+      >
+        <FoodAndDrinkList onUpdate={updateFunctions} />
+        <Gifts onGiftUpdate={onGiftUpdate} />
+      </ScreenCreateParty>
+      <CreatePartyButton data={eventData} />
+    </View>
   );
 };
 
