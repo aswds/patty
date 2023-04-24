@@ -15,19 +15,14 @@ const Screen = ({ children }) => {
     <ScrollView
       style={styles.container}
       contentContainerStyle={{ flexGrow: 1 }}
+      keyboardShouldPersistTaps="handled"
     >
-      <TouchableWithoutFeedback
-        onPress={() => {
-          Keyboard.dismiss();
-        }}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.keyboardContainer}
       >
-        <KeyboardAvoidingView
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          style={styles.keyboardContainer}
-        >
-          {children}
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
+        {children}
+      </KeyboardAvoidingView>
     </ScrollView>
   );
 };

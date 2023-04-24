@@ -34,6 +34,7 @@ export const colors = {
   initialScreenButton: isDarkTheme ? "#363636" : "#F6F6F6",
   modalBackground: isDarkTheme ? "#1c1c1c" : "#FFFFFF",
   mapButtons: isDarkTheme ? "#202020" : "white",
+  error: "#B00020",
 };
 
 const lightColor = {

@@ -1,3 +1,4 @@
+import { FieldValue } from "firebase/firestore";
 import { IUser } from "./User";
 
 export interface ICoordinates {
@@ -32,7 +33,7 @@ export interface IEvent {
   description?: string;
   tags?: string[];
   location?: ILocation;
-  time?: ITime | Date;
+  time?: ITime | Date | string;
   rsvp?: RSVP_Types;
   giftRequired?: GiftsRequireTextTypes;
   partyPlace?: PartyPlace;
@@ -41,6 +42,7 @@ export interface IEvent {
   guests: string[];
   user: IEvent_User;
   partyID?: string;
+  createdAt?: Date | FieldValue;
 }
 export interface IGifts {
   required: boolean;

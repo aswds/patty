@@ -12,11 +12,15 @@ export interface UserLocation {
   location?: Region;
 }
 
-export interface EditUser {
-  username: IUser["username"];
-  name: IUser["name"];
-  surname: IUser["surname"];
-}
+type EditUserFields =
+  | "bio"
+  | "name"
+  | "surname"
+  | "image"
+  | "username"
+  | "email";
+
+export interface EditUser extends Pick<IUser, EditUserFields> {}
 
 export interface IUser {
   username?: string;

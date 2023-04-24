@@ -14,9 +14,13 @@ export type ProfileNavigatorParamList = {
   EditProfile: {
     current_user?: IUser;
     bio?: IUser["bio"];
+    username?: IUser["username"];
   };
   ChangeEmail: {};
   ChangeBio: {
-    bio?: string;
+    bio?: IUser["bio"];
+  };
+  ChangeUsername: {
+    username?: IUser["username"];
   };
 };
