@@ -40,7 +40,6 @@ const SearchEventsModal: React.FC<SearchEventsModalProps> = ({
   //states
   const [searchText, setSearchText] = useState<string>();
   const [_events, setEvents] = useState<IEvent[]>(events);
-  const searchModalRef = useRef<BottomSheet>();
 
   //useEffects
   useEffect(() => {
