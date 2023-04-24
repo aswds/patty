@@ -22,6 +22,7 @@ import UserInfo from "./UserInfo";
 import { useNavigation } from "@react-navigation/native";
 import { MapNavigationProps } from "../../Types/MapStack/ScreenNavigationProps";
 import PartyInfoIcon from "../Icons/PartyInfoIcon";
+import { parseISO } from "date-fns";
 
 interface ITopInfo {
   markerInfo: IEvent;
@@ -42,7 +43,7 @@ function Title({ title }: { title: string }) {
   );
 }
 
-function PartyDate({ date }: { date: Date }) {
+function PartyDate({ date }: { date: string }) {
   const createDate = new Date(date);
   return (
     <PartyInfoIcon
@@ -161,7 +162,7 @@ export const Event: React.FC<ITopInfo> = ({ markerInfo, style }) => {
         </View>
 
         <View style={{ flexDirection: "row", alignItems: "center" }}>
-          <PartyDate date={markerInfo?.time as Date} />
+          <PartyDate date={markerInfo?.time as string} />
           <NumberOfGuests guests={markerInfo?.guests} />
         </View>
         <Address

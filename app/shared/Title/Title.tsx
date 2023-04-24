@@ -27,7 +27,7 @@ export function Title({
   modalIcon,
 }: ITitle) {
   return (
-    <View style={[styles.container, containerStyle]}>
+    <View style={[styles.container, containerStyle]} pointerEvents="auto">
       {navigation && !modalIcon && (
         <View style={styles.backButtonContainer}>
           <BackButton

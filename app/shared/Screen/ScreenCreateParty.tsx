@@ -16,45 +16,47 @@ interface ScreenProps extends PropsWithChildren {
   createPartyButton?: React.ReactNode;
   containerStyle?: ViewStyle;
   keyboardOffset?: number;
+  navigationBar?: React.ReactNode;
 }
 export const ScreenCreateParty = ({
   children,
   createPartyButton,
   containerStyle,
   keyboardOffset,
+  navigationBar,
 }: ScreenProps) => {
   const insets = useSafeAreaInsets();
   return (
     <View style={styles.container} testID="screen">
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <KeyboardAvoidingView
-          behavior={!isAndroid ? "padding" : "height"}
-          style={styles.viewStyle}
-          keyboardVerticalOffset={keyboardOffset}
+      <KeyboardAvoidingView
+        behavior={!isAndroid ? "padding" : "height"}
+        style={styles.viewStyle}
+        keyboardVerticalOffset={keyboardOffset}
+      >
+        {navigationBar}
+
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{
+            flex: 1,
+          }}
+          contentContainerStyle={[
+            styles.scrollViewContainer,
+            {
+              paddingTop: "5%",
+            },
+            containerStyle,
+          ]}
+          showsHorizontalScrollIndicator={false}
+          pointerEvents="auto"
+          keyboardShouldPersistTaps="handled"
         >
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{
-              flex: 1,
-            }}
-            contentContainerStyle={[
-              styles.scrollViewContainer,
-              {
-                paddingTop: insets.top,
-              },
-              containerStyle,
-            ]}
-            showsHorizontalScrollIndicator={false}
-          >
-            {React.Children.map(children, (children) => (
-              <View style={{ marginBottom: "5%" }} pointerEvents="auto">
-                {children}
-              </View>
-            ))}
-            {createPartyButton}
-          </ScrollView>
-        </KeyboardAvoidingView>
-      </TouchableWithoutFeedback>
+          {React.Children.map(children, (children) => (
+            <View style={{ marginBottom: "5%" }}>{children}</View>
+          ))}
+          {createPartyButton}
+        </ScrollView>
+      </KeyboardAvoidingView>
     </View>
   );
 };
@@ -62,10 +64,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-  },
-  scrollViewContainer: {
     padding: 20,
   },
+  scrollViewContainer: {},
   viewStyle: {
     flex: 1,
   },
