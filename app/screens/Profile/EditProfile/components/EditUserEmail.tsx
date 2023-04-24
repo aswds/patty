@@ -11,27 +11,32 @@ import { hideEmailBeforeAt } from "../../../../services/hideEmailAt";
 
 interface EditUserEmailProps {
   email: IUser["email"];
+  title: React.ReactNode;
 }
-const EditUserEmail = ({ email }: EditUserEmailProps) => {
+const EditUserEmail = ({ email, title }: EditUserEmailProps) => {
   const navigation = useNavigation<ProfileNavigationProps>();
   return (
-    <View style={styles.container}>
-      <Text style={styles.email}>{hideEmailBeforeAt(email!)}</Text>
-      <Button
-        onPress={() => {
-          navigation.navigate("ProfileNav", {
-            screen: "ChangeEmail",
-            params: {},
-          });
-        }}
-        text="Change email"
-        style={{
-          width: undefined,
-          paddingHorizontal: 10,
-          backgroundColor: "transparent",
-        }}
-      />
-    </View>
+    <>
+      {title}
+
+      <View style={styles.container}>
+        <Text style={styles.email}>{hideEmailBeforeAt(email!)}</Text>
+        <Button
+          onPress={() => {
+            navigation.navigate("ProfileNav", {
+              screen: "ChangeEmail",
+              params: {},
+            });
+          }}
+          text="Change email"
+          style={{
+            width: undefined,
+            paddingHorizontal: 10,
+            backgroundColor: "transparent",
+          }}
+        />
+      </View>
+    </>
   );
 };
 

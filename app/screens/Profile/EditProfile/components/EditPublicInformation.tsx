@@ -11,11 +11,13 @@ import { EditUser, IUser } from "../../../../Types/User";
 import { isAndroid } from "../../../../src/platform";
 import EditUserEmail from "./EditUserEmail";
 import CustomAlert from "../../../../shared/Alert/CustomAlert";
-
+import { useNavigation } from "@react-navigation/native";
+import { ProfileNavigationProps } from "../../../../Types/ProfileStack/ScreenNavigationProps";
+import { Screen } from "../../../../shared/Screen/Screen";
+import EditUsername from "./EditUsername";
 interface EditPublicInformationProps {
-  user: IUser;
+  user: EditUser;
   handleUserEdit: (editedUser: EditUser) => void;
-  handleUsernameValidation: (isValid: boolean) => void;
   setShowAlertModal: Dispatch<SetStateAction<boolean>>;
   setErrorMsg: Dispatch<SetStateAction<string | undefined>>;
 }
@@ -23,79 +25,61 @@ interface EditPublicInformationProps {
 export default function EditPublicInformation({
   user,
   handleUserEdit,
-  handleUsernameValidation,
   setShowAlertModal,
   setErrorMsg,
 }: EditPublicInformationProps) {
-  const [userInfo, setUserInfo] = useState<EditUser>({
-    name: user?.name,
-    surname: user?.surname,
-    username: user?.username,
-  });
+  const [username, setUsername] = useState(user.username);
   const [isUsernameValid, setIsUsernameValid] = useState<boolean>(true);
+  const navigation = useNavigation<ProfileNavigationProps>();
   return (
     <View style={{ flex: 1 }}>
-      <Title title="Name & Surname" fontStyle={styles.titleStyle} />
-      <View style={[styles.nameStyle, styles.containerStyle]}>
-        <Input
-          style={{ ...styles.inputStyle, marginRight: 5 }}
-          placeholder="Name"
-          onChangeText={(text) => {
-            handleUserEdit({ ...userInfo, name: text });
-            setUserInfo({ ...userInfo, name: text });
-          }}
-          defaultValue={userInfo.name}
-          isValid
-        />
-        <Input
-          style={styles.inputStyle}
-          placeholder="Surname"
-          onChangeText={(text) => {
-            handleUserEdit({ ...userInfo, surname: text });
-            setUserInfo({ ...userInfo, surname: text });
-          }}
-          defaultValue={userInfo.surname}
-          isValid
-        />
+      <View style={styles.name_surnameContainer}>
+        <Title title="Name & Surname" fontStyle={styles.titleStyle} />
+        <View style={[styles.nameStyle, styles.containerStyle]}>
+          <Input
+            style={{ ...styles.inputStyle, marginRight: 5 }}
+            placeholder="Name"
+            onChangeText={(text) => {
+              handleUserEdit({ ...user, name: text });
+            }}
+            defaultValue={user.name}
+            isValid
+          />
+          <Input
+            style={styles.inputStyle}
+            placeholder="Surname"
+            onChangeText={(text) => {
+              handleUserEdit({ ...user, surname: text });
+            }}
+            defaultValue={user.surname}
+            isValid
+          />
+        </View>
       </View>
-      <View style={[styles.usernameStyle, styles.containerStyle]}>
+      <View style={[styles.containerStyle]}>
+        <EditUsername username={user.username} title={
         <Title title="Username" fontStyle={styles.titleStyle} />
 
-        <Input
-          style={styles.inputStyle}
-          onChangeText={(text) => {
-            setIsUsernameValid(true);
-            setUserInfo({ ...userInfo, username: text_modifier(text) });
-          }}
-          isValid={isUsernameValid}
-          placeholder="Username"
-          defaultValue={`@${userInfo.username}`}
-          onEndEditing={() => {
-            sameUsernames(text_modifier(userInfo.username), setErrorMsg)
-              .then(() => {
-                handleUserEdit({ ...userInfo, username: userInfo.username });
-                handleUsernameValidation(true);
-              })
-              .catch((err) => {
-                if (userInfo.username !== `${user.username}`) {
-                  setIsUsernameValid(false);
-                  setShowAlertModal(true);
-                  handleUsernameValidation(false);
-                }
-              });
-          }}
-        />
+        }/>
       </View>
 
-      <View style={styles.containerStyle}>
-        <Title title="Bio" fontStyle={styles.titleStyle} />
-        <EditUserBio userBio={user.bio} />
-      </View>
+      <EditUserBio
+        userBio={user.bio}
+        onPress={() => {
+          navigation.navigate("ProfileNav", {
+            screen: "ChangeBio",
+            params: {
+              bio: user.bio,
+            },
+          });
+        }}
+        title={<Title title="Bio" fontStyle={styles.titleStyle} />}
+      />
 
-      <View>
-        <Title title="Email" fontStyle={styles.titleStyle} />
-        <EditUserEmail email={user.email!} />
-      </View>
+      <EditUserEmail
+        email={user.email!}
+        title={<Title title="Email" fontStyle={styles.titleStyle} />}
+      />
     </View>
   );
 }
@@ -104,6 +88,7 @@ export default function EditPublicInformation({
 //     { color: colors.iconColor, fontSize: 14 },
 //   ]}
 const styles = StyleSheet.create({
+  name_surnameContainer: {},
   textStyle: {
     color: "white",
     fontFamily: FontFamily.bold,
@@ -123,12 +108,5 @@ const styles = StyleSheet.create({
   },
   containerStyle: {
     marginBottom: "5%",
-  },
-  usernameStyle: {},
-  usernameContainer: {
-    width: "70%",
-    borderRadius: 0,
-    justifyContent: "center",
-    alignItems: "flex-start",
   },
 });

@@ -16,38 +16,36 @@ import { useNavigation } from "@react-navigation/native";
 
 interface EditUserBioProps {
   userBio?: string;
+  onPress: () => void;
+  title: React.ReactNode;
 }
 
-export default function EditUserBio({ userBio }: EditUserBioProps) {
-  const [bio, setBio] = useState<string | undefined>(userBio);
-  const [borderBottomWidth, setBorderBottomWidth] = useState<number>(1);
-  const navigation = useNavigation<ProfileNavigationProps>();
+export default function EditUserBio({
+  userBio,
+  onPress,
+  title,
+}: EditUserBioProps) {
   return (
-    <View style={styles.userBioContainer}>
-      <Text
-        style={{
-          ...styles.textInput,
-          color: userBio ? colors.text : colors.text_2,
-        }}
-      >
-        {userBio ?? `Seems nothing here `}
-      </Text>
+    <>
+      {title}
+      <View style={styles.userBioContainer}>
+        <Text
+          style={{
+            ...styles.textInput,
+            color: userBio ? colors.text : colors.text_2,
+          }}
+          numberOfLines={1}
+        >
+          {userBio ?? `Seems nothing here `}
+        </Text>
 
-      <Button
-        text={userBio ? "Change bio" : "Add bio"}
-        style={{ backgroundColor: "transparent" }}
-        onPress={() =>
-          navigation.navigate("ProfileNav", {
-            screen: "ChangeBio",
-            params: {
-              bio: userBio,
-              showModal: false,
-              unsavedChanges: false,
-            },
-          })
-        }
-      />
-    </View>
+        <Button
+          text={userBio ? "Change bio" : "Add bio"}
+          style={{ backgroundColor: "transparent" }}
+          onPress={onPress}
+        />
+      </View>
+    </>
   );
 }
 
@@ -62,5 +60,6 @@ const styles = StyleSheet.create({
     borderBottomColor: colors.text_2,
     paddingVertical: 5,
     height: 40,
+    flexShrink: 1,
   },
 });
