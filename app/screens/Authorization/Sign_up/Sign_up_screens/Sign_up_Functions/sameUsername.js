@@ -11,14 +11,14 @@ export const sameUsernames = async (username, setErrorMsg) => {
     } else {
       const q = query(
         collection(db, "USERS"),
-        where("searchUsername", "==", username.toLowerCase())
+        where("username", "==", `${username.toLowerCase()}`)
       );
       const querySnapshot = await getDocs(q)
         .then((snapshot) => {
           if (snapshot.empty) {
             resolve(true);
           } else {
-            setErrorMsg("Username is already taken ");
+            setErrorMsg("Username is already taken");
             reject(false);
           }
         })

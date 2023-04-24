@@ -20,33 +20,26 @@ export const NMScreen = (props) => {
         backgroundColor: colors.background,
       }}
     >
-      <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
-        <View style={styles.container}>
-          <KeyboardAvoidingView
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            style={{ flex: 1 }}
-          >
-            <TouchableWithoutFeedback
-              onPress={() => {
-                Keyboard.dismiss();
+      <View style={styles.container}>
+        <KeyboardAvoidingView
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          style={{ flex: 1 }}
+        >
+          <SafeAreaView style={{ flex: 1 }}>
+            <ScrollView
+              style={{ flex: 1 }}
+              contentContainerStyle={{
+                flex: 1,
+                width: null,
+                height: null,
               }}
+              keyboardShouldPersistTaps="handled"
             >
-              <SafeAreaView style={{ flex: 1 }}>
-                <ScrollView
-                  style={{ flex: 1 }}
-                  contentContainerStyle={{
-                    flex: 1,
-                    width: null,
-                    height: null,
-                  }}
-                >
-                  {props.children}
-                </ScrollView>
-              </SafeAreaView>
-            </TouchableWithoutFeedback>
-          </KeyboardAvoidingView>
-        </View>
-      </TouchableWithoutFeedback>
+              {props.children}
+            </ScrollView>
+          </SafeAreaView>
+        </KeyboardAvoidingView>
+      </View>
     </View>
   );
 };

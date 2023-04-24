@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Keyboard, View } from "react-native";
 import { colors } from "../../../src/colors";
 import { BackButton } from "../../../shared/Buttons/BackButton";
-import Button from "../components/Button";
+import Button from "../components/BigButton";
 import Input from "../../../shared/Input/Input";
 import { Logo } from "../components/Logo";
 import CustomAlert from "../CustomAlert";
@@ -11,10 +11,12 @@ import { textStyle } from "../style";
 import ForgotPassword from "./SignInComponents/ForgotPassword";
 import { user_signIn } from "./SignInComponents/SignInFuncs/signInFunction";
 import { styles } from "./styles";
-import { SignInScreenNavigationProps } from "../../../Types/Authorization/SignIn/ScreenNavigationProps";
 import { Screen } from "../../../shared/Screen/Screen";
+import { SignInStackScreenProps } from "../../../Types/Authorization/SignIn/ScreenNavigationProps";
 
-const SignInScreen = ({ navigation }: SignInScreenNavigationProps) => {
+const SignInScreen = ({
+  navigation,
+}: SignInStackScreenProps<"SignInScreen">) => {
   // States for email and password validation
   const [email, setEmail] = useState({ isValid: true, errorMsg: "" });
   const [password, setPassword] = useState({ isValid: true, errorMsg: "" });

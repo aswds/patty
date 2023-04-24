@@ -9,26 +9,26 @@ import { Dimensions, StyleSheet, TextInput, View } from "react-native";
 import { colors } from "../../../src/colors";
 import { isAndroid } from "../../../src/platform";
 import { BackButton } from "../../../shared/Buttons/BackButton";
-import Button from "../components/Button";
+import Button from "../components/BigButton";
 import Input from "../../../shared/Input/Input";
 import { Logo } from "../components/Logo";
 import CustomAlert from "../CustomAlert";
 import { textStyle } from "../style";
-import { Container } from "./Sign_up_components/Container";
 import { TermText } from "./Sign_up_components/TermText";
 import { error_handle } from "./Sign_up_screens/Sign_up_Functions/error_handle";
 import { signUpHandle } from "./Sign_up_screens/Sign_up_Functions/signUp";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
 import { SignUpRouteProps } from "../../../Types/Authorization/SignUp/RouteTypes";
-import { SignUpNavigationProps } from "../../../Types/Authorization/SignUp/ScreenNavigationProps";
-import { ScreenWithoutMapping } from "../../../shared/Screen/ScreenWithoutMapping";
-
+import { SignUpStackScreenProps } from "../../../Types/Authorization/SignUp/ScreenNavigationProps";
+import { Screen } from "../../../shared/Screen/Screen";
 type SignUpUser = {
   email: string | null;
   password: string | null;
 };
 
-const SignUpScreen = ({ navigation }: SignUpNavigationProps) => {
+const SignUpScreen = ({
+  navigation,
+}: SignUpStackScreenProps<"SignUpScreen">) => {
   const [valid, setValid] = useState({
     validUsername: true,
     validEmail: true,
@@ -107,7 +107,7 @@ const SignUpScreen = ({ navigation }: SignUpNavigationProps) => {
   }
 
   return (
-    <ScreenWithoutMapping>
+    <Screen>
       <BackButton navigation={navigation} />
 
       <View style={{ marginBottom: "10%", alignItems: "center" }}>
@@ -212,7 +212,7 @@ const SignUpScreen = ({ navigation }: SignUpNavigationProps) => {
           showModal={showModal}
         />
       </View>
-    </ScreenWithoutMapping>
+    </Screen>
   );
 };
 
