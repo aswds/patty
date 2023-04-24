@@ -46,11 +46,13 @@ export default function useUserLocation() {
   const [userLocation, setUserLocation] = useState<ICoordinates>();
   const [errorMsg, setErrorMsg] = useState<string>();
   const [city, setCity] = useState<string>();
+  const [isLocationLoading, setIsLoading] = useState<boolean>(true);
   const dispatch = useAppDispatch();
   useEffect(() => {
-    (async function fetchData() {
+    async function fetchData() {
       try {
-        getUserLocation().then((res: LocationObject) => {
+        setIsLoading(true);
+        await getUserLocation().then(async (res: LocationObject) => {
           setUserLocation({
             latitude: res.coords.latitude,
             latitudeDelta: 0,
@@ -58,7 +60,7 @@ export default function useUserLocation() {
             longitudeDelta: -0.01,
           });
 
-          getAddress(res.coords.latitude, res.coords.longitude).then(
+          await getAddress(res.coords.latitude, res.coords.longitude).then(
             (r: IFullAddress) => {
               setCity(r?.city);
               dispatch(
@@ -72,14 +74,16 @@ export default function useUserLocation() {
                   },
                 })
               );
+              setIsLoading(false);
             }
           );
         });
       } catch (e: any) {
         setErrorMsg(e);
       }
-    })();
+    }
+    fetchData();
   }, []);
 
-  return { userLocation, city, errorMsg };
+  return { userLocation, city, errorMsg, isLocationLoading };
 }
