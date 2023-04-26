@@ -10,11 +10,7 @@
     "strict": true,
     "skipLibCheck": true
   },
-  "include": [
-    "app/**/*"
-  ],
-  "exclude": [
-    "node_modules"
-  ],
+  "include": ["app/**/*", "writeJson.js"],
+  "exclude": ["node_modules"],
   "extends": "expo/tsconfig.base"
 }
