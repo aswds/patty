@@ -69,6 +69,7 @@ const styles = StyleSheet.create({
   scrollViewContainer: {},
   viewStyle: {
     flex: 1,
+    backgroundColor: "transparent",
   },
   keyboardAvoidingViewStyle: {
     flex: 1,

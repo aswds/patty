@@ -13,33 +13,49 @@ import { colors } from "../../src/colors";
 interface NextButtonProps {
   onPress: () => void;
   style?: StyleProp<ViewStyle>;
+  containsProfane?: boolean;
   isValueEntered?: boolean;
-  error?: string | null;
+  handleErrorMessage: (title: string, message: string) => void;
+  error: {
+    title: string;
+    message: string;
+  };
 }
 
 export default function NextButton({
   onPress,
   style,
+  containsProfane,
   isValueEntered = true,
+  handleErrorMessage,
   error,
 }: NextButtonProps): JSX.Element {
-  const colorValue = isValueEntered
-    ? colors.buttonTextColor
-    : colors.disabledText;
+  const colorValue =
+    isValueEntered && !containsProfane
+      ? colors.buttonTextColor
+      : colors.disabledText;
   return (
     <TouchableOpacity
       style={[
         styles.nextButtonContainer,
         style,
         {
-          backgroundColor: colors.accentColor,
+          backgroundColor:
+            isValueEntered && !containsProfane
+              ? colors.accentColor
+              : colors.disabledButton,
         },
       ]}
       onPress={() => {
-        if (isValueEntered) {
+        if (isValueEntered && !containsProfane) {
           onPress();
+        } else if (containsProfane) {
+          handleErrorMessage!(
+            `🚫`,
+            `Oops! No bad words allowed here. Let's keep it clean!`
+          );
         } else {
-          Alert.alert(`Oh no...`, `Please enter ${error}🙃`);
+          handleErrorMessage!(error?.title, error?.message);
         }
       }}
     >

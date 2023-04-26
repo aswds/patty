@@ -9,19 +9,19 @@ import React from "react";
 import { colors } from "../../src/colors";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 
-interface ChoiseButton<T extends string> {
+interface ChoiceButton<T extends string> {
   isSelected: boolean;
   buttonsText: T;
   handleButton: (button: T) => void;
   style?: ViewStyle;
 }
 
-function ChoiseButton<T extends string>({
+function ChoiceButton<T extends string>({
   isSelected,
   buttonsText,
   handleButton,
   style,
-}: ChoiseButton<T>) {
+}: ChoiceButton<T>) {
   return (
     <TouchableOpacity
       style={[styles.button, isSelected && styles.selectedButton, style]}
@@ -61,4 +61,4 @@ const styles = StyleSheet.create({
     color: "white",
   },
 });
-export default ChoiseButton;
+export default ChoiceButton;

@@ -91,11 +91,13 @@ const styles = StyleSheet.create({
     zIndex: 1,
   },
   titleContainer: {
+    paddingHorizontal: 20,
     paddingTop: 20,
   },
   titleTextStyle: {
     fontFamily: FontFamily.extra_bold,
     color: colors.text,
+    textAlign: "center",
     fontSize: 16,
   },
   buttonsContainer: {
@@ -106,8 +108,7 @@ const styles = StyleSheet.create({
   textContainer: {
     justifyContent: "center",
     alignItems: "center",
-    paddingVertical: 30,
-    paddingHorizontal: 20,
+    padding: 20,
   },
   textStyle: {
     color: "rgba(110,110,110,1)",
