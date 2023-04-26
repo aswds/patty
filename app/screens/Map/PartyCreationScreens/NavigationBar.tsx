@@ -34,7 +34,9 @@ const NavigationBar = ({
   iconName,
 }: NavigationBarProps) => {
   return (
-    <SafeAreaView style={[safeAreaViewStyle]}>
+    <SafeAreaView
+      style={[safeAreaViewStyle, { backgroundColor: "transparent" }]}
+    >
       <View style={[styles.titleContainer, style]}>
         <BackButton
           navigation={navigation}
