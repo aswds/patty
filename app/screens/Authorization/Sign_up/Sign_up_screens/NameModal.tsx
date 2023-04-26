@@ -9,7 +9,6 @@ import { StyleSheet, TextInput, View } from "react-native";
 import { colors } from "../../../../src/colors";
 import Input from "../../../../shared/Input/Input";
 import { BackButton } from "../../../../shared/Buttons/BackButton";
-import { NMScreen } from "./components/NameModalComp/NMScreen";
 import {
   isProfane,
   text_modifier_name,

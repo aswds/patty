@@ -1,7 +1,7 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { PartyPlace } from "../../../../Types/Events";
-import ChoiseButton from "../../../../shared/Buttons/ChoiseButton";
+import ChoiceButton from "../../../../shared/Buttons/ChoiseButton";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { colors } from "../../../../src/colors";
 import { Title } from "../../../../shared/Title/Title";
@@ -28,7 +28,7 @@ const PartyPlaces: React.FC<PartyPlaceProps> = ({ handlePartyPlaceUpdate }) => {
     const isSelected = option === selectedOption;
 
     return (
-      <ChoiseButton
+      <ChoiceButton
         buttonsText={option}
         handleButton={handleOptionSelect}
         isSelected={isSelected}

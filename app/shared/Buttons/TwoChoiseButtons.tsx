@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
 import { TwoButtonsText } from "./Types/TwoButtonsType";
 import { colors } from "../../src/colors";
-import ChoiseButton from "./ChoiseButton";
+import ChoiceButton from "./ChoiseButton";
 import { ImpactFeedbackStyle, impactAsync } from "expo-haptics";
 interface TwoButtonProps<T extends string> {
   onButtonUpdate: (selectedButton: T) => void;
@@ -25,13 +25,13 @@ function TwoButtons<T extends string>({
 
   return (
     <View style={styles.container}>
-      <ChoiseButton
+      <ChoiceButton
         handleButton={handleButton}
         buttonsText={buttonsText.button1}
         isSelected={selectedButton === buttonsText.button1}
       />
 
-      <ChoiseButton
+      <ChoiceButton
         handleButton={handleButton}
         buttonsText={buttonsText.button2}
         isSelected={selectedButton === buttonsText.button2}
