@@ -12,9 +12,12 @@ import useGallery from "../../../../hooks/useGallery";
 import { isAndroid } from "../../../../src/platform";
 import { _showModalHandle } from "./Sign_up_Functions/_showModalHandel";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
-import { AvatarNavigationProps } from "../../../../Types/Authorization/SignUp/ScreenNavigationProps";
+import { SignUpStackScreenProps } from "../../../../Types/Authorization/SignUp/ScreenNavigationProps";
 
-export const AvatarChoose = ({ navigation, route }: AvatarNavigationProps) => {
+export const AvatarChoose = ({
+  navigation,
+  route,
+}: SignUpStackScreenProps<"Avatar">) => {
   useEffect(() => {
     setImage(route.params?.imageURI);
   }, [route.params?.imageURI]);

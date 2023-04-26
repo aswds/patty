@@ -12,7 +12,6 @@ import { BackButton } from "../../../shared/Buttons/BackButton";
 import Button from "../components/BigButton";
 import Input from "../../../shared/Input/Input";
 import { Logo } from "../components/Logo";
-import CustomAlert from "../CustomAlert";
 import { textStyle } from "../style";
 import { TermText } from "./Sign_up_components/TermText";
 import { error_handle } from "./Sign_up_screens/Sign_up_Functions/error_handle";
@@ -21,6 +20,9 @@ import { FontFamily } from "../../../../assets/fonts/Fonts";
 import { SignUpRouteProps } from "../../../Types/Authorization/SignUp/RouteTypes";
 import { SignUpStackScreenProps } from "../../../Types/Authorization/SignUp/ScreenNavigationProps";
 import { Screen } from "../../../shared/Screen/Screen";
+import CustomAlert from "../../../shared/Alert/CustomAlert";
+import { isLoading } from "expo-font";
+import Loader from "../../../shared/Loaders/Loader";
 type SignUpUser = {
   email: string | null;
   password: string | null;
@@ -39,10 +41,11 @@ const SignUpScreen = ({
     email: null,
     password: null,
   });
+  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [confirmPass, setConfirmPass] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(true);
-  const [errorMsg, setErrorMsg] = useState<string>();
+  const [errorMsg, setErrorMsg] = useState<string>("");
   const ref_input2 = useRef<TextInput>(null);
   const ref_input3 = useRef<TextInput>(null);
   const ref_input4 = useRef<TextInput>(null);
@@ -56,6 +59,7 @@ const SignUpScreen = ({
     setShowModal(false);
   };
   function signUp_handle() {
+    setIsLoading(true);
     if (
       valid.validEmail &&
       valid.validPassword &&
@@ -78,11 +82,13 @@ const SignUpScreen = ({
         }).catch((err) => {
           setShowModal(true);
           setErrorMsg(err);
+          setIsLoading(false);
         });
       });
     } else {
       setShowModal(true);
       setErrorMsg("Please check if everything is correct :)");
+      setIsLoading(false);
     }
   }
   function refHandle(ref_input: MutableRefObject<TextInput | null>) {
@@ -108,6 +114,7 @@ const SignUpScreen = ({
 
   return (
     <Screen>
+      {isLoading && <Loader isVisible={isLoading} />}
       <BackButton navigation={navigation} />
 
       <View style={{ marginBottom: "10%", alignItems: "center" }}>
@@ -206,8 +213,13 @@ const SignUpScreen = ({
         {/* Fix */}
         <TermText />
         {/* Fix */}
-        <CustomAlert
+        {/* <CustomAlert
           errorMsg={errorMsg!}
+          hideModal={_hideModal}
+          showModal={showModal}
+        /> */}
+        <CustomAlert
+          errorMsg={errorMsg}
           hideModal={_hideModal}
           showModal={showModal}
         />

@@ -4,7 +4,7 @@ import { app, auth, db, storage } from "../../../../../../firebase";
 import { getDownloadURL, ref, uploadBytesResumable } from "firebase/storage";
 import { updateProfile } from "firebase/auth";
 
-export const uploadImage = async (uri, user) => {
+export const uploadImage = async (uri) => {
   if (!uri) {
     return;
   }
@@ -22,7 +22,7 @@ export const uploadImage = async (uri, user) => {
       await updateDoc(doc(db, "USERS", userUID), {
         image: snapshot,
       }).catch((err) => Alert.alert(err));
-      await updateProfile(user, {
+      await updateProfile(auth.currentUser, {
         photoURL: snapshot,
       });
     });

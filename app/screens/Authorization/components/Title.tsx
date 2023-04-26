@@ -1,19 +1,23 @@
 import React from "react";
 import { StyleSheet, Text, View } from "react-native";
-import { colors } from "../../../../../../src/colors";
-import { FontFamily } from "../../../../../../../assets/fonts/Fonts";
+import { FontFamily } from "../../../../assets/fonts/Fonts";
+import { colors } from "../../../src/colors";
 
-export default function AskUsername(props) {
+interface TitleProps {
+  title: string;
+  message: string;
+}
+
+export default function Title({ message, title }: TitleProps) {
   return (
     <View
       style={{
         alignSelf: "flex-start",
         flexDirection: "row",
-        marginHorizontal: 20,
       }}
     >
       <View>
-        <Text style={styles.title}>Aye</Text>
+        <Text style={styles.title}>{title}</Text>
         <Text
           style={{
             fontFamily: FontFamily.regular,
@@ -21,7 +25,7 @@ export default function AskUsername(props) {
             color: colors.iconColor,
           }}
         >
-          It's time to pick username
+          {message}
         </Text>
       </View>
     </View>

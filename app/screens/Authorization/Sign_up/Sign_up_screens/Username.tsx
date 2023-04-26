@@ -4,21 +4,37 @@ import { Dimensions, StyleSheet, View } from "react-native";
 import { colors } from "../../../../src/colors";
 import { BackButton } from "../../../../shared/Buttons/BackButton";
 import Input from "../../../../shared/Input/Input";
-import { NMScreen } from "./components/NameModalComp/NMScreen";
-import AskUsername from "./components/Username/AskUsername";
-import NextButton from "./components/Username/NextButton";
-import { sameUsernames } from "./Sign_up_Functions/sameUsername";
-import { text_modifier } from "./Sign_up_Functions/text_modifier";
+import NextButton from "../../../../shared/Buttons/NextButton";
+import { sameUsernames } from "../../../../services/sameUsername";
+import { isProfane, text_modifier } from "../../../../services/text_modifier";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
-import { UsernameNavigationProps } from "../../../../Types/Authorization/SignUp/ScreenNavigationProps";
+import { SignUpStackScreenProps } from "../../../../Types/Authorization/SignUp/ScreenNavigationProps";
+import { Screen } from "../../../../shared/Screen/Screen";
+import Title from "../../components/Title";
+import CustomAlert from "../../../../shared/Alert/CustomAlert";
 
-export const Username = ({ navigation, route }: UsernameNavigationProps) => {
+export const Username = ({
+  navigation,
+  route,
+}: SignUpStackScreenProps<"Username">) => {
   const [username, setUsername] = useState<string>("");
-  const [errorMsg, setErrorMsg] = useState<string>();
   const [isDisabled, setIsDisabled] = useState<boolean>();
+  const [errorMsg, setErrorMsg] = useState<AlertState>({
+    title: "",
+    message: "",
+  });
+  const { name, surname } = route.params;
+  const [showAlertModal, setShowAlertModal] = useState<boolean>(false);
 
+  function handleErrorMessage(title: string, message: string) {
+    setErrorMsg({ title: title, message: message });
+    setShowAlertModal(true);
+  }
+  function handleSetErrorMessage(title: string, message: string) {
+    setErrorMsg({ title: title, message: message });
+  }
   return (
-    <NMScreen>
+    <Screen>
       <BackButton navigation={navigation} />
       <View
         style={{
@@ -27,11 +43,14 @@ export const Username = ({ navigation, route }: UsernameNavigationProps) => {
           justifyContent: "center",
         }}
       >
-        <AskUsername />
+        <Title
+          title="What's Your Handle? 👀"
+          message="It's time to pick username"
+        />
         <View style={styles.inputContainer}>
           <Input
             isValid={true}
-            style={{ width: "90%" }}
+            style={{ width: "100%" }}
             icon={
               <MaterialIcons
                 name="alternate-email"
@@ -42,13 +61,14 @@ export const Username = ({ navigation, route }: UsernameNavigationProps) => {
             placeholder="username"
             placeholderTextColor={colors.iconColor}
             onChangeText={(text) => {
-              sameUsernames(text_modifier(text), setErrorMsg)
+              sameUsernames(username, handleSetErrorMessage)
                 .then((res) => {
-                  setIsDisabled(!res);
+                  setIsDisabled(false);
                 })
-                .catch((err) => {
-                  setIsDisabled(!err);
+                .catch(() => {
+                  setIsDisabled(true);
                 });
+              console.log(errorMsg);
               setUsername(text_modifier(text));
             }}
             value={username}
@@ -57,16 +77,31 @@ export const Username = ({ navigation, route }: UsernameNavigationProps) => {
             autoFocus
           />
         </View>
-        <NextButton
-          navigation={navigation}
-          disabled={isDisabled}
-          errorMsg={errorMsg}
-          name={route.params?.name}
-          surname={route.params?.surname}
-          username={username}
-        />
       </View>
-    </NMScreen>
+      <NextButton
+        error={errorMsg}
+        handleErrorMessage={handleErrorMessage}
+        onPress={() => {
+          navigation.navigate("Avatar", {
+            name,
+            surname,
+            username,
+            imageURI: "",
+          });
+        }}
+        containsProfane={isProfane(username)}
+        isValueEntered={
+          !isDisabled &&
+          Boolean(name.length > 0 && surname.length > 0 && username.length > 3)
+        }
+      />
+      <CustomAlert
+        errorMsg={errorMsg.message}
+        title={errorMsg.title}
+        hideModal={() => setShowAlertModal(false)}
+        showModal={showAlertModal}
+      />
+    </Screen>
   );
 };
 const styles = StyleSheet.create({
@@ -83,28 +118,17 @@ const styles = StyleSheet.create({
   textInput: {
     borderBottomColor: colors.iconColor,
     fontFamily: FontFamily.bold,
-    paddingVertical: "5%",
-    paddingHorizontal: 10,
     width: "100%",
     color: colors.text,
   },
   nextButtonContainer: {
-    width: "40%",
-    position: "absolute",
-    bottom: 10,
-    right: 0,
-    alignSelf: "flex-end",
-    alignItems: "center",
-    justifyContent: "space-evenly",
+    width: "100%",
     flexDirection: "row",
+    marginTop: "auto",
     backgroundColor: colors.accentColor,
-    padding: 10,
     borderRadius: 40,
   },
-  nextButtonText: {
-    fontWeight: "bold",
-    color: colors.buttonTextColor,
-  },
+
   container: {
     flex: 1,
   },
