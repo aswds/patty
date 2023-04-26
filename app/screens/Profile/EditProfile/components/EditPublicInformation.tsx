@@ -1,19 +1,15 @@
 import React, { Dispatch, SetStateAction, useState } from "react";
 import { KeyboardAvoidingView, StyleSheet, View, Text } from "react-native";
 import { colors } from "../../../../src/colors";
-import { sameUsernames } from "../../../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/sameUsername";
-import { text_modifier } from "../../../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/text_modifier";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import Input from "../../../../shared/Input/Input";
 import { Title } from "../../../../shared/Title/Title";
 import EditUserBio from "./EditUserBio";
 import { EditUser, IUser } from "../../../../Types/User";
-import { isAndroid } from "../../../../src/platform";
 import EditUserEmail from "./EditUserEmail";
 import CustomAlert from "../../../../shared/Alert/CustomAlert";
 import { useNavigation } from "@react-navigation/native";
 import { ProfileNavigationProps } from "../../../../Types/ProfileStack/ScreenNavigationProps";
-import { Screen } from "../../../../shared/Screen/Screen";
 import EditUsername from "./EditUsername";
 interface EditPublicInformationProps {
   user: EditUser;
@@ -25,11 +21,17 @@ interface EditPublicInformationProps {
 export default function EditPublicInformation({
   user,
   handleUserEdit,
-  setShowAlertModal,
-  setErrorMsg,
 }: EditPublicInformationProps) {
-  const [username, setUsername] = useState(user.username);
-  const [isUsernameValid, setIsUsernameValid] = useState<boolean>(true);
+  const [isValid, setIsValid] = useState({
+    name: true,
+    surname: true,
+  });
+  const [showModal, setShowModal] = useState<boolean>(false);
+
+  function hideModal() {
+    setShowModal(false);
+  }
+
   const navigation = useNavigation<ProfileNavigationProps>();
   return (
     <View style={{ flex: 1 }}>
@@ -40,27 +42,44 @@ export default function EditPublicInformation({
             style={{ ...styles.inputStyle, marginRight: 5 }}
             placeholder="Name"
             onChangeText={(text) => {
+              if (!isValid.name) setIsValid({ ...isValid, name: true });
+
               handleUserEdit({ ...user, name: text });
             }}
+            onEndEditing={() => {
+              if (user.name?.length == 0) {
+                setIsValid({ ...isValid, name: false });
+                setShowModal(true);
+              }
+            }}
             defaultValue={user.name}
-            isValid
+            autoCapitalize="sentences"
+            isValid={isValid.name}
           />
           <Input
             style={styles.inputStyle}
             placeholder="Surname"
             onChangeText={(text) => {
+              if (!isValid.surname) setIsValid({ ...isValid, surname: true });
               handleUserEdit({ ...user, surname: text });
             }}
+            onEndEditing={() => {
+              if (user.surname?.length == 0) {
+                setIsValid({ ...isValid, surname: false });
+                setShowModal(true);
+              }
+            }}
+            autoCapitalize="sentences"
             defaultValue={user.surname}
-            isValid
+            isValid={isValid.surname}
           />
         </View>
       </View>
       <View style={[styles.containerStyle]}>
-        <EditUsername username={user.username} title={
-        <Title title="Username" fontStyle={styles.titleStyle} />
-
-        }/>
+        <EditUsername
+          username={user.username}
+          title={<Title title="Username" fontStyle={styles.titleStyle} />}
+        />
       </View>
 
       <EditUserBio
@@ -80,13 +99,15 @@ export default function EditPublicInformation({
         email={user.email!}
         title={<Title title="Email" fontStyle={styles.titleStyle} />}
       />
+      <CustomAlert
+        title="Required Fields Missing"
+        showModal={showModal}
+        errorMsg="Name and surname fields cannot be left empty."
+        hideModal={hideModal}
+      />
     </View>
   );
 }
-// style={[
-//     styles.textStyle,
-//     { color: colors.iconColor, fontSize: 14 },
-//   ]}
 const styles = StyleSheet.create({
   name_surnameContainer: {},
   textStyle: {

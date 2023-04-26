@@ -25,7 +25,6 @@ export default function User({ user, backButton, updateUser }: UserProps) {
         user={user}
         updateUser={updateUser}
       />
-
       <UserName user={user} isLoading={isLoading} />
       {!isLoading && (
         <>

@@ -37,11 +37,10 @@ const ChangeBio = ({
       navigation.goBack();
     }
   }
+
   function onPressSave() {
     if (bio != route.params.bio) {
-      changeUser({ bio }).then(() =>
-        navigation.navigate("EditProfile", { bio: bio })
-      );
+      navigation.navigate("EditProfile", { bio: bio });
     } else {
       navigation.goBack();
     }

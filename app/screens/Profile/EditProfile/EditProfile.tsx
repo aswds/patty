@@ -21,6 +21,8 @@ import { useActions } from "../../../hooks/useActions";
 import { userReference } from "../../../Firebase/References";
 import { updateDoc } from "firebase/firestore";
 import CustomAlert from "../../../shared/Alert/CustomAlert";
+import { uploadImage } from "../../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/uploadImage";
+import { FontFamily } from "../../../../assets/fonts/Fonts";
 
 export default function EditProfile({
   navigation,
@@ -43,11 +45,14 @@ export default function EditProfile({
 
   //Effects
   useEffect(() => {
-    setUserInfo({ ...userInfo, bio: route.params.bio ?? userInfo.bio });
-  }, [route.params.bio]);
+    setUserInfo({
+      ...userInfo,
+      bio: route.params.bio ?? userInfo.bio,
+      username: route.params.username ?? userInfo.username,
+    });
+  }, [route.params.bio, route.params.username]);
   //redux
   const { current_user } = useTypedSelector((state) => state.user_state);
-  const { fetch_user } = useActions();
   const areChanges: boolean = Boolean(
     userInfo.name !== current_user.name ||
       userInfo.surname !== current_user.surname ||
@@ -58,7 +63,7 @@ export default function EditProfile({
   //functions
   const onPressSave = async () => {
     // checking if user has changes
-    const userRef = userReference(user?.uid!);
+    const userRef = userReference(current_user.uid!);
     if (current_user) {
       if (areChanges) {
         const updateUser: Pick<
@@ -70,13 +75,16 @@ export default function EditProfile({
           surname: userInfo.surname,
           username: userInfo.username,
         };
-        updateDoc(userRef, updateUser);
+        await updateDoc(userRef, updateUser);
+        await uploadImage(userImage);
       }
-      navigation.navigate("Profile", { current_user });
+      navigation.navigate("Profile", {
+        current_user: { ...current_user, ...userInfo },
+      });
     }
   };
 
-  const onPressNavigatioBack = () => {
+  const onPressNavigationBack = () => {
     if (areChanges) {
       setShowAlertModal(true);
     } else {
@@ -89,7 +97,9 @@ export default function EditProfile({
   const handleUserImageEdit = (image: string) => {
     setUserImage(image);
   };
-
+  function hideModal() {
+    setShowAlertModal(false);
+  }
   //renred
   return (
     <ScreenCreateParty
@@ -97,7 +107,7 @@ export default function EditProfile({
         <NavigationBar
           navigation={navigation}
           text="Edit Profile"
-          onPress={onPressNavigatioBack}
+          onPress={onPressNavigationBack}
         />
       }
     >
@@ -122,9 +132,22 @@ export default function EditProfile({
         setShowAlertModal={setShowAlertModal}
       />
       <CustomAlert
-        hideModal={() => setShowAlertModal(false)}
+        hideModal={hideModal}
         showModal={showAlertModal}
-        errorMsg={errorMsg!}
+        title="Discard changes?"
+        errorMsg="Your unsaved changes will be lost."
+        okButtonText="discard changes"
+        okButtonTextStyle={{
+          fontFamily: FontFamily.extra_bold,
+          color: colors.accentColor,
+        }}
+        onPressOk={() => navigation.goBack()}
+        cancelButtonTextStyle={{
+          fontFamily: FontFamily.bold,
+          color: colors.text,
+        }}
+        cancelButtonText="keep editing"
+        onPressCancel={hideModal}
       />
     </ScreenCreateParty>
   );

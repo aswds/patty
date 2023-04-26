@@ -1,9 +1,14 @@
-import { StyleSheet, Text, TextInput } from "react-native";
+import {
+  LayoutAnimation,
+  StyleSheet,
+  Text,
+  TextInput,
+  UIManager,
+} from "react-native";
 import React, { useEffect, useRef, useState } from "react";
 import { ScreenCreateParty } from "../../../../shared/Screen/ScreenCreateParty";
 import Input from "../../../../shared/Input/Input";
-import { text_modifier } from "../../../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/text_modifier";
-import { sameUsernames } from "../../../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/sameUsername";
+import { text_modifier } from "../../../../services/text_modifier";
 import ChangeScreen from "../../Layout/ChangeScreen";
 import { ProfileStackScreenNavigationProps } from "../../../../Types/ProfileStack/ScreenNavigationProps";
 import { changeUser } from "../ChangeBio/changeUser";
@@ -11,6 +16,8 @@ import { colors } from "../../../../src/colors";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import Animated from "react-native-reanimated";
 import AnimatedError from "../../../../shared/Error/AnimatedError";
+import { isAndroid } from "../../../../src/platform";
+import { sameUsernames } from "../../../../services/sameUsername";
 
 const ChangeUsername = ({
   navigation,
@@ -18,13 +25,19 @@ const ChangeUsername = ({
 }: ProfileStackScreenNavigationProps<"ChangeUsername">) => {
   const [isUsernameValid, setIsUsernameValid] = useState<boolean>(true);
   const [username, setUsername] = useState<string>(route.params.username!);
-  const [errorMsg, setErrorMsg] = useState<string>();
+  const [errorMsg, setErrorMsg] = useState<string>("Username");
   const [showAlertModal, setShowAlertModal] = useState<boolean>(false);
   const inputRef = useRef<TextInput>(null);
   const animatedRef = useRef<Animated.View>(null);
+
+  if (isAndroid && UIManager.setLayoutAnimationEnabledExperimental) {
+    UIManager.setLayoutAnimationEnabledExperimental(true);
+  }
+
   function hideModal() {
     setShowAlertModal(false);
   }
+
   //dududjx
   //idjxmcm
   function onBackPress() {
@@ -35,17 +48,39 @@ const ChangeUsername = ({
     }
   }
   function onPressSave() {
-    if (username != route.params.username) {
-      changeUser({ username }).then(() =>
-        navigation.navigate("EditProfile", { username: username })
-      );
-    } else {
+    if (username !== route.params.username)
+      sameUsernames(username, setErrorMsg)
+        .then(() => {
+          if (isUsernameValid) {
+            changeUser({ username }).then(() =>
+              navigation.navigate("EditProfile", { username: username })
+            );
+          } else {
+            navigation.goBack();
+          }
+        })
+        .catch((err) => {
+          if (username !== `${route.params.username}`) {
+            usernameAnimationLayout(false);
+          }
+        });
+    else {
       navigation.goBack();
     }
   }
 
+  function usernameAnimationLayout(state: boolean) {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.spring);
+    setIsUsernameValid(state);
+  }
+
   useEffect(() => {
     if (!isUsernameValid) {
+      setTimeout(() => {
+        if (!isUsernameValid) {
+          usernameAnimationLayout(true);
+        }
+      }, 5000);
     }
   }, [isUsernameValid]);
 
@@ -65,22 +100,15 @@ const ChangeUsername = ({
         }}
         placeholder="Username"
         defaultValue={`@${username}`}
-        onEndEditing={() => {
-          sameUsernames(username, setErrorMsg)
-            .then(() => {
-              setIsUsernameValid(true);
-            })
-            .catch((err) => {
-              if (username !== `${route.params.username}`) {
-                setIsUsernameValid(false);
-              }
-            });
-        }}
+        onEndEditing={() => {}}
         style={styles.textInputStyle}
         ref={inputRef}
       />
       {!isUsernameValid && errorMsg && (
-        <AnimatedError errorMessage={errorMsg} />
+        <AnimatedError
+          errorMessage={errorMsg}
+          onPress={() => usernameAnimationLayout(true)}
+        />
       )}
     </ChangeScreen>
   );

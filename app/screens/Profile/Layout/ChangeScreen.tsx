@@ -35,7 +35,7 @@ const ChangeScreen: React.FC<ChangeScreenProps> = ({
 }) => {
   const [shouldFocus, setShouldFocus] = useState(false);
 
-  // Wait for 500ms before setting the autoFocus prop to true
+  // Wait for 200ms before setting the autoFocus prop to true
   useEffect(() => {
     const timeout = setTimeout(() => {
       setShouldFocus(true);

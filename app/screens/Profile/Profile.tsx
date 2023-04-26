@@ -17,6 +17,7 @@ function Profile({
   route,
 }: ProfileStackScreenNavigationProps<"Profile">) {
   const { current_user } = route.params;
+
   const [user, setUser] = useState<IUser>(current_user!);
   const updateUser = (newUser: Pick<IUser, "following" | "followers">) => {
     setUser({ ...user, ...newUser });
@@ -29,6 +30,7 @@ function Profile({
   useEffect(() => {
     setUser(current_user!);
   }, [current_user]);
+  console.log(current_user?.image);
   //https://reactjs.org/docs/context.html !!!
   return (
     <Screen>
