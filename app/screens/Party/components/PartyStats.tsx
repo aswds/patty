@@ -1,58 +1,78 @@
 import React, { useState, useEffect } from "react";
-import { View, Text } from "react-native";
+import { View, Text, StyleSheet } from "react-native";
 import firebase from "firebase/app";
 import "firebase/database";
+import { FontFamily } from "../../../../assets/fonts/Fonts";
+import { colors } from "../../../src/colors";
+import { FieldValue } from "firebase/firestore";
 
-const PartyStats = () => {
+interface PartyStatsProps {
+  startedAt: Date | FieldValue | undefined;
+  guests: number;
+}
+
+const PartyStats: React.FC<PartyStatsProps> = ({ startedAt, guests }) => {
   const [numSongsPlayed, setNumSongsPlayed] = useState(0);
   const [leaderboard, setLeaderboard] = useState([]);
   const [partyStartTime, setPartyStartTime] = useState(null);
 
   useEffect(() => {
-    // Set up listeners for party stats
-    // const numSongsPlayedRef = firebase.database().ref('partyStats/numSongsPlayed');
-    // numSongsPlayedRef.on('value', (snapshot) => {
-    //   setNumSongsPlayed(snapshot.val());
-    // });
-
-    // const leaderboardRef = firebase.database().ref('partyStats/leaderboard');
-    // leaderboardRef.on('value', (snapshot) => {
-    //   const leaderboardData = snapshot.val();
-    //   const leaderboardArray = Object.keys(leaderboardData).map((key) => ({
-    //     id: key,
-    //     ...leaderboardData[key],
-    //   }));
-    //   setLeaderboard(leaderboardArray);
-    // });
-    // const partyStartTimeRef = firebase.database().ref('partyStats/partyStartTime');
-    // partyStartTimeRef.on('value', (snapshot) => {
-    //   setPartyStartTime(snapshot.val());
-    // });
-
-    // Clean up listeners on unmount
-    return () => {
-      //   numSongsPlayedRef.off();
-      //   leaderboardRef.off();
-      //   partyStartTimeRef.off();
-    };
+    return () => {};
   }, []);
 
   const calculateHoursUp = () => {
-    if (!partyStartTime) {
+    if (!startedAt) {
       return null;
     }
     const now = new Date().getTime();
-    const partyStart = new Date(partyStartTime).getTime();
+    const partyStart = new Date(startedAt).getTime();
     const hoursUp = Math.floor((now - partyStart) / (1000 * 60 * 60));
     return hoursUp;
   };
 
   return (
-    <View>
-      <Text>Number of songs played: {numSongsPlayed}</Text>
-      <Text>Party has been up for: {calculateHoursUp()} hours</Text>
+    <View style={styles.container}>
+      <View style={styles.subContainer}>
+        <Text style={styles.textStyle}>Number of players: {guests}</Text>
+      </View>
+
+      <View style={styles.subContainer}>
+        <Text style={styles.textStyle}>
+          Party has been up for:{" "}
+          <Text style={styles.highlightTextStyle}>
+            {calculateHoursUp()} hours
+          </Text>
+        </Text>
+      </View>
     </View>
   );
 };
 
 export default PartyStats;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    backgroundColor: colors.modalBackground,
+    padding: 20,
+    borderRadius: 20,
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    alignItems: "center",
+  },
+  subContainer: {
+    flex: 1,
+    justifyContent: "center",
+
+    alignItems: "center",
+  },
+  textStyle: {
+    fontFamily: FontFamily.bold,
+    color: colors.text,
+    textAlign: "center",
+  },
+  highlightTextStyle: {
+    fontFamily: FontFamily.extra_bold,
+    color: colors.accentColor,
+  },
+});

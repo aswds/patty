@@ -1,17 +1,18 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import React from "react";
-import { BackButton } from "../../../shared/Buttons/BackButton";
-import { Title } from "../../../shared/Title/Title";
-import { image } from "../../../../assets/images";
-import { IEvent, IEvent_User } from "../../../Types/Events";
-import { colors } from "../../../src/colors";
-import ProfileButton from "../../Map/components/ProfileButton";
+import { BackButton } from "../../../../shared/Buttons/BackButton";
+import { Title } from "../../../../shared/Title/Title";
+import { image } from "../../../../../assets/images";
+import { IEvent, IEvent_User } from "../../../../Types/Events";
+import { colors } from "../../../../src/colors";
+import ProfileButton from "../../../Map/components/ProfileButton";
 import { useNavigation } from "@react-navigation/native";
-import { MapNavNavigatorParamList } from "../../../Types/MapStack/NavigationTypes";
-import { ProfileNavigationProps } from "../../../Types/ProfileStack/ScreenNavigationProps";
-import { getUserByUID } from "../../../services/getUserByUID";
+import { MapNavNavigatorParamList } from "../../../../Types/MapStack/NavigationTypes";
+import { ProfileNavigationProps } from "../../../../Types/ProfileStack/ScreenNavigationProps";
+import { getUserByUID } from "../../../../services/getUserByUID";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import { FontFamily } from "../../../../assets/fonts/Fonts";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import UserInfo from "../../../../shared/Events/UserInfo";
 
 interface HeaderProps {
   user: IEvent_User;
@@ -31,36 +32,26 @@ const Header: React.FC<HeaderProps> = ({ title, user }) => {
           alignItems: "center",
         }}
       >
-        <BackButton
-          navigation={navigation}
-          style={{ position: "relative", left: 0 }}
-        />
         <Title
           title={title}
+          navigation={navigation}
           containerStyle={{
-            width: undefined,
-            marginHorizontal: "5%",
+            marginRight: "5%",
             flexShrink: 1,
-            alignItems: "center",
+            left: 0,
           }}
           fontStyle={{ fontSize: 30 }}
         />
       </View>
-      <View style={{ alignItems: "center", justifyContent: "center" }}>
-        <MaterialCommunityIcons
-          name="crown-outline"
-          size={35}
-          color={colors.accentColor}
-        />
-        <ProfileButton
-          userUID={user.uid!}
-          userImage={user.image}
-          containerStyle={{
-            position: "relative",
-            padding: 5,
-          }}
-        />
-        <Text style={styles.hostTextStyle}>host</Text>
+      <View
+        style={{
+          height: "100%",
+          alignItems: "center",
+
+          justifyContent: "center",
+        }}
+      >
+        <UserInfo user={user} />
       </View>
     </View>
   );
@@ -82,6 +73,7 @@ const styles = StyleSheet.create({
     height: 20,
   },
   hostTextStyle: {
+    marginHorizontal: 5,
     fontFamily: FontFamily.bold,
     fontSize: 14,
     color: colors.text,

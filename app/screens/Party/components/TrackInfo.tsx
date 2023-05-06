@@ -6,7 +6,7 @@ import { FontFamily } from "../../../../assets/fonts/Fonts";
 import Button from "../../../shared/Buttons/Button";
 import ListEmptyComponent from "../../../shared/UserList/ListEmptyComponent";
 import _ from "lodash";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import { Fontisto, MaterialCommunityIcons } from "@expo/vector-icons";
 import { Title } from "../../../shared/Title/Title";
 import RunningText from "../../../shared/Animations/RunningText";
 interface Props {
@@ -50,20 +50,40 @@ const NoTrack = ({}) => {
   return (
     <ListEmptyComponent
       title="Seems nothing playing here"
-      icon={<></>}
+      icon={
+        <Fontisto
+          name="cloudy-gusts"
+          size={20}
+          color={colors.text}
+          style={{ marginVertical: "5%", marginHorizontal: 5 }}
+        />
+      }
       style={{
         flex: 1,
         flexDirection: "row",
-        justifyContent: "space-evenly",
+        justifyContent: "space-between",
         alignItems: "center",
       }}
-      textStyle={{ color: colors.text }}
-      buttonContainer={{ left: "5%" }}
+      textStyle={{
+        color: colors.text,
+        fontFamily: FontFamily.bold,
+        flexShrink: 1,
+      }}
+      textProps={{
+        numberOfLines: 1,
+      }}
+      titleContainerStyle={{ flexShrink: 1 }}
       button={
         <Button
           text="Add a song"
           onPress={() => {}}
-          style={{ backgroundColor: "transparent" }}
+          style={{
+            backgroundColor: "transparent",
+            width: undefined,
+            height: undefined,
+            paddingHorizontal: 0,
+            marginLeft: "5%",
+          }}
         />
       }
     />
@@ -71,7 +91,7 @@ const NoTrack = ({}) => {
 };
 const TrackInfo = ({ trackInfo }: Props) => {
   return (
-    <View style={{ flex: 1 }}>
+    <View style={{ flex: 1, marginVertical: "5%" }}>
       <LinearGradient
         style={styles.container}
         start={{ x: 0, y: -1 }}
