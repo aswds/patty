@@ -12,6 +12,15 @@ import {
   initialWindowMetrics,
 } from "react-native-safe-area-context";
 import { isDarkTheme } from "./app/src/theme";
+import useUserLocation from "./app/hooks/useUserLocation/useUserLocation";
+import { userReference } from "./app/Firebase/References";
+import { getAuth } from "firebase/auth";
+import { updateUserLocation } from "./app/redux/reducers/User";
+import { getAddress } from "./app/shared/GetLocationFunctions/getAddress";
+import { useActions } from "./app/hooks/useActions";
+import { IFullAddress } from "./app/Types/Events";
+import { Provider, useDispatch } from "react-redux";
+import store from "./app/redux/store/store";
 // Setting splash screen
 SplashScreen.preventAutoHideAsync();
 export default function App() {
@@ -35,7 +44,6 @@ export default function App() {
         // Artificially delay for two seconds to simulate a slow loading
         // experience. Please remove this if you copy and paste the code!
         await cacheResources();
-        // await new Promise((resolve) => setTimeout(resolve, 2000));
       } catch (e) {
       } finally {
         // Tell the application to render
@@ -53,7 +61,7 @@ export default function App() {
       // loading its initial state and rendering its first pixels. So instead,
       // we hide the splash screen once we know the root view has already
       // performed layout.
-      // SplashScreen.hideAsync()
+      SplashScreen.hideAsync();
     }
   }, [appIsReady]);
 
@@ -66,7 +74,9 @@ export default function App() {
         <StatusBar barStyle={isDarkTheme ? "light-content" : "dark-content"} />
         {/* <StrictMode> */}
         <BottomSheetModalProvider>
-          <ProvidedNavigator />
+          <Provider store={store}>
+            <ProvidedNavigator />
+          </Provider>
         </BottomSheetModalProvider>
 
         {/* </StrictMode> */}

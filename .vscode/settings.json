@@ -1,4 +1,6 @@
 {
   "editor.fontFamily": "Consolas, 'Courier New', monospace",
-  "cSpell.words": ["Pressable"]
+  "editor.fontLigatures": true,
+  "cSpell.words": ["Pressable"],
+  "editor.fontWeight": "normal"
 }
