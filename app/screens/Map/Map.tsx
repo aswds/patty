@@ -15,7 +15,6 @@ import {
 import { AppNavigatorNavigationProp } from "../../Types/AppNavigator/AppNavigator";
 import type { IEvent } from "../../Types/Events";
 import { MapStackScreenProps } from "../../Types/MapStack/ScreenNavigationProps";
-import { removeItemOnce } from "../../helpers/removeItemOnce";
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import useUserLocation, {
@@ -40,6 +39,7 @@ import mapStyle from "./mapStyle.json";
 import { NoEventFoundAlert } from "../../shared/Alert/NoEventFound";
 import EventMarkers from "./components/EventMarkers";
 import { handleAlertError } from "./helpers/handleAlertError";
+
 function Map({ navigation }: MapStackScreenProps<"Map">) {
   //States
   const [markerInfo, setMarkerInfo] = useState<IEvent>();
@@ -86,7 +86,7 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
     }
   }, []);
   useEffect(() => {
-    if (city && !_.isEmpty(current_user.events?.eventType)) {
+    if (city && current_user.events?.eventType) {
       const eventRef = eventsReference(city, current_user.events.eventType);
       const unsub = onSnapshot(eventRef, () => {
         fetch_events();
@@ -99,7 +99,7 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
     if (
       city &&
       current_user.events?.onEvent &&
-      !_.isEmpty(current_user.events?.eventType)
+      current_user.events?.eventType
     ) {
       const eventRef = eventReference(
         city,
@@ -329,16 +329,22 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
             if (joinedEvent) {
               leaveCurrentEvent(joinedEvent);
             } else {
-              fetch_joined_event(
-                current_user.userLocation?.city,
-                current_user.events.onEvent
-              ).then((event) => {
-                leaveCurrentEvent(event);
-              });
+              if (
+                current_user.userLocation?.city &&
+                current_user.events?.onEvent
+              ) {
+                fetch_joined_event(
+                  current_user.userLocation.city,
+                  current_user.events.eventType,
+                  current_user.events.onEvent
+                ).then((event) => {
+                  leaveCurrentEvent(event);
+                });
+              }
+              if (alertError.type === "toCreate") navigateToPartyCreation();
+              partyMarkerModalRef.current?.close();
+              hideModal();
             }
-            if (alertError.type === "toCreate") navigateToPartyCreation();
-            partyMarkerModalRef.current?.close();
-            hideModal();
           }}
         />
       </View>

@@ -30,15 +30,16 @@ export async function joinEvent(data: IEvent) {
     db,
     `EVENTS`,
     `${data.location?.fullAddressInfo?.city}`,
-    `UserEvents`,
-    `${data.partyID}`
+    `${data.rsvp}`,
+    `${data.partyID || data.user.uid}`
   );
   //functions
   await updateDoc(updateRef, {
     guests: arrayUnion(current_user_uid),
   });
   await updateDoc(userDoc_ref, {
-    "events.onEvent": FieldValue.arrayUnion(data.partyID),
+    "events.onEvent": data.partyID || data.user.uid,
+    "events.eventType": data.rsvp,
   });
 }
 
@@ -51,16 +52,17 @@ export async function leaveEvent(data: IEvent) {
     db,
     `EVENTS`,
     `${data.location?.fullAddressInfo?.city}`,
-    `UserEvents`,
+    `${data.rsvp}`,
     `${data.partyID}`
   );
   //query data from firebase
 
   //functions
   await updateDoc(eventDoc_ref, {
-    guests: FieldValue.arrayRemove(current_user_uid),
+    guests: current_user_uid,
   });
   await updateDoc(userDoc_ref, {
-    "events.onEvent": FieldValue.arrayRemove(data.partyID),
+    "events.onEvent": FieldValue.delete(),
+    "events.eventType": FieldValue.delete(),
   });
 }

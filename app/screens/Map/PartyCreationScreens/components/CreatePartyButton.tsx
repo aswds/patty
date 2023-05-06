@@ -12,13 +12,17 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { useActions } from "../../../../hooks/useActions";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { Timestamp, serverTimestamp } from "firebase/firestore";
+import {
+  AppNavigatorNavigationProp,
+  AppNavigatorParamList,
+} from "../../../../Types/AppNavigator/AppNavigator";
 
 interface CreatePartyButtonProps {
   data: AdditionalInformationData;
 }
 
 export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
-  const navigation = useNavigation<MapNavigationProps>();
+  const navigation = useNavigation<AppNavigatorNavigationProp>();
   const insets = useSafeAreaInsets();
   const { clearCreateEvents } = useActions();
   const { general_data, location_time_data } = useTypedSelector(
@@ -30,16 +34,15 @@ export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
 
   async function onPress() {
     if (allNecessaryDataPresent) {
-      await addPartyOnMap(_data)
-        .then(() => {
-          console.log("then");
-        })
-        .catch(() => {
-          console.log("error");
-        });
+      await addPartyOnMap(_data);
       await joinEvent(_data);
-      navigation.navigate("Map");
-      clearCreateEvents();
+      navigation.navigate("PartyNav", {
+        screen: "PartyScreen",
+        params: {
+          partyData: _data,
+        },
+      });
+      // clearCreateEvents();
     } else {
       Alert.alert("Please make sure you entered all data.");
     }

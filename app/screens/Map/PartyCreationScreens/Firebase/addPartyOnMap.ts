@@ -12,11 +12,11 @@ export async function addPartyOnMap(data: IEvent) {
     events: doc(
       db,
       `EVENTS`,
-      `${data?.location?.fullAddressInfo?.city}`,
-      `UserEvents`,
-      `${auth?.currentUser?.uid}`
+      `${data.location.fullAddressInfo?.city}`,
+      `${data.rsvp || data.user.uid}`,
+      `${auth.currentUser?.uid}`
     ),
-    user: doc(db, "USERS", `${auth?.currentUser?.uid}`),
+    user: doc(db, "USERS", `${auth.currentUser?.uid}`),
   };
   const addParty = () =>
     new Promise(async (resolve) => {
@@ -33,12 +33,10 @@ export async function addPartyOnMap(data: IEvent) {
     new Promise(async (resolve, reject) => {
       await updateDoc(DB_references.user, {
         "events.eventsCreated": increment(1),
-      }).then(() => {
-        resolve("Success");
       });
     });
   return await Promise.all([addParty(), addUserPartyCount()])
-    .then(() => {})
+    .then(() => console.log("G"))
     .catch((e) =>
       Alert.alert("'We can't upload event due to error.", e.message)
     );
