@@ -222,15 +222,7 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
                   partyMarkerModalRef.current?.snapToIndex(0);
                 }} */}
           <EventMarkers
-            events={events}
-            onMarkerPress={async (doc) => {
-              setMarkerInfo(doc);
-              animateToRegion(doc?.location?.region as Region);
-              partyMarkerModalRef.current?.snapToIndex(0);
-            }}
-          />
-          <EventMarkers
-            events={inviteOnlyEvents}
+            events={[...events, ...inviteOnlyEvents]}
             onMarkerPress={async (doc) => {
               setMarkerInfo(doc);
               animateToRegion(doc?.location?.region as Region);
