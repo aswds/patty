@@ -98,7 +98,9 @@ const VerifyEmail = (props) => {
     const unsubscribe = setInterval(() => {
       auth.currentUser?.reload();
       if (auth.currentUser?.emailVerified) {
-        updateCurrentUser(auth, { email: email });
+        updateCurrentUser(auth, { email: email })
+          .then(() => {})
+          .catch(() => {});
         eventEmitter.emit(EMAIL_VERIFICATION);
       }
     }, 1000);

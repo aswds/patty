@@ -1,12 +1,12 @@
 import { UserLocation } from "./../../Types/User";
 import { useEffect, useState } from "react";
 import { getUserLocation } from "../../shared/GetLocationFunctions/getUserLocation";
-import { onSnapshot } from "firebase/firestore";
+import { getDocs, onSnapshot } from "firebase/firestore";
 import { getAddress } from "../../shared/GetLocationFunctions/getAddress";
 import { ICoordinates, IEvent, IFullAddress } from "../../Types/Events";
 import { LocationObject } from "expo-location";
 import { Alert } from "react-native";
-import { eventReference } from "../../Firebase/References";
+import { eventsReference } from "../../Firebase/References";
 import { useActions } from "../useActions";
 import { useAppDispatch } from "../useAppDispatch";
 import { updateUserLocation } from "../../redux/reducers/User";
@@ -19,11 +19,10 @@ import { updateUserLocation } from "../../redux/reducers/User";
 export async function fetchCityParties(
   userLocation: string
 ): Promise<IEvent[]> {
-  return new Promise((resolve, reject) => {
-    const collectionRef = eventReference(userLocation);
-    onSnapshot(
-      collectionRef,
-      async (querySnapshot) => {
+  return new Promise(async (resolve, reject) => {
+    const collectionRef = eventsReference(userLocation);
+    await getDocs(collectionRef).then(
+      (querySnapshot) => {
         if (querySnapshot.docs.length === 0)
           reject(
             new Error(

@@ -16,7 +16,7 @@ export const colors = {
   buttonBG: isDarkTheme ? "rgba(47, 37, 36, 1)" : "rgba(109, 109, 109, 0.1)", // rgba(47, 37, 36,) Profile screen // Edit button
   buttonText: isDarkTheme ? "rgba(255, 84, 84, 1)" : "black", // Profile screen // Edit button
   cancel: "#A85959", //TypeError
-  blue_text: "#0A67FF",
+  blue_text: "cornflowerblue",
   partyCreateScreenColors: {
     button: {
       backgroundColor: "#722424",
@@ -27,9 +27,16 @@ export const colors = {
     unfollow_button: isDarkTheme ? "#2B3526" : "#000080",
   },
   partyMarkerColors: {
-    smallGroupOfPeople: "#FF8A8A",
-    midGroupOfPeople: "#D04848",
-    bigGroupOfPeople: "#FF0000",
+    ViaInvite: {
+      intimateGathering: "#FFC107",
+      mediumGathering: "#FF9800",
+      largeGathering: "#FF5722",
+    },
+    Public: {
+      intimateGathering: "#FF8A8A",
+      mediumGathering: "#D04848",
+      largeGathering: "#FF0000",
+    },
   },
   initialScreenButton: isDarkTheme ? "#363636" : "#F6F6F6",
   modalBackground: isDarkTheme ? "#1c1c1c" : "#FFFFFF",
