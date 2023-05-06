@@ -13,7 +13,6 @@ import EditImage from "./components/EditImage";
 import { ProfileStackScreenNavigationProps } from "../../../Types/ProfileStack/ScreenNavigationProps";
 import NavigationBar from "../../Map/PartyCreationScreens/NavigationBar";
 import { ScreenCreateParty } from "../../../shared/Screen/ScreenCreateParty";
-import { image } from "../../../../assets/images";
 import EditPublicInformation from "./components/EditPublicInformation";
 import { EditUser, IUser } from "../../../Types/User";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
@@ -57,6 +56,7 @@ export default function EditProfile({
     userInfo.name !== current_user.name ||
       userInfo.surname !== current_user.surname ||
       userInfo.username !== current_user.username ||
+      userInfo.bio !== current_user.bio ||
       userImage !== current_user.image
   );
 
@@ -68,18 +68,22 @@ export default function EditProfile({
       if (areChanges) {
         const updateUser: Pick<
           IUser,
-          "name" | "surname" | "username" | "image"
+          "name" | "surname" | "username" | "image" | "bio"
         > = {
           image: userImage,
           name: userInfo.name,
+          bio: userInfo.bio,
           surname: userInfo.surname,
           username: userInfo.username,
         };
+        {
+          console.log(userInfo);
+        }
         await updateDoc(userRef, updateUser);
         await uploadImage(userImage);
       }
       navigation.navigate("Profile", {
-        current_user: { ...current_user, ...userInfo },
+        current_user: { ...current_user, ...userInfo, image: userImage },
       });
     }
   };
@@ -113,7 +117,7 @@ export default function EditProfile({
     >
       <View style={styles.imageContainer}>
         <EditImage
-          source={user?.image ?? image.noImage}
+          source={user?.image}
           handleUserImageEdit={handleUserImageEdit}
         />
         <Button

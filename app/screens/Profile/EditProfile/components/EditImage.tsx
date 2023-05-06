@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Image, StyleSheet, TouchableOpacity, View } from "react-native";
 import { useRoute } from "@react-navigation/native";
 import { ModalPhoto } from "../../../Authorization/Sign_up/Sign_up_screens/Modal";
@@ -10,9 +10,10 @@ import { _showModalHandle } from "../../../Authorization/Sign_up/Sign_up_screens
 import { MaterialIcons } from "@expo/vector-icons";
 import { colors } from "../../../../src/colors";
 import { Skeleton } from "moti/skeleton";
+import { image } from "../../../../../assets/images";
 
 interface EditImageProps {
-  source: string;
+  source: any;
   handleUserImageEdit: (image: string) => void;
 }
 
@@ -22,12 +23,13 @@ export default function EditImage({
 }: EditImageProps) {
   const route = useRoute();
   const [showModal, setShowModal] = useState<boolean>(false);
-  const [image, setImage] = useState<string>(source);
+  const [displayedImage, setImage] = useState<string>(source);
   const [isLoading, setIsLoading] = useState<boolean>(true);
   function editImageHandle(image: string) {
     handleUserImageEdit(image);
     setImage(image);
   }
+  useEffect(() => {});
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -37,7 +39,7 @@ export default function EditImage({
       >
         <Skeleton show={isLoading} radius={"round"}>
           <Image
-            source={{ uri: image }}
+            source={displayedImage ? { uri: displayedImage } : image.noImage}
             style={styles.imageStyle}
             onLoadEnd={() => setIsLoading(false)}
           />

@@ -3,6 +3,7 @@ import { Image, ImageStyle, StyleProp, StyleSheet, View } from "react-native";
 import { Skeleton } from "moti/skeleton";
 import CurrentUserButtons from "../CurrentUserButtons";
 import { IUser } from "../../../../Types/User";
+import { image } from "../../../../../assets/images";
 
 interface UserImageProps {
   Loader: {
@@ -26,7 +27,7 @@ export default function UserImage({
       {/* Loader */}
       <Skeleton show={isLoading} radius={45} height={100} width={100}>
         <Image
-          source={{ uri: user.image }}
+          source={user.image ? { uri: user.image } : image.noImage}
           style={[styles.imageStyle, style]}
           onLoadEnd={() => {
             setIsLoading(false);

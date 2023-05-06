@@ -27,6 +27,7 @@ function Profile({
   if (!user) {
     return <Loader isVisible={Boolean(user)} />;
   }
+
   useEffect(() => {
     setUser(current_user!);
   }, [current_user]);
@@ -69,7 +70,6 @@ const styles = StyleSheet.create({
   backButtonStyle: {
     position: "relative",
     left: isAndroid ? -15 : 0,
-    marginBottom: 20,
   },
 });
 export default Profile;
