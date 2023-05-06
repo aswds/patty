@@ -8,11 +8,13 @@ import {
   where,
 } from "firebase/firestore";
 import { getUserLocation } from "../../shared/GetLocationFunctions/getUserLocation";
-import { fetchEventsByCity } from "../../screens/Map/Firebase/fetchEventsByCity";
+import { fetchEventsByCoordinates } from "../../screens/Map/Firebase/fetchEventsByCoordinates";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { IEvent, IFullAddress } from "../../Types/Events";
 import { getAuth } from "firebase/auth";
 import { IUser } from "../../Types/User";
+import { userReference } from "../../Firebase/References";
+import _ from "lodash";
 
 /**
  * fetch_events
@@ -25,7 +27,7 @@ export const fetch_events = createAsyncThunk(
   "events/fetch_events",
   async () => {
     return getUserLocation().then((res) => {
-      return fetchEventsByCity(res);
+      return fetchEventsByCoordinates(res);
     });
   }
 );
@@ -39,20 +41,16 @@ export const fetch_events = createAsyncThunk(
  *
  * @returns {Promise<IEvent[]>} - A promise containing an array of IEvent objects.
  */
-export const fetch_joined_events = async (
-  city: IFullAddress["city"]
-): Promise<IEvent[]> => {
+export const fetch_joined_event = async (
+  city?: IFullAddress["city"],
+  rsvp?: IUser["events"]["eventType"],
+  partyID?: IUser["events"]["onEvent"]
+): Promise<IEvent | undefined> => {
   const db = getFirestore();
   const auth = getAuth();
-  const docRef = doc(db, `USERS`, `${auth.currentUser?.uid}`);
-
+  const docRef = userReference(auth.currentUser?.uid!);
   const user: IUser = await getDoc(docRef).then((res) => <IUser>res.data());
-  if (!user.events.onEvent || user?.events?.onEvent.length === 0) return [];
-  const collectionRef = collection(db, `EVENTS`, `${city}`, `UserEvents`);
+  const collectionRef = doc(db, `EVENTS`, `${city}`, `${rsvp}`, `${partyID}`);
 
-  const q = query(collectionRef, where("partyID", "in", user.events.onEvent));
-
-  return await getDocs(q).then((res) =>
-    res.docs.map((doc) => doc.data() as IEvent)
-  );
+  return await getDoc(collectionRef).then((res) => res.data() as IEvent);
 };

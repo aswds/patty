@@ -14,22 +14,17 @@ export type AdditionalInformationData = Omit<
   keyof GeneralData | keyof LocationAndTimeData
 >;
 interface InitialStateType {
-  general_data?: GeneralData;
-  location_time_data?: LocationAndTimeData;
-  additional_information?: AdditionalInformationData;
+  general_data: GeneralData;
+  location_time_data: LocationAndTimeData;
+  additional_information: AdditionalInformationData;
 }
-
-const defaultState: InitialStateType = {
-  general_data: {},
-  location_time_data: {},
-  //@ts-ignore
-  additional_information: {},
-};
 
 const initialState: InitialStateType = {
   general_data: {},
-  location_time_data: {},
-  //@ts-ignore
+  location_time_data: {
+    location: { fullAddressInfo: null, region: null, address: null },
+  },
+  //@ts-expect-error
   additional_information: {},
 };
 
