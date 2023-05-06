@@ -28,6 +28,12 @@ export interface ITime {
   seconds?: number;
 }
 
+export interface EventColors {
+  intimateGathering: string;
+  mediumGathering: string;
+  largeGathering: string;
+}
+
 export interface IEvent {
   title?: string;
   description?: string;
