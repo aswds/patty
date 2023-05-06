@@ -52,7 +52,6 @@ export const RootNavigator = () => {
   // - If onAuthStateChanged didn't fire yet, the splashscreen is shown
   if (!isLoading) {
     // - Hides splash screen
-    SplashScreen.hideAsync();
   }
 
   // -Navigation between main navigator and LoginAndRegister navigator
