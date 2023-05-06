@@ -18,10 +18,16 @@ export default function Guests({
     useCallback(() => {
       setIsLoading(true);
       if (guestsUIDs.length > 0) {
-        fetchGuests(guestsUIDs).then((guests) => {
-          setGuests(guests);
-          setIsLoading(false);
-        });
+        fetchGuests(guestsUIDs)
+          .then((guests) => {
+            setGuests(guests);
+            setIsLoading(false);
+          })
+          .catch(() => {
+            setIsLoading(false);
+          });
+      } else {
+        setIsLoading(false);
       }
     }, [])
   );

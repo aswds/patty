@@ -8,25 +8,29 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { IUser } from "../../../../Types/User";
 import { IEvent, IFullAddress } from "../../../../Types/Events";
 import { deleteParty } from "./actionButtonsFunctions";
+import { leaveEvent } from "../../../Map/Firebase/leaveEvents";
 
 interface ActionButtonsProps {
-  userUID: IUser["uid"];
-  partyID: IEvent["partyID"];
-  city: IFullAddress["city"];
+  party: IEvent;
   closeModal: () => void;
+  handleAlertError: (
+    title: string,
+    message: string,
+    cancelText: string,
+    onCancelCallback: () => void,
+    okText: string
+  ) => void;
+  onPressDelete: () => void;
 }
 
 export function ActionButtons({
-  userUID,
-  partyID,
-  city,
+  party,
+  handleAlertError,
   closeModal,
+  onPressDelete,
 }: ActionButtonsProps) {
   const { uid } = useTypedSelector((state) => state.user_state.current_user);
-  const onPressDelete = () => {
-    deleteParty(partyID, city);
-    closeModal();
-  };
+
   return (
     <View style={styles.actionsButtonContainer}>
       <IconButton
@@ -37,7 +41,7 @@ export function ActionButtons({
         onPress={() => {}}
       />
 
-      {userUID != uid && (
+      {party?.user.uid != uid && (
         <IconButton
           text={"Report"}
           Icon={MaterialIcons}
@@ -46,17 +50,20 @@ export function ActionButtons({
           onPress={() => {}}
         />
       )}
-      {userUID == uid && (
+      {party?.user.uid == uid && (
         <IconButton
           text={"Delete"}
           Icon={MaterialIcons}
           name={"delete-forever"}
           textStyle={styles.iconTextStyle}
           onPress={() => {
-            Alert.alert("Are you sure?", "", [
-              { text: "Delete", style: "destructive", onPress: onPressDelete },
-              { text: "Don't", style: "cancel" },
-            ]);
+            handleAlertError(
+              "Delete Party",
+              "Are you sure you want to delete this party?",
+              "Delete",
+              onPressDelete,
+              "Cancel"
+            );
           }}
         />
       )}

@@ -2,11 +2,12 @@ import { deleteDoc, doc, getFirestore } from "firebase/firestore";
 import { IEvent, IFullAddress } from "./../../../../Types/Events";
 export async function deleteParty(
   partyID: IEvent["partyID"],
-  city: IFullAddress["city"]
+  city: IFullAddress["city"],
+  rsvp: IEvent["rsvp"]
 ) {
   const db = getFirestore();
 
-  const partyRef = doc(db, "EVENTS", `${city}`, `UserEvents`, `${partyID}`);
+  const partyRef = doc(db, "EVENTS", `${city}`, `${rsvp}`, `${partyID}`);
 
-  await deleteDoc(partyRef);
+  return await deleteDoc(partyRef);
 }

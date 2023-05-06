@@ -5,28 +5,12 @@ import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { IEvent } from "../../../../Types/Events";
 import { isAndroid } from "../../../../src/platform";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-
+import { AntDesign, Ionicons } from "@expo/vector-icons";
 interface JoinEventButtonProps {
   data: IEvent;
   onPress: (data: IEvent) => void;
   isJoinedEvent: boolean;
   isCreator: boolean;
-}
-function EventButtonText({ title }: { title: string }) {
-  return <Text style={[styles.textTitleStyle, { fontSize: 18 }]}>{title}</Text>;
-}
-function EventButton({ data, onPress, isJoinedEvent }: JoinEventButtonProps) {
-  return (
-    <TouchableOpacity style={styles.buttonBg} onPress={() => onPress(data)}>
-      {isJoinedEvent ? (
-        <Text style={[styles.textTitleStyle, { fontSize: 18 }]}>Leave</Text>
-      ) : (
-        <Text style={[styles.textTitleStyle, { fontSize: 18 }]}>
-          Join event
-        </Text>
-      )}
-    </TouchableOpacity>
-  );
 }
 
 export function JoinEventButton({
@@ -36,14 +20,30 @@ export function JoinEventButton({
   isCreator,
 }: JoinEventButtonProps): JSX.Element {
   const insets = useSafeAreaInsets();
+
   return (
     <View style={{ width: "100%", height: 50 + insets.bottom }}>
-      <EventButton
-        data={data}
-        onPress={onPress}
-        isJoinedEvent={isJoinedEvent}
-        isCreator={isCreator}
-      />
+      <TouchableOpacity style={styles.buttonBg} onPress={() => onPress(data)}>
+        {isJoinedEvent ? (
+          <Text
+            style={[
+              styles.textTitleStyle,
+              { fontSize: 18, alignItems: "center" },
+            ]}
+          >
+            Leave
+          </Text>
+        ) : (
+          <Text style={[styles.textTitleStyle, { fontSize: 18 }]}>
+            Join event
+          </Text>
+        )}
+        {isJoinedEvent ? (
+          <AntDesign name="staro" size={24} color={colors.text} />
+        ) : (
+          <AntDesign name="star" size={24} color={colors.text} />
+        )}
+      </TouchableOpacity>
     </View>
   );
 }
@@ -51,6 +51,8 @@ export function JoinEventButton({
 const styles = StyleSheet.create({
   buttonBg: {
     backgroundColor: colors.accentColor,
+    flexDirection: "row",
+
     height: 50,
     marginBottom: isAndroid ? "5%" : 0,
     width: "100%",
@@ -62,6 +64,7 @@ const styles = StyleSheet.create({
   textTitleStyle: {
     fontFamily: FontFamily.bold,
     fontSize: 22,
+    paddingRight: 5,
     color: colors.buttonTextColor,
   },
 });

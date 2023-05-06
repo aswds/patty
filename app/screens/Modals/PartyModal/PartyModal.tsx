@@ -17,12 +17,18 @@ import { ModalProps } from "../Types/Modals";
 import { colors } from "../../../src/colors";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
 import BottomSheetModal from "../BottomSheetModal";
-import {
-  joinEvent,
-  leaveEvent,
-} from "../../Map/Firebase/fetchUserJoinedEvents";
+import { joinEvent, leaveEvent } from "../../Map/Firebase/leaveEvents";
+import _ from "lodash";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { removeItemOnce } from "../../../helpers/removeItemOnce";
+import { useNavigation } from "@react-navigation/native";
+import { MapNavigationProps } from "../../../Types/MapStack/ScreenNavigationProps";
+import { useActions } from "../../../hooks/useActions";
+import { AppNavigatorNavigationProp } from "../../../Types/AppNavigator/AppNavigator";
+import { fetch_joined_event } from "../../../redux/actions/Events";
+import CustomAlert from "../../../shared/Alert/CustomAlert";
+import { deleteParty } from "./components/actionButtonsFunctions";
+import { pickAlertErrors } from "../../Map/helpers/pickAnAlertType";
 
 function Description({ markerInfo }: { markerInfo: IEvent }) {
   return (
@@ -44,35 +50,90 @@ function TagList({ markerInfo }: { markerInfo: IEvent }) {
 type PartyMarkerModalProps = ModalProps & {
   markerInfo: IEvent;
   modalRef: RefObject<BottomSheet>;
-  updateMarkerInfo: (newData: Pick<IEvent, "guests">) => void;
+  onLeaveCurrentEvent: (event: IEvent) => void;
+  handleAlertError: (
+    title: string,
+    message: string,
+    cancelText?: string,
+    onCancelCallback?: () => void,
+    okText?: string
+  ) => void;
 };
 
 const PartyModal: React.FC<PartyMarkerModalProps> = ({
   markerInfo,
   onClose,
   modalRef,
-  updateMarkerInfo,
+  onLeaveCurrentEvent,
+  handleAlertError,
 }) => {
-  const { uid } = useTypedSelector((state) => state.user_state.current_user);
+  const navigation = useNavigation<AppNavigatorNavigationProp>();
+  const { current_user } = useTypedSelector((state) => state.user_state);
+  const { updateUser } = useActions();
   const [isJoinedEvent, setIsJoinedEvent] = useState<boolean>(
-    markerInfo?.guests.includes(uid!)
+    markerInfo?.partyID === current_user?.events?.onEvent
   );
-  const [isCreator, _] = useState<boolean>(markerInfo?.user?.uid == uid);
-  useEffect(() => {
-    setIsJoinedEvent(markerInfo?.guests.includes(uid!));
-  }, [onClose]);
+  const [isCreator, __] = useState<boolean>(
+    markerInfo?.user?.uid === current_user.uid!
+  );
+
+  function onJoinEvent(data: IEvent) {
+    joinEvent(data).then((r) => {
+      navigation.navigate("PartyNav", {
+        screen: "PartyScreen",
+        params: {
+          partyData: data,
+        },
+      });
+      updateUser({
+        ...current_user,
+        events: {
+          ...current_user.events,
+          onEvent: data.partyID || data.user.uid,
+        },
+      });
+      onClose!();
+    });
+  }
 
   function onPress(data: IEvent) {
     if (isJoinedEvent) {
-      updateMarkerInfo({
-        guests: removeItemOnce([...markerInfo.guests], uid!),
-      });
-      leaveEvent(data).then(() => onClose!());
+      // host is leaving
+      if (current_user.uid === data.user.uid) {
+        const alertData = pickAlertErrors("hostLeaving");
+        handleAlertError(
+          alertData.title,
+          alertData.message,
+          alertData.cancelText,
+          onPressDelete,
+          alertData.okText
+        );
+      } else {
+        // user is leaving
+        onLeaveCurrentEvent(data);
+      }
     } else {
-      updateMarkerInfo({ guests: [...markerInfo.guests, uid!] });
-      joinEvent(data).then((r) => onClose!());
+      if (_.isEmpty(current_user.events.onEvent)) {
+        onJoinEvent(data);
+      } else {
+        const alertData = pickAlertErrors("toJoin");
+        handleAlertError(alertData.title, alertData.message);
+      }
     }
   }
+
+  const onPressDelete = async () => {
+    onLeaveCurrentEvent(markerInfo);
+    await deleteParty(
+      markerInfo.partyID,
+      markerInfo.location.fullAddressInfo?.city!,
+      markerInfo.rsvp
+    )
+      .then(() => {
+        closeModal();
+      })
+      .catch((e) => console.log(e));
+  };
 
   function closeModal() {
     modalRef.current?.close;
@@ -84,10 +145,10 @@ const PartyModal: React.FC<PartyMarkerModalProps> = ({
       <Description markerInfo={markerInfo} />
       <TagList markerInfo={markerInfo} />
       <ActionButtons
-        userUID={markerInfo?.user.uid!}
-        partyID={markerInfo?.partyID}
-        city={markerInfo?.location?.fullAddressInfo?.city}
+        party={markerInfo}
         closeModal={closeModal}
+        handleAlertError={handleAlertError}
+        onPressDelete={onPressDelete}
       />
       <JoinEventButton
         data={markerInfo}
