@@ -1,6 +1,13 @@
 import React from "react";
 
-import { StyleSheet, Text, TextStyle, View, ViewStyle } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextProps,
+  TextStyle,
+  View,
+  ViewStyle,
+} from "react-native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import { colors } from "../../src/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
@@ -11,18 +18,22 @@ interface ListEmptyComponentProps {
   title: string;
   style?: ViewStyle;
   icon?: React.ReactNode;
+  titleContainerStyle?: ViewStyle;
   textStyle?: TextStyle;
   buttonContainer?: ViewStyle;
   button?: React.ReactNode;
+  textProps?: TextProps;
 }
 
 const ListEmptyComponent = ({
+  titleContainerStyle,
   title,
   style,
   icon,
   textStyle,
   buttonContainer,
   button,
+  textProps,
 }: ListEmptyComponentProps) => {
   return (
     <View style={(styles.container, style)}>
@@ -37,8 +48,10 @@ const ListEmptyComponent = ({
           />
         )}
       </View>
-      <View style={{}}>
-        <Text style={[styles.textStyle, textStyle]}>{title}</Text>
+      <View style={titleContainerStyle}>
+        <Text style={[styles.textStyle, textStyle]} {...textProps}>
+          {title}
+        </Text>
       </View>
       <View style={buttonContainer}>{button}</View>
     </View>

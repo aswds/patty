@@ -23,7 +23,7 @@ export default function GooglePlaceSearch({
     (state) => state.user_state.current_user
   );
   const currentLocation = {
-    description: "Current location",
+    description: "📍\tCurrent location",
     geometry: {
       location: {
         lat: userLocation?.location?.latitude!,

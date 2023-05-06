@@ -48,7 +48,7 @@ export function Title({
           </View>
         )}
         {description && (
-          <Text style={styles.descriptionTextStyle} numberOfLines={1}>
+          <Text style={styles.descriptionTextStyle} numberOfLines={2}>
             {description}
           </Text>
         )}
@@ -65,7 +65,6 @@ const styles = StyleSheet.create({
   },
   backButtonContainer: {
     marginRight: "3%",
-    alignSelf: "center",
   },
   textStyle: {
     color: colors.text,
