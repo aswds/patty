@@ -5,4 +5,6 @@ export type AuthorizationParamList = {
   InitialScreen: undefined;
   SignInNav: SignInNavNavigatorParamList;
   SignUpNav: SignUpNavNavigatorParamList;
+  TermsOfService: undefined;
+  PrivacyPolicy: undefined;
 };

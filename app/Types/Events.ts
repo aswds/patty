@@ -9,7 +9,7 @@ export interface ICoordinates {
 }
 export interface IFullAddress {
   additionalData: { [key: string]: string };
-  city?: string;
+  city: string;
   countryName: string;
   county: string;
   district: string;
@@ -19,9 +19,9 @@ export interface IFullAddress {
 }
 
 export interface ILocation {
-  region?: ICoordinates | null | undefined;
+  region: ICoordinates | null | undefined;
   address?: string | null | undefined;
-  fullAddressInfo?: IFullAddress | null | undefined;
+  fullAddressInfo: IFullAddress | null | undefined;
 }
 export interface ITime {
   nanoseconds?: number;
@@ -32,7 +32,7 @@ export interface IEvent {
   title?: string;
   description?: string;
   tags?: string[];
-  location?: ILocation;
+  location: ILocation;
   time?: ITime | Date | string;
   rsvp?: RSVP_Types;
   giftRequired?: GiftsRequireTextTypes;
@@ -43,6 +43,7 @@ export interface IEvent {
   user: IEvent_User;
   partyID?: string;
   createdAt?: Date | FieldValue;
+  isViaInvite?: boolean;
 }
 export interface IGifts {
   required: boolean;
