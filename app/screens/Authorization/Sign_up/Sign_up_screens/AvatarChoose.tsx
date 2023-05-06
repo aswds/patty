@@ -1,10 +1,9 @@
 import React, { useEffect, useState } from "react";
-import { StyleSheet } from "react-native";
+import { StyleSheet, View } from "react-native";
 import { colors } from "../../../../src/colors";
 import ACAskImage from "./components/AvatarChooseComp/ACAskImage";
 import ACImage from "./components/AvatarChooseComp/ACImage";
 import ACNextButton from "./components/AvatarChooseComp/ACNextButton";
-import { ACScreen } from "./components/AvatarChooseComp/ACScreen";
 import { BackButton } from "../../../../shared/Buttons/BackButton";
 import { ModalPhoto } from "./Modal";
 import { _hideModal, _imagePropHandler } from "./AvatarFunctions/ACFunctions";
@@ -13,6 +12,9 @@ import { isAndroid } from "../../../../src/platform";
 import { _showModalHandle } from "./Sign_up_Functions/_showModalHandel";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { SignUpStackScreenProps } from "../../../../Types/Authorization/SignUp/ScreenNavigationProps";
+import { Screen } from "../../../../shared/Screen/Screen";
+import Title from "../../components/Title";
+import NextButton from "../../../../shared/Buttons/NextButton";
 
 export const AvatarChoose = ({
   navigation,
@@ -31,28 +33,51 @@ export const AvatarChoose = ({
 
   // not safe to pass params in  3 screens (change to (registration->firebase.createNewUser->enter name -> choose avatar -> updateProfile -> Home screen))
   return (
-    <ACScreen>
+    <Screen style={{ flex: 1, justifyContent: "space-evenly" }}>
       <BackButton navigation={navigation} />
-      <ACImage
-        _showModalHandle={_showModalHandle.bind(null, setImage, setShowModal)}
-        image={image}
+
+      <View
+        style={{
+          flex: 1,
+          justifyContent: "space-evenly",
+        }}
+      >
+        <ACImage
+          _showModalHandle={_showModalHandle.bind(null, setImage, setShowModal)}
+          image={image}
+        />
+
+        <Title
+          title={`Let's Choose Your Profile Picture!`}
+          message="Show the World Your Best Smile :)"
+        />
+
+        <ModalPhoto
+          routeName={route.name}
+          hideModal={_hideModal.bind(null, setShowModal)}
+          showModal={showModal}
+          imageHandler={_imagePropHandler.bind(null, setImage)}
+        />
+      </View>
+      <NextButton
+        style={{ marginTop: "auto" }}
+        handleErrorMessage={() => {}}
+        onPress={() => {
+          if (name && surname && username) {
+            navigation.navigate("SignUpScreen", {
+              name: name,
+              surname: surname,
+              username: username,
+              imageURI: image || "",
+            });
+          }
+        }}
+        error={{
+          title: "",
+          message: "",
+        }}
       />
-      <ACAskImage styles={styles} route={route} />
-      <ModalPhoto
-        routeName={route.name}
-        hideModal={_hideModal.bind(null, setShowModal)}
-        showModal={showModal}
-        imageHandler={_imagePropHandler.bind(null, setImage)}
-      />
-      <ACNextButton
-        styles={styles}
-        image={image}
-        name={name}
-        surname={surname}
-        username={username}
-        navigation={navigation}
-      />
-    </ACScreen>
+    </Screen>
   );
 };
 const styles = StyleSheet.create({

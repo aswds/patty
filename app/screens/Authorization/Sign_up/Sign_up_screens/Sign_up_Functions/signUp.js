@@ -64,8 +64,7 @@ async function setDocs(result, userInfo) {
       eventsVisited: 0,
       onEvent: [],
     },
-    partiesVisited: 0,
-    partiesCreated: 0,
+    isPremium: false,
     createdAt: Timestamp.fromDate(new Date()).toJSON() || new Date(),
   }).then(() => {
     uploadImage(image, auth.currentUser);

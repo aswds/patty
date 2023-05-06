@@ -8,6 +8,7 @@ export default function ACImage(props) {
     <TouchableOpacity
       style={{
         height: 200,
+        alignSelf: "center",
         width: 200,
         borderRadius: 80,
         backgroundColor: colors.buttonBG,

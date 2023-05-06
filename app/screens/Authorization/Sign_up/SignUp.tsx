@@ -12,17 +12,17 @@ import { BackButton } from "../../../shared/Buttons/BackButton";
 import Button from "../components/BigButton";
 import Input from "../../../shared/Input/Input";
 import { Logo } from "../components/Logo";
+import CustomAlert from "../CustomAlert";
 import { textStyle } from "../style";
-import { TermText } from "./Sign_up_components/TermText";
+import { TermText } from "../Initial_Screen/TermText";
 import { error_handle } from "./Sign_up_screens/Sign_up_Functions/error_handle";
 import { signUpHandle } from "./Sign_up_screens/Sign_up_Functions/signUp";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
 import { SignUpRouteProps } from "../../../Types/Authorization/SignUp/RouteTypes";
 import { SignUpStackScreenProps } from "../../../Types/Authorization/SignUp/ScreenNavigationProps";
 import { Screen } from "../../../shared/Screen/Screen";
-import CustomAlert from "../../../shared/Alert/CustomAlert";
-import { isLoading } from "expo-font";
-import Loader from "../../../shared/Loaders/Loader";
+import Title from "../components/Title";
+import { getAuth, sendSignInLinkToEmail } from "firebase/auth";
 type SignUpUser = {
   email: string | null;
   password: string | null;
@@ -41,11 +41,10 @@ const SignUpScreen = ({
     email: null,
     password: null,
   });
-  const [isLoading, setIsLoading] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [confirmPass, setConfirmPass] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(true);
-  const [errorMsg, setErrorMsg] = useState<string>("");
+  const [errorMsg, setErrorMsg] = useState<string>();
   const ref_input2 = useRef<TextInput>(null);
   const ref_input3 = useRef<TextInput>(null);
   const ref_input4 = useRef<TextInput>(null);
@@ -59,14 +58,12 @@ const SignUpScreen = ({
     setShowModal(false);
   };
   function signUp_handle() {
-    setIsLoading(true);
     if (
       valid.validEmail &&
       valid.validPassword &&
       user.password === confirmPass &&
       user.email
     ) {
-      //handling sign up
       signUpHandle(
         user.email.trim(),
         user.password.trim(),
@@ -82,13 +79,11 @@ const SignUpScreen = ({
         }).catch((err) => {
           setShowModal(true);
           setErrorMsg(err);
-          setIsLoading(false);
         });
       });
     } else {
       setShowModal(true);
       setErrorMsg("Please check if everything is correct :)");
-      setIsLoading(false);
     }
   }
   function refHandle(ref_input: MutableRefObject<TextInput | null>) {
@@ -113,118 +108,121 @@ const SignUpScreen = ({
   }
 
   return (
-    <Screen>
-      {isLoading && <Loader isVisible={isLoading} />}
-      <BackButton navigation={navigation} />
+    <View style={{ backgroundColor: colors.background, flex: 1 }}>
+      <Screen style={{}}>
+        <BackButton navigation={navigation} />
 
-      <View style={{ marginBottom: "10%", alignItems: "center" }}>
-        <Logo />
-      </View>
-      <View style={{ alignItems: "center" }}>
-        <Input
-          style={styles.inputStyle}
-          icon={
-            <MaterialIcons
-              name="alternate-email"
-              size={Dimensions.get("window").height >= 800 ? 24 : 20}
-              color={colors.iconColor}
-            />
-          }
-          isValid={valid.validEmail}
-          autoCapitalize="none"
-          keyboardType="email-address"
-          placeholder="Email"
-          placeholderTextColor={textStyle.color}
-          onSubmitEditing={() => {
-            refHandle(ref_input3);
-          }}
-          onChangeText={(text) => {
-            setUser({ ...user, email: text });
-            setValid({ ...valid, validEmail: true });
-          }}
-          value={user.email!}
-          ref={ref_input2}
-          inputStyle={{
-            ...styles.inputField,
-          }}
-        />
-
-        <Input
-          isValid={valid.validPassword}
-          style={styles.inputStyle}
-          icon={<PasswordIcon />}
-          secureTextEntry={showPassword}
-          placeholder="Password"
-          placeholderTextColor={textStyle.color}
-          onChange={() => {
-            setValid({ ...valid, validPassword: true });
-          }}
-          onChangeText={(text) => {
-            setUser({ ...user, password: text });
-            // checkPassword(text, setValid, setPasswordError);
-          }}
-          onSubmitEditing={() => {
-            refHandle(ref_input4);
-          }}
-          value={user.password!}
-          ref={ref_input3}
-          inputStyle={styles.inputField}
-        />
-
-        <Input
-          style={styles.inputStyle}
-          isValid={valid.validConfirmPassword}
-          icon={
-            <MaterialCommunityIcons
-              name="lock-check"
-              size={Dimensions.get("window").height >= 800 ? 24 : 20}
-              color={colors.iconColor}
-            />
-          }
-          autoCapitalize="none"
-          secureTextEntry={showPassword}
-          placeholder="Confirm your password"
-          placeholderTextColor={textStyle.color}
-          onChangeText={(text) => {
-            setConfirmPass(text);
-            if (user.password !== text) {
-              setValid({ ...valid, validConfirmPassword: false });
-            } else {
-              setValid({ ...valid, validConfirmPassword: true });
+        <View style={{ flex: 1, justifyContent: "center" }}>
+          <Title title="Congratulation! 🎉" message={`Just one step left!`} />
+          <Input
+            style={styles.inputStyle}
+            icon={
+              <MaterialIcons
+                name="alternate-email"
+                size={Dimensions.get("window").height >= 800 ? 24 : 20}
+                color={colors.iconColor}
+              />
             }
-          }}
-          defaultValue={confirmPass}
-          ref={ref_input4}
-          inputStyle={styles.inputField}
+            isValid={valid.validEmail}
+            autoCapitalize="none"
+            keyboardType="email-address"
+            placeholder="Email"
+            placeholderTextColor={textStyle.color}
+            onSubmitEditing={() => {
+              refHandle(ref_input3);
+            }}
+            onChangeText={(text) => {
+              setUser({ ...user, email: text });
+              setValid({ ...valid, validEmail: true });
+            }}
+            value={user.email!}
+            ref={ref_input2}
+            inputStyle={{
+              ...styles.inputField,
+            }}
+          />
+          <Input
+            isValid={valid.validPassword}
+            style={styles.inputStyle}
+            icon={<PasswordIcon />}
+            secureTextEntry={showPassword}
+            placeholder="Password"
+            placeholderTextColor={textStyle.color}
+            onChange={() => {
+              setValid({ ...valid, validPassword: true });
+            }}
+            onChangeText={(text) => {
+              setUser({ ...user, password: text });
+              // checkPassword(text, setValid, setPasswordError);
+            }}
+            onSubmitEditing={() => {
+              refHandle(ref_input4);
+            }}
+            value={user.password!}
+            ref={ref_input3}
+            inputStyle={styles.inputField}
+          />
+
+          <Input
+            style={styles.inputStyle}
+            isValid={valid.validConfirmPassword}
+            icon={
+              <MaterialCommunityIcons
+                name="lock-check"
+                size={Dimensions.get("window").height >= 800 ? 24 : 20}
+                color={colors.iconColor}
+              />
+            }
+            autoCapitalize="none"
+            secureTextEntry={showPassword}
+            placeholder="Confirm your password"
+            placeholderTextColor={textStyle.color}
+            onChangeText={(text) => {
+              setConfirmPass(text);
+              if (user.password !== text) {
+                setValid({ ...valid, validConfirmPassword: false });
+              } else {
+                setValid({ ...valid, validConfirmPassword: true });
+              }
+            }}
+            defaultValue={confirmPass}
+            ref={ref_input4}
+            inputStyle={styles.inputField}
+          />
+        </View>
+        {/* Fix */}
+        {/* Fix */}
+
+        <CustomAlert
+          errorMsg={errorMsg!}
+          hideModal={_hideModal}
+          showModal={showModal}
         />
-      </View>
-      <View style={{ width: "100%", alignItems: "center" }}>
+      </Screen>
+      <View
+        style={{
+          width: "100%",
+          bottom: "5%",
+          paddingHorizontal: 20,
+          shadowOffset: {
+            height: 2,
+            width: 0,
+          },
+          shadowOpacity: 0.3,
+        }}
+      >
         <Button
           textStyle={{
             fontFamily: "Nunito-Bold",
             fontSize: 20,
             color: colors.buttonText,
           }}
-          style={styles.styledButton}
+          style={{ width: "100%", height: 60 }}
           onPress={signUp_handle}
           title={"Sign up"}
         />
-
-        {/* Fix */}
-        <TermText />
-        {/* Fix */}
-        {/* <CustomAlert
-          errorMsg={errorMsg!}
-          hideModal={_hideModal}
-          showModal={showModal}
-        /> */}
-        <CustomAlert
-          errorMsg={errorMsg}
-          hideModal={_hideModal}
-          showModal={showModal}
-        />
       </View>
-    </Screen>
+    </View>
   );
 };
 
@@ -235,7 +233,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   inputStyle: {
-    width: "90%",
+    width: "100%",
     height: 60,
     color: colors.text,
   },
@@ -284,15 +282,18 @@ const styles = StyleSheet.create({
     padding: 10,
   },
   styledButton: {
-    marginTop: "20%",
-    marginBottom: 20,
-    borderRadius: 20,
-    borderWidth: 1,
-
+    width: "35%",
+    marginTop: "10%",
+    bottom: 10,
+    right: 0,
+    alignSelf: "flex-end",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    flexDirection: "row",
+    padding: 10,
+    borderRadius: 40,
+    marginHorizontal: 10,
     backgroundColor: colors.accentColor,
-    height: isAndroid ? "10%" : 70,
-    width: "90%",
-    alignSelf: "center",
   },
 });
 
