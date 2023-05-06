@@ -3,6 +3,7 @@ import { Octicons } from "@expo/vector-icons";
 import { pickColor } from "../../pickColor";
 import { Marker, Region } from "react-native-maps";
 import { IEvent } from "../../../../Types/Events";
+import { colors } from "../../../../src/colors";
 
 type CustomMarkerProps = {
   doc: IEvent;
@@ -23,7 +24,12 @@ const CustomMarker = React.memo(
         <Octicons
           name="dot-fill"
           size={31}
-          color={pickColor(doc?.guests.length)}
+          color={pickColor(
+            doc?.guests.length,
+            doc.isViaInvite
+              ? colors.partyMarkerColors.ViaInvite
+              : colors.partyMarkerColors.Public
+          )}
         />
       </Marker>
     );

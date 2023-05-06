@@ -1,9 +1,9 @@
 import React from "react";
 
-import {TouchableOpacity} from "react-native";
-import {Feather} from "@expo/vector-icons";
-import {styles} from "./styles";
-import {colors} from "../../../../src/colors";
+import { TouchableOpacity } from "react-native";
+import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import { styles } from "./styles";
+import { colors } from "../../../../src/colors";
 
 interface SearchButtonProps {
   onPress: () => void;
@@ -15,7 +15,11 @@ const SearchButton = ({ onPress }: SearchButtonProps) => {
       style={[styles.buttonContainer, styles.additionalButton]}
       onPress={onPress}
     >
-      <Feather name="search" size={30} color={colors.accentColor} />
+      <MaterialCommunityIcons
+        name="map-search"
+        size={30}
+        color={colors.accentColor}
+      />
     </TouchableOpacity>
   );
 };
