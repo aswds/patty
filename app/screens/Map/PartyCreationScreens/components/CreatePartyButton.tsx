@@ -36,6 +36,11 @@ export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
     if (allNecessaryDataPresent) {
       await addPartyOnMap(_data);
       await joinEvent(_data);
+
+      navigation.navigate("MapNav", {
+        screen: "Map",
+      });
+
       navigation.navigate("PartyNav", {
         screen: "PartyScreen",
         params: {

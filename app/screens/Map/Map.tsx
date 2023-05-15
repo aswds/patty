@@ -2,12 +2,13 @@ import BottomSheet from "@gorhom/bottom-sheet";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { onSnapshot } from "firebase/firestore";
 import _ from "lodash";
-import { useEffect, useRef, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
 import MapView, { PROVIDER_DEFAULT, Region } from "react-native-maps";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
+  eventDocToListenReference,
   eventReference,
   eventsReference,
   userReference,
@@ -17,9 +18,7 @@ import type { IEvent } from "../../Types/Events";
 import { MapStackScreenProps } from "../../Types/MapStack/ScreenNavigationProps";
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-import useUserLocation, {
-  fetchCityParties,
-} from "../../hooks/useUserLocation/useUserLocation";
+import { fetchCityParties } from "../../hooks/useUserLocation/useUserLocation";
 import { fetch_joined_event } from "../../redux/actions/Events";
 import { clearCreateEvents } from "../../redux/reducers/CreateEvent";
 import CustomAlert from "../../shared/Alert/CustomAlert";
@@ -39,13 +38,17 @@ import mapStyle from "./mapStyle.json";
 import { NoEventFoundAlert } from "../../shared/Alert/NoEventFound";
 import EventMarkers from "./components/EventMarkers";
 import { handleAlertError } from "./helpers/handleAlertError";
+import { db } from "../../../firebase";
+import useUserLocation from "../../hooks/useUserLocation/useUserLocations";
 
 function Map({ navigation }: MapStackScreenProps<"Map">) {
   //States
   const [markerInfo, setMarkerInfo] = useState<IEvent>();
   const [showAlertModal, setShowAlertModal] = useState<boolean>(false);
   const [joinedEvent, setJoinedEvent] = useState<IEvent>();
-  const { userLocation, isLocationLoading } = useUserLocation();
+  // const { userLocation, city, isLocationLoading } = useUserLocation();
+  const [location, isLocationLoading] = useUserLocation();
+  const city = location.city;
   const [showLoader, setShowLoader] = useState<boolean>(isLocationLoading);
   const [events, setEvents] = useState<IEvent[]>([]);
   const [inviteOnlyEvents, setInviteOnlyEvents] = useState<IEvent[]>([]);
@@ -57,11 +60,9 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
   const insets = useSafeAreaInsets();
   const appNavigation = useNavigation<AppNavigatorNavigationProp>();
   // Redux
-  const { isLoading, error } = useTypedSelector((state) => state.events_state);
   const { current_user } = useTypedSelector((state) => state.user_state);
-  const city = current_user.userLocation?.city;
 
-  const { fetch_user, updateUser } = useActions();
+  const { fetch_user } = useActions();
   //References
   const mapRef = useRef<MapView | null>(null);
   const partyMarkerModalRef = useRef<BottomSheet>(null);
@@ -71,57 +72,79 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
   // clearing onEvent when party has been deleted
 
   useEffect(() => {
-    // first render
     fetch_user();
-    fetch_events();
+    fetch_public_events();
+    fetch_viaInvite_events();
   }, []);
 
   useEffect(() => {
     if (current_user.uid) {
-      const userRef = userReference(current_user?.uid);
+      const userRef = userReference(current_user.uid);
       const unsub = onSnapshot(userRef, () => {
         fetch_user();
       });
       return () => unsub();
     }
-  }, []);
+  }, [current_user?.uid]);
+
   useEffect(() => {
-    if (city && current_user.events?.eventType) {
-      const eventRef = eventsReference(city, current_user.events.eventType);
-      const unsub = onSnapshot(eventRef, () => {
-        fetch_events();
+    if (city) {
+      const public_eventsRef = eventsReference(city, "Public");
+      const viaInvite_eventsRef = eventsReference(city, "Via Invite");
+      const unsubscribe_public_events = onSnapshot(public_eventsRef, () => {
+        fetch_public_events();
       });
 
-      return () => unsub();
+      const unsubscribe_viaInvite_events = onSnapshot(
+        viaInvite_eventsRef,
+        () => {
+          fetch_viaInvite_events();
+        }
+      );
+
+      return () => {
+        unsubscribe_public_events();
+        unsubscribe_viaInvite_events();
+      };
     }
-  }, [city]);
+  }, [city, current_user.events?.onEvent, current_user.events?.eventType]);
+
   useEffect(() => {
     if (
       city &&
-      current_user.events?.onEvent &&
-      current_user.events?.eventType
+      current_user.events?.eventType &&
+      current_user.events?.onEvent
     ) {
       const eventRef = eventReference(
         city,
-        current_user.events.eventType,
+        current_user.events?.eventType,
         current_user.events?.onEvent
       );
-      const unsub = onSnapshot(eventRef, async (snapshot) => {
+
+      const unsubscribe = onSnapshot(eventRef, (snapshot) => {
         if (!snapshot.exists()) {
           leaveDeletedEvent();
-          fetch_events();
-          fetch_user();
           setJoinedEvent(undefined);
+          fetch_viaInvite_events();
+          fetch_public_events();
         }
       });
-      return () => unsub();
+
+      return () => unsubscribe();
     }
-  }, [city]);
+  }, [current_user.events?.eventType, current_user.events?.onEvent, city]);
+
+  useEffect(() => {
+    if (city && current_user.events?.eventType && current_user.events.onEvent) {
+      fetchJoinedEvents().then((event) => setJoinedEvent(event));
+    }
+  }, [current_user.events?.onEvent, city, current_user.events?.eventType]);
 
   useEffect(() => {
     // animate to user location
-    animateToRegion(userLocation!);
-  }, [userLocation]);
+    if (current_user.userLocation?.location)
+      animateToRegion(current_user.userLocation?.location);
+  }, [current_user.userLocation?.location]);
 
   useFocusEffect(() => {
     //clearing create party info
@@ -154,8 +177,21 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
       screen: "GeneralInformation",
     });
   }
-  async function fetch_events() {
-    if (userLocation && city) {
+
+  const fetch_viaInvite_events = useCallback(async () => {
+    if (city)
+      fetchViaInviteParties(city)
+        .then((res) => {
+          setInviteOnlyEvents(res);
+        })
+        .catch(() => {
+          setInviteOnlyEvents([]);
+        });
+  }, [city]);
+
+  const fetch_public_events = useCallback(async () => {
+    if (city) {
+      console.log("FetchCityParties");
       fetchCityParties(city)
         .then((events) => {
           setEvents(events);
@@ -163,10 +199,28 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
         .catch(() => {
           setEvents([]);
         });
-      fetchViaInviteParties(city).then((res) => {
-        setInviteOnlyEvents(res);
-      });
     }
+  }, [city]);
+
+  async function fetchJoinedEvents() {
+    if (
+      city &&
+      current_user.events?.eventType &&
+      current_user.events?.onEvent
+    ) {
+      const newEvent = await fetch_joined_event(
+        city,
+        current_user.events.eventType,
+        current_user.events.onEvent
+      );
+      console.log(newEvent);
+      return newEvent;
+    } else {
+      console.log(city, current_user.events);
+    }
+  }
+  {
+    console.log(city);
   }
   //functions to pass down to children
 
@@ -178,18 +232,15 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
     setShowAlertModal(false);
   }
 
-  async function leaveCurrentEvent(event?: IEvent) {
-    if (event) {
-      await leaveEvent(event).then(() => {
+  async function leaveCurrentEvent() {
+    if (joinedEvent) {
+      await leaveEvent(joinedEvent).then(() => {
         setJoinedEvent(undefined);
+        partyMarkerModalRef.current?.close();
       });
-      updateUser({
-        ...current_user,
-        events: { ...current_user.events, onEvent: "" },
-      });
-      partyMarkerModalRef.current?.close();
     }
   }
+
   //Render
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -207,9 +258,6 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
           provider={PROVIDER_DEFAULT}
           style={StyleSheet.absoluteFill}
           customMapStyle={mapStyle}
-          onMapReady={() => {
-            animateToRegion(userLocation!);
-          }}
           // initialRegion={userLocation}
           paddingAdjustmentBehavior={"automatic"}
           showsUserLocation
@@ -222,7 +270,15 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
                   partyMarkerModalRef.current?.snapToIndex(0);
                 }} */}
           <EventMarkers
-            events={[...events, ...inviteOnlyEvents]}
+            events={events}
+            onMarkerPress={async (doc) => {
+              setMarkerInfo(doc);
+              animateToRegion(doc?.location?.region as Region);
+              partyMarkerModalRef.current?.snapToIndex(0);
+            }}
+          />
+          <EventMarkers
+            events={inviteOnlyEvents}
             onMarkerPress={async (doc) => {
               setMarkerInfo(doc);
               animateToRegion(doc?.location?.region as Region);
@@ -234,7 +290,7 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
           userUID={current_user.uid!}
           userImage={current_user.image}
           onLongPress={() =>
-            mapRef?.current?.animateToRegion(userLocation as Region)
+            animateToRegion(current_user.userLocation?.location as Region)
           }
           containerStyle={{ right: "5%", top: "1%", marginTop: insets.top }}
         />
@@ -244,8 +300,13 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
             if (_.isEmpty(current_user.events.onEvent)) {
               navigateToPartyCreation();
             } else {
-              setAlertError(pickAlertErrors("toCreate"));
-              setShowAlertModal(true);
+              if (joinedEvent && joinedEvent.user.uid === current_user.uid) {
+                setAlertError(pickAlertErrors("hostLeaving"));
+                setShowAlertModal(true);
+              } else {
+                setAlertError(pickAlertErrors("toCreate"));
+                setShowAlertModal(true);
+              }
             }
           }}
           onPressSearchPartyButton={() => {
@@ -253,25 +314,14 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
             // setVisibleModal({ ...visibleModal, searchModal: true });
           }}
           onPressSelectedButton={async () => {
-            setShowLoader(true);
-
             try {
               if (joinedEvent) {
                 navigateToPartyScreen(joinedEvent);
-                return;
-              }
-              if (city && current_user.events.onEvent) {
-                const event = await fetch_joined_event(
-                  city,
-                  current_user.events.eventType,
-                  current_user.events.onEvent
-                );
-                if (event) {
-                  setJoinedEvent(event);
-                  navigateToPartyScreen(event);
-                  return;
-                }
               } else {
+                await fetchJoinedEvents().then((event) => {
+                  setJoinedEvent(event);
+                  if (event) navigateToPartyScreen(event);
+                });
               }
               setAlertError(pickAlertErrors("noPartyJoined"));
             } catch (e) {
@@ -297,7 +347,7 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
           city={city!}
           snapTo={snapTo}
           animateToRegion={animateToRegion}
-          events={events}
+          events={[...events, ...inviteOnlyEvents]}
         />
         <PartyModal
           modalRef={partyMarkerModalRef}
@@ -311,6 +361,9 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
             setAlertError,
             setShowAlertModal
           )}
+          onJoin={(event: IEvent) => {
+            setJoinedEvent(event);
+          }}
         />
         <CustomAlert
           showModal={showAlertModal}
@@ -323,27 +376,16 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
             if (alertError.onCancelCallback) {
               alertError.onCancelCallback();
               partyMarkerModalRef.current?.close();
-              hideModal();
+              setShowAlertModal(false);
               return;
             }
             if (joinedEvent) {
-              leaveCurrentEvent(joinedEvent);
+              leaveCurrentEvent();
+              setShowAlertModal(false);
             } else {
-              if (
-                current_user.userLocation?.city &&
-                current_user.events?.onEvent
-              ) {
-                fetch_joined_event(
-                  current_user.userLocation.city,
-                  current_user.events.eventType,
-                  current_user.events.onEvent
-                ).then((event) => {
-                  leaveCurrentEvent(event);
-                });
-              }
               if (alertError.type === "toCreate") navigateToPartyCreation();
               partyMarkerModalRef.current?.close();
-              hideModal();
+              setShowAlertModal(false);
             }
           }}
         />

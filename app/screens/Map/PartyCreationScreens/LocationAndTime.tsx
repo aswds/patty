@@ -11,6 +11,8 @@ import { PartyCreationStackScreenProps } from "../../../Types/MapStack/ScreenNav
 import NextButton from "../../../shared/Buttons/NextButton";
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { AlertConfig } from "../helpers/pickAnAlertType";
+import CustomAlert from "../../../shared/Alert/CustomAlert";
 
 const LocationAndTime = ({
   route,
@@ -21,7 +23,17 @@ const LocationAndTime = ({
   const { createEventsLocationAndTimeUpdate } = useActions();
   const [time, setTime] = useState<Date>(new Date());
   const [partyPlace, setPartyPlace] = useState<PartyPlace>("House");
-  const [location, setLocation] = useState<ILocation>({});
+  const [showAlertModal, setShowAlertModal] = useState<boolean>(false);
+  const [error, setError] = useState<AlertConfig>({
+    title: "",
+    message: "",
+  });
+
+  const [location, setLocation] = useState<ILocation>({
+    fullAddressInfo: null,
+    address: null,
+    region: null,
+  });
   // handlers
 
   function handlePartyPlaceUpdate(place: PartyPlace) {
@@ -47,6 +59,17 @@ const LocationAndTime = ({
     }
   };
 
+  const handleErrorMessage = (titleToSet: string, message: string) => {
+    if (titleToSet.length < 1) {
+      setError({
+        title: "Please enter a location",
+        message:
+          "Oops! It looks like the location for the party hasn't been specified yet.",
+      });
+    }
+    setShowAlertModal(true);
+  };
+
   return (
     <Screen>
       <NavigationBar navigation={navigation} text={"Location and time"} />
@@ -70,6 +93,14 @@ const LocationAndTime = ({
       <NextButton
         onPress={onPress}
         isValueEntered={Boolean(location.region && time)}
+        error={error}
+        handleErrorMessage={handleErrorMessage}
+      />
+      <CustomAlert
+        errorMsg={error.message}
+        title={error.title}
+        hideModal={() => setShowAlertModal(false)}
+        showModal={showAlertModal}
       />
     </Screen>
   );

@@ -3,7 +3,7 @@ import { Dimensions, StyleSheet, Text, View } from "react-native";
 import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
 import { colors } from "../../../../src/colors";
 import { Title } from "../../../../shared/Title/Title";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Entypo, MaterialIcons } from "@expo/vector-icons";
 import { ICoordinates } from "../../../../Types/Events";
 import { RouteProp, useRoute } from "@react-navigation/native";
 import { PartyCreationNavigatorParamList } from "../../../../Types/MapStack/NavigationTypes";
@@ -25,12 +25,7 @@ export default function Location({
   function TitleIcon() {
     return (
       <View style={{ marginBottom: 5 }}>
-        <MaterialIcons
-          name="add-location-alt"
-          size={25}
-          color={colors.iconColor}
-          style={{}}
-        />
+        <Entypo name="location-pin" size={25} color={colors.text} />
       </View>
     );
   }

@@ -3,6 +3,8 @@ export const descriptionTexts = {
   tags: "Add some tags to define your interests (7 max.)",
   description: "Explain what u gonna do there",
   location: "Determine where the event will take place.",
-  dateAndTime: "Enter the start time of the event.",
+  party_venue: "Please select the type of venue where the party will be held.",
+  party_access: "Select party access type",
+  dateAndTime: "Specify the arrival date and time for your guests.",
   foodAndDrinks: "Provide information about food and drinks",
 };

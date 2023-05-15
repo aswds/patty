@@ -38,7 +38,7 @@ export default function TagList({ setTags, tags }: Props): JSX.Element {
           <AntDesign
             name="tago"
             size={20}
-            color={colors.iconColor}
+            color={colors.text}
             style={{ paddingHorizontal: 5 }}
           />
         }
