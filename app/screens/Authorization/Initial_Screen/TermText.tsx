@@ -23,7 +23,7 @@ export const TermText: React.FC<TermTextProps> = ({ style, navigation }) => {
   return (
     <SafeAreaView style={[styles.textTerms, style]}>
       <Text style={styles.textTermsStyle}>
-        Before you start, please take a moment to read our{" "}
+        Before you start, please take a moment to read our{"\n"}
         <Text
           style={{
             ...styles.textTermsStyle,
@@ -46,9 +46,9 @@ export const TermText: React.FC<TermTextProps> = ({ style, navigation }) => {
           }}
         >
           Private Policy
-        </Text>{" "}
-        It's important for you to understand our policies, and by using our app,
-        you agree to abide by them.
+        </Text>
+        {"\n"}
+        By using our app, you agree to comply with our policies.
       </Text>
     </SafeAreaView>
   );

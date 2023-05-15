@@ -17,11 +17,11 @@ export default function Buttons(props) {
         }}
       >
         <Text style={styles.textStyle}>Sign up</Text>
-        <View style={{ marginLeft: 20 }}>
+        <View style={{ marginLeft: "5%" }}>
           <Ionicons
             name="ios-arrow-forward-circle-sharp"
             size={25}
-            color={colors.buttonTextColor}
+            color={colors.accentColor}
           />
         </View>
       </TouchableOpacity>
@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
   button1: {
     height: 45,
     width: "50%",
-    backgroundColor: colors.accentColor,
+    // backgroundColor: colors.accentColor,
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
@@ -57,15 +57,13 @@ const styles = StyleSheet.create({
     height: 45,
     marginTop: "10%",
     width: "50%",
-    backgroundColor: colors.initialScreenButton,
     borderRadius: 15,
     justifyContent: "center",
     alignItems: "center",
-    borderWidth: 0.5,
     borderColor: "#C2C2C2",
   },
   textStyle: {
-    color: colors.buttonTextColor,
-    fontFamily: FontFamily.semi_bold,
+    color: colors.accentColor,
+    fontFamily: FontFamily.extra_bold,
   },
 });

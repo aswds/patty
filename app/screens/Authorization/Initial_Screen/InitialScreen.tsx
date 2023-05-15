@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { ScrollView, StyleSheet, View } from "react-native";
 import { Logo } from "../components/Logo";
 import Buttons from "./components/Buttons";
 import { colors } from "../../../src/colors";
@@ -12,8 +12,9 @@ export default function InitialScreen({
 }: AuthorizationStackScreenProps<"InitialScreen">) {
   const insets = useSafeAreaInsets();
   return (
-    <View
-      style={[
+    <ScrollView
+      style={styles.container}
+      contentContainerStyle={[
         styles.container,
         { paddingTop: insets.top, paddingBottom: insets.bottom },
       ]}
@@ -35,14 +36,13 @@ export default function InitialScreen({
         style={{ position: "absolute", bottom: 0 }}
         navigation={navigation}
       />
-    </View>
+    </ScrollView>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-    justifyContent: "space-around",
   },
   subContainer: {
     width: "100%",
