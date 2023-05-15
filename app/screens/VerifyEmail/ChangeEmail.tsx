@@ -81,9 +81,8 @@ export default function ChangeEmail({
   // changeEmail function to update user's email
   function changeEmail(email: string) {
     updateEmail(auth.currentUser!, email)
-      .then(() => {
-        Alert.alert("You'll have to login with changed email");
-        navigation.navigate("VerifyEmail", { changedEmail: email });
+      .then(async () => {
+        await auth.signOut();
       })
       .catch((e) => {
         if (e.code === "auth/requires-recent-login") {

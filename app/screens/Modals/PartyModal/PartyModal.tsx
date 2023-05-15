@@ -18,7 +18,7 @@ import { colors } from "../../../src/colors";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
 import BottomSheetModal from "../BottomSheetModal";
 import { joinEvent, leaveEvent } from "../../Map/Firebase/leaveEvents";
-import _ from "lodash";
+import _, { update } from "lodash";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { removeItemOnce } from "../../../helpers/removeItemOnce";
 import { useNavigation } from "@react-navigation/native";
@@ -50,7 +50,8 @@ function TagList({ markerInfo }: { markerInfo: IEvent }) {
 type PartyMarkerModalProps = ModalProps & {
   markerInfo: IEvent;
   modalRef: RefObject<BottomSheet>;
-  onLeaveCurrentEvent: (event: IEvent) => void;
+  onLeaveCurrentEvent: () => void;
+  onJoin: (event: IEvent) => void;
   handleAlertError: (
     title: string,
     message: string,
@@ -66,30 +67,28 @@ const PartyModal: React.FC<PartyMarkerModalProps> = ({
   modalRef,
   onLeaveCurrentEvent,
   handleAlertError,
+  onJoin,
 }) => {
   const navigation = useNavigation<AppNavigatorNavigationProp>();
   const { current_user } = useTypedSelector((state) => state.user_state);
-  const { updateUser } = useActions();
   const [isJoinedEvent, setIsJoinedEvent] = useState<boolean>(
-    markerInfo?.partyID === current_user?.events?.onEvent
+    markerInfo?.partyID === current_user.events?.onEvent
   );
   const [isCreator, __] = useState<boolean>(
     markerInfo?.user?.uid === current_user.uid!
   );
 
+  useEffect(() => {
+    setIsJoinedEvent(markerInfo?.partyID === current_user.events?.onEvent);
+  }, [markerInfo?.guests, current_user.events]);
+
   function onJoinEvent(data: IEvent) {
     joinEvent(data).then((r) => {
+      onJoin(data);
       navigation.navigate("PartyNav", {
         screen: "PartyScreen",
         params: {
           partyData: data,
-        },
-      });
-      updateUser({
-        ...current_user,
-        events: {
-          ...current_user.events,
-          onEvent: data.partyID || data.user.uid,
         },
       });
       onClose!();
@@ -110,24 +109,31 @@ const PartyModal: React.FC<PartyMarkerModalProps> = ({
         );
       } else {
         // user is leaving
-        onLeaveCurrentEvent(data);
+        onLeaveCurrentEvent();
       }
     } else {
       if (_.isEmpty(current_user.events.onEvent)) {
         onJoinEvent(data);
       } else {
         const alertData = pickAlertErrors("toJoin");
-        handleAlertError(alertData.title, alertData.message);
+        handleAlertError(
+          alertData.title,
+          alertData.message,
+          alertData.cancelText,
+          onLeaveCurrentEvent,
+          alertData.okText
+        );
       }
     }
   }
 
   const onPressDelete = async () => {
-    onLeaveCurrentEvent(markerInfo);
+    onLeaveCurrentEvent();
+
     await deleteParty(
       markerInfo.partyID,
       markerInfo.location.fullAddressInfo?.city!,
-      markerInfo.rsvp
+      markerInfo.party_access
     )
       .then(() => {
         closeModal();

@@ -9,7 +9,17 @@ interface IUserFollowNumbers {
   following?: number;
 }
 
-export default function UserFollowers({ user }: { user: IUser }) {
+interface UserFollowersProps {
+  user: IUser;
+  followersText?: string;
+  followingText?: string;
+}
+
+export default function UserFollowers({
+  user,
+  followersText,
+  followingText,
+}: UserFollowersProps) {
   const [userFollowNumbers, setUserFollowNumbers] =
     useState<IUserFollowNumbers>({
       followers: user.followers?.length ?? 0,
@@ -29,13 +39,17 @@ export default function UserFollowers({ user }: { user: IUser }) {
           {user?.followers?.length ?? 0}
         </Text>
 
-        <Text style={styles.followTextStyle}>followers</Text>
+        <Text style={styles.followTextStyle}>
+          {followersText ?? "followers"}
+        </Text>
       </TouchableOpacity>
       <TouchableOpacity style={[styles.textContainer, { marginLeft: "5%" }]}>
         <Text style={styles.numberTextStyle}>
           {userFollowNumbers.following}
         </Text>
-        <Text style={styles.followTextStyle}>following</Text>
+        <Text style={styles.followTextStyle}>
+          {followingText ?? "following"}
+        </Text>
       </TouchableOpacity>
     </View>
   );
@@ -45,6 +59,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginVertical: "5%",
     justifyContent: "flex-start",
+    flexShrink: 1,
   },
   followTextStyle: {
     fontFamily: FontFamily.regular,
