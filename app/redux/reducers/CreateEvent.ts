@@ -3,7 +3,7 @@ import { IEvent } from "../../Types/Events";
 
 export type GeneralData = Pick<
   IEvent,
-  "title" | "tags" | "description" | "rsvp"
+  "title" | "tags" | "description" | "party_access"
 >;
 export type LocationAndTimeData = Pick<
   IEvent,

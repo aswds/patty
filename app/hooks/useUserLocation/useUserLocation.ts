@@ -20,7 +20,7 @@ export async function fetchCityParties(
   userLocation: string
 ): Promise<IEvent[]> {
   return new Promise(async (resolve, reject) => {
-    const collectionRef = eventsReference(userLocation);
+    const collectionRef = eventsReference(userLocation, "Public");
     await getDocs(collectionRef).then(
       (querySnapshot) => {
         if (querySnapshot.docs.length === 0)

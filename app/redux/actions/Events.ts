@@ -43,14 +43,14 @@ export const fetch_events = createAsyncThunk(
  */
 export const fetch_joined_event = async (
   city?: IFullAddress["city"],
-  rsvp?: IUser["events"]["eventType"],
+  party_access?: IUser["events"]["eventType"],
   partyID?: IUser["events"]["onEvent"]
 ): Promise<IEvent | undefined> => {
   const db = getFirestore();
   const auth = getAuth();
   const docRef = userReference(auth.currentUser?.uid!);
   const user: IUser = await getDoc(docRef).then((res) => <IUser>res.data());
-  const collectionRef = doc(db, `EVENTS`, `${city}`, `${rsvp}`, `${partyID}`);
+  const collectionRef = doc(db, `EVENTS`, `${city}`, `${party_access}`, `${partyID}`);
 
   return await getDoc(collectionRef).then((res) => res.data() as IEvent);
 };
