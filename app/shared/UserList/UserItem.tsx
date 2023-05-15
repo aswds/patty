@@ -16,6 +16,7 @@ import { ProfileNavigationProps } from "../../Types/ProfileStack/ScreenNavigatio
 import { Skeleton } from "moti/skeleton";
 import Follow_UnfollowButtons from "../../screens/Profile/Follow_UnfollowButtons";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
+import UserFollowers from "../../screens/Profile/components/HeaderComponent/UserFollowers";
 
 interface UserItemProps {
   _user: IUser;
@@ -79,11 +80,16 @@ const UserItem = ({ _user }: UserItemProps) => {
         <View style={styles.textContainer}>
           <View style={styles.topTextContainer}>
             <UserName show={show} />
-            {user.uid != uid ? (
+            <UserFollowers
+              user={user}
+              followersText="FLWRS"
+              followingText="FLWNG"
+            />
+            {/* {user.uid != uid ? (
               <Follow_UnfollowButtons user={user} updateUser={updateUser} />
             ) : (
               <YouText />
-            )}
+            )} */}
           </View>
         </View>
       </View>
