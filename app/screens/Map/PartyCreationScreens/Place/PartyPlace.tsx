@@ -5,6 +5,8 @@ import ChoiceButton from "../../../../shared/Buttons/ChoiseButton";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { colors } from "../../../../src/colors";
 import { Title } from "../../../../shared/Title/Title";
+import { Entypo, MaterialIcons } from "@expo/vector-icons";
+import { descriptionTexts } from "../descriptionTexts";
 
 interface PartyPlaceProps {
   handlePartyPlaceUpdate: (place: PartyPlace) => void;
@@ -40,7 +42,18 @@ const PartyPlaces: React.FC<PartyPlaceProps> = ({ handlePartyPlaceUpdate }) => {
 
   return (
     <View style={styles.container}>
-      <Title title="Specify a location" />
+      <Title
+        title="Party venue"
+        icon={
+          <Entypo
+            name="location"
+            size={25}
+            color={colors.text}
+            style={{ marginHorizontal: 5 }}
+          />
+        }
+        description={descriptionTexts.party_venue}
+      />
       <View style={{ flexDirection: "row", flexWrap: "wrap" }}>
         {partyPlaces.map(renderOption)}
       </View>

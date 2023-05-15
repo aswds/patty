@@ -12,7 +12,7 @@ import { Title } from "../../../../shared/Title/Title";
 import { descriptionTexts } from "../descriptionTexts";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import SwitchDateType from "./components/SwitchDateType";
-
+import { roundDate } from "./helpers/roundDate";
 interface PickTimeProps {
   setTime: (time: any) => void;
   setToScrollBottom?: (toScroll: boolean) => void;
@@ -21,7 +21,7 @@ interface PickTimeProps {
 export default function PickTime(props: PickTimeProps) {
   type IOSMode = "date" | "time" | "datetime" | "countdown";
   const { setTime, setToScrollBottom } = props;
-  const [date, setDate] = useState<Date | undefined>(new Date(Date.now()));
+  const [date, setDate] = useState<Date | undefined>(roundDate(new Date(), 5));
   const [mode, setMode] = useState<IOSMode | undefined>("date");
   const [show, setShow] = useState(false);
   const minDate = new Date();
@@ -56,13 +56,13 @@ export default function PickTime(props: PickTimeProps) {
   return (
     <>
       <Title
-        title={"Date and time"}
+        title={"Gathering Time"}
         icon={
           <FontAwesome
             name="calendar"
             size={24}
-            color={colors.iconColor}
-            style={{ paddingBottom: 5, paddingLeft: 5 }}
+            color={colors.text}
+            style={{ paddingLeft: 5 }}
           />
         }
         description={descriptionTexts.dateAndTime}

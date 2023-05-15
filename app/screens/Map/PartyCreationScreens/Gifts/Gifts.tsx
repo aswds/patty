@@ -6,6 +6,7 @@ import { GiftsRequireTextTypes } from "../../../../Types/Events";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { colors } from "../../../../src/colors";
 import { Title } from "../../../../shared/Title/Title";
+import { Ionicons } from "@expo/vector-icons";
 
 interface GiftsProps {
   onGiftUpdate: (value: GiftsRequireTextTypes) => void;
@@ -19,7 +20,18 @@ const Gifts: React.FC<GiftsProps> = ({ onGiftUpdate }) => {
 
   return (
     <View style={styles.container}>
-      <Title title="Gift" />
+      <Title
+        title="Gift"
+        description=""
+        icon={
+          <Ionicons
+            name="gift"
+            size={24}
+            color={colors.text}
+            style={{ marginHorizontal: 5 }}
+          />
+        }
+      />
       <TwoButtons
         onButtonUpdate={onGiftUpdate}
         buttonsText={buttonsText}

@@ -30,7 +30,7 @@ export async function joinEvent(data: IEvent) {
     db,
     `EVENTS`,
     `${data.location?.fullAddressInfo?.city}`,
-    `${data.rsvp}`,
+    `${data.party_access}`,
     `${data.partyID || data.user.uid}`
   );
   //functions
@@ -39,7 +39,7 @@ export async function joinEvent(data: IEvent) {
   });
   await updateDoc(userDoc_ref, {
     "events.onEvent": data.partyID || data.user.uid,
-    "events.eventType": data.rsvp,
+    "events.eventType": data.party_access,
   });
 }
 
@@ -52,7 +52,7 @@ export async function leaveEvent(data: IEvent) {
     db,
     `EVENTS`,
     `${data.location?.fullAddressInfo?.city}`,
-    `${data.rsvp}`,
+    `${data.party_access}`,
     `${data.partyID}`
   );
   //query data from firebase

@@ -7,13 +7,12 @@ import { formatISO } from "date-fns";
 
 export async function addPartyOnMap(data: IEvent) {
   const auth = getAuth();
-
   const DB_references = {
     events: doc(
       db,
       `EVENTS`,
       `${data.location.fullAddressInfo?.city}`,
-      `${data.rsvp || data.user.uid}`,
+      `${data.party_access || data.user.uid}`,
       `${auth.currentUser?.uid}`
     ),
     user: doc(db, "USERS", `${auth.currentUser?.uid}`),
@@ -25,19 +24,18 @@ export async function addPartyOnMap(data: IEvent) {
         partyID: DB_references.events.id,
         time: data.time as string,
         createdAt: formatISO(new Date()),
+        isViaInvite: data.party_access === "Via Invite",
       }).then(() => {
         resolve("Success");
       });
     });
+
   const addUserPartyCount = () =>
     new Promise(async (resolve, reject) => {
       await updateDoc(DB_references.user, {
         "events.eventsCreated": increment(1),
       });
     });
-  return await Promise.all([addParty(), addUserPartyCount()])
-    .then(() => console.log("G"))
-    .catch((e) =>
-      Alert.alert("'We can't upload event due to error.", e.message)
-    );
+
+  addParty(), addUserPartyCount();
 }
