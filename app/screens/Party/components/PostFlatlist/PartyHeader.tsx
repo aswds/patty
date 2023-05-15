@@ -15,7 +15,10 @@ import Header from "./Header";
 import PartyStats from "../PartyStats";
 import { colors } from "../../../../src/colors";
 import { PartyCreationNavigatorParamList } from "../../../../Types/MapStack/NavigationTypes";
-
+import UserList from "../../../../shared/UserList/UserList";
+import { useEffect, useState } from "react";
+import { fetchGuests } from "../../../../shared/UserList/fetchGuests";
+import Mingles from "../Mingles";
 interface PartyHeaderProps {
   party: IEvent;
   trackInfo?: {
@@ -35,6 +38,8 @@ const PartyHeader: React.FC<PartyHeaderProps> = ({
     <View style={styles.container}>
       <Header navigation={navigation} title={party.title} user={party.user} />
       <PartyStats startedAt={party.createdAt} guests={party.guests.length} />
+      <Mingles guestsUIDs={party.guests} />
+      {/* <UserList horizontal /> */}
       {/* <CollaborativePlaylistScreen /> */}
       {/* <TrackInfo trackInfo={trackInfo} /> */}
       {/* <TrackInfo trackInfo={trackInfo} /> */}

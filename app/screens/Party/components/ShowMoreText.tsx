@@ -6,6 +6,7 @@ import {
   StyleSheet,
   LayoutAnimation,
 } from "react-native";
+import { colors } from "../../../src/colors";
 
 const DESCRIPTION_MAX_LINES = 2;
 
@@ -40,6 +41,6 @@ const styles = StyleSheet.create({
   descriptionText: {
     fontSize: 16,
     lineHeight: 24,
-    color: "#333",
+    color: colors.text_2,
   },
 });

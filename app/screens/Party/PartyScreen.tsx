@@ -15,25 +15,18 @@ import { colors } from "../../src/colors";
 import _ from "lodash";
 import { PartyNavigationScreenProps } from "../../Types/PartyStack/NavigationTypes";
 import PostForm from "./components/Moments";
-import ImageWithEmojiUI from "./components/PostFlatlist/Post";
+import ImageWithEmojiUI from "./components/PostFlatlist/Post/Post";
 import { image } from "../../../assets/images";
 import { isAndroid } from "../../src/platform";
 import PartyHeader from "./components/PostFlatlist/PartyHeader";
 import Button from "../../shared/Buttons/Button";
+import { posts } from "./photoURLs";
 const PartyScreen = ({
   navigation,
   route,
 }: PartyNavigationScreenProps<"PartyScreen">) => {
   const [party] = useState<IEvent>(route.params.partyData);
   const [songs, setSongs] = useState();
-  const [data, setData] = useState(
-    Array.from({ length: 100 }, (_, i) => ({
-      id: i,
-      image: image.noImage,
-      description:
-        "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.",
-    }))
-  );
 
   const insets = useSafeAreaInsets();
   if (isAndroid && UIManager.setLayoutAnimationEnabledExperimental) {
@@ -42,14 +35,9 @@ const PartyScreen = ({
   return (
     <View style={{ flex: 1 }}>
       <FlatList
-        data={data}
+        data={posts}
         keyExtractor={(item) => item.id.toString()}
-        renderItem={({ item }) => (
-          <ImageWithEmojiUI
-            imageSource={item.image}
-            description={item.description}
-          />
-        )}
+        renderItem={({ item }) => <ImageWithEmojiUI item={item} />}
         ListHeaderComponent={
           <PartyHeader
             navigation={navigation}
