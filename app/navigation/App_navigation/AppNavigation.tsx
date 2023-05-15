@@ -25,8 +25,6 @@ export const App_Navigation = () => {
       await getUserLocation().then(async (res) => {
         await getAddress(res.coords.latitude, res.coords.longitude).then(
           (r: IFullAddress) => {
-            console.log("SUCCESS:" + r.city);
-
             dispatch(
               updateUserLocation({
                 city: r?.city,
