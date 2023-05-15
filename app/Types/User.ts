@@ -1,9 +1,9 @@
 import { Region } from "react-native-maps";
-import { ITime, RSVP_Types } from "./Events";
+import { ITime, Party_Access_Types } from "./Events";
 import { serverTimestamp } from "firebase/firestore";
 export interface IUserEvents {
   onEvent?: string;
-  eventType: RSVP_Types;
+  eventType: Party_Access_Types;
   eventsCreated: number;
   eventsVisited: number;
 }

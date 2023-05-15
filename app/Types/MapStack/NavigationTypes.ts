@@ -1,5 +1,5 @@
 import { IUser, UserLocation } from "./../User";
-import { GiftsRequireTextTypes, IEvent, RSVP_Types } from "./../Events";
+import { GiftsRequireTextTypes, IEvent, Party_Access_Types } from "./../Events";
 import { ICoordinates, IFullAddress } from "../Events";
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { IAddress } from "../../screens/Map/PartyCreationScreens/ChooseLocation/types";

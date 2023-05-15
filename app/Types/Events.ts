@@ -40,7 +40,7 @@ export interface IEvent {
   tags?: string[];
   location: ILocation;
   time?: ITime | Date | string;
-  rsvp?: RSVP_Types;
+  party_access?: Party_Access_Types;
   giftRequired?: GiftsRequireTextTypes;
   partyPlace?: PartyPlace;
   foodProvided?: FoodProvided;
@@ -58,7 +58,7 @@ export type IEvent_User = Pick<
   IUser,
   "username" | "surname" | "name" | "image" | "uid"
 >;
-export type RSVP_Types = "Public" | "Via Invite";
+export type Party_Access_Types = "Public" | "Via Invite";
 export type GiftsRequireTextTypes = "Required" | "Not Required";
 export type FoodProvided = "Provided" | "Not Provided";
 export type DrinkTypes = "Alcohol" | "Soft";
