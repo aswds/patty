@@ -16,6 +16,7 @@ import { useActions } from "../../../hooks/useActions";
 import { IUser } from "../../../Types/User";
 import { getUserByUID } from "../../../services/getUserByUID";
 import { image } from "../../../../assets/images";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
 
 // Button to navigate to profile screen
 
@@ -32,24 +33,15 @@ const ProfileButton = ({
   containerStyle,
 }: ProfileButtonProps) => {
   const navigation = useNavigation<ProfileNavigationProps>();
+  const { current_user } = useTypedSelector((state) => state.user_state);
   const insets = useSafeAreaInsets();
   function onPress() {
-    getUserByUID(userUID).then((user) => {
-      if (user)
-        navigation.navigate("ProfileNav", {
-          screen: "Profile",
-          params: {
-            current_user: user,
-          },
-        });
-      else {
-        Alert.alert(
-          "Oops!",
-          "It looks like the user you're trying to reach doesn't exist in our system."
-        );
-      }
+    navigation.navigate("ProfileNav", {
+      screen: "Profile",
+      params: {
+        current_user: current_user,
+      },
     });
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
   }
   return (
     <TouchableOpacity
