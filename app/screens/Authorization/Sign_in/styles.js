@@ -10,9 +10,10 @@ export const styles = StyleSheet.create({
   },
   styledButtonStyle: {
     height: 60,
-    borderRadius: 15,
+    borderRadius: 999,
     backgroundColor: colors.accentColor,
-    flex: 1,
+    width: "100%",
+    marginVertical: 20,
   },
   styledButtonTextStyle: {
     fontFamily: "Nunito-Bold",
@@ -41,8 +42,8 @@ export const styles = StyleSheet.create({
     color: "red",
   },
   loginContainer: {
-    width: Dimensions.get("window").width,
-    height: Dimensions.get("window").height * 0.25,
+    flex: 1,
+    width: "100%",
     alignItems: "center",
     justifyContent: "center",
   },
@@ -62,7 +63,8 @@ export const styles = StyleSheet.create({
     overflow: "hidden",
   },
   innerText: {
-    alignItems: "center",
+    justifyContent: "center",
+    width: "100%",
   },
   textStyle: {
     fontSize: 15,
@@ -70,12 +72,10 @@ export const styles = StyleSheet.create({
   },
 
   inputField: {
-    flex: 1,
-    paddingHorizontal: 15,
-    paddingVertical: 15,
     justifyContent: "center",
     color: colors.text,
     fontFamily: FontFamily.regular,
+    width: "100%",
   },
   linearGradientStyle: {
     flex: 1,
@@ -93,14 +93,13 @@ export const styles = StyleSheet.create({
     marginVertical: 5,
   },
   styledButtonContainer: {
-    marginTop: "10%",
+    marginTop: "auto",
     alignItems: "center",
     justifyContent: "center",
     flexDirection: "row",
     borderRadius: 10,
     alignSelf: "center",
     paddingVertical: 30,
-    width: "85%",
   },
   styledButton: {
     height: 50,

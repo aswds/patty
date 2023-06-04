@@ -9,7 +9,7 @@ import { Dimensions, StyleSheet, TextInput, View } from "react-native";
 import { colors } from "../../../src/colors";
 import { isAndroid } from "../../../src/platform";
 import { BackButton } from "../../../shared/Buttons/BackButton";
-import Button from "../components/BigButton";
+import Button from "../../../shared/Buttons/BigButton";
 import Input from "../../../shared/Input/Input";
 import { Logo } from "../components/Logo";
 import CustomAlert from "../CustomAlert";
@@ -198,30 +198,19 @@ const SignUpScreen = ({
           hideModal={_hideModal}
           showModal={showModal}
         />
+        <View style={styles.signUpButtonContainer}>
+          <Button
+            textStyle={{
+              fontFamily: "Nunito-Bold",
+              fontSize: 20,
+              color: colors.buttonText,
+            }}
+            style={{ width: "100%", height: 60 }}
+            onPress={signUp_handle}
+            title={"Sign up"}
+          />
+        </View>
       </Screen>
-      <View
-        style={{
-          width: "100%",
-          bottom: "5%",
-          paddingHorizontal: 20,
-          shadowOffset: {
-            height: 2,
-            width: 0,
-          },
-          shadowOpacity: 0.3,
-        }}
-      >
-        <Button
-          textStyle={{
-            fontFamily: "Nunito-Bold",
-            fontSize: 20,
-            color: colors.buttonText,
-          }}
-          style={{ width: "100%", height: 60 }}
-          onPress={signUp_handle}
-          title={"Sign up"}
-        />
-      </View>
     </View>
   );
 };
@@ -231,6 +220,15 @@ const styles = StyleSheet.create({
     flex: 1,
     alignItems: "center",
     justifyContent: "center",
+  },
+  signUpButtonContainer: {
+    width: "100%",
+    paddingVertical: 20,
+    shadowOffset: {
+      height: 2,
+      width: 0,
+    },
+    shadowOpacity: 0.3,
   },
   inputStyle: {
     width: "100%",

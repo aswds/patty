@@ -15,7 +15,7 @@ import {
 } from "../../../../services/text_modifier";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { SignUpStackScreenProps } from "../../../../Types/Authorization/SignUp/ScreenNavigationProps";
-import Button from "../../components/BigButton";
+import Button from "../../../../shared/Buttons/BigButton";
 import { Screen } from "../../../../shared/Screen/Screen";
 import CustomAlert from "../../../../shared/Alert/CustomAlert";
 import Title from "../../components/Title";
