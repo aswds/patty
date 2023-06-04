@@ -47,7 +47,7 @@ export async function joinEvent(data: IEvent) {
   const updateRef = doc(
     db,
     `EVENTS`,
-    `${data.location?.fullAddressInfo?.city}`,
+    `${data.location?.fullAddressInfo?.subregion}`,
     `${data.party_access}`,
     `${data.partyID}`
   );
@@ -69,7 +69,7 @@ export async function leaveEvent(data: IEvent) {
   const eventDoc_ref = doc(
     db,
     `EVENTS`,
-    `${data.location?.fullAddressInfo?.city}`,
+    `${data.location?.fullAddressInfo?.subregion}`,
     `${data.party_access}`,
     `${data.partyID}`
   );
