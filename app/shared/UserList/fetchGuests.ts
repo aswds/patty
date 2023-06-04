@@ -7,7 +7,7 @@ import {
 } from "firebase/firestore";
 import { IUser } from "../../Types/User";
 
-export async function fetchGuests(guestsUID: string[]): Promise<IUser[]> {
+export async function fetchUsers(guestsUID: string[]): Promise<IUser[]> {
   const db = getFirestore();
   const q = query(collection(db, "USERS"), where("uid", "in", guestsUID));
   const querySnapshot = await getDocs(q).then((res) => res.docs);

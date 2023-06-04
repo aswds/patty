@@ -15,11 +15,16 @@ interface ButtonProps {
   onPress: () => void;
   text: string;
   textStyled?: TextStyle;
+  disabled?: boolean;
 }
 
-function Button({ style, onPress, text, textStyled }: ButtonProps) {
+function Button({ style, onPress, text, textStyled, disabled }: ButtonProps) {
   return (
-    <TouchableOpacity style={[styles.buttonBG, style]} onPress={onPress}>
+    <TouchableOpacity
+      style={[styles.buttonBG, style]}
+      onPress={onPress}
+      disabled={disabled}
+    >
       <Text style={[styles.textStyle, textStyled]}>{text}</Text>
     </TouchableOpacity>
   );

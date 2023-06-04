@@ -11,6 +11,7 @@ import { PartyCreationNavigationProps } from "../../Types/MapStack/ScreenNavigat
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import NavigationBar from "../../screens/Map/PartyCreationScreens/NavigationBar";
+import { useUserLocation } from "../../hooks/useUserLocation/useUserLocation";
 interface GooglePlaceSearchProps {
   style: StyleProp<ViewStyle>;
   regionUpdate: (region: GooglePlaceDetail["geometry"]["location"]) => void;
@@ -19,15 +20,13 @@ export default function GooglePlaceSearch({
   style,
   regionUpdate,
 }: GooglePlaceSearchProps) {
-  const { userLocation } = useTypedSelector(
-    (state) => state.user_state.current_user
-  );
+  const [location] = useUserLocation();
   const currentLocation = {
     description: "📍\tCurrent location",
     geometry: {
       location: {
-        lat: userLocation?.location?.latitude!,
-        lng: userLocation?.location?.longitude!,
+        lat: location.coords.latitude,
+        lng: location.coords.longitude,
       },
     },
   };

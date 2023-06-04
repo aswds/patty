@@ -34,6 +34,7 @@ export default function SearchBar({
         onBlur={() => {
           snapTo(1);
         }}
+      
       />
       <TouchableOpacity style={{}} onPress={onPressClear}>
         <Ionicons name="close-circle" size={24} color={colors.iconColor} />

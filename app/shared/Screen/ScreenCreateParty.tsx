@@ -33,8 +33,6 @@ export const ScreenCreateParty = ({
         style={styles.viewStyle}
         keyboardVerticalOffset={keyboardOffset}
       >
-        {navigationBar}
-
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{
@@ -42,15 +40,15 @@ export const ScreenCreateParty = ({
           }}
           contentContainerStyle={[
             styles.scrollViewContainer,
-            {
-              paddingTop: "5%",
-            },
             containerStyle,
+            { paddingTop: insets.top },
           ]}
           showsHorizontalScrollIndicator={false}
           pointerEvents="auto"
           keyboardShouldPersistTaps="handled"
         >
+          <View style={{ paddingBottom: "5%" }}>{navigationBar}</View>
+
           {React.Children.map(children, (children) => (
             <View style={{ marginBottom: "5%" }}>{children}</View>
           ))}
@@ -64,7 +62,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-    padding: 20,
+    paddingHorizontal: 20,
   },
   scrollViewContainer: {},
   viewStyle: {
