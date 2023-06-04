@@ -1,6 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { IEvent, ILocation } from "../../Types/Events";
-import { fetch_events } from "../actions/Events";
 
 type StateType = {
   isLoading: boolean;
@@ -26,26 +25,6 @@ export const eventsSlice = createSlice({
     eventsUploaded(state) {
       state.isLoading = false;
     },
-  },
-  extraReducers: (builder) => {
-    builder.addCase(fetch_events.pending, (state) => {
-      state.isLoading = true;
-    });
-    builder.addCase(
-      fetch_events.fulfilled,
-      (state, action: PayloadAction<IEvent[]>) => {
-        state.isLoading = false;
-        state.events = action.payload;
-        state.error = null;
-      }
-    );
-    builder.addCase(
-      fetch_events.rejected,
-      (state, action: PayloadAction<any>) => {
-        state.error = action.payload || "Something went wrong";
-        state.isLoading = false;
-      }
-    );
   },
 });
 
