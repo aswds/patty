@@ -1,3 +1,4 @@
+import { LocationGeocodedAddress } from "expo-location";
 import { FieldValue } from "firebase/firestore";
 import { IUser } from "./User";
 
@@ -7,15 +8,8 @@ export interface ICoordinates {
   longitude: number;
   longitudeDelta: number;
 }
-export interface IFullAddress {
-  additionalData: { [key: string]: string };
-  city: string;
-  countryName: string;
-  county: string;
-  district: string;
-  label: string;
-  street: string;
-  houseNumber?: number;
+export interface IFullAddress extends LocationGeocodedAddress {
+  label?: string;
 }
 
 export interface ILocation {

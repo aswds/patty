@@ -10,6 +10,7 @@ export type PartyNavigatorParamList = {
   PartyScreen: {
     partyData: IEvent;
   };
+  PostUploadScreen: undefined;
 };
 
 export type PartyNavigationScreenProps<

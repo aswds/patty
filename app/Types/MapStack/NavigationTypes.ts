@@ -3,6 +3,7 @@ import { GiftsRequireTextTypes, IEvent, Party_Access_Types } from "./../Events";
 import { ICoordinates, IFullAddress } from "../Events";
 import { NavigatorScreenParams } from "@react-navigation/native";
 import { IAddress } from "../../screens/Map/PartyCreationScreens/ChooseLocation/types";
+import { LatLng } from "react-native-maps";
 
 export type MapNavNavigatorParamList = {
   MapNav: NavigatorScreenParams<MapStackNavigatorParamList>;
@@ -10,6 +11,8 @@ export type MapNavNavigatorParamList = {
 
 export type MapStackNavigatorParamList = {
   Map: undefined;
+  InvitationScreen: InvitationScreenParamList;
+
   PartyCreationStack: NavigatorScreenParams<PartyCreationNavigatorParamList>;
   Guests: GuestsNavigatorParamList;
   JoinedEvents: JoinedEventsParamList;
@@ -17,6 +20,9 @@ export type MapStackNavigatorParamList = {
 };
 type PartyParamList = {
   partyData: IEvent;
+};
+type InvitationScreenParamList = {
+  users?: string[];
 };
 type GuestsNavigatorParamList = {
   guests: string[];
@@ -36,7 +42,7 @@ type LocationAndTimeParamList = {
 export type PartyCreationNavigatorParamList = {
   LocationAndTime: LocationAndTimeParamList;
   ChooseLocation: {
-    userLocation?: ICoordinates | undefined;
+    userLocation?: LatLng | undefined;
     city?: UserLocation["city"];
   };
   AdditionalInformation: undefined;
