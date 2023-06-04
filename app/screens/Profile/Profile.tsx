@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
 
 import Screen from "./components/Screen";
 import RenderItem from "./components/RenderItem";
@@ -11,6 +11,8 @@ import CustomRefreshControl from "../../shared/RefreshControl/RefreshControl";
 import { BackButton } from "../../shared/Buttons/BackButton";
 import { isAndroid } from "../../src/platform";
 import { ProfileStackScreenNavigationProps } from "../../Types/ProfileStack/ScreenNavigationProps";
+import { colors } from "../../src/colors";
+import { onRefresh } from "../../shared/RefreshControl/refreshControlFuncs";
 
 function Profile({
   navigation,
@@ -31,37 +33,40 @@ function Profile({
   useEffect(() => {
     setUser(current_user!);
   }, [current_user]);
-  console.log(current_user?.image);
   //https://reactjs.org/docs/context.html !!!
   return (
     <Screen>
-      <FlatList
-        style={styles.container}
-        refreshControl={
-          <CustomRefreshControl
-            setRefreshing={setRefreshing}
-            refreshing={refreshing}
-          />
-        }
-        contentContainerStyle={{ paddingTop: insets.top }}
-        ListHeaderComponent={
-          <User
-            user={user}
-            updateUser={updateUser}
-            backButton={
-              <BackButton
-                navigation={navigation}
-                style={styles.backButtonStyle}
-                // onPress={onPress}
-              />
-            }
-          />
-        }
-        data={[user.events]}
-        renderItem={({ item }) => {
-          return <RenderItem events={item} />;
-        }}
-      />
+      <View style={{ flex: 1 }}>
+        <FlatList
+          style={styles.container}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh.bind(null, setRefreshing)}
+              tintColor={colors.buttonText}
+              style={{ alignItems: "flex-end" }}
+            />
+          }
+          contentContainerStyle={{ paddingTop: insets.top }}
+          ListHeaderComponent={
+            <User
+              user={user}
+              updateUser={updateUser}
+              backButton={
+                <BackButton
+                  navigation={navigation}
+                  style={styles.backButtonStyle}
+                  // onPress={onPress}
+                />
+              }
+            />
+          }
+          data={[user.events]}
+          renderItem={({ item }) => {
+            return <RenderItem events={item} />;
+          }}
+        />
+      </View>
     </Screen>
   );
 }
