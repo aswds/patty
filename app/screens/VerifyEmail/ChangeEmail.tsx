@@ -4,7 +4,7 @@ import { Alert, Dimensions, StyleSheet, Text, View } from "react-native";
 // import vector icons from expo
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 // import custom components
-import BigButton from "../Authorization/components/BigButton";
+import BigButton from "../../shared/Buttons/BigButton";
 import Input from "../../shared/Input/Input";
 import { BackButton } from "../../shared/Buttons/BackButton";
 import CustomAlert from "../../shared/Alert/CustomAlert";

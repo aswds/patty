@@ -8,7 +8,7 @@ import {
   View,
 } from "react-native";
 import Input from "../../shared/Input/Input";
-import BigButton from "../Authorization/components/BigButton";
+import BigButton from "../../shared/Buttons/BigButton";
 import { colors } from "../../src/colors";
 
 const SignInModal = (props) => {
