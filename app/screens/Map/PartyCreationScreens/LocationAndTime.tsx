@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import Screen from "../../../shared/Screen/Screen_MappingChildren";
 import Location from "./components/Location";
 import CustomButton from "./components/LocationAddButton";
-import useUserLocation from "../../../hooks/useUserLocation/useUserLocation";
+
 import NavigationBar from "./NavigationBar";
 import { PartyPlace, ILocation } from "../../../Types/Events";
 import PickTime from "./PickTime/PickTime";
@@ -13,6 +13,7 @@ import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { AlertConfig } from "../helpers/pickAnAlertType";
 import CustomAlert from "../../../shared/Alert/CustomAlert";
+import { useUserLocation } from "../../../hooks/useUserLocation/useUserLocation";
 
 const LocationAndTime = ({
   route,
@@ -46,8 +47,7 @@ const LocationAndTime = ({
       region,
     });
   }, [route.params.region]);
-  const { userLocation, city } = useUserLocation();
-
+  const [userLocation] = useUserLocation();
   const onPress = () => {
     if (location && time) {
       createEventsLocationAndTimeUpdate({
@@ -74,14 +74,14 @@ const LocationAndTime = ({
     <Screen>
       <NavigationBar navigation={navigation} text={"Location and time"} />
       <Location
-        userLocation={userLocation}
+        userLocation={userLocation.coords}
         locationAddButton={
           <CustomButton
             style={{ width: "100%" }}
             onPress={() =>
               navigation.navigate("ChooseLocation", {
-                userLocation: userLocation,
-                city: city,
+                userLocation: userLocation.coords,
+                city: userLocation.city,
               })
             }
             title="Select a location"
