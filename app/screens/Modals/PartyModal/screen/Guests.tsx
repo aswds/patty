@@ -35,7 +35,7 @@ export default function Guests({
     <Screen>
       <UserList
         isLoading={isLoading}
-        data={guests}
+        users={guests}
         renderItem={({ item, index }) => <UserItem _user={item} key={index} />}
         keyExtractor={(item, index) => item.uid!}
       />

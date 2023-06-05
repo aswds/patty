@@ -25,9 +25,6 @@ export default function FakeMarker() {
         size={iconSize}
         color={colors.accentColor}
         style={{}}
-        onLayout={(event) => {
-          console.log(event.nativeEvent.layout.height);
-        }}
       />
     </View>
   );

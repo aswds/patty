@@ -91,6 +91,7 @@ const SearchEventsModal: React.FC<SearchEventsModalProps> = ({
       index={-1}
       enablePanDownToClose
       onClose={onClose}
+      android_keyboardInputMode="adjustResize"
       ref={modalRef}
       backgroundStyle={styles.backgroundStyle}
       handleIndicatorStyle={{
@@ -126,6 +127,7 @@ const SearchEventsModal: React.FC<SearchEventsModalProps> = ({
               color: colors.text,
             }}
             placeholder={"Search parties by tag or title"}
+            placeholderTextColor={"grey"}
             onChangeText={handleSearch}
             value={searchText}
             snapTo={snapTo}

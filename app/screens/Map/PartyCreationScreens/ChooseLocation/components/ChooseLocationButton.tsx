@@ -9,7 +9,7 @@ import { ICoordinates, IFullAddress } from "../../../../../Types/Events";
 
 interface ChooseLocationButtonProps {
   region: ICoordinates | undefined;
-  fullAddress: IFullAddress | undefined;
+  fullAddress?: IFullAddress | null;
   outsideCity: boolean;
 }
 
