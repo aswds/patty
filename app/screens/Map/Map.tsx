@@ -18,7 +18,10 @@ import type { IEvent } from "../../Types/Events";
 import { MapStackScreenProps } from "../../Types/MapStack/ScreenNavigationProps";
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
-import { fetchCityParties } from "../../hooks/useUserLocation/useUserLocation";
+import {
+  fetchCityParties,
+  useUserLocation,
+} from "../../hooks/useUserLocation/useUserLocation";
 import { fetch_joined_event } from "../../redux/actions/Events";
 import { clearCreateEvents } from "../../redux/reducers/CreateEvent";
 import CustomAlert from "../../shared/Alert/CustomAlert";
@@ -32,21 +35,19 @@ import {
 } from "./Firebase/leaveEvents";
 import Buttons from "./components/Buttons/Buttons";
 import ProfileButton from "./components/ProfileButton";
-import { AlertConfig, pickAlertErrors } from "./helpers/pickAnAlertType";
+import { AlertConfig, pickAlertText } from "./helpers/pickAnAlertType";
 import mapStyle from "./mapStyle.json";
 
 import { NoEventFoundAlert } from "../../shared/Alert/NoEventFound";
 import EventMarkers from "./components/EventMarkers";
 import { handleAlertError } from "./helpers/handleAlertError";
 import { db } from "../../../firebase";
-import useUserLocation from "../../hooks/useUserLocation/useUserLocations";
 
 function Map({ navigation }: MapStackScreenProps<"Map">) {
   //States
   const [markerInfo, setMarkerInfo] = useState<IEvent>();
   const [showAlertModal, setShowAlertModal] = useState<boolean>(false);
   const [joinedEvent, setJoinedEvent] = useState<IEvent>();
-  // const { userLocation, city, isLocationLoading } = useUserLocation();
   const [location, isLocationLoading] = useUserLocation();
   const city = location.city;
   const [showLoader, setShowLoader] = useState<boolean>(isLocationLoading);
@@ -142,6 +143,7 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
 
   useEffect(() => {
     // animate to user location
+
     if (current_user.userLocation?.location)
       animateToRegion(current_user.userLocation?.location);
   }, [current_user.userLocation?.location]);
@@ -191,7 +193,6 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
 
   const fetch_public_events = useCallback(async () => {
     if (city) {
-      console.log("FetchCityParties");
       fetchCityParties(city)
         .then((events) => {
           setEvents(events);
@@ -213,15 +214,10 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
         current_user.events.eventType,
         current_user.events.onEvent
       );
-      console.log(newEvent);
       return newEvent;
-    } else {
-      console.log(city, current_user.events);
     }
   }
-  {
-    console.log(city);
-  }
+
   //functions to pass down to children
 
   function snapTo(index: number) {
@@ -258,10 +254,10 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
           provider={PROVIDER_DEFAULT}
           style={StyleSheet.absoluteFill}
           customMapStyle={mapStyle}
-          // initialRegion={userLocation}
           paddingAdjustmentBehavior={"automatic"}
           showsUserLocation
           showsCompass={false}
+          showsMyLocationButton={false}
           ref={mapRef}
         >
           {/* onPress={async () => {
@@ -289,9 +285,7 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
         <ProfileButton
           userUID={current_user.uid!}
           userImage={current_user.image}
-          onLongPress={() =>
-            animateToRegion(current_user.userLocation?.location as Region)
-          }
+          onLongPress={() => animateToRegion(location.coords as Region)}
           containerStyle={{ right: "5%", top: "1%", marginTop: insets.top }}
         />
 
@@ -301,10 +295,10 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
               navigateToPartyCreation();
             } else {
               if (joinedEvent && joinedEvent.user.uid === current_user.uid) {
-                setAlertError(pickAlertErrors("hostLeaving"));
+                setAlertError(pickAlertText("hostLeaving"));
                 setShowAlertModal(true);
               } else {
-                setAlertError(pickAlertErrors("toCreate"));
+                setAlertError(pickAlertText("toCreate"));
                 setShowAlertModal(true);
               }
             }
@@ -323,7 +317,7 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
                   if (event) navigateToPartyScreen(event);
                 });
               }
-              setAlertError(pickAlertErrors("noPartyJoined"));
+              setAlertError(pickAlertText("noPartyJoined"));
             } catch (e) {
               //@ts-expect-error
               const result = e.message; // error under useUnknownInCatchVariables
