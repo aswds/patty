@@ -34,28 +34,24 @@ const NavigationBar = ({
   iconName,
 }: NavigationBarProps) => {
   return (
-    <SafeAreaView
-      style={[safeAreaViewStyle, { backgroundColor: "transparent" }]}
-    >
-      <View style={[styles.titleContainer, style]}>
-        <BackButton
-          navigation={navigation}
-          onPress={onPress}
-          style={{ position: "relative", left: 0 }}
-          iconName={iconName}
-        />
-        <Title
-          title={text}
-          fontStyle={fontStyle}
-          containerStyle={{
-            flex: 1,
-            justifyContent: "flex-end",
-            marginBottom: 0,
-            flexShrink: 1,
-          }}
-        />
-      </View>
-    </SafeAreaView>
+    <View style={[styles.titleContainer, style]}>
+      <BackButton
+        navigation={navigation}
+        onPress={onPress}
+        style={{ position: "relative", left: 0, top: 0 }}
+        iconName={iconName}
+      />
+      <Title
+        title={text}
+        fontStyle={fontStyle}
+        containerStyle={{
+          flex: 1,
+          justifyContent: "flex-end",
+          marginBottom: 0,
+          flexShrink: 1,
+        }}
+      />
+    </View>
   );
 };
 const styles = StyleSheet.create({
