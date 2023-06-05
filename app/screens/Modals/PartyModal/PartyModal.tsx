@@ -1,34 +1,23 @@
-import React, {
-  ForwardedRef,
-  MutableRefObject,
-  RefObject,
-  useEffect,
-  useState,
-} from "react";
+import React, { RefObject, useEffect, useState } from "react";
 
-import { SafeAreaView, StyleSheet, Text, View } from "react-native";
-import TagItem from "../../../shared/Tag/TagItem";
-import { ActionButtons } from "./components/ActionButtons";
-import { Event } from "../../../shared/Events/Event";
-import { JoinEventButton } from "./components/JoinPartyButton";
-import { IEvent } from "../../../Types/Events";
 import BottomSheet from "@gorhom/bottom-sheet";
-import { ModalProps } from "../Types/Modals";
-import { colors } from "../../../src/colors";
-import { FontFamily } from "../../../../assets/fonts/Fonts";
-import BottomSheetModal from "../BottomSheetModal";
-import { joinEvent, leaveEvent } from "../../Map/Firebase/leaveEvents";
-import _, { update } from "lodash";
-import { useTypedSelector } from "../../../hooks/useTypedSelector";
-import { removeItemOnce } from "../../../helpers/removeItemOnce";
 import { useNavigation } from "@react-navigation/native";
-import { MapNavigationProps } from "../../../Types/MapStack/ScreenNavigationProps";
-import { useActions } from "../../../hooks/useActions";
+import _ from "lodash";
+import { StyleSheet, Text, View } from "react-native";
+import { FontFamily } from "../../../../assets/fonts/Fonts";
 import { AppNavigatorNavigationProp } from "../../../Types/AppNavigator/AppNavigator";
-import { fetch_joined_event } from "../../../redux/actions/Events";
-import CustomAlert from "../../../shared/Alert/CustomAlert";
+import { IEvent } from "../../../Types/Events";
+import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import { Event } from "../../../shared/Events/Event";
+import TagItem from "../../../shared/Tag/TagItem";
+import { colors } from "../../../src/colors";
+import { joinEvent } from "../../Map/Firebase/leaveEvents";
+import { AlertConfig, pickAlertText } from "../../Map/helpers/pickAnAlertType";
+import BottomSheetModal from "../BottomSheetModal";
+import { ModalProps } from "../Types/Modals";
+import { ActionButtons } from "./components/ActionButtons";
+import { JoinEventButton } from "./components/JoinPartyButton";
 import { deleteParty } from "./components/actionButtonsFunctions";
-import { pickAlertErrors } from "../../Map/helpers/pickAnAlertType";
 
 function Description({ markerInfo }: { markerInfo: IEvent }) {
   return (
@@ -53,11 +42,9 @@ type PartyMarkerModalProps = ModalProps & {
   onLeaveCurrentEvent: () => void;
   onJoin: (event: IEvent) => void;
   handleAlertError: (
-    title: string,
-    message: string,
-    cancelText?: string,
+    type: AlertConfig,
     onCancelCallback?: () => void,
-    okText?: string
+    onOkCallback?: () => void
   ) => void;
 };
 
@@ -82,6 +69,16 @@ const PartyModal: React.FC<PartyMarkerModalProps> = ({
     setIsJoinedEvent(markerInfo?.partyID === current_user.events?.onEvent);
   }, [markerInfo?.guests, current_user.events]);
 
+  async function onPressDelete() {
+    onLeaveCurrentEvent();
+    await deleteParty(
+      markerInfo.partyID,
+      markerInfo.location.fullAddressInfo?.subregion!,
+      markerInfo.party_access
+    ).then(() => {
+      closeModal();
+    });
+  }
   function onJoinEvent(data: IEvent) {
     joinEvent(data).then((r) => {
       onJoin(data);
@@ -99,14 +96,8 @@ const PartyModal: React.FC<PartyMarkerModalProps> = ({
     if (isJoinedEvent) {
       // host is leaving
       if (current_user.uid === data.user.uid) {
-        const alertData = pickAlertErrors("hostLeaving");
-        handleAlertError(
-          alertData.title,
-          alertData.message,
-          alertData.cancelText,
-          onPressDelete,
-          alertData.okText
-        );
+        const config = pickAlertText("hostLeaving");
+        handleAlertError(config, onPressDelete);
       } else {
         // user is leaving
         onLeaveCurrentEvent();
@@ -115,31 +106,16 @@ const PartyModal: React.FC<PartyMarkerModalProps> = ({
       if (_.isEmpty(current_user.events.onEvent)) {
         onJoinEvent(data);
       } else {
-        const alertData = pickAlertErrors("toJoin");
-        handleAlertError(
-          alertData.title,
-          alertData.message,
-          alertData.cancelText,
-          onLeaveCurrentEvent,
-          alertData.okText
-        );
+        if (current_user.uid === current_user.events.onEvent) {
+          const alertData = pickAlertText("hostLeavingToJoin");
+          handleAlertError(alertData, onPressDelete);
+        } else {
+          const alertData = pickAlertText("toJoin");
+          handleAlertError(alertData, onLeaveCurrentEvent);
+        }
       }
     }
   }
-
-  const onPressDelete = async () => {
-    onLeaveCurrentEvent();
-
-    await deleteParty(
-      markerInfo.partyID,
-      markerInfo.location.fullAddressInfo?.city!,
-      markerInfo.party_access
-    )
-      .then(() => {
-        closeModal();
-      })
-      .catch((e) => console.log(e));
-  };
 
   function closeModal() {
     modalRef.current?.close;
