@@ -36,7 +36,7 @@ const ListEmptyComponent = ({
   textProps,
 }: ListEmptyComponentProps) => {
   return (
-    <View style={(styles.container, style)}>
+    <View style={[styles.container, style]}>
       <View style={styles.iconContainer}>
         {icon ? (
           icon
@@ -53,7 +53,7 @@ const ListEmptyComponent = ({
           {title}
         </Text>
       </View>
-      <View style={buttonContainer}>{button}</View>
+      {button && <View style={buttonContainer}>{button}</View>}
     </View>
   );
 };

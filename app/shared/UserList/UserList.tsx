@@ -1,26 +1,70 @@
-import React, { useState } from "react";
+import { Fontisto } from "@expo/vector-icons";
+import _ from "lodash";
+import { useEffect, useState } from "react";
 import { FlatList, FlatListProps } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import UserListHeader from "./UserListHeader";
 import { IUser } from "../../Types/User";
-import ListEmptyComponent from "./ListEmptyComponent";
-import ListLoader from "../Loaders/ListLoader";
-import { Fontisto } from "@expo/vector-icons";
 import { colors } from "../../src/colors";
-
-interface UserListProps extends FlatListProps<IUser> {
+import ListLoader from "../Loaders/ListLoader";
+import ListEmptyComponent from "./ListEmptyComponent";
+import UserListHeader from "./UserListHeader";
+interface UserListProps extends Omit<FlatListProps<IUser>, "data"> {
   isLoading: boolean;
+  users: IUser[];
+  headerTitle?: string;
 }
 
-const UserList = ({ isLoading, ...flatlistProps }: UserListProps) => {
+const UserList = ({
+  isLoading,
+  users,
+  headerTitle,
+  ...flatlistProps
+}: UserListProps) => {
   const insets = useSafeAreaInsets();
+  const [data, setData] = useState(users);
+
+  useEffect(() => {
+    setData(users);
+  }, [users]);
+
+  function filterUsers(
+    name: IUser["name"],
+    username: IUser["username"],
+    formatQuery: string
+  ) {
+    if (
+      name.toLowerCase().includes(formatQuery) ||
+      username.toLowerCase().includes(formatQuery)
+    )
+      return true;
+    return false;
+  }
+
+  function handleSearch(text: string) {
+    const formatQuery = text.toLowerCase();
+
+    const data = _.filter(users, (user) =>
+      filterUsers(user.name, user.username, formatQuery)
+    );
+    setData(data);
+  }
+  function onPressClear() {
+    setData(users);
+  }
   return (
     <FlatList
-      ListHeaderComponent={UserListHeader}
+      ListHeaderComponent={
+        <UserListHeader
+          headerTitle={headerTitle}
+          handleSearch={handleSearch}
+          onPressClear={onPressClear}
+        />
+      }
       stickyHeaderIndices={[0]}
       contentContainerStyle={{
         paddingBottom: insets.bottom + 110,
       }}
+      data={data}
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={() => {
         return isLoading ? (

@@ -1,35 +1,53 @@
-import React from "react";
+import React, { useState } from "react";
 
+import { useNavigation } from "@react-navigation/native";
 import { StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { LinearGradient } from "expo-linear-gradient";
-import { isAndroid } from "../../src/platform";
-import { colors } from "../../src/colors";
-import SearchBar from "./SearchBar";
-import { BackButton } from "../Buttons/BackButton";
-import { useNavigation } from "@react-navigation/native";
 import { MapNavigationProps } from "../../Types/MapStack/ScreenNavigationProps";
+import { colors } from "../../src/colors";
 import { Title } from "../Title/Title";
+import SearchBar from "./SearchBar";
+interface UserListHeaderProps {
+  handleSearch: (text: string) => void;
+  onPressClear: () => void;
+  headerTitle?: string;
+}
 
-const UserListHeader = () => {
+const UserListHeader: React.FC<UserListHeaderProps> = ({
+  handleSearch,
+  onPressClear,
+  headerTitle,
+}) => {
   const insets = useSafeAreaInsets();
   const navigation = useNavigation<MapNavigationProps>();
+  const [searchText, setSearchText] = useState("");
+
+  function _onPressClear() {
+    onPressClear();
+    setSearchText("");
+  }
+
   return (
     <View style={[styles.container, { paddingTop: insets.top }]}>
       <Title
-        title="Guests"
+        title={headerTitle ?? "Guests"}
         navigation={navigation}
         containerStyle={{
           alignContent: "flex-start",
           justifyContent: "flex-start",
         }}
       />
-
       <SearchBar
         containerStyle={styles.inputContainer}
         inputStyle={styles.inputStyle}
         placeholder={"Search"}
         placeholderTextColor={colors.iconColor}
+        onPressClear={_onPressClear}
+        onChangeText={(text) => {
+          handleSearch(text);
+          setSearchText(text);
+        }}
+        value={searchText}
       />
 
       {/*<TouchableOpacity style={styles.editGroupStyle}>*/}
