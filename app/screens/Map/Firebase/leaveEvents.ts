@@ -1,9 +1,9 @@
+import { getAuth } from "firebase/auth";
+import firebase from "firebase/compat";
 import {
-  DocumentReference,
   arrayUnion,
   collection,
   doc,
-  getDoc,
   getDocs,
   getFirestore,
   or,
@@ -11,10 +11,8 @@ import {
   updateDoc,
   where,
 } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
 import { IEvent } from "../../../Types/Events";
-import firebase from "firebase/compat";
-import * as EVENTS from "events";
+import { removeCachedPartyScreen } from "../../Party/helpers/cacheFunctions";
 import FieldValue = firebase.firestore.FieldValue;
 
 export async function fetchViaInviteParties(city: string): Promise<IEvent[]> {
@@ -74,7 +72,7 @@ export async function leaveEvent(data: IEvent) {
     `${data.partyID}`
   );
   //query data from firebase
-
+  removeCachedPartyScreen();
   //functions
   await updateDoc(eventDoc_ref, {
     guests: FieldValue.arrayRemove(current_user_uid),

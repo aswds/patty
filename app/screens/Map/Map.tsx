@@ -8,7 +8,6 @@ import { GestureHandlerRootView } from "react-native-gesture-handler";
 import MapView, { PROVIDER_DEFAULT, Region } from "react-native-maps";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
-  eventDocToListenReference,
   eventReference,
   eventsReference,
   userReference,
@@ -39,9 +38,9 @@ import { AlertConfig, pickAlertText } from "./helpers/pickAnAlertType";
 import mapStyle from "./mapStyle.json";
 
 import { NoEventFoundAlert } from "../../shared/Alert/NoEventFound";
+import { deleteParty } from "../Modals/PartyModal/components/actionButtonsFunctions";
 import EventMarkers from "./components/EventMarkers";
 import { handleAlertError } from "./helpers/handleAlertError";
-import { db } from "../../../firebase";
 
 function Map({ navigation }: MapStackScreenProps<"Map">) {
   //States
@@ -237,6 +236,33 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
     }
   }
 
+  async function onDeleteCurrentEvent() {
+    if (joinedEvent) {
+      leaveCurrentEvent();
+      await deleteParty(
+        joinedEvent.partyID,
+        joinedEvent.location.fullAddressInfo?.subregion!,
+        joinedEvent.party_access
+      ).then(() => {
+        partyMarkerModalRef.current?.close();
+      });
+    }
+  }
+
+  function handleAlert(
+    config: AlertConfig,
+    onCancelCallback?: () => void,
+    onOkCallback?: () => void
+  ) {
+    handleAlertError(
+      setAlertError,
+      setShowAlertModal,
+      config,
+      onCancelCallback,
+      onOkCallback
+    );
+  }
+
   //Render
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -295,11 +321,9 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
               navigateToPartyCreation();
             } else {
               if (joinedEvent && joinedEvent.user.uid === current_user.uid) {
-                setAlertError(pickAlertText("hostLeaving"));
-                setShowAlertModal(true);
+                handleAlert(pickAlertText("hostLeaving"), onDeleteCurrentEvent);
               } else {
-                setAlertError(pickAlertText("toCreate"));
-                setShowAlertModal(true);
+                handleAlert(pickAlertText("toCreate"), leaveCurrentEvent);
               }
             }
           }}
@@ -314,13 +338,17 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
               } else {
                 await fetchJoinedEvents().then((event) => {
                   setJoinedEvent(event);
-                  if (event) navigateToPartyScreen(event);
+                  if (event) {
+                    navigateToPartyScreen(event);
+                  }
                 });
               }
+
               setAlertError(pickAlertText("noPartyJoined"));
             } catch (e) {
               //@ts-expect-error
               const result = e.message; // error under useUnknownInCatchVariables
+
               if (typeof e === "string") {
                 e.toUpperCase(); // works, `e` narrowed to string
               } else if (e instanceof Error) {
@@ -349,6 +377,7 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
           onClose={() => {
             partyMarkerModalRef.current?.close();
           }}
+          onDeleteCurrentEvent={onDeleteCurrentEvent}
           onLeaveCurrentEvent={leaveCurrentEvent}
           handleAlertError={handleAlertError.bind(
             null,

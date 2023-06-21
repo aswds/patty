@@ -2,7 +2,7 @@ import { FlatList, RefreshControl, StyleSheet, Text, View } from "react-native";
 import React, { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
 import { JoinedEventsRouteProps } from "../../../Types/MapStack/RouteTypes";
-import { fetch_joined_events } from "../../../redux/actions/Events";
+import { fetch_joined_event } from "../../../redux/actions/Events";
 import { IEvent } from "../../../Types/Events";
 import RenderItem from "./RenderItem";
 import { Region } from "react-native-maps";
@@ -20,7 +20,7 @@ const JoinedEvents = ({ navigation }: MapStackScreenProps<"JoinedEvents">) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const insets = useSafeAreaInsets();
   useEffect(() => {
-    fetch_joined_events(route.params?.city)
+    fetch_joined_event(route.params?.city)
       .then((events) => {
         setJoinedEvents(events);
         setIsLoading(false);
