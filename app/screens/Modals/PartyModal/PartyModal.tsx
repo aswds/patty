@@ -41,6 +41,7 @@ type PartyMarkerModalProps = ModalProps & {
   modalRef: RefObject<BottomSheet>;
   onLeaveCurrentEvent: () => void;
   onJoin: (event: IEvent) => void;
+  onDeleteCurrentEvent: () => void;
   handleAlertError: (
     type: AlertConfig,
     onCancelCallback?: () => void,
@@ -52,6 +53,7 @@ const PartyModal: React.FC<PartyMarkerModalProps> = ({
   markerInfo,
   onClose,
   modalRef,
+  onDeleteCurrentEvent,
   onLeaveCurrentEvent,
   handleAlertError,
   onJoin,
@@ -97,7 +99,7 @@ const PartyModal: React.FC<PartyMarkerModalProps> = ({
       // host is leaving
       if (current_user.uid === data.user.uid) {
         const config = pickAlertText("hostLeaving");
-        handleAlertError(config, onPressDelete);
+        handleAlertError(config, onDeleteCurrentEvent);
       } else {
         // user is leaving
         onLeaveCurrentEvent();
@@ -108,7 +110,7 @@ const PartyModal: React.FC<PartyMarkerModalProps> = ({
       } else {
         if (current_user.uid === current_user.events.onEvent) {
           const alertData = pickAlertText("hostLeavingToJoin");
-          handleAlertError(alertData, onPressDelete);
+          handleAlertError(alertData, onDeleteCurrentEvent);
         } else {
           const alertData = pickAlertText("toJoin");
           handleAlertError(alertData, onLeaveCurrentEvent);
@@ -130,7 +132,7 @@ const PartyModal: React.FC<PartyMarkerModalProps> = ({
         party={markerInfo}
         closeModal={closeModal}
         handleAlertError={handleAlertError}
-        onPressDelete={onPressDelete}
+        onPressDelete={onDeleteCurrentEvent}
       />
       <JoinEventButton
         data={markerInfo}
