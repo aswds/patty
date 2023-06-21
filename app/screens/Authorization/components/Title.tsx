@@ -2,6 +2,7 @@ import React from "react";
 import { StyleSheet, Text, View } from "react-native";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
 import { colors } from "../../../src/colors";
+import BoldText from "../../../shared/Text/BoldText";
 
 interface TitleProps {
   title: string;
@@ -17,7 +18,7 @@ export default function Title({ message, title }: TitleProps) {
       }}
     >
       <View>
-        <Text style={styles.title}>{title}</Text>
+        <BoldText textStyles={styles.title}>{title}</BoldText>
         <Text
           style={{
             fontFamily: FontFamily.regular,
@@ -33,7 +34,6 @@ export default function Title({ message, title }: TitleProps) {
 }
 const styles = StyleSheet.create({
   title: {
-    fontFamily: FontFamily.bold,
     fontSize: 35,
     color: colors.text,
   },
