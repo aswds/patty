@@ -47,7 +47,10 @@ function Profile({
               style={{ alignItems: "flex-end" }}
             />
           }
-          contentContainerStyle={{ paddingTop: insets.top }}
+          contentContainerStyle={{
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+          }}
           ListHeaderComponent={
             <User
               user={user}
@@ -61,9 +64,28 @@ function Profile({
               }
             />
           }
-          data={[user.events]}
+          data={[
+            {
+              data: `${user.events.eventsCreated} ${
+                user.events.eventsCreated > 0 ? "🥳" : ""
+              }`,
+              title: "number of parties created ",
+            },
+            {
+              data: `${user.events.eventsVisited} ${
+                user.events.eventsVisited > 0 ? "🎉" : ""
+              }`,
+              title: "party count ",
+            },
+            {
+              data: user.events.onEvent
+                ? "living it up at the party 🎉🕺"
+                : "just chillin' and relaxing 🍹",
+              title: `party presence profiler`,
+            },
+          ]}
           renderItem={({ item }) => {
-            return <RenderItem events={item} />;
+            return <RenderItem eventInfo={item} />;
           }}
         />
       </View>

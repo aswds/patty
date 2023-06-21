@@ -7,21 +7,19 @@ import Loader from "../../../shared/Loaders/Loader";
 import { colors } from "../../../src/colors";
 
 interface RenderItemProps {
-  events: IUserEvents;
+  eventInfo: any;
 }
 
-export default function RenderItem({ events }: RenderItemProps): JSX.Element {
-  if (events === undefined) {
-    return <Loader isVisible={events} />;
-  }
-
+export default function RenderItem({
+  eventInfo,
+}: RenderItemProps): JSX.Element {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.textNumberStyle}>{events?.eventsCreated} 🎉</Text>
+        <Text style={styles.textNumberStyle}>{eventInfo.data}</Text>
       </View>
       <View>
-        <Text style={styles.textStyle}>Parties were created</Text>
+        <Text style={styles.textStyle}>{eventInfo.title}</Text>
       </View>
     </View>
   );
