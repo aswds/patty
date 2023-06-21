@@ -1,17 +1,17 @@
-import React from "react";
-import { View, TouchableOpacity, Text, StyleSheet } from "react-native";
 import { EvilIcons } from "@expo/vector-icons";
+import _ from "lodash";
+import { StyleSheet, Text, TouchableOpacity } from "react-native";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { MediaItem } from "../../../../Types/Events";
 import { colors } from "../../../../src/colors";
-import { ImagePickerSuccessResult } from "expo-image-picker";
 
 interface MediaComponentProps {
-  media: ImagePickerSuccessResult | null;
+  media?: MediaItem;
   handleMediaPick: () => void;
 }
 
 const MediaComponent = ({ media, handleMediaPick }: MediaComponentProps) => {
-  if (media?.assets[0]) {
+  if (media && !_.isEmpty(media)) {
     return (
       <TouchableOpacity
         onPress={handleMediaPick}

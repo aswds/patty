@@ -1,72 +1,87 @@
 import { ResizeMode, Video } from "expo-av";
-import * as ImagePicker from "expo-image-picker";
 import "firebase/storage";
-import React, { useState } from "react";
-import { Alert, Image, StyleSheet, View } from "react-native";
+import _ from "lodash";
+import React, { useEffect, useState } from "react";
+import { Image, StyleSheet, View } from "react-native";
+import { useDispatch } from "react-redux";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { MediaItem } from "../../../../Types/Events";
 import { PartyNavigationScreenProps } from "../../../../Types/PartyStack/NavigationTypes";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import {
+  startUpload,
+  updateUploadProgress,
+  uploadSuccess,
+} from "../../../../redux/reducers/UploadReducer";
 import BigButton from "../../../../shared/Buttons/BigButton";
 import Input from "../../../../shared/Input/Input";
 import { Screen } from "../../../../shared/Screen/Screen";
 import { colors } from "../../../../src/colors";
 import NavigationBar from "../../../Map/PartyCreationScreens/NavigationBar";
 import MediaComponent from "./PickMedia";
-import { uploadPartyPost } from "./uploadFileToFirebase";
-
+import { uploadPartyPost } from "./firebasePostFunctions";
 const PostUploadScreen: React.FC<
   PartyNavigationScreenProps<"PostUploadScreen">
-> = ({ navigation }) => {
+> = ({ navigation, route }) => {
   const { uid, username, name, surname, image, events } = useTypedSelector(
     (state) => state.user_state.current_user
   );
-
+  const [startPartyTime] = useState<Date>(new Date("2023-06-11T20:00:00")); //
   const [description, setDescription] = useState<string>("");
-  const [media, setMedia] =
-    useState<ImagePicker.ImagePickerSuccessResult | null>(null);
+  const [media, setMedia] = useState<MediaItem>(route.params?.media);
+  const dispatch = useDispatch();
   const postData = {
     description: description,
     user: { uid, username, name, surname, image },
   };
   const { onEvent } = events;
   const handleMediaPick = async () => {
-    const { status } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-    if (status !== "granted") {
-      Alert.alert(
-        "Permission Denied",
-        "Please grant permission to access media."
-      );
-      return;
-    }
-
-    const result = await ImagePicker.launchImageLibraryAsync({
-      mediaTypes: ImagePicker.MediaTypeOptions.All,
-      quality: 0.5,
-      aspect: [4, 3],
-      videoMaxDuration: 60,
-      allowsEditing: true,
+    navigation.navigate("MediaListToUpload", {
+      eventDate: startPartyTime,
     });
-
-    if (!result.canceled) {
-      setMedia(result);
-    }
   };
+  useEffect(() => {
+    if (route.params?.media) {
+      setMedia(route.params.media);
+    }
+  }, [route.params?.media]);
+
+  function updateProgress(progress: number) {
+    dispatch(updateUploadProgress(progress));
+  }
+  function uploadedSuccessfully() {
+    dispatch(uploadSuccess());
+  }
+
+  async function handleUploadPress() {
+    if (!_.isEmpty(media) && onEvent) {
+      dispatch(startUpload());
+      await uploadPartyPost(
+        media.uri,
+        postData,
+        onEvent,
+        media.mediaType,
+        updateProgress,
+        uploadedSuccessfully
+      )
+        .then(() => {})
+        .finally(() => {});
+      navigation.goBack();
+    }
+  }
 
   return (
     <Screen
       navigationBar={<NavigationBar text="Upload" navigation={navigation} />}
     >
       <View style={styles.container}>
-        {media?.assets[0] && (
+        {media && !_.isEmpty(media) && (
           <View style={styles.mediaContainer}>
-            {media.assets[0].type === "image" ? (
-              <Image
-                source={{ uri: media.assets[0].uri }}
-                style={styles.mediaImage}
-              />
+            {media?.mediaType === "photo" ? (
+              <Image source={{ uri: media.uri }} style={styles.mediaImage} />
             ) : (
               <Video
-                source={{ uri: media.assets[0].uri }}
+                source={{ uri: media.uri }}
                 style={styles.mediaVideo}
                 shouldPlay
                 resizeMode={ResizeMode.CONTAIN}
@@ -89,18 +104,8 @@ const PostUploadScreen: React.FC<
       </View>
       <BigButton
         title="Upload"
-        onPress={() => {
-          if (media?.assets[0] && onEvent && media?.assets[0].type)
-            uploadPartyPost(
-              media.assets[0].uri,
-              postData,
-              onEvent,
-              media.assets[0].type
-            ).then(() => {
-              navigation.goBack();
-            });
-        }}
-        disabled={!media}
+        onPress={handleUploadPress}
+        disabled={_.isEmpty(media)}
         style={styles.bigButton}
         textStyle={styles.bigButtonText}
       />
