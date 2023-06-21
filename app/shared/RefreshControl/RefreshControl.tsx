@@ -7,17 +7,19 @@ import { onRefresh } from "./refreshControlFuncs";
 interface CustomRefreshControlProps {
   setRefreshing: Dispatch<SetStateAction<boolean>>;
   refreshing: boolean;
+  onRefreshFunction?: () => void;
 }
 
 const CustomRefreshControl = ({
   setRefreshing,
   refreshing,
+  onRefreshFunction,
 }: CustomRefreshControlProps) => {
   const insets = useSafeAreaInsets();
   return (
     <RefreshControl
       refreshing={refreshing}
-      onRefresh={onRefresh.bind(null, setRefreshing)}
+      onRefresh={onRefreshFunction ?? onRefresh.bind(null, setRefreshing)}
       tintColor={colors.buttonText}
       style={{ alignItems: "center", justifyContent: "center" }}
     />
