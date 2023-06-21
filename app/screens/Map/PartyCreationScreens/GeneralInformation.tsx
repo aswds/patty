@@ -34,15 +34,14 @@ const GeneralInformation = ({
     setParty_Access(party_access);
   };
 
-  const handleErrorMessage = (titleToSet: string, message: string) => {
-    if (titleToSet.length < 1) {
-      setError({
-        title: !eventTitle
-          ? "Please enter a title"
-          : "Please enter a description",
-        message: "Uh-oh! Looks like someone forgot to fill in the blanks.",
-      });
-    }
+  const handleErrorMessage = (titleToSet?: string, message?: string) => {
+    const messageToSet = !eventTitle
+      ? "Please enter a title"
+      : "Please enter a description";
+    setError({
+      title: "Something missing.",
+      message: `Uh-oh! Looks like someone forgot to fill in the blanks. ${messageToSet}`,
+    });
     setShowAlertModal(true);
   };
 
@@ -59,10 +58,7 @@ const GeneralInformation = ({
     } else {
       // Set the error title depending on which field is missing
 
-      handleErrorMessage(
-        !eventTitle ? "Please enter a title" : "Please enter a description",
-        "Uh-oh! Looks like someone forgot to fill in the blanks."
-      );
+      handleErrorMessage();
     }
   };
   return (

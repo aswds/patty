@@ -1,6 +1,6 @@
 import React, { ReactNode } from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import MapView, { Marker, PROVIDER_DEFAULT } from "react-native-maps";
+import MapView, { LatLng, Marker, PROVIDER_DEFAULT } from "react-native-maps";
 import { colors } from "../../../../src/colors";
 import { Title } from "../../../../shared/Title/Title";
 import { Entypo, MaterialIcons } from "@expo/vector-icons";
@@ -13,7 +13,7 @@ import { FontFamily } from "../../../../../assets/fonts/Fonts";
 const mapStyle = require("../../mapStyle.json");
 
 interface LocationProps {
-  userLocation: ICoordinates | undefined;
+  userLocation: LatLng | undefined;
   locationAddButton: ReactNode;
 }
 export default function Location({

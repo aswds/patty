@@ -22,6 +22,7 @@ interface NavigationBarProps {
   safeAreaViewStyle?: ViewStyle;
   fontStyle?: TextStyle;
   iconName?: keyof typeof FontAwesome.glyphMap;
+  description?: string;
 }
 
 const NavigationBar = ({
@@ -31,6 +32,7 @@ const NavigationBar = ({
   fontStyle,
   onPress,
   safeAreaViewStyle,
+  description,
   iconName,
 }: NavigationBarProps) => {
   return (
@@ -50,6 +52,7 @@ const NavigationBar = ({
           marginBottom: 0,
           flexShrink: 1,
         }}
+        description={description}
       />
     </View>
   );
