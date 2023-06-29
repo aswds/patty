@@ -4,34 +4,6 @@ import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { eventsReference } from "../../Firebase/References";
 import { IEvent } from "../../Types/Events";
-/**
- * Get all parties in user's city
- * @param userLocation
- * @returns {Promise<IEvent[]>}
- */
-export async function fetchCityParties(
-  userLocation: string
-): Promise<IEvent[]> {
-  return new Promise(async (resolve, reject) => {
-    const collectionRef = eventsReference(userLocation, "Public");
-    await getDocs(collectionRef).then(
-      (querySnapshot) => {
-        if (querySnapshot.docs.length === 0)
-          reject(
-            new Error(
-              "Sadly, no events we're found :(" +
-                "\nBecome the first who gonna create one 👽"
-            )
-          );
-        else resolve(querySnapshot.docs.map((e) => e.data() as IEvent));
-      },
-      (error) => {
-        Alert.alert(error.message);
-        reject(Error("Something went wrong 👽"));
-      }
-    );
-  });
-}
 
 interface UserLocation {
   coords: {
@@ -41,17 +13,18 @@ interface UserLocation {
   city: string | undefined;
 }
 
-export const useUserLocation = (): [UserLocation, boolean] => {
+export const useUserLocation = (): [UserLocation, boolean, Error | null] => {
   const [location, setLocation] = useState<UserLocation>({
     coords: { latitude: 0, longitude: 0 },
     city: undefined,
   });
   const [isLoading, setIsLoading] = useState(true);
+  const [error, setError] = useState<Error | null>(null);
 
   useEffect(() => {
-    (async () => {
+    const fetchUserLocation = async () => {
       try {
-        const { status } = await Location.requestForegroundPermissionsAsync();
+        const { status } = await Location.getForegroundPermissionsAsync();
         if (status !== "granted") {
           throw new Error("Location permission not granted");
         }
@@ -59,7 +32,10 @@ export const useUserLocation = (): [UserLocation, boolean] => {
         const { coords } = await Location.getCurrentPositionAsync({});
         const { latitude, longitude } = coords;
 
-        setLocation({ ...location, coords: { latitude, longitude } });
+        setLocation((prevLocation) => ({
+          ...prevLocation,
+          coords: { latitude, longitude },
+        }));
 
         const address = await Location.reverseGeocodeAsync({
           latitude,
@@ -70,10 +46,35 @@ export const useUserLocation = (): [UserLocation, boolean] => {
         setLocation((prevLocation) => ({ ...prevLocation, city: city! }));
         setIsLoading(false);
       } catch (error) {
+        setError(error);
         setIsLoading(false);
       }
-    })();
+    };
+
+    fetchUserLocation();
   }, []);
 
-  return [location, isLoading];
+  return [location, isLoading, error];
 };
+
+/**
+ * Get all parties in the user's city
+ * @param userLocation
+ * @returns {Promise<IEvent[]>}
+ */
+export async function fetchCityParties(
+  userLocation: string
+): Promise<IEvent[]> {
+  try {
+    const collectionRef = eventsReference(userLocation, "Public");
+    const querySnapshot = await getDocs(collectionRef);
+    if (querySnapshot.docs.length === 0) {
+      throw new Error(
+        "Sadly, no events were found :( Become the first to create one 👽"
+      );
+    }
+    return querySnapshot.docs.map((e) => e.data() as IEvent);
+  } catch (error) {
+    throw new Error("Something went wrong 👽");
+  }
+}
