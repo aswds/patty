@@ -1,6 +1,6 @@
 import React from "react";
 import { View, Modal, Text, TouchableOpacity, StyleSheet } from "react-native";
-import CloseButton from "../../../shared/Buttons/CloseButton";
+import RedButton from "../../../shared/Buttons/CloseButton";
 import { colors } from "../../../src/colors";
 import BoldText from "../../../shared/Text/BoldText";
 
@@ -23,7 +23,8 @@ const PartyRadiusAlertModal: React.FC<PartyRadiusAlertModalProps> = ({
           <BoldText textStyles={styles.message}>
             Uh-oh! It seems you've ventured outside the party zone.
           </BoldText>
-          <CloseButton onClose={onClose} />
+
+          <RedButton onPress={onClose} />
         </View>
       </View>
     </Modal>

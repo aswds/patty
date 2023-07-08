@@ -1,22 +1,18 @@
-import React from "react";
-
+import { useNavigation } from "@react-navigation/native";
 import {
-  Alert,
+  ActivityIndicator,
   Image,
   StyleSheet,
   TouchableOpacity,
+  View,
   ViewStyle,
 } from "react-native";
-import { useNavigation } from "@react-navigation/native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import * as Haptics from "expo-haptics";
-import { colors } from "../../../src/colors";
-import { ProfileNavigationProps } from "../../../Types/ProfileStack/ScreenNavigationProps";
-import { useActions } from "../../../hooks/useActions";
-import { IUser } from "../../../Types/User";
-import { getUserByUID } from "../../../services/getUserByUID";
 import { image } from "../../../../assets/images";
+import { ProfileNavigationProps } from "../../../Types/ProfileStack/ScreenNavigationProps";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
+import BoldText from "../../../shared/Text/BoldText";
+import { colors } from "../../../src/colors";
+import { isAndroid } from "../../../src/platform";
 
 // Button to navigate to profile screen
 
@@ -25,16 +21,17 @@ interface ProfileButtonProps {
   userUID: string;
   userImage?: string;
   containerStyle?: ViewStyle;
+  city?: string;
 }
-const ProfileButton = ({
+const MapHeader = ({
   onLongPress,
   userUID,
   userImage,
   containerStyle,
+  city,
 }: ProfileButtonProps) => {
   const navigation = useNavigation<ProfileNavigationProps>();
   const { current_user } = useTypedSelector((state) => state.user_state);
-  const insets = useSafeAreaInsets();
   function onPress() {
     navigation.navigate("ProfileNav", {
       screen: "Profile",
@@ -44,33 +41,62 @@ const ProfileButton = ({
     });
   }
   return (
-    <TouchableOpacity
-      style={[styles.container, containerStyle]}
-      onPress={onPress}
-      onLongPress={onLongPress}
-    >
-      <Image
-        source={userImage ? { uri: userImage } : image.noImage}
-        style={{
-          height: "100%",
-          width: "100%",
-          backgroundColor: colors.background,
-          borderRadius: 9999,
-        }}
-      />
-    </TouchableOpacity>
+    <View style={{ ...containerStyle, ...styles.container }}>
+      {!city ? (
+        <ActivityIndicator size={"small"} color={"white"} />
+      ) : (
+        <BoldText textStyles={styles.cityText} onPress={onLongPress}>
+          {city}
+        </BoldText>
+      )}
+
+      <TouchableOpacity
+        style={[styles.userImageContainer]}
+        onPress={onPress}
+        onLongPress={onLongPress}
+      >
+        <Image
+          source={userImage ? { uri: userImage } : image.noImage}
+          style={{
+            height: "100%",
+            width: "100%",
+            backgroundColor: colors.background,
+          }}
+        />
+      </TouchableOpacity>
+    </View>
   );
 };
+
 const styles = StyleSheet.create({
   container: {
+    width: "100%",
+    position: "absolute",
+    justifyContent: "space-between",
+
+    alignItems: "center",
+    flexDirection: "row",
+    paddingHorizontal: "5%",
+  },
+  userImageContainer: {
+    marginTop: isAndroid ? "5%" : 0,
     height: 55,
     aspectRatio: 1,
-    position: "absolute",
     borderWidth: 2,
-    borderColor: colors.accentColor,
-    borderRadius: 9999,
+    borderRadius: 20,
     overflow: "hidden",
+    borderColor: colors.accentColor,
     backgroundColor: colors.background,
   },
+  cityText: {
+    fontSize: 30,
+    textDecorationLine: "underline",
+    maxWidth: "80%",
+    color: colors.background,
+    fontWeight: "bold",
+    textAlign: "left",
+    paddingRight: 10,
+  },
 });
-export default ProfileButton;
+
+export default MapHeader;
