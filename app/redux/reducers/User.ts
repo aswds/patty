@@ -12,7 +12,11 @@ interface IState {
 const initialState: IState = {
   isLoading: false,
   error: null,
-  current_user: {} as IUser,
+  current_user: {
+    userLocation: {
+      isLocationLoading: true,
+    },
+  } as IUser,
 };
 
 const userSlice = createSlice({
@@ -33,7 +37,7 @@ const userSlice = createSlice({
     builder.addCase(
       fetch_user.fulfilled,
       (state, action: PayloadAction<IUser>) => {
-        state.current_user = action.payload;
+        state.current_user = { ...state.current_user, ...action.payload };
         state.isLoading = false;
       }
     );
