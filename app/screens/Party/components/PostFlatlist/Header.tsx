@@ -1,18 +1,12 @@
-import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
-import React from "react";
-import { BackButton } from "../../../../shared/Buttons/BackButton";
-import { Title } from "../../../../shared/Title/Title";
-import { image } from "../../../../../assets/images";
-import { IEvent, IEvent_User } from "../../../../Types/Events";
-import { colors } from "../../../../src/colors";
-import ProfileButton from "../../../Map/components/ProfileButton";
 import { useNavigation } from "@react-navigation/native";
-import { MapNavNavigatorParamList } from "../../../../Types/MapStack/NavigationTypes";
-import { ProfileNavigationProps } from "../../../../Types/ProfileStack/ScreenNavigationProps";
-import { getUserByUID } from "../../../../services/getUserByUID";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { IEvent, IEvent_User } from "../../../../Types/Events";
+import { ProfileNavigationProps } from "../../../../Types/ProfileStack/ScreenNavigationProps";
 import UserInfo from "../../../../shared/Events/UserInfo";
+import { Title } from "../../../../shared/Title/Title";
+import { colors } from "../../../../src/colors";
 
 interface HeaderProps {
   user: IEvent_User;

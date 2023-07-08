@@ -1,34 +1,23 @@
 import { AntDesign } from "@expo/vector-icons";
 import { ResizeMode, Video } from "expo-av";
-import * as Haptics from "expo-haptics";
-import moment from "moment";
-import { Skeleton } from "moti/skeleton";
 import React, { memo, useEffect, useState } from "react";
-import {
-  ActivityIndicator,
-  Alert,
-  Image,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
+import { Alert, Dimensions, Image, StyleSheet, Text, View } from "react-native";
 import { FontFamily } from "../../../../../../assets/fonts/Fonts";
-import { useTypedSelector } from "../../../../../hooks/useTypedSelector";
-import CustomAlert from "../../../../../shared/Alert/CustomAlert";
+import { IUser } from "../../../../../Types/User";
+import ListLoader from "../../../../../shared/Loaders/ListLoader";
 import { colors } from "../../../../../src/colors";
-import { handleAlertError } from "../../../../Map/helpers/handleAlertError";
+import {
+  AlertConfig,
+  pickAlertText,
+} from "../../../../Map/helpers/pickAnAlertType";
+import { deletePartyPost } from "../../AddPost/deletePost";
 import { Description } from "../../ShowMoreText";
 import { IPost } from "../types";
 import DeletePost from "./DeletePost";
+import ReactionButton from "./ReactionButton";
 import UserContainer from "./UserContainer";
+import { handleRatingPress } from "./helpers/handleRates";
 import { ratePost } from "./helpers/ratePost";
-import { IUser } from "../../../../../Types/User";
-import { AlertConfig } from "../../../../Map/helpers/pickAnAlertType";
-import { handleLikesPress, handleMehsPress } from "./helpers/handleRates";
-import Loader from "../../../../../shared/Loaders/Loader";
-import ListLoader from "../../../../../shared/Loaders/ListLoader";
-import { deletePartyPost } from "../../AddPost/deletePost";
 interface Props {
   item: IPost;
   uid: string;
@@ -63,7 +52,6 @@ const Post: React.FC<Props> = ({ item, events, uid, handleAlertError }) => {
   const [mehs, setMehs] = useState<string[]>(item.mehs || []);
   const [likes, setLikes] = useState<string[]>(item.likes || []);
   const [loading, setLoading] = useState(true);
-
   useEffect(() => {
     checkUserReaction(mehs, likes, uid, setMehs, setLikes);
   }, []); // Run the effect only once on mount
@@ -71,9 +59,9 @@ const Post: React.FC<Props> = ({ item, events, uid, handleAlertError }) => {
   const handleMediaLoad = () => {
     setLoading(false);
   };
-  // Function to hide modal
+  // // Function to hide modal
 
-  function handleRatePost(rating: "meh" | "like") {
+  function handleRatePost(rating: "meh" | "like" | "unmeh" | "unlike") {
     if (events.onEvent && uid) {
       ratePost(events.onEvent, item.id, uid, rating);
     } else {
@@ -83,12 +71,10 @@ const Post: React.FC<Props> = ({ item, events, uid, handleAlertError }) => {
 
   return (
     <View style={styles.container}>
-      <View>
+      <View style={{ width: "100%" }}>
         <View style={styles.postHeader}>
           <UserContainer user={item?.user} />
-          <Text style={styles.postTimeStamp}>
-            {moment(item.createdAt).local().startOf("seconds").fromNow()}
-          </Text>
+          <Text style={styles.postTimeStamp}>{item.createdAt}</Text>
         </View>
         <View style={styles.mediaContainer}>
           {loading && (
@@ -116,7 +102,7 @@ const Post: React.FC<Props> = ({ item, events, uid, handleAlertError }) => {
               <Video
                 source={{ uri: item.media }}
                 style={styles.image}
-                resizeMode={ResizeMode.CONTAIN}
+                resizeMode={ResizeMode.COVER}
                 isLooping={true}
                 useNativeControls
                 onLoad={handleMediaLoad}
@@ -128,60 +114,54 @@ const Post: React.FC<Props> = ({ item, events, uid, handleAlertError }) => {
         <View style={styles.bottomContainer}>
           {item.user.uid === uid ? (
             <DeletePost
-              handleAlertError={handleAlertError}
               handleDeletePost={() => {
-                if (events.onEvent)
-                  deletePartyPost(events.onEvent, item.id, item.fileName);
+                handleAlertError(pickAlertText("deletePost"), () =>
+                  deletePartyPost(events.onEvent, item.id, item.fileName)
+                );
               }}
             />
           ) : (
             <View></View>
           )}
           <View style={styles.rightBottomContainer}>
-            <TouchableOpacity
-              style={[
-                styles.buttonContainer,
-                {
-                  backgroundColor: mehs?.includes(uid!)
-                    ? colors.accentColor
-                    : colors.background,
-                },
-              ]}
-              onPress={() =>
-                handleMehsPress(
-                  mehs,
-                  uid,
-                  setMehs,
-                  setLikes,
-                  handleRatePost.bind(null, "meh")
-                )
+            <ReactionButton
+              count={mehs?.length}
+              backgroundColor={
+                mehs?.includes(uid!) ? colors.accentColor : colors.background
               }
-            >
-              <AntDesign name="meho" size={25} color="white" />
-              <Text style={styles.buttonText}>{mehs?.length}</Text>
-            </TouchableOpacity>
-            <TouchableOpacity
-              style={[
-                styles.buttonContainer,
-                {
-                  backgroundColor: likes?.includes(uid!)
-                    ? colors.accentColor
-                    : colors.background,
-                },
-              ]}
               onPress={() =>
-                handleLikesPress(
+                handleRatingPress(
+                  "meh",
+                  likes,
                   mehs,
                   uid,
                   setLikes,
                   setMehs,
-                  handleRatePost.bind(null, "like")
+                  (rating: "meh" | "unmeh" | "like" | "unlike") =>
+                    handleRatePost(rating)
                 )
               }
-            >
-              <AntDesign name="smile-circle" size={25} color="white" />
-              <Text style={styles.buttonText}>{likes?.length}</Text>
-            </TouchableOpacity>
+              icon={<AntDesign name="meho" size={24} color="white" />}
+            />
+            <ReactionButton
+              count={likes?.length}
+              backgroundColor={
+                likes?.includes(uid!) ? colors.accentColor : colors.background
+              }
+              onPress={() =>
+                handleRatingPress(
+                  "like",
+                  mehs,
+                  likes,
+                  uid,
+                  setMehs,
+                  setLikes,
+                  (rating: "meh" | "unmeh" | "like" | "unlike") =>
+                    handleRatePost(rating)
+                )
+              }
+              icon={<AntDesign name="smile-circle" size={24} color="white" />}
+            />
           </View>
         </View>
       </View>
@@ -192,10 +172,10 @@ const Post: React.FC<Props> = ({ item, events, uid, handleAlertError }) => {
 
 const styles = StyleSheet.create({
   container: {
-    marginBottom: 20,
+    flex: 1,
     alignItems: "center",
     justifyContent: "center",
-    overflow: "hidden",
+    backgroundColor: colors.background,
   },
   loader: {
     position: "absolute",
@@ -204,18 +184,16 @@ const styles = StyleSheet.create({
     alignSelf: "center",
   },
   mediaContainer: {
-    backgroundColor: colors.modalBackground,
-    borderRadius: 20,
-    justifyContent: "center",
-
     overflow: "hidden",
+    justifyContent: "center",
+    height: Dimensions.get("screen").height / 1.7,
+    borderRadius: 20,
+    backgroundColor: colors.modalBackground,
   },
   image: {
     width: "100%",
-    aspectRatio: 1,
+    height: "100%",
     resizeMode: "cover",
-
-    overflow: "hidden",
   },
   postHeader: {
     flexDirection: "row",
@@ -232,12 +210,7 @@ const styles = StyleSheet.create({
     color: colors.text,
     fontFamily: FontFamily.medium,
   },
-  bottomContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    alignItems: "center",
-    padding: 10,
-  },
+
   leftBottomContainer: {
     flexDirection: "row",
     alignItems: "center",
@@ -270,27 +243,17 @@ const styles = StyleSheet.create({
     gap: 15,
     alignItems: "center",
   },
-  buttonContainer: {
-    alignItems: "center",
-    shadowColor: "white",
-    shadowOpacity: 0.3,
-    shadowOffset: { height: 0, width: 0 },
-    shadowRadius: 2,
-    flexDirection: "row",
-    backgroundColor: colors.modalBackground,
-    padding: 10,
-    borderRadius: 30,
-  },
+
   buttonIcon: {
     width: 20,
     height: 20,
     marginRight: 5,
   },
-  buttonText: {
-    fontSize: 10,
-    padding: 5,
-    color: colors.text,
-    fontFamily: FontFamily.bold,
+  bottomContainer: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    padding: 10,
   },
   postTimeStamp: {
     color: colors.text_2,

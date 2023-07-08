@@ -16,6 +16,7 @@ import { ProfileNavNavigatorParamList } from "../../../../../Types/ProfileStack/
 import { ProfileNavigationProps } from "../../../../../Types/ProfileStack/ScreenNavigationProps";
 import { getUserByUID } from "../../../../../services/getUserByUID";
 import { Skeleton } from "moti/skeleton";
+import { image } from "../../../../../../assets/images";
 interface UserContainerProps {
   user: IEvent_User;
   userContainerStyle?: ViewStyle;
@@ -48,7 +49,7 @@ const UserContainer: React.FC<UserContainerProps> = ({
       <View style={styles.userPhotoContainer}>
         <Skeleton show={isLoading} radius="round">
           <Image
-            source={{ uri: user?.image }}
+            source={user.image ? { uri: user.image } : image?.noImage}
             style={styles.userPhoto}
             onLoad={() => setIsLoading(false)}
           />

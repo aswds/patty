@@ -1,48 +1,45 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  ScrollView,
-  UIManager,
-  FlatList,
-} from "react-native";
-import TrackInfo from "../TrackInfo";
-import { IEvent } from "../../../../Types/Events";
 import { NavigationProp } from "@react-navigation/native";
-import { PartyCreationNavigationProps } from "../../../../Types/MapStack/ScreenNavigationProps";
-import Header from "./Header";
-import PartyStats from "../PartyStats";
+import { StyleSheet, View } from "react-native";
+import { IEvent } from "../../../../Types/Events";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import UploadProgressBar from "../../../../shared/ProgressBar/UploadProgressBar";
 import { colors } from "../../../../src/colors";
-import { PartyCreationNavigatorParamList } from "../../../../Types/MapStack/NavigationTypes";
-import UserList from "../../../../shared/UserList/UserList";
-import { useEffect, useState } from "react";
-import { fetchGuests } from "../../../../shared/UserList/fetchGuests";
-import Mingles from "../Mingles";
+import { AlertConfig } from "../../../Map/helpers/pickAnAlertType";
+import Announcements from "../Announcements/Announcements";
+import PartyStats from "../PartyStats";
+import Header from "./Header";
 interface PartyHeaderProps {
   party: IEvent;
-  trackInfo?: {
-    title?: string;
-    artist?: string;
-    image?: string;
-  };
+  handleAlertError: (config: AlertConfig, onCancelCallback: () => void) => void;
   navigation: NavigationProp<any, any>;
+  refreshing: boolean;
 }
 
 const PartyHeader: React.FC<PartyHeaderProps> = ({
   navigation,
   party,
-  trackInfo,
+  refreshing,
+  handleAlertError,
 }) => {
+  const { isUploading } = useTypedSelector((state) => state.upload);
+
   return (
     <View style={styles.container}>
       <Header navigation={navigation} title={party.title} user={party.user} />
       <PartyStats startedAt={party.createdAt} guests={party.guests.length} />
-      <Mingles guestsUIDs={party.guests} />
-      {/* <UserList horizontal /> */}
-      {/* <CollaborativePlaylistScreen /> */}
-      {/* <TrackInfo trackInfo={trackInfo} /> */}
-      {/* <TrackInfo trackInfo={trackInfo} /> */}
+      <View style={{ flex: 1 }}>
+        <Announcements
+          partyId={party.partyID!}
+          refreshing={refreshing}
+          handleAlertError={handleAlertError}
+        />
+      </View>
+      <View
+        style={{ borderWidth: 1, borderColor: colors.text_2, borderRadius: 2 }}
+      />
+      <View style={{ marginVertical: 5 }}>
+        {isUploading && <UploadProgressBar />}
+      </View>
     </View>
   );
 };

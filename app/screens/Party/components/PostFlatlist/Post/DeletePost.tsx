@@ -1,27 +1,19 @@
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React, { FC } from "react";
+import { MaterialIcons } from "@expo/vector-icons";
+import { FC } from "react";
+import { StyleSheet } from "react-native";
 import { FontFamily } from "../../../../../../assets/fonts/Fonts";
-import { Entypo, Feather, MaterialIcons } from "@expo/vector-icons";
-import { colors } from "../../../../../src/colors";
 import IconButton from "../../../../../shared/Icons/IconButton";
+import { colors } from "../../../../../src/colors";
 import {
   AlertConfig,
   pickAlertText,
 } from "../../../../Map/helpers/pickAnAlertType";
 
 interface DeletePostProps {
-  handleAlertError: (
-    type: AlertConfig,
-    onCancelCallback: () => void,
-    onOkCallback?: () => void
-  ) => void;
   handleDeletePost: () => void;
 }
 
-const DeletePost: FC<DeletePostProps> = ({
-  handleAlertError,
-  handleDeletePost,
-}) => {
+const DeletePost: FC<DeletePostProps> = ({ handleDeletePost }) => {
   return (
     <IconButton
       size={20}
@@ -30,9 +22,7 @@ const DeletePost: FC<DeletePostProps> = ({
       name={"delete-forever"}
       textStyle={styles.iconTextStyle}
       color={colors.buttonText}
-      onPress={() => {
-        handleAlertError(pickAlertText("deletePost"), handleDeletePost);
-      }}
+      onPress={handleDeletePost}
     />
   );
 };
