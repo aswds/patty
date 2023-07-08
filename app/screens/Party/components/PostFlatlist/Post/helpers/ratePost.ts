@@ -1,18 +1,11 @@
-import {
-  collection,
-  doc,
-  getDoc,
-  increment,
-  updateDoc,
-} from "firebase/firestore";
+import { doc, getDoc, updateDoc } from "firebase/firestore";
 import { db } from "../../../../../../../firebase";
-import { IPost } from "../../types";
 
 export const ratePost = async (
   partyId: string,
   postId: string,
   userId: string,
-  rating: "meh" | "like"
+  rating: "meh" | "like" | "unmeh" | "unlike"
 ) => {
   const postRef = doc(db, "PARTIES_POSTS", partyId, "USERS_POSTS", postId);
 
@@ -25,20 +18,31 @@ export const ratePost = async (
       const likesArray = data?.likes || [];
 
       // Remove user from the opposite reaction array if already present
-      const oppositeRatingArray = rating === "meh" ? likesArray : mehsArray;
-      const updatedOppositeRatingArray = oppositeRatingArray.filter(
-        (uid: string) => uid !== userId
-      );
-
+      let oppositeRatingArray;
+      if (rating === "meh" || rating === "unmeh") {
+        oppositeRatingArray = likesArray.filter(
+          (uid: string) => uid !== userId
+        );
+      } else if (rating === "like" || rating === "unlike") {
+        oppositeRatingArray = mehsArray.filter((uid: string) => uid !== userId);
+      }
       // Update the appropriate field with the user's reaction
-      const updateField = rating === "meh" ? "mehs" : "likes";
-      const updatedRatingArray =
-        rating === "meh" ? [...mehsArray, userId] : [...likesArray, userId];
-
-      await updateDoc(postRef, {
+      let updateField;
+      let updatedRatingArray;
+      if (rating === "meh" || rating === "unmeh") {
+        updateField = "mehs";
+        updatedRatingArray =
+          rating === "meh" ? [...mehsArray, userId] : oppositeRatingArray;
+      } else if (rating === "like" || rating === "unlike") {
+        updateField = "likes";
+        updatedRatingArray =
+          rating === "like" ? [...likesArray, userId] : oppositeRatingArray;
+      }
+      console.log(updatedRatingArray);
+      const updateData = {
         [updateField]: updatedRatingArray,
-        [rating === "meh" ? "likes" : "mehs"]: updatedOppositeRatingArray,
-      });
+      };
+      await updateDoc(postRef, updateData);
 
       return { success: true };
     } else {

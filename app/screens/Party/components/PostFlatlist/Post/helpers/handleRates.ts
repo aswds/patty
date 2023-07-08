@@ -1,46 +1,40 @@
 import * as Haptics from "expo-haptics";
-import { useState } from "react";
 
-export const handleMehsPress = (
-  mehs: string[],
+export const handleRatingPress = (
+  ratingType: "meh" | "like",
+  oppositeRating: string[],
+  currentRating: string[],
   uid: string,
-  setMehs: (mehs: string[]) => void,
-  setLikes: (likes: string[]) => void,
-  handleRatePost: (type: string) => void
+  setOppositeRating: (oppositeRating: string[]) => void,
+  setCurrentRating: (currentRating: string[]) => void,
+  handleRatePost: (rating: "meh" | "unmeh" | "like" | "unlike") => void
 ) => {
-  if (mehs?.includes(uid)) {
-    // User has already mehed, remove meh
-    const updatedMehs = mehs.filter((id) => id !== uid);
-    setMehs(updatedMehs);
-  } else {
-    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    // User has not mehed, add meh
-    setMehs((mehs) => [...mehs, uid]);
-    setLikes([]);
-  }
-  // Call ratePost function to update Firestore
-  handleRatePost("meh");
-};
+  const isAlreadyRated = currentRating.includes(uid);
+  const isOppositeRated = oppositeRating.includes(uid);
 
-export const handleLikesPress = (
-  likes: string[],
-  uid: string,
-  setLikes: (likes: string[]) => void,
-  setMehs: (mehs: string[]) => void,
-  handleRatePost: (type: string) => void
-) => {
-  if (likes?.includes(uid)) {
-    // User has already liked, remove like
-    const updatedLikes = likes.filter((id) => id !== uid);
-    setLikes(updatedLikes);
+  if (isAlreadyRated) {
+    // User has already rated, remove rating
+    const updatedCurrentRating = currentRating.filter((id) => id !== uid);
+    setCurrentRating(updatedCurrentRating);
+    handleRatePost(`un${ratingType}`);
   } else {
+    if (!isOppositeRated) {
+      handleRatePost(ratingType);
+    } else {
+      const rating = ratingType === "like" ? "unmeh" : "unlike";
+      // User has opposite rating, remove it and add current rating
+      const updatedOppositeRating = oppositeRating.filter((id) => id !== uid);
+      setOppositeRating(updatedOppositeRating);
+      handleRatePost(rating);
+      handleRatePost(ratingType);
+    }
+
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
 
-    // User has not liked, add like
-    setLikes((likes) => [...likes, uid]);
-    setMehs([]);
+    // User has not rated, add rating
+    setCurrentRating((prevRating) => [...prevRating, uid]);
+    setOppositeRating([]);
   }
 
   // Call ratePost function to update Firestore
-  handleRatePost("like");
 };
