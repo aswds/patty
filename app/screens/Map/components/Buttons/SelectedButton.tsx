@@ -1,10 +1,8 @@
-import React from "react";
-
-import { TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { styles } from "./styles";
-import { colors } from "../../../../src/colors";
+import { TouchableOpacity } from "react-native";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { colors } from "../../../../src/colors";
+import { styles } from "./styles";
 
 interface SelectedButtonProps {
   onPress: () => void;

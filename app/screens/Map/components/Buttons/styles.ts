@@ -1,13 +1,12 @@
 import { StyleSheet } from "react-native";
-import { colors } from "../../../../src/colors";
-import { isAndroid } from "../../../../src/platform";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { colors } from "../../../../src/colors";
 
 export const styles = StyleSheet.create({
   buttonContainer: {
-    height: "100%",
+    height: 65,
     backgroundColor: colors.mapButtons,
-    borderRadius: 999,
+    borderRadius: 20,
     justifyContent: "center",
     alignItems: "center",
   },
