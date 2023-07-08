@@ -25,13 +25,17 @@ export const App_Navigation = () => {
         location.coords.latitude,
         location.coords.longitude
       );
+
       dispatch(
         updateUserLocation({
-          city: address?.city!,
-          location: { ...location.coords, longitudeDelta: 0, latitudeDelta: 0 },
+          city: `${address?.city}`,
+          coords: { ...location.coords, longitudeDelta: 0, latitudeDelta: 0 },
+          partyLocation: `${address?.countryName}_${address?.county}_${address?.city}`,
+          isLocationLoading: false,
         })
       );
     }
+
     updateCurrentUserLocation();
   }, []);
 
