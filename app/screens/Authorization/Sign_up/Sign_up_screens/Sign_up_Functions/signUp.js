@@ -49,12 +49,10 @@ async function setDocs(result, userInfo) {
   const { email, username, name, surname, image } = userInfo;
   await setDoc(doc(db, `USERS`, `${auth.currentUser.uid}`), {
     uid: auth.currentUser.uid,
-    email: email,
     username: username,
     searchUsername: username.toLowerCase(),
     name: name,
     surname: surname,
-    phoneNumber: "",
     image: "",
     following: [],
     followers: [],
@@ -100,7 +98,6 @@ export const signUpHandle = async (
           })
           .catch((e) => {
             //sets error
-            console.log(e);
             Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
             rej(e);
           });

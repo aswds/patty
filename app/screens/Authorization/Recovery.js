@@ -7,28 +7,36 @@ import { set_errorMsg_errorType } from "./Sign_up/Sign_up_screens/Sign_up_Functi
 import { error_handle } from "./Sign_up/Sign_up_screens/Sign_up_Functions/error_handle";
 
 const Recovery = ({ navigation }) => {
-  function passRecovery(userEmail) {
+  async function passRecovery(userEmail, setError) {
     const auth = getAuth();
     sendPasswordResetEmail(auth, userEmail)
-      .then(() => {
-        Alert.alert("We've sent you a letter to reset password");
-        navigation.navigate("SignInScreen");
+      .then(async () => {
+        setError({
+          message: "We've sent you a letter to reset password",
+          showErrorModal: true,
+          onPress: () => {
+            navigation.goBack();
+          },
+        });
       })
       .catch((e) => {
         set_errorMsg_errorType(e.code).catch((e) => {
-          error_handle("email", e.message, {}).catch((e) => {
-            Alert.alert({ message: e, showErrorModal: true });
+          setError({
+            message: e.message,
+            showErrorModal: true,
           });
         });
       });
   }
 
   return (
-    <ChangeEmail
-      passRecoveryFunction={passRecovery}
-      isPasswordReset={true}
-      navigation={navigation}
-    />
+    <>
+      <ChangeEmail
+        passRecoveryFunction={passRecovery}
+        isPasswordReset={true}
+        navigation={navigation}
+      />
+    </>
   );
 };
 
