@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { Alert } from "react-native";
 import { eventsReference } from "../../Firebase/References";
 import { IEvent } from "../../Types/Events";
+import { getAddress } from "../../shared/GetLocationFunctions/getAddress";
 
 interface UserLocation {
   coords: {
@@ -37,13 +38,13 @@ export const useUserLocation = (): [UserLocation, boolean, Error | null] => {
           coords: { latitude, longitude },
         }));
 
-        const address = await Location.reverseGeocodeAsync({
-          latitude,
-          longitude,
+        const address = await getAddress(latitude, longitude);
+        const city =
+          address?.city ?? "We're having trouble finding your location.😕";
+        setLocation({
+          city: city!,
+          labelToFindParties: address?.labelToFindParties,
         });
-        const city = address.length > 0 ? address[0].subregion : undefined;
-
-        setLocation((prevLocation) => ({ ...prevLocation, city: city! }));
         setIsLoading(false);
       } catch (error) {
         setError(error);
