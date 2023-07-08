@@ -1,15 +1,13 @@
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
-import React from "react";
+import { ProfileNavigatorParamList } from "../../Types/ProfileStack/NavigationTypes";
+import Recovery from "../../screens/Authorization/Recovery";
+import ChangeBio from "../../screens/Profile/EditProfile/ChangeBio/ChangeBio";
+import ChangeUsername from "../../screens/Profile/EditProfile/ChangeUsername/ChangeUsername";
 import EditProfile from "../../screens/Profile/EditProfile/EditProfile";
 import Profile from "../../screens/Profile/Profile";
-import { isAndroid } from "../../src/platform";
-import { ProfileNavigatorParamList } from "../../Types/ProfileStack/NavigationTypes";
 import ChangeEmail from "../../screens/VerifyEmail/ChangeEmail";
-import ChangeBio from "../../screens/Profile/EditProfile/ChangeBio/ChangeBio";
-import NavigationBar from "../../screens/Map/PartyCreationScreens/NavigationBar";
-import { SafeAreaView } from "react-native";
-import { colors } from "../../src/colors";
-import ChangeUsername from "../../screens/Profile/EditProfile/ChangeUsername/ChangeUsername";
+import VerifyEmail from "../../screens/VerifyEmail/VerifyEmail";
+import { isAndroid } from "../../src/platform";
 
 const Stack = createNativeStackNavigator<ProfileNavigatorParamList>();
 
@@ -28,7 +26,10 @@ export const ProfileNavigator = () => {
         <Stack.Screen component={ChangeEmail} name="ChangeEmail" />
         <Stack.Screen component={ChangeBio} name="ChangeBio" />
         <Stack.Screen component={ChangeUsername} name="ChangeUsername" />
+
+        <Stack.Screen component={Recovery} name="ChangePassword" />
       </Stack.Group>
+      <Stack.Screen component={VerifyEmail} name="VerifyEmail" />
     </Stack.Navigator>
   );
 };

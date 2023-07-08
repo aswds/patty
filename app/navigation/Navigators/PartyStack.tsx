@@ -4,8 +4,9 @@ import PartyScreen from "../../screens/Party/PartyScreen";
 import AddAnnouncementScreen from "../../screens/Party/components/AddAnnouncement/AddAnnouncementScreen";
 import MediaListToUpload from "../../screens/Party/components/AddPost/MediaListToUpload";
 import PostUploadScreen from "../../screens/Party/components/AddPost/UploadPostScreen";
+import ProvidedPartyScreen from "../../screens/Party/ProvidedPartyScreen";
 const Stack = createNativeStackNavigator<PartyNavigatorParamList>();
-export const PartyNavigator = () => {
+export function PartyNavigator() {
   return (
     <Stack.Navigator
       screenOptions={{
@@ -26,4 +27,4 @@ export const PartyNavigator = () => {
       {/*<Stack.Screen component={AddCreatorsScreen} name="AddCreators" />*/}
     </Stack.Navigator>
   );
-};
+}

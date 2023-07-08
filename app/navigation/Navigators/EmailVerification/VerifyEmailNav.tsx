@@ -10,13 +10,11 @@ import { VerificationParamList } from "../../../Types/Authorization/Verification
 const VerifyStack = createNativeStackNavigator<VerificationParamList>();
 export const VerifyEmailNav = () => {
   return (
-    <NavigationContainer>
-      <Provider store={store}>
-        <VerifyStack.Navigator screenOptions={{ headerShown: false }}>
-          <VerifyStack.Screen component={VerifyEmail} name={"VerifyEmail"} />
-          <VerifyStack.Screen component={ChangeEmail} name="ChangeEmail" />
-        </VerifyStack.Navigator>
-      </Provider>
-    </NavigationContainer>
+    <Provider store={store}>
+      <VerifyStack.Navigator screenOptions={{ headerShown: false }}>
+        {/* <VerifyStack.Screen component={VerifyEmail} name={"VerifyEmail"} /> */}
+        <VerifyStack.Screen component={ChangeEmail} name="ChangeEmail" />
+      </VerifyStack.Navigator>
+    </Provider>
   );
 };

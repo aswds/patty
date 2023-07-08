@@ -4,7 +4,6 @@ import Map from "../../screens/Map/Map";
 import { MapStackNavigatorParamList } from "../../Types/MapStack/NavigationTypes";
 import { PartyCreationStack } from "./PartyCreationStack";
 import Guests from "../../screens/Modals/PartyModal/screen/Guests";
-import PartyScreen from "../../screens/Party/PartyScreen";
 import Invitation from "../../screens/Modals/PartyModal/screen/Invitation";
 
 const Stack = createNativeStackNavigator<MapStackNavigatorParamList>();
