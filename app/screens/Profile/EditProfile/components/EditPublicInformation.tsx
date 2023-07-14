@@ -1,15 +1,16 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { KeyboardAvoidingView, StyleSheet, View, Text } from "react-native";
-import { colors } from "../../../../src/colors";
+import { useNavigation } from "@react-navigation/native";
+import { Dispatch, SetStateAction, useState } from "react";
+import { StyleSheet, View } from "react-native";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { ProfileNavigationProps } from "../../../../Types/ProfileStack/ScreenNavigationProps";
+import { EditUser } from "../../../../Types/User";
+import CustomAlert from "../../../../shared/Alert/CustomAlert";
 import Input from "../../../../shared/Input/Input";
 import { Title } from "../../../../shared/Title/Title";
+import { colors } from "../../../../src/colors";
+import EditPassword from "./EditPassword";
 import EditUserBio from "./EditUserBio";
-import { EditUser, IUser } from "../../../../Types/User";
 import EditUserEmail from "./EditUserEmail";
-import CustomAlert from "../../../../shared/Alert/CustomAlert";
-import { useNavigation } from "@react-navigation/native";
-import { ProfileNavigationProps } from "../../../../Types/ProfileStack/ScreenNavigationProps";
 import EditUsername from "./EditUsername";
 interface EditPublicInformationProps {
   user: EditUser;
@@ -94,10 +95,17 @@ export default function EditPublicInformation({
         }}
         title={<Title title="Bio" fontStyle={styles.titleStyle} />}
       />
-
       <EditUserEmail
         email={user.email!}
         title={<Title title="Email" fontStyle={styles.titleStyle} />}
+        emailVerified={user?.emailVerified}
+      />
+      <EditPassword
+        title={<Title title="Password" fontStyle={styles.titleStyle} />}
+        onPress={() => {
+          navigation.navigate("ProfileNav", { screen: "ChangePassword" });
+        }}
+        emailVerified={user?.emailVerified}
       />
       <CustomAlert
         title="Required Fields Missing"
