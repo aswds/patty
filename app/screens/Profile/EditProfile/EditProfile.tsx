@@ -1,27 +1,20 @@
-import React, { useCallback, useEffect, useState } from "react";
-import {
-  KeyboardAvoidingView,
-  StyleSheet,
-  View,
-  Platform,
-  ScrollView,
-  Dimensions,
-} from "react-native";
-import { colors } from "../../../src/colors";
-import Button from "../../../shared/Buttons/Button";
-import EditImage from "./components/EditImage";
+import { updateDoc } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { FontFamily } from "../../../../assets/fonts/Fonts";
+import { auth } from "../../../../firebase";
+import { userReference } from "../../../Firebase/References";
 import { ProfileStackScreenNavigationProps } from "../../../Types/ProfileStack/ScreenNavigationProps";
-import NavigationBar from "../../Map/PartyCreationScreens/NavigationBar";
-import { ScreenCreateParty } from "../../../shared/Screen/ScreenCreateParty";
-import EditPublicInformation from "./components/EditPublicInformation";
 import { EditUser, IUser } from "../../../Types/User";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
-import { useActions } from "../../../hooks/useActions";
-import { userReference } from "../../../Firebase/References";
-import { updateDoc } from "firebase/firestore";
 import CustomAlert from "../../../shared/Alert/CustomAlert";
+import Button from "../../../shared/Buttons/Button";
+import { ScreenCreateParty } from "../../../shared/Screen/ScreenCreateParty";
+import { colors } from "../../../src/colors";
 import { uploadImage } from "../../Authorization/Sign_up/Sign_up_screens/Sign_up_Functions/uploadImage";
-import { FontFamily } from "../../../../assets/fonts/Fonts";
+import NavigationBar from "../../Map/PartyCreationScreens/NavigationBar";
+import EditImage from "./components/EditImage";
+import EditPublicInformation from "./components/EditPublicInformation";
 
 export default function EditProfile({
   navigation,
@@ -36,22 +29,30 @@ export default function EditProfile({
     surname: user?.surname,
     username: user?.username,
     bio: user?.bio,
-    email: user?.email,
+    email: auth.currentUser?.email,
   });
-  const [userImage, setUserImage] = useState(user?.image);
+  const { current_user } = useTypedSelector((state) => state.user_state);
+
+  const [userImage, setUserImage] = useState(current_user?.image);
   const [showAlertModal, setShowAlertModal] = useState<boolean>(false);
   const [errorMsg, setErrorMsg] = useState<string>();
-
+  const [emailVerified, setEmailVerified] = useState<boolean>(
+    auth.currentUser?.emailVerified
+  );
+  useEffect(() => {
+    auth.currentUser?.reload();
+    setEmailVerified(auth.currentUser?.emailVerified);
+  }, []);
   //Effects
   useEffect(() => {
     setUserInfo({
       ...userInfo,
+      emailVerified: emailVerified,
       bio: route.params.bio ?? userInfo.bio,
       username: route.params.username ?? userInfo.username,
     });
   }, [route.params.bio, route.params.username]);
   //redux
-  const { current_user } = useTypedSelector((state) => state.user_state);
   const areChanges: boolean = Boolean(
     userInfo.name !== current_user.name ||
       userInfo.surname !== current_user.surname ||
@@ -59,12 +60,16 @@ export default function EditProfile({
       userInfo.bio !== current_user.bio ||
       userImage !== current_user.image
   );
-
   //functions
   const onPressSave = async () => {
     // checking if user has changes
+
     const userRef = userReference(current_user.uid!);
-    if (current_user) {
+    if (
+      current_user &&
+      userInfo.name?.length > 0 &&
+      userInfo.surname?.length > 0
+    ) {
       if (areChanges) {
         const updateUser: Pick<
           IUser,
@@ -76,9 +81,7 @@ export default function EditProfile({
           surname: userInfo.surname,
           username: userInfo.username,
         };
-        {
-          console.log(userInfo);
-        }
+
         await updateDoc(userRef, updateUser);
         await uploadImage(userImage);
       }
