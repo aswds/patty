@@ -1,16 +1,8 @@
-import React from "react";
-import {
-  View,
-  Text,
-  ProgressBarAndroid,
-  StyleSheet,
-  ActivityIndicator,
-} from "react-native";
-import { useSelector } from "react-redux";
-import { useTypedSelector } from "../../hooks/useTypedSelector";
-import ProgressBar from "./ProgressBar";
-import { colors } from "../../src/colors";
+import { StyleSheet, Text, View } from "react-native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { colors } from "../../src/colors";
+import ProgressBar from "./ProgressBar";
 
 const UploadProgressBar = () => {
   const uploadProgress = useTypedSelector(
