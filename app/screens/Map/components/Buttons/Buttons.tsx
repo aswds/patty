@@ -23,7 +23,7 @@ const Buttons = ({
   return (
     <View style={styles.container}>
       <View style={{ alignItems: "center" }}>
-        {current_user?.events?.onEvent && (
+        {current_user?.events?.onEvent?.length > 0 && (
           <LeaveEventButton onPress={onPressLeaveEventButton} />
         )}
         <SelectedButton onPress={onPressSelectedButton} />

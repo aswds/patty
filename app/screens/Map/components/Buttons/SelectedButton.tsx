@@ -17,7 +17,7 @@ const SelectedButton = ({ onPress }: SelectedButtonProps) => {
       onPress={onPress}
     >
       <AntDesign
-        name={onEvent ? "star" : "staro"}
+        name={onEvent?.length > 0 ? "star" : "staro"}
         size={30}
         color={colors.accentColor}
       />
