@@ -1,9 +1,8 @@
-import React from "react";
-import { StyleSheet, Image, Text, View, TouchableOpacity } from "react-native";
-import { IUser } from "../../Types/User";
+import { Image, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
-import { colors } from "../../src/colors";
+import { IUser } from "../../Types/User";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { colors } from "../../src/colors";
 import { YouText } from "./YouText";
 
 interface PartyUserItemProps {

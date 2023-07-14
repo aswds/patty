@@ -1,7 +1,8 @@
-import React, { ComponentProps } from "react";
 
+import { Feather, Ionicons } from "@expo/vector-icons";
 import {
   StyleProp,
+  StyleSheet,
   TextInput,
   TextInputProps,
   TextStyle,
@@ -9,10 +10,8 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { Feather, Ionicons } from "@expo/vector-icons";
-import { colors } from "../../src/colors";
-import { StyleSheet } from "react-native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
+import { colors } from "../../src/colors";
 
 interface SearchBarProps extends TextInputProps {
   containerStyle: ViewStyle;

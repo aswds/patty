@@ -1,5 +1,6 @@
 import React from "react";
 
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   StyleSheet,
   Text,
@@ -10,9 +11,6 @@ import {
 } from "react-native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import { colors } from "../../src/colors";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Loader from "../Loaders/Loader";
-import ListLoader from "../Loaders/ListLoader";
 
 interface ListEmptyComponentProps {
   title: string;

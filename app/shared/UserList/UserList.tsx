@@ -71,7 +71,7 @@ const UserList = ({
           <ListLoader />
         ) : (
           <ListEmptyComponent
-            title="It looks like there's no one here"
+            title="t looks like there's no one here"
             icon={
               <Fontisto
                 name="cloudy-gusts"

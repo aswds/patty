@@ -1,5 +1,4 @@
-import { StyleSheet } from "react-native";
-import { Text } from "react-native";
+import { StyleSheet, Text } from "react-native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import { colors } from "../../src/colors";
 
