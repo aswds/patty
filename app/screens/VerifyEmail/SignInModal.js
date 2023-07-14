@@ -1,4 +1,3 @@
-import React from "react";
 import {
   Modal,
   Platform,
@@ -7,8 +6,8 @@ import {
   StyleSheet,
   View,
 } from "react-native";
-import Input from "../../shared/Input/Input";
 import BigButton from "../../shared/Buttons/BigButton";
+import Input from "../../shared/Input/Input";
 import { colors } from "../../src/colors";
 
 const SignInModal = (props) => {

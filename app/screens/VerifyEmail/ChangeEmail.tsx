@@ -1,13 +1,13 @@
 // import React and necessary components from react-native
-import React, { useState } from "react";
-import { Alert, Dimensions, StyleSheet, Text, View } from "react-native";
+import { useState } from "react";
+import { Dimensions, StyleSheet, Text, View } from "react-native";
 // import vector icons from expo
 import { MaterialCommunityIcons, MaterialIcons } from "@expo/vector-icons";
 // import custom components
+import CustomAlert from "../../shared/Alert/CustomAlert";
+import { BackButton } from "../../shared/Buttons/BackButton";
 import BigButton from "../../shared/Buttons/BigButton";
 import Input from "../../shared/Input/Input";
-import { BackButton } from "../../shared/Buttons/BackButton";
-import CustomAlert from "../../shared/Alert/CustomAlert";
 import { Screen } from "../../shared/Screen/Screen";
 // import colors from colors file
 import { colors } from "../../src/colors";
@@ -19,9 +19,16 @@ import { set_errorMsg_errorType } from "../Authorization/Sign_up/Sign_up_screens
 // import font family
 import { FontFamily } from "../../../assets/fonts/Fonts";
 // import safe area insets
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import {
+  User,
+  getAuth,
+  reauthenticateWithCredential,
+  signOut,
+  updateEmail,
+} from "firebase/auth";
+import { EmailAuthProvider } from "firebase/auth/react-native";
 import { VerificationStackScreenProp } from "../../Types/Authorization/Verification/NavigationTypes";
-import { updateEmail } from "firebase/auth";
+import { ReauthModal } from "../../shared/Alert/ReauthModal";
 // ResetText component to render text based on isPasswordReset boolean value
 function ResetText({ isPasswordReset }: { isPasswordReset?: boolean }) {
   const passRecoveryText = "Reset your password";
@@ -43,26 +50,29 @@ function ResetText({ isPasswordReset }: { isPasswordReset?: boolean }) {
 }
 
 // AfterReset component to render text after resetting the email
-function AfterReset() {
+function AfterReset({ isPasswordReset }: { isPasswordReset: boolean }) {
   return (
     <View style={styles.textTerms}>
       <Text style={styles.textTermsStyle}>
-        After changing your email, you will be directed to login with a new
-        credential
+        {!isPasswordReset
+          ? `Once you've successfully updated your email, you will be redirected to log in using your new login information.`
+          : `Please provide your email address in order to reset your password.`}
       </Text>
     </View>
   );
 }
 
 interface ChangeEmailProps extends VerificationStackScreenProp<"ChangeEmail"> {
-  passRecoveryFunction?: (userEmail: string) => {};
+  passRecoveryFunction?: (userEmail: string) => void;
   isPasswordReset?: boolean;
+  navigationBack?: any;
 }
 // ChangeEmail component to change user's email
 export default function ChangeEmail({
   navigation,
   route,
   isPasswordReset,
+  navigationBack,
   passRecoveryFunction,
 }: ChangeEmailProps) {
   // declare state variables
@@ -74,29 +84,22 @@ export default function ChangeEmail({
   const [error, setError] = useState({
     message: "",
     showErrorModal: false,
+    onPress: () => {},
   });
-  // get safe area insets
-  const insets = useSafeAreaInsets();
-
+  const [showReauthModal, setShowReauthModal] = useState(false);
+  const [reauthError, setReauthError] = useState<string>();
   // changeEmail function to update user's email
-  function changeEmail(email: string) {
-    updateEmail(auth.currentUser!, email)
-      .then(async () => {
-        await auth.signOut();
-      })
-      .catch((e) => {
-        if (e.code === "auth/requires-recent-login") {
-          Alert.alert("You'll have to login with changed email.", "", [
-            { text: "Ok", onPress: async () => await auth.signOut() },
-          ]);
-        }
-        // error handling
-        set_errorMsg_errorType(e.code).catch((e) => {
-          error_handle("email", e.message, { valid, setValid }).catch((e) => {
-            setError({ message: e, showErrorModal: true });
-          });
+  async function changeEmail(pass: string) {
+    try {
+      handleReauth(pass);
+    } catch (e) {
+      // Perform error handling for set_errorMsg_errorType
+      await set_errorMsg_errorType(e.code).catch((e) => {
+        error_handle("email", e.message, { valid, setValid }).catch((e) => {
+          setError({ message: e, showErrorModal: true });
         });
       });
+    }
   }
 
   // _hideModal function to hide error modal
@@ -104,11 +107,44 @@ export default function ChangeEmail({
     setError({ ...error, showErrorModal: false });
   }
 
+  async function handleReauth(pass: string) {
+    const currentUser: User | null = getAuth().currentUser;
+
+    if (currentUser) {
+      const credential = EmailAuthProvider.credential(currentUser.email, pass);
+
+      await reauthenticateWithCredential(currentUser, credential)
+        .then(async () => {
+          // Refresh the auth token after reauthentication
+          await currentUser.getIdToken(true);
+
+          // Proceed with email change
+          await updateEmail(currentUser, userEmail).then(() => {
+            setError({
+              message:
+                "We have sent you a letter, please re-login with new email",
+              showErrorModal: true,
+              onPress: async () => {
+                await signOut(auth);
+              },
+            });
+            setShowReauthModal(false);
+          });
+        })
+        .catch((e) => {
+          if (e.code === "auth/wrong-password") {
+            setReauthError("Wrong password");
+          } else {
+            setReauthError("Something went wrong...");
+          }
+        });
+    }
+  }
   // render ChangeEmail component
   return (
     <>
       <Screen>
-        <BackButton navigation={navigation} style={{}} />
+        <BackButton navigation={navigationBack ?? navigation} style={{}} />
 
         <View style={styles.container}>
           <ResetText isPasswordReset={isPasswordReset} />
@@ -132,31 +168,39 @@ export default function ChangeEmail({
             // defaultValue={user.email}
           />
           {/* kemibrtoik@gmail.com */}
-          <View>
-            <BigButton
-              style={{
-                ...styles.shadowButton,
-              }}
-              onPress={() => {
-                if (userEmail) {
-                  isPasswordReset && passRecoveryFunction
-                    ? passRecoveryFunction(userEmail)
-                    : changeEmail(userEmail);
-                }
-              }}
-              textStyle={styles.textStyle}
-              title={"Submit"}
-            />
-          </View>
         </View>
+        <AfterReset isPasswordReset={isPasswordReset} />
 
-        <AfterReset />
+        <View style={{ width: "100%" }}>
+          <BigButton
+            style={{
+              ...styles.shadowButton,
+              width: "100%",
+            }}
+            onPress={async () => {
+              if (userEmail) {
+                isPasswordReset && passRecoveryFunction
+                  ? passRecoveryFunction(userEmail, setError)
+                  : setShowReauthModal(true);
+              }
+            }}
+            textStyle={styles.textStyle}
+            title={"Submit"}
+          />
+        </View>
+        <ReauthModal
+          error={reauthError}
+          onCancel={() => setShowReauthModal(false)}
+          onSubmit={(pass: string) => changeEmail(pass)}
+          visible={showReauthModal}
+        />
+        <CustomAlert
+          errorMsg={error.message}
+          hideModal={_hideModal}
+          showModal={error.showErrorModal}
+          onPressOk={error?.onPress}
+        />
       </Screen>
-      <CustomAlert
-        errorMsg={error.message}
-        hideModal={_hideModal}
-        showModal={error.showErrorModal}
-      />
     </>
   );
 }
@@ -176,7 +220,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 20,
-    borderRadius: 13,
+    borderRadius: 999,
     backgroundColor: colors.accentColor,
     height: 60,
     alignSelf: "center",

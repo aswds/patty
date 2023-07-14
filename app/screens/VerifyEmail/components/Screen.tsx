@@ -1,12 +1,9 @@
-import React, { PropsWithChildren } from "react";
+import { PropsWithChildren } from "react";
 import {
-  Keyboard,
   KeyboardAvoidingView,
   Platform,
   ScrollView,
   StyleSheet,
-  TouchableWithoutFeedback,
-  View,
 } from "react-native";
 import { colors } from "../../../src/colors";
 
