@@ -1,3 +1,11 @@
+import {
+  AntDesign,
+  FontAwesome5,
+  MaterialCommunityIcons,
+  Octicons,
+} from "@expo/vector-icons";
+import { useNavigation } from "@react-navigation/native";
+import moment from "moment/moment";
 import React from "react";
 import {
   StyleSheet,
@@ -6,34 +14,21 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import type { IEvent, IFullAddress } from "../../Types/Events";
-import moment from "moment/moment";
-import { colors } from "../../src/colors";
-import {
-  AntDesign,
-  Entypo,
-  Feather,
-  FontAwesome5,
-  MaterialCommunityIcons,
-  Octicons,
-} from "@expo/vector-icons";
 import { FontFamily } from "../../../assets/fonts/Fonts";
-import UserInfo from "./UserInfo";
-import { useNavigation } from "@react-navigation/native";
+import type { IEvent, IFullAddress } from "../../Types/Events";
 import { MapNavigationProps } from "../../Types/MapStack/ScreenNavigationProps";
+import { colors } from "../../src/colors";
 import PartyInfoIcon from "../Icons/PartyInfoIcon";
-import { parseISO } from "date-fns";
+import UserInfo from "./UserInfo";
+import BoldText from "../Text/BoldText";
 
 interface ITopInfo {
   markerInfo: IEvent;
   isJoinedEvent?: boolean;
   style?: ViewStyle;
-  onFavoritePress?: () => void;
 }
 
-const mainIconSize = 34;
-
-const additionalInfoIcons = 20;
+const additionalInfoIcons = 15;
 
 function Title({ title }: { title: string }) {
   return (
@@ -48,9 +43,27 @@ function PartyDate({ date }: { date: string }) {
   return (
     <PartyInfoIcon
       Icon={MaterialCommunityIcons}
-      name={"calendar-month"}
+      name={"clock"}
       text={moment(createDate).format("lll")}
       textStyle={styles.dateTextStyle}
+    />
+  );
+}
+function RadiusToPost({ radius }: { radius?: string }) {
+  return (
+    <PartyInfoIcon
+      Icon={FontAwesome5}
+      name="dot-circle"
+      textStyle={styles.dateTextStyle}
+      text={
+        <Text>
+          Radius to post
+          <Text style={styles.highlightedText}>
+            {"  - "}
+            {radius} M
+          </Text>
+        </Text>
+      }
     />
   );
 }
@@ -82,55 +95,65 @@ const Address = ({
     />
   );
 };
-const DrinksAndFood = ({
+const AdditionalInfo = ({
   drinks,
+  giftRequired,
   food,
 }: {
   drinks: IEvent["drinksType"];
   food: IEvent["foodProvided"];
+  giftRequired: IEvent["giftRequired"];
 }) => {
   return (
-    <View
-      style={{
-        justifyContent: "space-evenly",
-      }}
-    >
+    <View style={styles.additionalInfoContainer}>
       <PartyInfoIcon
-        Icon={MaterialCommunityIcons}
-        name="food-outline"
-        text={
-          <Text style={styles.subtitle}>
-            food: <Text style={styles.highlightedText}>{food}</Text>
-          </Text>
+        style={styles.additionalInfoIconContainer}
+        text={<Text style={styles.highlightedText}>{food}</Text>}
+        additionalText={
+          <BoldText>
+            food{" "}
+            <MaterialCommunityIcons
+              name="food-outline"
+              size={additionalInfoIcons}
+              color={colors.text}
+              style={styles.additionalInfoIcon}
+            />
+          </BoldText>
         }
         iconSize={additionalInfoIcons}
       />
       <PartyInfoIcon
-        Icon={FontAwesome5}
-        name="wine-bottle"
-        text={
-          <Text style={styles.subtitle}>
-            drinks: <Text style={styles.highlightedText}>{drinks}</Text>
-          </Text>
+        style={styles.additionalInfoIconContainer}
+        text={<Text style={styles.highlightedText}>{drinks}</Text>}
+        additionalText={
+          <BoldText>
+            drinks{" "}
+            <FontAwesome5
+              name="wine-bottle"
+              size={additionalInfoIcons}
+              color={colors.text}
+              style={styles.additionalInfoIcon}
+            />
+          </BoldText>
         }
         iconSize={additionalInfoIcons}
+      />
+      <PartyInfoIcon
+        style={styles.additionalInfoIconContainer}
+        text={<Text style={styles.highlightedText}>{giftRequired}</Text>}
+        additionalText={
+          <BoldText>
+            gift{" "}
+            <AntDesign
+              name="gift"
+              size={additionalInfoIcons}
+              color={colors.text}
+              style={styles.additionalInfoIcon}
+            />
+          </BoldText>
+        }
       />
     </View>
-  );
-};
-
-const Gift = ({ giftRequired }: { giftRequired: IEvent["giftRequired"] }) => {
-  return (
-    <PartyInfoIcon
-      Icon={AntDesign}
-      name="gift"
-      text={
-        <Text style={styles.subtitle}>
-          gift:<Text style={styles.highlightedText}> {giftRequired}</Text>
-        </Text>
-      }
-      iconSize={additionalInfoIcons}
-    />
   );
 };
 
@@ -145,13 +168,14 @@ function NumberOfGuests({ guests }: { guests: string[] }) {
         name="people"
         size={24}
         color={colors.iconColor}
-        style={{ paddingHorizontal: 5 }}
+        style={styles.numberOfGuestsIcon}
       />
 
-      <Text style={styles.numberOfGuests}>{guests && guests?.length}</Text>
+      <Text style={styles.numberOfGuestsText}>{guests && guests?.length}</Text>
     </TouchableOpacity>
   );
 }
+
 export const Event: React.FC<ITopInfo> = ({ markerInfo, style }) => {
   return (
     <View style={[styles.topInfoContainer, style]}>
@@ -161,21 +185,21 @@ export const Event: React.FC<ITopInfo> = ({ markerInfo, style }) => {
           <UserInfo user={markerInfo?.user} />
         </View>
 
-        <View style={{ flexDirection: "row", alignItems: "center" }}>
+        <View style={styles.dateGuestsContainer}>
           <PartyDate date={markerInfo?.time as string} />
           <NumberOfGuests guests={markerInfo?.guests} />
         </View>
+
         <Address
           address={markerInfo?.location?.fullAddressInfo}
           partyPlace={markerInfo?.partyPlace}
         />
-        <View style={{ marginVertical: "1%" }}>
-          <DrinksAndFood
-            drinks={markerInfo?.drinksType}
-            food={markerInfo?.foodProvided}
-          />
-          <Gift giftRequired={markerInfo?.giftRequired} />
-        </View>
+        <RadiusToPost radius={markerInfo?.radiusToPost} />
+        <AdditionalInfo
+          drinks={markerInfo?.drinksType}
+          food={markerInfo?.foodProvided}
+          giftRequired={markerInfo?.giftRequired}
+        />
       </View>
     </View>
   );
@@ -189,25 +213,11 @@ const styles = StyleSheet.create({
     width: "100%",
     flex: 1,
   },
-
   partyInfoContainer: {
     flex: 1,
     marginVertical: 5,
     justifyContent: "center",
     width: "100%",
-
-    // maxWidth: "80%",
-  },
-  subtitle: {
-    fontFamily: FontFamily.medium,
-    color: colors.text_2,
-    fontSize: 15,
-  },
-
-  highlightedText: {
-    color: colors.accentColor,
-    fontFamily: FontFamily.bold,
-    fontSize: 15,
   },
   titleContainer: {
     flexDirection: "row",
@@ -223,12 +233,28 @@ const styles = StyleSheet.create({
     maxWidth: "70%",
     marginRight: 10,
   },
+  userInfoContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  usernameText: {
+    fontFamily: FontFamily.regular,
+    fontSize: 15,
+    color: colors.iconColor,
+  },
+  dateGuestsContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
   numberOfGuestsContainer: {
     flexDirection: "row",
     alignItems: "center",
     marginLeft: "5%",
   },
-  numberOfGuests: {
+  numberOfGuestsIcon: {
+    paddingHorizontal: 5,
+  },
+  numberOfGuestsText: {
     fontFamily: FontFamily.medium,
     fontSize: 17,
     color: colors.iconColor,
@@ -237,23 +263,40 @@ const styles = StyleSheet.create({
     fontFamily: FontFamily.bold,
     flexShrink: 1,
     fontSize: 15,
-    color: colors.text_2,
+    color: colors.text,
     marginLeft: 10,
   },
-  textWithIconStyle: { marginLeft: 10 },
+  additionalInfoContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    justifyContent: "space-evenly",
+    padding: 10,
+    borderRadius: 30,
+    backgroundColor: colors.background,
+    marginVertical: "1%",
+  },
+  additionalInfoIconContainer: {
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  additionalInfoIcon: {
+    alignItems: "center",
+    marginLeft: 5,
+  },
+  additionalInfoText: {
+    fontFamily: FontFamily.medium,
+    color: colors.text,
+    fontSize: 15,
+  },
+  highlightedText: {
+    color: colors.accentColor,
+    fontFamily: FontFamily.bold,
+    fontSize: 13,
+  },
   dateTextStyle: {
     fontFamily: FontFamily.bold,
     fontSize: 17,
-    color: colors.text_2,
-  },
-  usernameText: {
-    fontFamily: FontFamily.regular,
-    fontSize: 15,
-    color: colors.iconColor,
-  },
-  descriptionTextStyle: {
-    fontFamily: FontFamily.medium,
-    fontSize: 14,
-    color: colors.iconColor,
+    color: colors.text,
+    marginLeft: 10,
   },
 });

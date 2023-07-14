@@ -1,5 +1,7 @@
 import React, { useState } from "react";
 
+import { useNavigation } from "@react-navigation/native";
+import { Skeleton } from "moti/skeleton";
 import {
   Alert,
   Image,
@@ -9,13 +11,11 @@ import {
   View,
 } from "react-native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
-import { colors } from "../../src/colors";
+import { image } from "../../../assets/images";
 import { IEvent_User } from "../../Types/Events";
-import { useNavigation } from "@react-navigation/native";
 import { ProfileNavigationProps } from "../../Types/ProfileStack/ScreenNavigationProps";
 import { getUserByUID } from "../../services/getUserByUID";
-import { Skeleton } from "moti/skeleton";
-import { image } from "../../../assets/images";
+import { colors } from "../../src/colors";
 
 interface UserInfoProps {
   user: IEvent_User;

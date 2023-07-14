@@ -1,19 +1,12 @@
+import { MaterialIcons } from "@expo/vector-icons";
+import { Pressable, StyleSheet, Text } from "react-native";
 import Animated, {
-  withSpring,
   useAnimatedStyle,
   useSharedValue,
-  RollInRight,
-  LightSpeedInRight,
-  SlideInRight,
-  SlideInLeft,
-  PinwheelIn,
-  RollInLeft,
-  Easing,
+  withSpring,
 } from "react-native-reanimated";
-import { Pressable, StyleSheet, Text } from "react-native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import { colors } from "../../src/colors";
-import { MaterialIcons } from "@expo/vector-icons";
 
 interface AnimatedErrorProps {
   errorMessage: string;
