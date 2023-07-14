@@ -8,6 +8,7 @@ import { AlertConfig } from "../../../Map/helpers/pickAnAlertType";
 import Announcements from "../Announcements/Announcements";
 import PartyStats from "../PartyStats";
 import Header from "./Header";
+import UploadCompression from "../../../../shared/ProgressBar/UploadCompression";
 interface PartyHeaderProps {
   party: IEvent;
   handleAlertError: (config: AlertConfig, onCancelCallback: () => void) => void;
@@ -21,7 +22,9 @@ const PartyHeader: React.FC<PartyHeaderProps> = ({
   refreshing,
   handleAlertError,
 }) => {
-  const { isUploading } = useTypedSelector((state) => state.upload);
+  const { isUploading, isUploadingCompress } = useTypedSelector(
+    (state) => state.upload
+  );
 
   return (
     <View style={styles.container}>
@@ -38,7 +41,8 @@ const PartyHeader: React.FC<PartyHeaderProps> = ({
         style={{ borderWidth: 1, borderColor: colors.text_2, borderRadius: 2 }}
       />
       <View style={{ marginVertical: 5 }}>
-        {isUploading && <UploadProgressBar />}
+        {isUploadingCompress && !isUploading && <UploadCompression />}
+        {isUploading && !isUploadingCompress && <UploadProgressBar />}
       </View>
     </View>
   );

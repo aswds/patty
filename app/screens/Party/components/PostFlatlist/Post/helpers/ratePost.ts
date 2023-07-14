@@ -38,7 +38,6 @@ export const ratePost = async (
         updatedRatingArray =
           rating === "like" ? [...likesArray, userId] : oppositeRatingArray;
       }
-      console.log(updatedRatingArray);
       const updateData = {
         [updateField]: updatedRatingArray,
       };

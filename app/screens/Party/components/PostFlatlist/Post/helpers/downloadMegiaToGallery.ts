@@ -34,7 +34,6 @@ export const downloadMediaToGallery = async (
     }
 
     // Save the downloaded file to the album
-    console.log("Download completed!");
   } catch (error) {
     console.error("Error downloading media:", error);
   }
