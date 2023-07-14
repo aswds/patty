@@ -123,7 +123,7 @@ const Post: React.FC<Props> = ({ item, events, uid, handleAlertError }) => {
           ) : (
             <View></View>
           )}
-          <View style={styles.rightBottomContainer}>
+          {/* <View style={styles.rightBottomContainer}>
             <ReactionButton
               count={mehs?.length}
               backgroundColor={
@@ -162,7 +162,7 @@ const Post: React.FC<Props> = ({ item, events, uid, handleAlertError }) => {
               }
               icon={<AntDesign name="smile-circle" size={24} color="white" />}
             />
-          </View>
+          </View> */}
         </View>
       </View>
       <Description description={item?.description} />
