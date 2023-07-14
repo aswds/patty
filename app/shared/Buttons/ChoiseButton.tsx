@@ -1,13 +1,6 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  StyleSheet,
-  ViewStyle,
-} from "react-native";
-import React from "react";
-import { colors } from "../../src/colors";
+import { StyleSheet, Text, TouchableOpacity, ViewStyle } from "react-native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
+import { colors } from "../../src/colors";
 
 interface ChoiceButton<T extends string> {
   isSelected: boolean;

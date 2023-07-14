@@ -11,6 +11,7 @@ import {
   ViewStyle,
 } from "react-native";
 import { colors } from "../../src/colors";
+import { FontFamily } from "../../../assets/fonts/Fonts";
 
 interface ButtonProps extends PropsWithChildren, TouchableOpacityProps {
   textStyle?: TextStyle;
@@ -33,13 +34,7 @@ const Button = ({
       activeOpacity={0.7}
       style={[styles.container, style]}
     >
-      <Text
-        style={{
-          ...textStyle,
-          color: colors.buttonTextColor,
-        }}
-        {...textProps}
-      >
+      <Text style={[textStyle, styles.defaultTextStyle]} {...textProps}>
         {title}
       </Text>
     </TouchableOpacity>
@@ -56,6 +51,10 @@ const styles = StyleSheet.create({
     overflow: "hidden",
     backgroundColor: colors.accentColor,
     borderWidth: 0,
+  },
+  defaultTextStyle: {
+    color: colors.buttonTextColor,
+    fontFamily: FontFamily.bold,
   },
   linearGradient: {
     flex: 1,

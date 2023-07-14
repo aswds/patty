@@ -1,4 +1,3 @@
-import React from "react";
 import {
   StyleProp,
   StyleSheet,
@@ -7,8 +6,8 @@ import {
   TouchableOpacity,
   ViewStyle,
 } from "react-native";
-import { colors } from "../../src/colors";
 import { FontFamily } from "../../../assets/fonts/Fonts";
+import { colors } from "../../src/colors";
 
 interface ButtonProps {
   style?: StyleProp<ViewStyle>;
