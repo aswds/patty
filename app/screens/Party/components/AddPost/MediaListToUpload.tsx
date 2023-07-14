@@ -1,3 +1,5 @@
+import { Feather } from "@expo/vector-icons";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 import * as ImagePicker from "expo-image-picker";
 import * as MediaLibrary from "expo-media-library";
 import _ from "lodash";
@@ -16,16 +18,19 @@ import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { MediaItem } from "../../../../Types/Events";
 import { PartyNavigationScreenProps } from "../../../../Types/PartyStack/NavigationTypes";
 import BigButton from "../../../../shared/Buttons/BigButton";
+import ListEmptyComponent from "../../../../shared/UserList/ListEmptyComponent";
 import { colors } from "../../../../src/colors";
+import { isAndroid } from "../../../../src/platform";
 import NavigationBar from "../../../Map/PartyCreationScreens/NavigationBar";
+import { joinedAtKey } from "../../helpers/cacheFunctions";
 import MediaItemToUpload from "./MediaItemToUpload";
 import { convertVideoUri } from "./helpers/convertVideoUri";
 import { formatDuration } from "./helpers/formatVideoTime";
 
 const MediaListToUpload: React.FC<
   PartyNavigationScreenProps<"MediaListToUpload">
-> = ({ navigation, route }) => {
-  const [startPartyTime] = useState<Date>(new Date(2023, 2, 7, 12)); // Replace with your backend retrieval logic
+> = ({ navigation }) => {
+  const [startPartyTime, setPartyTime] = useState<Date>(new Date()); // Replace with your backend retrieval logic
   const [selectedMedia, setSelectedMedia] = useState<MediaItem>();
   const [mediaItems, setMediaItems] = useState<MediaItem[]>([]);
   const [showButton, setShowButton] = useState(false);
@@ -38,9 +43,19 @@ const MediaListToUpload: React.FC<
       bounciness: 1,
     }).start();
   };
+
+  useEffect(() => {
+    async function getJoinedDate() {
+      await AsyncStorage.getItem(joinedAtKey).then((date) => {
+        setPartyTime(new Date(date));
+      });
+    }
+    getJoinedDate();
+  }, []);
+
   useEffect(() => {
     getImages();
-  }, []);
+  }, [startPartyTime]);
   const getImages = useCallback(async () => {
     try {
       const { status } =
@@ -49,7 +64,6 @@ const MediaListToUpload: React.FC<
         // Handle permission denied
         return;
       }
-
       const media = await MediaLibrary.getAssetsAsync({
         mediaType: [MediaLibrary.MediaType.photo, MediaLibrary.MediaType.video],
         createdAfter: startPartyTime,
@@ -68,7 +82,7 @@ const MediaListToUpload: React.FC<
     } catch (error) {
       // Handle error
     }
-  }, []);
+  }, [startPartyTime]);
 
   const handleSelectMedia = (media: MediaItem) => {
     setMediaItems((prevMediaItems) =>
@@ -82,9 +96,10 @@ const MediaListToUpload: React.FC<
       duration: 250,
       create: {
         duration: 250,
-        property: "opacity",
+        property: LayoutAnimation.Properties.opacity,
         springDamping: 0.5,
         initialVelocity: 1,
+        type: LayoutAnimation.Types.linear,
       },
     });
 
@@ -114,9 +129,17 @@ const MediaListToUpload: React.FC<
           <View style={styles.headerContainer}>
             <NavigationBar navigation={navigation} text="Party moments" />
             <Text style={styles.headerText}>
-              Upload videos/photos made after a specified date.
+              Upload videos/photos made after{" "}
+              {`${startPartyTime.toDateString()}`}.
             </Text>
           </View>
+        }
+        ListEmptyComponent={
+          <ListEmptyComponent
+            style={{ marginTop: 0 }}
+            title="You haven't captured any moments since you joined the party."
+            icon={<Feather name="camera" size={45} color={colors.iconColor} />}
+          />
         }
         contentContainerStyle={styles.contentContainer}
         maxToRenderPerBatch={4}
@@ -196,7 +219,7 @@ const makeStyles = (insets: Insets, showButton: boolean) =>
       position: "absolute",
       left: 0,
       right: 0,
-      bottom: insets.bottom,
+      bottom: isAndroid ? 20 : insets.bottom,
 
       alignItems: "center",
     },

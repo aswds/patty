@@ -11,8 +11,10 @@ import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import {
   startUpload,
   updateUploadProgress,
+  uploadCompressing,
+  uploadFailure,
   uploadSuccess,
-} from "../../../../redux/reducers/UploadReducer";
+} from "../../../../redux/actions/UploadPosts";
 import BigButton from "../../../../shared/Buttons/BigButton";
 import Input from "../../../../shared/Input/Input";
 import { Screen } from "../../../../shared/Screen/Screen";
@@ -26,7 +28,6 @@ const PostUploadScreen: React.FC<
   const { uid, username, name, surname, image, events } = useTypedSelector(
     (state) => state.user_state.current_user
   );
-  const [startPartyTime] = useState<Date>(new Date("2023-06-11T20:00:00")); //
   const [description, setDescription] = useState<string>("");
   const [media, setMedia] = useState<MediaItem>(route.params?.media);
   const dispatch = useDispatch();
@@ -36,9 +37,7 @@ const PostUploadScreen: React.FC<
   };
   const { onEvent } = events;
   const handleMediaPick = async () => {
-    navigation.navigate("MediaListToUpload", {
-      eventDate: startPartyTime,
-    });
+    navigation.navigate("MediaListToUpload");
   };
   useEffect(() => {
     if (route.params?.media) {
@@ -53,6 +52,12 @@ const PostUploadScreen: React.FC<
     dispatch(uploadSuccess());
   }
 
+  function uploadFailed(error: string) {
+    dispatch(uploadFailure(error));
+  }
+  function updateCompressStatus(isCompressionRunning: boolean) {
+    dispatch(uploadCompressing(isCompressionRunning));
+  }
   async function handleUploadPress() {
     if (!_.isEmpty(media) && onEvent) {
       dispatch(startUpload());
@@ -62,9 +67,11 @@ const PostUploadScreen: React.FC<
         onEvent,
         media.mediaType,
         updateProgress,
-        uploadedSuccessfully
+        uploadedSuccessfully,
+        updateCompressStatus
       )
         .then(() => {})
+        .catch((error) => uploadFailed(error?.message))
         .finally(() => {});
       navigation.goBack();
     }
