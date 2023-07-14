@@ -6,11 +6,7 @@ export const useUserLocationWatch = () => {
     useState<Location.LocationObjectCoords>();
   useEffect(() => {
     const _getLocationAsync = async () => {
-      let { status } = await Location.getForegroundPermissionsAsync();
-      if (status !== "granted") {
-        Alert.alert("To use program properly you need to allow location");
-      }
-      let locations = await Location.watchPositionAsync(
+      await Location.watchPositionAsync(
         {
           accuracy: Location.Accuracy.Balanced,
           distanceInterval: 30,
