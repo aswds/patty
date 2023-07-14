@@ -1,18 +1,17 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
 
-import Screen from "./components/Screen";
-import RenderItem from "./components/RenderItem";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Loader from "../../shared/Loaders/Loader";
-import User from "./components/HeaderComponent/User";
-import { IUser } from "../../Types/User";
-import CustomRefreshControl from "../../shared/RefreshControl/RefreshControl";
-import { BackButton } from "../../shared/Buttons/BackButton";
-import { isAndroid } from "../../src/platform";
 import { ProfileStackScreenNavigationProps } from "../../Types/ProfileStack/ScreenNavigationProps";
-import { colors } from "../../src/colors";
+import { IUser } from "../../Types/User";
+import { BackButton } from "../../shared/Buttons/BackButton";
+import Loader from "../../shared/Loaders/Loader";
 import { onRefresh } from "../../shared/RefreshControl/refreshControlFuncs";
+import { colors } from "../../src/colors";
+import { isAndroid } from "../../src/platform";
+import User from "./components/HeaderComponent/User";
+import RenderItem from "./components/RenderItem";
+import Screen from "./components/Screen";
 
 function Profile({
   navigation,
@@ -32,7 +31,7 @@ function Profile({
 
   useEffect(() => {
     setUser(current_user!);
-  }, [current_user]);
+  }, []);
   //https://reactjs.org/docs/context.html !!!
   return (
     <Screen>

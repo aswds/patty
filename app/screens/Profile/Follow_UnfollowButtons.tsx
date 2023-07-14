@@ -1,12 +1,12 @@
-import React, { useEffect, useState } from "react";
-import { followUser } from "../Map/Firebase/followUser";
+import { useEffect, useState } from "react";
 import { auth } from "../../../firebase";
-import { colors } from "../../src/colors";
-import Button from "../../shared/Buttons/Button";
 import { IUser } from "../../Types/User";
-import { useTypedSelector } from "../../hooks/useTypedSelector";
-import { unfollowUser } from "../Map/Firebase/unfollowUser";
 import { removeItemOnce } from "../../helpers/removeItemOnce";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
+import Button from "../../shared/Buttons/Button";
+import { colors } from "../../src/colors";
+import { followUser } from "../Map/Firebase/followUser";
+import { unfollowUser } from "../Map/Firebase/unfollowUser";
 
 interface Follow_UnfollowButtonsProps {
   user: IUser;
