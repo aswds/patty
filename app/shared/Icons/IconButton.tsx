@@ -1,9 +1,11 @@
-import React from "react";
-
-import { StyleSheet, Text, TouchableOpacity } from "react-native";
+import {
+  StyleSheet,
+  Text,
+  TextStyle,
+  TouchableOpacity,
+  TouchableOpacityProps,
+} from "react-native";
 import { colors } from "../../src/colors";
-import { TextStyle } from "react-native";
-import { TouchableOpacityProps } from "react-native";
 
 interface IconButtonProps extends TouchableOpacityProps {
   Icon: any;

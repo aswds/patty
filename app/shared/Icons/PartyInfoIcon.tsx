@@ -1,20 +1,22 @@
-import React, { ReactElement, ReactNode } from "react";
+import React, { ReactNode } from "react";
 
 import {
   StyleSheet,
   Text,
   TextStyle,
-  TouchableOpacity,
   View,
   ViewProps,
+  ViewStyle,
 } from "react-native";
 import { colors } from "../../src/colors";
 interface PartyInfoIconProps extends ViewProps {
-  Icon: typeof React.Component;
-  name: string;
+  Icon?: typeof React.Component;
+  name?: string;
   text?: string | ReactNode;
   textStyle?: TextStyle;
+  iconStyle?: ViewStyle;
   iconSize?: number;
+  additionalText?: ReactNode;
 }
 export function PartyInfoIcon({
   Icon,
@@ -22,12 +24,22 @@ export function PartyInfoIcon({
   text,
   textStyle,
   iconSize,
+  iconStyle,
+  additionalText,
   ...props
 }: PartyInfoIconProps) {
   return (
     <View style={styles.containerWithIcon} {...props}>
-      <Icon name={name} size={iconSize ?? 34} color={colors.iconColor} />
-      <Text style={[textStyle, { marginLeft: 10 }]}>{text}</Text>
+      {Icon && (
+        <Icon
+          name={name}
+          size={iconSize ?? 34}
+          color={colors.iconColor}
+          style={iconStyle}
+        />
+      )}
+      <Text style={[textStyle, {}]}>{text}</Text>
+      {additionalText}
     </View>
   );
 }
