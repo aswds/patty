@@ -6,7 +6,6 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import React from "react";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import { colors } from "../../src/colors";
 
