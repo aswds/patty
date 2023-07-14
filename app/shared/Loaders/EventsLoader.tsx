@@ -1,9 +1,7 @@
-import React from "react";
-
 import { ActivityIndicator, Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { colors } from "../../src/colors";
 import { FontFamily } from "../../../assets/fonts/Fonts";
+import { colors } from "../../src/colors";
 
 type EventLoaderProps = {
   isLoading: boolean;

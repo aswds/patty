@@ -5,6 +5,7 @@ import "firebase/database";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
 import { colors } from "../../../src/colors";
 import { FieldValue } from "firebase/firestore";
+import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 
 interface PartyStatsProps {
   startedAt: Date | FieldValue | undefined;
@@ -12,10 +13,6 @@ interface PartyStatsProps {
 }
 
 const PartyStats: React.FC<PartyStatsProps> = ({ startedAt, guests }) => {
-  const [numSongsPlayed, setNumSongsPlayed] = useState(0);
-  const [leaderboard, setLeaderboard] = useState([]);
-  const [partyStartTime, setPartyStartTime] = useState(null);
-
   useEffect(() => {
     return () => {};
   }, []);
@@ -33,12 +30,17 @@ const PartyStats: React.FC<PartyStatsProps> = ({ startedAt, guests }) => {
   return (
     <View style={styles.container}>
       <View style={styles.subContainer}>
-        <Text style={styles.textStyle}>Number of players: {guests}</Text>
+        <FontAwesome5 name="users" size={24} color={colors.text} />
+        <Text style={styles.textStyle}>
+          guests:
+          <Text style={styles.highlightTextStyle}> {guests}</Text>
+        </Text>
       </View>
 
       <View style={styles.subContainer}>
+        <Entypo name="time-slot" size={24} color={colors.text} />
         <Text style={styles.textStyle}>
-          Party has been up for:{" "}
+          party has been up for:{" "}
           <Text style={styles.highlightTextStyle}>
             {calculateHoursUp()} hours
           </Text>

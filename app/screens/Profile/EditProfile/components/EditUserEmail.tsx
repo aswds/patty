@@ -8,12 +8,14 @@ import { ProfileNavigationProps } from "../../../../Types/ProfileStack/ScreenNav
 import Button from "../../../../shared/Buttons/Button";
 import { colors } from "../../../../src/colors";
 import { hideEmailBeforeAt } from "../../../../services/hideEmailAt";
+import BoldText from "../../../../shared/Text/BoldText";
 
 interface EditUserEmailProps {
   email: IUser["email"];
   title: React.ReactNode;
+  emailVerified?: boolean;
 }
-const EditUserEmail = ({ email, title }: EditUserEmailProps) => {
+const EditUserEmail = ({ email, title, emailVerified }: EditUserEmailProps) => {
   const navigation = useNavigation<ProfileNavigationProps>();
   return (
     <>
@@ -36,6 +38,33 @@ const EditUserEmail = ({ email, title }: EditUserEmailProps) => {
           }}
         />
       </View>
+      {!emailVerified && (
+        <View
+          style={{
+            width: "100%",
+            marginTop: "5%",
+            justifyContent: "space-between",
+            flexDirection: "row",
+          }}
+        >
+          <BoldText textStyles={{ color: colors.buttonText }}>
+            Email unverified
+          </BoldText>
+          <Button
+            onPress={() => {
+              navigation.navigate("ProfileNav", {
+                screen: "VerifyEmail",
+              });
+            }}
+            text="Verify email"
+            style={{
+              width: undefined,
+              paddingHorizontal: 10,
+              backgroundColor: "transparent",
+            }}
+          />
+        </View>
+      )}
     </>
   );
 };

@@ -1,24 +1,23 @@
-import { Alert, StyleSheet, View } from "react-native";
-import { Entypo, MaterialIcons } from "@expo/vector-icons";
-import React from "react";
+import { MaterialIcons } from "@expo/vector-icons";
+import { StyleSheet, View } from "react-native";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { IEvent } from "../../../../Types/Events";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import IconButton from "../../../../shared/Icons/IconButton";
 import { colors } from "../../../../src/colors";
-import { FontFamily } from "../../../../../assets/fonts/Fonts";
-import { useTypedSelector } from "../../../../hooks/useTypedSelector";
-import { IUser } from "../../../../Types/User";
-import { IEvent, IFullAddress } from "../../../../Types/Events";
-import { deleteParty } from "./actionButtonsFunctions";
-import { leaveEvent } from "../../../Map/Firebase/leaveEvents";
+import {
+  AlertConfig,
+  pickAlertText,
+} from "../../../Map/helpers/pickAnAlertType";
+import InviteButton from "./Share";
 
 interface ActionButtonsProps {
   party: IEvent;
   closeModal: () => void;
   handleAlertError: (
-    title: string,
-    message: string,
-    cancelText: string,
+    type: AlertConfig,
     onCancelCallback: () => void,
-    okText: string
+    onOkCallback?: () => void
   ) => void;
   onPressDelete: () => void;
 }
@@ -26,22 +25,19 @@ interface ActionButtonsProps {
 export function ActionButtons({
   party,
   handleAlertError,
-  closeModal,
   onPressDelete,
 }: ActionButtonsProps) {
-  const { uid } = useTypedSelector((state) => state.user_state.current_user);
+  const { uid, events } = useTypedSelector(
+    (state) => state.user_state.current_user
+  );
 
   return (
     <View style={styles.actionsButtonContainer}>
-      <IconButton
-        text={"Share"}
-        Icon={Entypo}
-        name={"share"}
-        textStyle={styles.iconTextStyle}
-        onPress={() => {}}
-      />
+      {(!party?.isViaInvite || party?.user.uid == uid) &&
+        party?.partyID === events?.onEvent &&
+        party?.user?.uid && <InviteButton creatorUID={party.user.uid} />}
 
-      {party?.user.uid != uid && (
+      {/* {party?.user.uid != uid && (
         <IconButton
           text={"Report"}
           Icon={MaterialIcons}
@@ -49,7 +45,7 @@ export function ActionButtons({
           textStyle={styles.iconTextStyle}
           onPress={() => {}}
         />
-      )}
+      )} */}
       {party?.user.uid == uid && (
         <IconButton
           text={"Delete"}
@@ -57,13 +53,7 @@ export function ActionButtons({
           name={"delete-forever"}
           textStyle={styles.iconTextStyle}
           onPress={() => {
-            handleAlertError(
-              "Delete Party",
-              "Are you sure you want to delete this party?",
-              "Delete",
-              onPressDelete,
-              "Cancel"
-            );
+            handleAlertError(pickAlertText("toDeleteParty"), onPressDelete);
           }}
         />
       )}

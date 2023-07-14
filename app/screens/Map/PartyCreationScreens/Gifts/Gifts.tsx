@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
+import { Ionicons } from "@expo/vector-icons";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { GiftsRequireTextTypes } from "../../../../Types/Events";
 import TwoButtons from "../../../../shared/Buttons/TwoChoiseButtons";
 import { TwoButtonsText } from "../../../../shared/Buttons/Types/TwoButtonsType";
-import { GiftsRequireTextTypes } from "../../../../Types/Events";
-import { FontFamily } from "../../../../../assets/fonts/Fonts";
-import { colors } from "../../../../src/colors";
 import { Title } from "../../../../shared/Title/Title";
-import { Ionicons } from "@expo/vector-icons";
+import { colors } from "../../../../src/colors";
 
 interface GiftsProps {
   onGiftUpdate: (value: GiftsRequireTextTypes) => void;

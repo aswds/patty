@@ -1,5 +1,5 @@
-import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import firebase from "firebase/compat";
+import { doc, getFirestore, updateDoc } from "firebase/firestore";
 import FieldValue = firebase.firestore.FieldValue;
 
 export const unfollowUser = async (

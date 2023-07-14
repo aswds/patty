@@ -1,18 +1,16 @@
-import React, { useState } from "react";
-import { Screen } from "../../../shared/Screen/Screen";
+import { useState } from "react";
+import { IEvent, Party_Access_Types } from "../../../Types/Events";
 import { PartyCreationStackScreenProps } from "../../../Types/MapStack/ScreenNavigationProps";
+import { useActions } from "../../../hooks/useActions";
+import CustomAlert from "../../../shared/Alert/CustomAlert";
 import NextButton from "../../../shared/Buttons/NextButton";
-import TagList from "./components/TagList";
+import { ScreenCreateParty } from "../../../shared/Screen/ScreenCreateParty";
+import { AlertConfig } from "../helpers/pickAnAlertType";
+import NavigationBar from "./NavigationBar";
+import PartyAccess from "./PartyAccess/PartyAccess";
 import Description from "./components/Desctription";
 import PickTitle from "./components/PickTitle";
-import NavigationBar from "./NavigationBar";
-import { IEvent, Party_Access_Types } from "../../../Types/Events";
-import PartyAccess from "./PartyAccess/PartyAccess";
-import { useActions } from "../../../hooks/useActions";
-import { ScreenCreateParty } from "../../../shared/Screen/ScreenCreateParty";
-import { handleAlertError } from "../helpers/handleAlertError";
-import { AlertConfig } from "../helpers/pickAnAlertType";
-import CustomAlert from "../../../shared/Alert/CustomAlert";
+import TagList from "./components/TagList";
 const GeneralInformation = ({
   navigation,
 }: PartyCreationStackScreenProps<"GeneralInformation">) => {
@@ -22,6 +20,7 @@ const GeneralInformation = ({
   const [party_access, setParty_Access] =
     useState<Party_Access_Types>("Public");
   const [showAlertModal, setShowAlertModal] = useState<boolean>(false);
+
   const { createEventsGeneralDataUpdate } = useActions();
   const isValueEntered = Boolean(eventTitle && description && tags);
   const [error, setError] = useState<AlertConfig>({
@@ -34,15 +33,14 @@ const GeneralInformation = ({
     setParty_Access(party_access);
   };
 
-  const handleErrorMessage = (titleToSet: string, message: string) => {
-    if (titleToSet.length < 1) {
-      setError({
-        title: !eventTitle
-          ? "Please enter a title"
-          : "Please enter a description",
-        message: "Uh-oh! Looks like someone forgot to fill in the blanks.",
-      });
-    }
+  const handleErrorMessage = (titleToSet?: string, message?: string) => {
+    const messageToSet = !eventTitle
+      ? "Please enter a title"
+      : "Please enter a description";
+    setError({
+      title: "Something missing.",
+      message: `Uh-oh! Looks like someone forgot to fill in the blanks. ${messageToSet}`,
+    });
     setShowAlertModal(true);
   };
 
@@ -59,10 +57,7 @@ const GeneralInformation = ({
     } else {
       // Set the error title depending on which field is missing
 
-      handleErrorMessage(
-        !eventTitle ? "Please enter a title" : "Please enter a description",
-        "Uh-oh! Looks like someone forgot to fill in the blanks."
-      );
+      handleErrorMessage();
     }
   };
   return (

@@ -1,9 +1,7 @@
-import React from "react";
-
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native";
-import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
-import { styles } from "./styles";
 import { colors } from "../../../../src/colors";
+import { styles } from "./styles";
 
 interface SearchButtonProps {
   onPress: () => void;

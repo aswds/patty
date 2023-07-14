@@ -10,7 +10,9 @@ export interface IUserEvents {
 
 export interface UserLocation {
   city?: string;
-  location?: Region;
+  coords?: Region;
+  partyLocation?: string;
+  isLocationLoading: boolean;
 }
 
 type EditUserFields =

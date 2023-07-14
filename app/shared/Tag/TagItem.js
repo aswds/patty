@@ -1,8 +1,7 @@
 import { AntDesign } from "@expo/vector-icons";
-import React from "react";
 import { StyleSheet, Text, TouchableOpacity } from "react-native";
-import { colors } from "../../src/colors";
 import { FontFamily } from "../../../assets/fonts/Fonts";
+import { colors } from "../../src/colors";
 
 export default function TagItem({ tag, onDelete, id }) {
   return (
@@ -29,7 +28,6 @@ const styles = StyleSheet.create({
     padding: 15,
     justifyContent: "center",
     alignItems: "center",
-    height: 50,
     backgroundColor: colors.input,
     borderRadius: 100,
     margin: 5,

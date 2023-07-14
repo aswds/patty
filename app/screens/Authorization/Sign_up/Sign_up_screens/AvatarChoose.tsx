@@ -33,13 +33,19 @@ export const AvatarChoose = ({
 
   // not safe to pass params in  3 screens (change to (registration->firebase.createNewUser->enter name -> choose avatar -> updateProfile -> Home screen))
   return (
-    <Screen style={{ flex: 1, justifyContent: "space-evenly" }}>
+    <Screen
+      style={{
+        flex: 1,
+        justifyContent: "space-evenly",
+      }}
+    >
       <BackButton navigation={navigation} />
 
       <View
         style={{
           flex: 1,
           justifyContent: "space-evenly",
+          alignItems: "flex-start",
         }}
       >
         <ACImage
@@ -47,10 +53,7 @@ export const AvatarChoose = ({
           image={image}
         />
 
-        <Title
-          title={`Let's Choose Your Profile Picture!`}
-          message="Show the World Your Best Smile :)"
-        />
+        <Title title={`Let's Choose Your Profile Picture!`} message="" />
 
         <ModalPhoto
           routeName={route.name}

@@ -1,4 +1,3 @@
-import React from "react";
 import {
   ActivityIndicator,
   Modal,
@@ -19,7 +18,6 @@ export default function Loader({
   containerStyle,
   ...other
 }: LoaderProps) {
-  
   return (
     <View style={containerStyle}>
       <Modal animationType="fade" transparent={true} visible={isVisible}>

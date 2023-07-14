@@ -1,16 +1,14 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import React from "react";
 import {
-  Keyboard,
   StyleSheet,
-  TextInput,
   TextInputProps,
   TouchableOpacity,
   View,
   ViewStyle,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../../src/colors";
-import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 interface SearchBarProps extends TextInputProps {
   icon?: React.ReactNode;
   containerStyle: ViewStyle;

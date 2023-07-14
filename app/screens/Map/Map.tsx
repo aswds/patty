@@ -1,14 +1,18 @@
 import BottomSheet from "@gorhom/bottom-sheet";
 import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { onSnapshot } from "firebase/firestore";
+import { getDistance } from "geolib";
 import _ from "lodash";
 import { useCallback, useEffect, useRef, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { GestureHandlerRootView } from "react-native-gesture-handler";
-import MapView, { PROVIDER_DEFAULT, Region } from "react-native-maps";
+import MapView, {
+  PROVIDER_DEFAULT,
+  PROVIDER_GOOGLE,
+  Region,
+} from "react-native-maps";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import {
-  eventDocToListenReference,
   eventReference,
   eventsReference,
   userReference,
@@ -19,11 +23,14 @@ import { MapStackScreenProps } from "../../Types/MapStack/ScreenNavigationProps"
 import { useActions } from "../../hooks/useActions";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import { fetchCityParties } from "../../hooks/useUserLocation/useUserLocation";
+import { useUserLocationWatch } from "../../hooks/useUserLocationWatch";
 import { fetch_joined_event } from "../../redux/actions/Events";
 import { clearCreateEvents } from "../../redux/reducers/CreateEvent";
 import CustomAlert from "../../shared/Alert/CustomAlert";
+import { NoEventFoundAlert } from "../../shared/Alert/NoEventFound";
 import LocationLoader from "../../shared/Loaders/LocationLoader";
 import PartyModal from "../Modals/PartyModal/PartyModal";
+import { deleteParty } from "../Modals/PartyModal/components/actionButtonsFunctions";
 import SearchEventsModal from "../Modals/SearchEventsModal/SearchEventsModal";
 import {
   fetchViaInviteParties,
@@ -31,28 +38,32 @@ import {
   leaveEvent,
 } from "./Firebase/leaveEvents";
 import Buttons from "./components/Buttons/Buttons";
-import ProfileButton from "./components/ProfileButton";
-import { AlertConfig, pickAlertErrors } from "./helpers/pickAnAlertType";
-import mapStyle from "./mapStyle.json";
-
-import { NoEventFoundAlert } from "../../shared/Alert/NoEventFound";
 import EventMarkers from "./components/EventMarkers";
+import MapHeader from "./components/ProfileButton";
+import PartyRadiusAlertModal from "./components/RadiusAlert";
 import { handleAlertError } from "./helpers/handleAlertError";
-import { db } from "../../../firebase";
-import useUserLocation from "../../hooks/useUserLocation/useUserLocations";
+import { AlertConfig, pickAlertText } from "./helpers/pickAnAlertType";
+import mapStyle from "./mapStyle.json";
+import { isAndroid } from "../../src/platform";
 
 function Map({ navigation }: MapStackScreenProps<"Map">) {
   //States
   const [markerInfo, setMarkerInfo] = useState<IEvent>();
   const [showAlertModal, setShowAlertModal] = useState<boolean>(false);
   const [joinedEvent, setJoinedEvent] = useState<IEvent>();
-  // const { userLocation, city, isLocationLoading } = useUserLocation();
-  const [location, isLocationLoading] = useUserLocation();
-  const city = location.city;
-  const [showLoader, setShowLoader] = useState<boolean>(isLocationLoading);
+  const location = useTypedSelector(
+    (state) => state.user_state.current_user.userLocation
+  );
+
+  const currentUserLocation = useUserLocationWatch();
+  const city = location?.city;
+  const partyLocation = location?.partyLocation;
+  const isLocationLoading = location?.isLocationLoading;
+
   const [events, setEvents] = useState<IEvent[]>([]);
   const [inviteOnlyEvents, setInviteOnlyEvents] = useState<IEvent[]>([]);
-
+  const [showPartyRadiusAlert, setShowPartyRadiusAlert] =
+    useState<boolean>(false);
   const [alertError, setAlertError] = useState<AlertConfig>({
     message: "",
     title: "",
@@ -61,20 +72,28 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
   const appNavigation = useNavigation<AppNavigatorNavigationProp>();
   // Redux
   const { current_user } = useTypedSelector((state) => state.user_state);
-
   const { fetch_user } = useActions();
   //References
   const mapRef = useRef<MapView | null>(null);
   const partyMarkerModalRef = useRef<BottomSheet>(null);
   const searchEventsModalRef = useRef<BottomSheet>(null);
   // useEffects
-
   // clearing onEvent when party has been deleted
 
   useEffect(() => {
-    fetch_user();
-    fetch_public_events();
-    fetch_viaInvite_events();
+    const fetchData = async () => {
+      try {
+        await Promise.all([
+          fetch_user(),
+          fetch_public_events(),
+          fetch_viaInvite_events(),
+        ]);
+      } catch (error) {
+        // Handle errors
+      }
+    };
+
+    fetchData();
   }, []);
 
   useEffect(() => {
@@ -88,9 +107,9 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
   }, [current_user?.uid]);
 
   useEffect(() => {
-    if (city) {
-      const public_eventsRef = eventsReference(city, "Public");
-      const viaInvite_eventsRef = eventsReference(city, "Via Invite");
+    if (partyLocation) {
+      const public_eventsRef = eventsReference(partyLocation, "Public");
+      const viaInvite_eventsRef = eventsReference(partyLocation, "Via Invite");
       const unsubscribe_public_events = onSnapshot(public_eventsRef, () => {
         fetch_public_events();
       });
@@ -107,16 +126,20 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
         unsubscribe_viaInvite_events();
       };
     }
-  }, [city, current_user.events?.onEvent, current_user.events?.eventType]);
+  }, [
+    partyLocation,
+    current_user.events?.onEvent,
+    current_user.events?.eventType,
+  ]);
 
   useEffect(() => {
     if (
-      city &&
+      partyLocation &&
       current_user.events?.eventType &&
       current_user.events?.onEvent
     ) {
       const eventRef = eventReference(
-        city,
+        partyLocation,
         current_user.events?.eventType,
         current_user.events?.onEvent
       );
@@ -132,19 +155,31 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
 
       return () => unsubscribe();
     }
-  }, [current_user.events?.eventType, current_user.events?.onEvent, city]);
+  }, [
+    current_user.events?.eventType,
+    current_user.events?.onEvent,
+    partyLocation,
+  ]);
 
   useEffect(() => {
-    if (city && current_user.events?.eventType && current_user.events.onEvent) {
+    if (
+      partyLocation &&
+      current_user.events?.eventType &&
+      current_user.events.onEvent
+    ) {
       fetchJoinedEvents().then((event) => setJoinedEvent(event));
     }
-  }, [current_user.events?.onEvent, city, current_user.events?.eventType]);
+  }, [
+    current_user.events?.onEvent,
+    partyLocation,
+    current_user.events?.eventType,
+  ]);
 
   useEffect(() => {
     // animate to user location
-    if (current_user.userLocation?.location)
-      animateToRegion(current_user.userLocation?.location);
-  }, [current_user.userLocation?.location]);
+
+    if (location?.coords) animateToRegion(location?.coords);
+  }, [location?.coords]);
 
   useFocusEffect(() => {
     //clearing create party info
@@ -163,14 +198,32 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
       500
     );
   }
-
-  function navigateToPartyScreen(partyData: IEvent) {
-    appNavigation.navigate("PartyNav", {
-      screen: "PartyScreen",
-      params: {
-        partyData: partyData,
+  async function navigateToPartyScreen(partyData: IEvent) {
+    const { location } = partyData;
+    let dis = getDistance(
+      //@ts-ignore
+      {
+        latitude: currentUserLocation?.latitude,
+        longitude: currentUserLocation?.longitude,
       },
-    });
+      {
+        latitude: location.region?.latitude,
+        longitude: location.region?.longitude,
+      }
+    );
+    if (
+      (dis < partyData?.radiusToPost && partyData?.radiusToPost) ||
+      partyData.user.uid === current_user.uid
+    ) {
+      appNavigation.navigate("PartyNav", {
+        screen: "PartyScreen",
+        params: {
+          partyData: partyData,
+        },
+      });
+    } else {
+      setShowPartyRadiusAlert(true);
+    }
   }
   function navigateToPartyCreation() {
     navigation.navigate("PartyCreationStack", {
@@ -179,20 +232,19 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
   }
 
   const fetch_viaInvite_events = useCallback(async () => {
-    if (city)
-      fetchViaInviteParties(city)
+    if (partyLocation)
+      fetchViaInviteParties(partyLocation)
         .then((res) => {
           setInviteOnlyEvents(res);
         })
         .catch(() => {
           setInviteOnlyEvents([]);
         });
-  }, [city]);
+  }, [partyLocation]);
 
   const fetch_public_events = useCallback(async () => {
-    if (city) {
-      console.log("FetchCityParties");
-      fetchCityParties(city)
+    if (partyLocation) {
+      fetchCityParties(partyLocation)
         .then((events) => {
           setEvents(events);
         })
@@ -200,28 +252,23 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
           setEvents([]);
         });
     }
-  }, [city]);
+  }, [partyLocation]);
 
   async function fetchJoinedEvents() {
     if (
-      city &&
+      partyLocation &&
       current_user.events?.eventType &&
       current_user.events?.onEvent
     ) {
       const newEvent = await fetch_joined_event(
-        city,
+        partyLocation,
         current_user.events.eventType,
         current_user.events.onEvent
       );
-      console.log(newEvent);
       return newEvent;
-    } else {
-      console.log(city, current_user.events);
     }
   }
-  {
-    console.log(city);
-  }
+
   //functions to pass down to children
 
   function snapTo(index: number) {
@@ -241,11 +288,38 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
     }
   }
 
+  async function onDeleteCurrentEvent() {
+    if (joinedEvent) {
+      // leaveCurrentEvent();
+      await deleteParty(
+        joinedEvent.partyID,
+        joinedEvent.location.fullAddressInfo?.partyLocation!,
+        joinedEvent.party_access
+      ).then(() => {
+        partyMarkerModalRef.current?.close();
+      });
+    }
+  }
+
+  function handleAlert(
+    config: AlertConfig,
+    onCancelCallback?: () => void,
+    onOkCallback?: () => void
+  ) {
+    handleAlertError(
+      setAlertError,
+      setShowAlertModal,
+      config,
+      onCancelCallback,
+      onOkCallback
+    );
+  }
+
   //Render
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
       <View style={styles.container}>
-        {isLocationLoading && <LocationLoader isLoading={true} />}
+        {isLocationLoading && <LocationLoader isLoading={isLocationLoading} />}
         {!isLocationLoading &&
           _.isEmpty(events) &&
           _.isEmpty(inviteOnlyEvents) && (
@@ -255,20 +329,15 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
           )}
         <MapView
           testID="map"
-          provider={PROVIDER_DEFAULT}
+          provider={isAndroid ? PROVIDER_GOOGLE : PROVIDER_DEFAULT}
           style={StyleSheet.absoluteFill}
           customMapStyle={mapStyle}
-          // initialRegion={userLocation}
           paddingAdjustmentBehavior={"automatic"}
           showsUserLocation
           showsCompass={false}
+          showsMyLocationButton={false}
           ref={mapRef}
         >
-          {/* onPress={async () => {
-                  setMarkerInfo(doc);
-                  animateToRegion(doc?.location?.region as Region);
-                  partyMarkerModalRef.current?.snapToIndex(0);
-                }} */}
           <EventMarkers
             events={events}
             onMarkerPress={async (doc) => {
@@ -286,26 +355,33 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
             }}
           />
         </MapView>
-        <ProfileButton
+        <MapHeader
           userUID={current_user.uid!}
           userImage={current_user.image}
-          onLongPress={() =>
-            animateToRegion(current_user.userLocation?.location as Region)
-          }
-          containerStyle={{ right: "5%", top: "1%", marginTop: insets.top }}
+          onLongPress={() => animateToRegion(location?.coords as Region)}
+          containerStyle={{
+            top: "1%",
+            marginTop: insets.top,
+          }}
+          city={city}
         />
 
         <Buttons
+          onPressLeaveEventButton={() => {
+            if (joinedEvent && joinedEvent.user.uid === current_user.uid) {
+              handleAlert(pickAlertText("hostLeaving"), onDeleteCurrentEvent);
+            } else {
+              handleAlert(pickAlertText("leaveParty"), leaveCurrentEvent);
+            }
+          }}
           onPressPartyCreationButton={() => {
             if (_.isEmpty(current_user.events.onEvent)) {
               navigateToPartyCreation();
             } else {
               if (joinedEvent && joinedEvent.user.uid === current_user.uid) {
-                setAlertError(pickAlertErrors("hostLeaving"));
-                setShowAlertModal(true);
+                handleAlert(pickAlertText("hostLeaving"), onDeleteCurrentEvent);
               } else {
-                setAlertError(pickAlertErrors("toCreate"));
-                setShowAlertModal(true);
+                handleAlert(pickAlertText("toCreate"), leaveCurrentEvent);
               }
             }
           }}
@@ -320,13 +396,14 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
               } else {
                 await fetchJoinedEvents().then((event) => {
                   setJoinedEvent(event);
-                  if (event) navigateToPartyScreen(event);
+                  if (event) {
+                    navigateToPartyScreen(event);
+                  }
                 });
               }
-              setAlertError(pickAlertErrors("noPartyJoined"));
+
+              setAlertError(pickAlertText("noPartyJoined"));
             } catch (e) {
-              //@ts-expect-error
-              const result = e.message; // error under useUnknownInCatchVariables
               if (typeof e === "string") {
                 e.toUpperCase(); // works, `e` narrowed to string
               } else if (e instanceof Error) {
@@ -337,14 +414,13 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
                 });
               }
             } finally {
-              setShowLoader(false);
             }
           }}
         />
         {/*<SearchModal visible={true} hideModal={() => {}} />*/}
         <SearchEventsModal
           modalRef={searchEventsModalRef}
-          city={city!}
+          city={partyLocation!}
           snapTo={snapTo}
           animateToRegion={animateToRegion}
           events={[...events, ...inviteOnlyEvents]}
@@ -355,6 +431,7 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
           onClose={() => {
             partyMarkerModalRef.current?.close();
           }}
+          onDeleteCurrentEvent={onDeleteCurrentEvent}
           onLeaveCurrentEvent={leaveCurrentEvent}
           handleAlertError={handleAlertError.bind(
             null,
@@ -388,6 +465,10 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
               setShowAlertModal(false);
             }
           }}
+        />
+        <PartyRadiusAlertModal
+          isVisible={showPartyRadiusAlert}
+          onClose={() => setShowPartyRadiusAlert(false)}
         />
       </View>
     </GestureHandlerRootView>

@@ -1,10 +1,8 @@
-import React from "react";
-
-import { TouchableOpacity } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
-import { styles } from "./styles";
-import { colors } from "../../../../src/colors";
+import { TouchableOpacity } from "react-native";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { colors } from "../../../../src/colors";
+import { styles } from "./styles";
 
 interface SelectedButtonProps {
   onPress: () => void;
@@ -19,7 +17,7 @@ const SelectedButton = ({ onPress }: SelectedButtonProps) => {
       onPress={onPress}
     >
       <AntDesign
-        name={onEvent ? "star" : "staro"}
+        name={onEvent?.length > 0 ? "star" : "staro"}
         size={30}
         color={colors.accentColor}
       />

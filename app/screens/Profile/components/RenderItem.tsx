@@ -1,27 +1,22 @@
-import React from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import { isAndroid } from "../../../src/platform";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
-import { IUserEvents } from "../../../Types/User";
-import Loader from "../../../shared/Loaders/Loader";
 import { colors } from "../../../src/colors";
+import { isAndroid } from "../../../src/platform";
 
 interface RenderItemProps {
-  events: IUserEvents;
+  eventInfo: any;
 }
 
-export default function RenderItem({ events }: RenderItemProps): JSX.Element {
-  if (events === undefined) {
-    return <Loader isVisible={events} />;
-  }
-
+export default function RenderItem({
+  eventInfo,
+}: RenderItemProps): JSX.Element {
   return (
     <View style={styles.container}>
       <View>
-        <Text style={styles.textNumberStyle}>{events?.eventsCreated} 🎉</Text>
+        <Text style={styles.textNumberStyle}>{eventInfo.data}</Text>
       </View>
       <View>
-        <Text style={styles.textStyle}>Parties were created</Text>
+        <Text style={styles.textStyle}>{eventInfo.title}</Text>
       </View>
     </View>
   );
@@ -40,7 +35,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 2,
     margin: 10,
-    shadowColor: isAndroid ? "white" : "rgba(0, 0, 0, 0.7)",
+    shadowColor: isAndroid ? "grey" : "rgba(0, 0, 0, 0.7)",
     borderRadius: 45,
     elevation: 5,
   },

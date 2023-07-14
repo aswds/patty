@@ -1,16 +1,17 @@
-import React, { useEffect, useState } from "react";
-import { FlatList, StyleSheet } from "react-native";
+import { useEffect, useState } from "react";
+import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
 
-import Screen from "./components/Screen";
-import RenderItem from "./components/RenderItem";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import Loader from "../../shared/Loaders/Loader";
-import User from "./components/HeaderComponent/User";
-import { IUser } from "../../Types/User";
-import CustomRefreshControl from "../../shared/RefreshControl/RefreshControl";
-import { BackButton } from "../../shared/Buttons/BackButton";
-import { isAndroid } from "../../src/platform";
 import { ProfileStackScreenNavigationProps } from "../../Types/ProfileStack/ScreenNavigationProps";
+import { IUser } from "../../Types/User";
+import { BackButton } from "../../shared/Buttons/BackButton";
+import Loader from "../../shared/Loaders/Loader";
+import { onRefresh } from "../../shared/RefreshControl/refreshControlFuncs";
+import { colors } from "../../src/colors";
+import { isAndroid } from "../../src/platform";
+import User from "./components/HeaderComponent/User";
+import RenderItem from "./components/RenderItem";
+import Screen from "./components/Screen";
 
 function Profile({
   navigation,
@@ -30,38 +31,63 @@ function Profile({
 
   useEffect(() => {
     setUser(current_user!);
-  }, [current_user]);
-  console.log(current_user?.image);
+  }, []);
   //https://reactjs.org/docs/context.html !!!
   return (
     <Screen>
-      <FlatList
-        style={styles.container}
-        refreshControl={
-          <CustomRefreshControl
-            setRefreshing={setRefreshing}
-            refreshing={refreshing}
-          />
-        }
-        contentContainerStyle={{ paddingTop: insets.top }}
-        ListHeaderComponent={
-          <User
-            user={user}
-            updateUser={updateUser}
-            backButton={
-              <BackButton
-                navigation={navigation}
-                style={styles.backButtonStyle}
-                // onPress={onPress}
-              />
-            }
-          />
-        }
-        data={[user.events]}
-        renderItem={({ item }) => {
-          return <RenderItem events={item} />;
-        }}
-      />
+      <View style={{ flex: 1 }}>
+        <FlatList
+          style={styles.container}
+          refreshControl={
+            <RefreshControl
+              refreshing={refreshing}
+              onRefresh={onRefresh.bind(null, setRefreshing)}
+              tintColor={colors.buttonText}
+              style={{ alignItems: "flex-end" }}
+            />
+          }
+          contentContainerStyle={{
+            paddingTop: insets.top,
+            paddingBottom: insets.bottom,
+          }}
+          ListHeaderComponent={
+            <User
+              user={user}
+              updateUser={updateUser}
+              backButton={
+                <BackButton
+                  navigation={navigation}
+                  style={styles.backButtonStyle}
+                  // onPress={onPress}
+                />
+              }
+            />
+          }
+          data={[
+            {
+              data: `${user.events.eventsCreated} ${
+                user.events.eventsCreated > 0 ? "🥳" : ""
+              }`,
+              title: "number of parties created ",
+            },
+            {
+              data: `${user.events.eventsVisited} ${
+                user.events.eventsVisited > 0 ? "🎉" : ""
+              }`,
+              title: "party count ",
+            },
+            {
+              data: user.events.onEvent
+                ? "living it up at the party 🎉🕺"
+                : "just chillin' and relaxing 🍹",
+              title: `party presence profiler`,
+            },
+          ]}
+          renderItem={({ item }) => {
+            return <RenderItem eventInfo={item} />;
+          }}
+        />
+      </View>
     </Screen>
   );
 }

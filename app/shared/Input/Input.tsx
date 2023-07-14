@@ -7,8 +7,8 @@ import {
   View,
   ViewStyle,
 } from "react-native";
-import { colors } from "../../src/colors";
 import { FontFamily } from "../../../assets/fonts/Fonts";
+import { colors } from "../../src/colors";
 
 interface InputProps extends PropsWithChildren, TextInputProps {
   style?: ViewStyle;

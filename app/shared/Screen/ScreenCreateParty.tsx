@@ -1,17 +1,14 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import {
-  Keyboard,
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
-  TouchableWithoutFeedback,
   View,
   ViewStyle,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../src/colors";
 import { isAndroid } from "../../src/platform";
-import { PropsWithChildren } from "react";
 interface ScreenProps extends PropsWithChildren {
   createPartyButton?: React.ReactNode;
   containerStyle?: ViewStyle;
@@ -33,8 +30,6 @@ export const ScreenCreateParty = ({
         style={styles.viewStyle}
         keyboardVerticalOffset={keyboardOffset}
       >
-        {navigationBar}
-
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{
@@ -42,15 +37,15 @@ export const ScreenCreateParty = ({
           }}
           contentContainerStyle={[
             styles.scrollViewContainer,
-            {
-              paddingTop: "5%",
-            },
             containerStyle,
+            { paddingTop: insets.top },
           ]}
           showsHorizontalScrollIndicator={false}
           pointerEvents="auto"
           keyboardShouldPersistTaps="handled"
         >
+          <View style={{ paddingBottom: "5%" }}>{navigationBar}</View>
+
           {React.Children.map(children, (children) => (
             <View style={{ marginBottom: "5%" }}>{children}</View>
           ))}
@@ -64,7 +59,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: colors.background,
-    padding: 20,
+    paddingHorizontal: 20,
   },
   scrollViewContainer: {},
   viewStyle: {

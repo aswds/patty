@@ -1,23 +1,19 @@
+import { useEffect, useRef, useState } from "react";
 import {
   LayoutAnimation,
   StyleSheet,
-  Text,
   TextInput,
   UIManager,
 } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { ScreenCreateParty } from "../../../../shared/Screen/ScreenCreateParty";
-import Input from "../../../../shared/Input/Input";
-import { text_modifier } from "../../../../services/text_modifier";
-import ChangeScreen from "../../Layout/ChangeScreen";
-import { ProfileStackScreenNavigationProps } from "../../../../Types/ProfileStack/ScreenNavigationProps";
-import { changeUser } from "../ChangeBio/changeUser";
-import { colors } from "../../../../src/colors";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
-import Animated from "react-native-reanimated";
-import AnimatedError from "../../../../shared/Error/AnimatedError";
-import { isAndroid } from "../../../../src/platform";
+import { ProfileStackScreenNavigationProps } from "../../../../Types/ProfileStack/ScreenNavigationProps";
 import { sameUsernames } from "../../../../services/sameUsername";
+import { text_modifier } from "../../../../services/text_modifier";
+import AnimatedError from "../../../../shared/Error/AnimatedError";
+import { colors } from "../../../../src/colors";
+import { isAndroid } from "../../../../src/platform";
+import ChangeScreen from "../../Layout/ChangeScreen";
+import { changeUser } from "../ChangeBio/changeUser";
 
 const ChangeUsername = ({
   navigation,
@@ -28,7 +24,6 @@ const ChangeUsername = ({
   const [errorMsg, setErrorMsg] = useState<string>("Username");
   const [showAlertModal, setShowAlertModal] = useState<boolean>(false);
   const inputRef = useRef<TextInput>(null);
-  const animatedRef = useRef<Animated.View>(null);
 
   if (isAndroid && UIManager.setLayoutAnimationEnabledExperimental) {
     UIManager.setLayoutAnimationEnabledExperimental(true);

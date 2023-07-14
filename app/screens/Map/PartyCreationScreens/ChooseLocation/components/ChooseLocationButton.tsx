@@ -1,15 +1,14 @@
-import React from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
-import { colors } from "../../../../../src/colors";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
 import * as Haptics from "expo-haptics";
-import { PartyCreationNavigationProps } from "../../../../../Types/MapStack/ScreenNavigationProps";
+import { StyleSheet, TouchableOpacity, View } from "react-native";
 import { ICoordinates, IFullAddress } from "../../../../../Types/Events";
+import { PartyCreationNavigationProps } from "../../../../../Types/MapStack/ScreenNavigationProps";
+import { colors } from "../../../../../src/colors";
 
 interface ChooseLocationButtonProps {
   region: ICoordinates | undefined;
-  fullAddress: IFullAddress | undefined;
+  fullAddress?: IFullAddress | null;
   outsideCity: boolean;
 }
 

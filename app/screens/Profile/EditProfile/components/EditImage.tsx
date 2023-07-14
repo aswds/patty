@@ -54,7 +54,9 @@ export default function EditImage({
         routeName={route.name}
         hideModal={_hideModal.bind(null, setShowModal)}
         showModal={showModal}
-        imageHandler={_imagePropHandler}
+        imageHandler={(imageProp) => {
+          _imagePropHandler.bind(null, setImage), editImageHandle(imageProp);
+        }}
       />
     </View>
   );

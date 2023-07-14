@@ -1,12 +1,12 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { Title } from "../../../../shared/Title/Title";
-import { colors } from "../../../../src/colors";
+import { Ionicons } from "@expo/vector-icons";
 import * as Haptics from "expo-haptics";
+import React from "react";
+import { StyleSheet, View } from "react-native";
 import { Party_Access_Types } from "../../../../Types/Events";
 import TwoButtons from "../../../../shared/Buttons/TwoChoiseButtons";
 import { TwoButtonsText } from "../../../../shared/Buttons/Types/TwoButtonsType";
-import { Ionicons } from "@expo/vector-icons";
+import { Title } from "../../../../shared/Title/Title";
+import { colors } from "../../../../src/colors";
 import { descriptionTexts } from "../descriptionTexts";
 interface Party_AccessProps {
   onParty_AccessUpdate: (party_access: Party_Access_Types) => void;

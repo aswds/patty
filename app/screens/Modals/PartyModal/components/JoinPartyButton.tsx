@@ -22,7 +22,13 @@ export function JoinEventButton({
   const insets = useSafeAreaInsets();
 
   return (
-    <View style={{ width: "100%", height: 50 + insets.bottom }}>
+    <View
+      style={{
+        width: "100%",
+        height: 50 + insets.bottom,
+        marginBottom: isAndroid ? "5%" : 0,
+      }}
+    >
       <TouchableOpacity style={styles.buttonBg} onPress={() => onPress(data)}>
         {isJoinedEvent ? (
           <Text
@@ -54,7 +60,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
 
     height: 50,
-    marginBottom: isAndroid ? "5%" : 0,
+
     width: "100%",
     borderRadius: 999999,
     justifyContent: "center",

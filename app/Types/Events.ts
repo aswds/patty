@@ -1,5 +1,7 @@
-import { FieldValue } from "firebase/firestore";
+import { LocationGeocodedAddress } from "expo-location";
+import { FieldValue, Timestamp } from "firebase/firestore";
 import { IUser } from "./User";
+import { MediaTypeValue } from "expo-media-library";
 
 export interface ICoordinates {
   latitude: number;
@@ -7,15 +9,11 @@ export interface ICoordinates {
   longitude: number;
   longitudeDelta: number;
 }
-export interface IFullAddress {
-  additionalData: { [key: string]: string };
-  city: string;
+export interface IFullAddress extends Omit<LocationGeocodedAddress, "country"> {
   countryName: string;
-  county: string;
-  district: string;
-  label: string;
-  street: string;
-  houseNumber?: number;
+  county?: string;
+  label?: string;
+  partyLocation?: string;
 }
 
 export interface ILocation {
@@ -50,6 +48,7 @@ export interface IEvent {
   partyID?: string;
   createdAt?: Date | FieldValue;
   isViaInvite?: boolean;
+  radiusToPost: number;
 }
 export interface IGifts {
   required: boolean;
@@ -68,3 +67,17 @@ export type PartyPlace =
   | "Club"
   | "Event Space"
   | "Beach/Park";
+export type AnnouncementType = {
+  createdAt?: Timestamp;
+  user: IEvent_User;
+  title: string;
+  announcement: string;
+  id?: string;
+};
+export interface MediaItem {
+  id: string;
+  duration?: string | number;
+  uri: string;
+  mediaType: MediaTypeValue;
+  selected?: boolean;
+}

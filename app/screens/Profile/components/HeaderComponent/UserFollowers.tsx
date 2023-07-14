@@ -1,8 +1,8 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import { colors } from "../../../../src/colors";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { IUser } from "../../../../Types/User";
+import { colors } from "../../../../src/colors";
 
 interface IUserFollowNumbers {
   followers?: number;

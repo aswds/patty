@@ -1,40 +1,43 @@
-import React, { useEffect, useRef, useState } from "react";
+import _ from "lodash";
+import { useRef, useState } from "react";
 import {
   Keyboard,
   StyleSheet,
   TouchableWithoutFeedback,
   View,
 } from "react-native";
-import MapView, { PROVIDER_DEFAULT, Region } from "react-native-maps";
+import { GooglePlaceDetail } from "react-native-google-places-autocomplete";
+import MapView, { PROVIDER_DEFAULT } from "react-native-maps";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { ICoordinates, IFullAddress } from "../../../../Types/Events";
+import { PartyCreationStackScreenProps } from "../../../../Types/MapStack/ScreenNavigationProps";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { getAddress } from "../../../../shared/GetLocationFunctions/getAddress";
 import GooglePlaceSearch from "../../../../shared/Searcher/GooglePlaceSearch";
 import AddressTitle from "./components/AddressTitle";
 import ChooseLocationButton from "./components/ChooseLocationButton";
 import FakeMarker from "./components/Marker";
-import { getAddress } from "../../../../shared/GetLocationFunctions/getAddress";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { ICoordinates, IFullAddress } from "../../../../Types/Events";
-import { BackButton } from "../../../../shared/Buttons/BackButton";
-import { PartyCreationStackScreenProps } from "../../../../Types/MapStack/ScreenNavigationProps";
-import { GooglePlaceDetail } from "react-native-google-places-autocomplete";
-import { useTypedSelector } from "../../../../hooks/useTypedSelector";
-import { UserLocation } from "../../../../Types/User";
-import NavigationBar from "../NavigationBar";
 
-export default function ChooseLocation({
-  route,
-  navigation,
-}: PartyCreationStackScreenProps<"ChooseLocation">) {
+export default function ChooseLocation({}: PartyCreationStackScreenProps<"ChooseLocation">) {
   const [region, setRegion] = useState<ICoordinates>();
-  const [addressInfo, setAddressInfo] = useState<IFullAddress>();
-  const [city, setCity] = useState<UserLocation["city"]>(route.params?.city);
-
+  const [addressInfo, setAddressInfo] = useState<IFullAddress | null>();
+  const { userLocation } = useTypedSelector(
+    (state) => state.user_state.current_user
+  );
   const mapRef = useRef<MapView>(null);
   const insets = useSafeAreaInsets();
+
   function onRegionChange(region: ICoordinates) {
     setRegion(region);
     getAddress(region.latitude, region.longitude)
       .then((res) => {
-        setAddressInfo(res);
+        if (!_.isEmpty(res)) {
+          setAddressInfo({
+            ...res!,
+            label: res.label,
+            partyLocation: `${res?.countryName}_${res?.county}_${res?.city}`,
+          });
+        }
       })
       .catch((e) => setAddressInfo(e));
   }
@@ -68,12 +71,17 @@ export default function ChooseLocation({
           <FakeMarker />
           <AddressTitle
             Address={addressInfo?.label}
-            showOutsideCityError={addressInfo?.city != city}
+            showOutsideCityError={
+              addressInfo?.partyLocation != userLocation?.partyLocation
+            }
           />
+
           <ChooseLocationButton
             region={region}
             fullAddress={addressInfo}
-            outsideCity={addressInfo?.city != city}
+            outsideCity={
+              addressInfo?.partyLocation != userLocation?.partyLocation
+            }
           />
         </View>
       </TouchableWithoutFeedback>

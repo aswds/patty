@@ -15,7 +15,6 @@
 
 .expo
 __generated__
-
 ### ReactNative.Xcode Stack ###
 ## User settings
 xcuserdata/
@@ -169,6 +168,7 @@ web_modules/
 .yarn-integrity
 
 # dotenv environment variable files
+*.env*
 .env
 .env.development.local
 .env.test.local
@@ -381,3 +381,4 @@ fabric.properties
 
 
 # End of https://www.toptal.com/developers/gitignore/api/webstorm,reactnative,firebase
+.env

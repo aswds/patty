@@ -1,18 +1,8 @@
-import React from "react";
-
-import {
-  StyleSheet,
-  View,
-  Text,
-  ViewStyle,
-  TextStyle,
-  SafeAreaView,
-} from "react-native";
+import { FontAwesome } from "@expo/vector-icons";
+import { NavigationProp } from "@react-navigation/native";
+import { StyleSheet, TextStyle, View, ViewStyle } from "react-native";
 import { BackButton } from "../../../shared/Buttons/BackButton";
 import { Title } from "../../../shared/Title/Title";
-import { colors } from "../../../src/colors";
-import { NavigationProp } from "@react-navigation/native";
-import { FontAwesome } from "@expo/vector-icons";
 
 interface NavigationBarProps {
   navigation: NavigationProp<any, any>;
@@ -22,6 +12,7 @@ interface NavigationBarProps {
   safeAreaViewStyle?: ViewStyle;
   fontStyle?: TextStyle;
   iconName?: keyof typeof FontAwesome.glyphMap;
+  description?: string;
 }
 
 const NavigationBar = ({
@@ -31,31 +22,29 @@ const NavigationBar = ({
   fontStyle,
   onPress,
   safeAreaViewStyle,
+  description,
   iconName,
 }: NavigationBarProps) => {
   return (
-    <SafeAreaView
-      style={[safeAreaViewStyle, { backgroundColor: "transparent" }]}
-    >
-      <View style={[styles.titleContainer, style]}>
-        <BackButton
-          navigation={navigation}
-          onPress={onPress}
-          style={{ position: "relative", left: 0 }}
-          iconName={iconName}
-        />
-        <Title
-          title={text}
-          fontStyle={fontStyle}
-          containerStyle={{
-            flex: 1,
-            justifyContent: "flex-end",
-            marginBottom: 0,
-            flexShrink: 1,
-          }}
-        />
-      </View>
-    </SafeAreaView>
+    <View style={[styles.titleContainer, style]}>
+      <BackButton
+        navigation={navigation}
+        onPress={onPress}
+        style={{ position: "relative", left: 0, top: 0 }}
+        iconName={iconName}
+      />
+      <Title
+        title={text}
+        fontStyle={fontStyle}
+        containerStyle={{
+          flex: 1,
+          justifyContent: "flex-end",
+          marginBottom: 0,
+          flexShrink: 1,
+        }}
+        description={description}
+      />
+    </View>
   );
 };
 const styles = StyleSheet.create({

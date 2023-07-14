@@ -1,16 +1,16 @@
+import { FontAwesome } from "@expo/vector-icons";
 import DateTimePicker, {
   DateTimePickerEvent,
 } from "@react-native-community/datetimepicker";
-import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
 import * as Haptics from "expo-haptics";
-import { FontAwesome } from "@expo/vector-icons";
+import moment from "moment/moment";
+import { useState } from "react";
+import { StyleSheet, Text, View } from "react-native";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { Title } from "../../../../shared/Title/Title";
 import { colors } from "../../../../src/colors";
 import { isAndroid } from "../../../../src/platform";
-import moment from "moment/moment";
-import { Title } from "../../../../shared/Title/Title";
 import { descriptionTexts } from "../descriptionTexts";
-import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import SwitchDateType from "./components/SwitchDateType";
 import { roundDate } from "./helpers/roundDate";
 interface PickTimeProps {

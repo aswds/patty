@@ -1,21 +1,19 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import {
-  Keyboard,
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
-  TouchableWithoutFeedback,
   View,
   ViewStyle,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../src/colors";
 import { isAndroid } from "../../src/platform";
-import { PropsWithChildren } from "react";
 interface ScreenProps extends PropsWithChildren {
   style?: ViewStyle;
+  navigationBar?: React.ReactNode;
 }
-export const Screen = ({ children, style }: ScreenProps) => {
+export const Screen = ({ children, style, navigationBar }: ScreenProps) => {
   const insets = useSafeAreaInsets();
   return (
     <View style={styles.container}>
@@ -33,6 +31,7 @@ export const Screen = ({ children, style }: ScreenProps) => {
           pointerEvents="auto"
           keyboardShouldPersistTaps="handled"
         >
+          {navigationBar}
           {children}
         </ScrollView>
       </KeyboardAvoidingView>
@@ -44,12 +43,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     backgroundColor: colors.background,
+    paddingHorizontal: 20,
   },
   scrollViewContainer: {
     flexGrow: 1,
     justifyContent: "center",
     alignItems: "center",
-    padding: 20,
+    paddingBottom: 20,
   },
   viewStyle: {
     flex: 1,

@@ -1,7 +1,7 @@
 import React, { PropsWithChildren, useRef, useState } from "react";
 import { ScrollView, StyleSheet, View } from "react-native";
-import { colors } from "../../src/colors";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { colors } from "../../src/colors";
 
 interface ScreenProps extends PropsWithChildren {}
 

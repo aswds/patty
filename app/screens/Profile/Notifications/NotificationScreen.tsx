@@ -1,14 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { FlatList, Text, View } from "react-native";
 
-import { collection, getFirestore, onSnapshot } from "firebase/firestore";
-import { userReference } from "../../../Firebase/References";
+import { onSnapshot } from "firebase/firestore";
 import { auth } from "../../../../firebase";
+import { userReference } from "../../../Firebase/References";
+import { IUser, NotificationTypes } from "../../../Types/User";
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
-import { EventInvitation, IUser } from "../../../Types/User";
 import { addNotificationForUser } from "./firebase/addNotificationForUser";
-import { NotificationTypes } from "../../../Types/User";
 const NotificationsScreen: React.FC = () => {
   const [notifications, setNotifications] = useState<NotificationTypes[]>([]);
   const { current_user } = useTypedSelector((state) => state.user_state);

@@ -1,9 +1,9 @@
-import React, { useState } from "react";
-import { StyleSheet, View, Text, TouchableOpacity } from "react-native";
-import { TwoButtonsText } from "./Types/TwoButtonsType";
+import { ImpactFeedbackStyle, impactAsync } from "expo-haptics";
+import { useState } from "react";
+import { StyleSheet, View } from "react-native";
 import { colors } from "../../src/colors";
 import ChoiceButton from "./ChoiseButton";
-import { ImpactFeedbackStyle, impactAsync } from "expo-haptics";
+import { TwoButtonsText } from "./Types/TwoButtonsType";
 interface TwoButtonProps<T extends string> {
   onButtonUpdate: (selectedButton: T) => void;
   buttonsText: TwoButtonsText<T>;

@@ -1,19 +1,17 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
+import { MaterialCommunityIcons } from "@expo/vector-icons";
+import React, { Dispatch, SetStateAction } from "react";
 import {
   StyleSheet,
-  View,
   Text,
-  TextInput,
-  TouchableOpacity,
+  View
 } from "react-native";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { DrinkTypes, FoodProvided } from "../../../../Types/Events";
+import TwoButtons from "../../../../shared/Buttons/TwoChoiseButtons";
+import { TwoButtonsText } from "../../../../shared/Buttons/Types/TwoButtonsType";
+import { Title } from "../../../../shared/Title/Title";
 import { colors } from "../../../../src/colors";
 import { descriptionTexts } from "../descriptionTexts";
-import { Title } from "../../../../shared/Title/Title";
-import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
-import { DrinkTypes, FoodProvided } from "../../../../Types/Events";
-import { TwoButtonsText } from "../../../../shared/Buttons/Types/TwoButtonsType";
-import TwoButtons from "../../../../shared/Buttons/TwoChoiseButtons";
 
 interface FoodAndDrinkListProps {
   onUpdate: {

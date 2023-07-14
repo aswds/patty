@@ -1,5 +1,7 @@
-import React, { useCallback, useState } from "react";
+import { useCallback, useState } from "react";
 
+import { useFocusEffect, useNavigation } from "@react-navigation/native";
+import { Skeleton } from "moti/skeleton";
 import {
   Dimensions,
   StyleSheet,
@@ -7,25 +9,22 @@ import {
   TouchableOpacity,
   View,
 } from "react-native";
-import { colors } from "../../src/colors";
-import UserPicture from "./UserPicture";
-import { useFocusEffect, useNavigation } from "@react-navigation/native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
-import { IUser } from "../../Types/User";
 import { ProfileNavigationProps } from "../../Types/ProfileStack/ScreenNavigationProps";
-import { Skeleton } from "moti/skeleton";
-import Follow_UnfollowButtons from "../../screens/Profile/Follow_UnfollowButtons";
-import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { IUser } from "../../Types/User";
 import UserFollowers from "../../screens/Profile/components/HeaderComponent/UserFollowers";
+import { colors } from "../../src/colors";
+import InviteButton from "./InviteButton";
+import UserPicture from "./UserPicture";
 
 interface UserItemProps {
   _user: IUser;
+  showInviteButton?: boolean;
 }
-const UserItem = ({ _user }: UserItemProps) => {
+const UserItem = ({ _user, showInviteButton }: UserItemProps) => {
   const navigation = useNavigation<ProfileNavigationProps>();
   const [show, setShow] = useState<boolean>(true);
   const [user, setUser] = useState<IUser>(_user);
-  const { uid } = useTypedSelector((state) => state.user_state.current_user);
 
   const updateUser = (newUser: Pick<IUser, "following" | "followers">) => {
     setUser({
@@ -59,13 +58,7 @@ const UserItem = ({ _user }: UserItemProps) => {
       </View>
     );
   }
-  function YouText() {
-    return (
-      <Text style={[styles.usernameTextStyle, { fontFamily: FontFamily.bold }]}>
-        You
-      </Text>
-    );
-  }
+
   function onPress() {
     navigation.navigate("ProfileNav", {
       screen: "Profile",
@@ -80,11 +73,15 @@ const UserItem = ({ _user }: UserItemProps) => {
         <View style={styles.textContainer}>
           <View style={styles.topTextContainer}>
             <UserName show={show} />
-            <UserFollowers
-              user={user}
-              followersText="FLWRS"
-              followingText="FLWNG"
-            />
+            {showInviteButton ? (
+              <InviteButton partyId={_user.events.onEvent} userId={_user.uid} />
+            ) : (
+              <UserFollowers
+                user={user}
+                followersText="FLWRS"
+                followingText="FLWNG"
+              />
+            )}
             {/* {user.uid != uid ? (
               <Follow_UnfollowButtons user={user} updateUser={updateUser} />
             ) : (

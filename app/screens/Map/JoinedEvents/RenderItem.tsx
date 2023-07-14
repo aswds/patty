@@ -1,8 +1,6 @@
-import React from "react";
+import { TouchableOpacity, View } from "react-native";
 import { IEvent } from "../../../Types/Events";
 import { Event } from "../../../shared/Events/Event";
-import { TouchableOpacity, View } from "react-native";
-import TagList from "../PartyCreationScreens/components/TagList";
 import Tags from "../PartyCreationScreens/components/Tags";
 
 interface RenderItemProps {

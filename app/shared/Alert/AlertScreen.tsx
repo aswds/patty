@@ -20,30 +20,28 @@ const AlertScreen: React.FC<AlertScreenProps> = ({
   children,
 }) => {
   return (
-    <View testID="alert">
-      <Modal
-        animationType="fade"
-        transparent={true}
-        visible={showModal}
-        onRequestClose={hideModal}
-        style={{ justifyContent: "center" }}
-      >
-        <Pressable
-          style={[
-            !isAndroid ? styles.iOSBackdrop : styles.androidBackdrop,
-            styles.backdrop,
-          ]}
-          onPress={hideModal}
-        />
+    <Modal
+      animationType="fade"
+      transparent={true}
+      visible={showModal}
+      onRequestClose={hideModal}
+      style={{ justifyContent: "center" }}
+    >
+      <Pressable
+        style={[
+          !isAndroid ? styles.iOSBackdrop : styles.androidBackdrop,
+          styles.backdrop,
+        ]}
+        onPress={hideModal}
+      />
 
-        <SafeAreaView
-          style={{ flex: 1, justifyContent: "center" }}
-          pointerEvents="box-none"
-        >
-          {children}
-        </SafeAreaView>
-      </Modal>
-    </View>
+      <View
+        style={{ flex: 1, justifyContent: "center" }}
+        pointerEvents="box-none"
+      >
+        {children}
+      </View>
+    </Modal>
   );
 };
 

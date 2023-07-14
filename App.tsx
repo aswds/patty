@@ -1,30 +1,23 @@
-import { StatusBar, StyleSheet, View } from "react-native";
-import { useFontsLoad } from "./app/hooks/useFontsLoad";
-import { ProvidedNavigator } from "./app/navigation/Navigators/Authorization/ProvidedNavigator";
-import { Asset } from "expo-asset";
-import { StrictMode, useCallback, useEffect, useState } from "react";
-import * as SplashScreen from "expo-splash-screen";
 import { BottomSheetModalProvider } from "@gorhom/bottom-sheet";
-import { getUserLocation } from "./app/shared/GetLocationFunctions/getUserLocation";
-import React from "react";
+import { Asset } from "expo-asset";
+import * as SplashScreen from "expo-splash-screen";
+import React, { useCallback, useEffect, useState } from "react";
+import { StatusBar, StyleSheet, View } from "react-native";
 import {
   SafeAreaProvider,
   initialWindowMetrics,
 } from "react-native-safe-area-context";
-import { isDarkTheme } from "./app/src/theme";
-import useUserLocation from "./app/hooks/useUserLocation/useUserLocation";
-import { userReference } from "./app/Firebase/References";
-import { getAuth } from "firebase/auth";
-import { updateUserLocation } from "./app/redux/reducers/User";
-import { getAddress } from "./app/shared/GetLocationFunctions/getAddress";
-import { useActions } from "./app/hooks/useActions";
-import { IFullAddress } from "./app/Types/Events";
-import { Provider, useDispatch } from "react-redux";
+import { Provider } from "react-redux";
+import { useFontsLoad } from "./app/hooks/useFontsLoad";
+import useNotifications from "./app/hooks/useNotifications";
+import { ProvidedNavigator } from "./app/navigation/Navigators/Authorization/ProvidedNavigator";
 import store from "./app/redux/store/store";
+import { isDarkTheme } from "./app/src/theme";
 // Setting splash screen
 SplashScreen.preventAutoHideAsync();
 export default function App() {
   const { isLoaded, error } = useFontsLoad();
+  useNotifications();
   let cacheResources = async () => {
     const images = [
       require("./assets/logo.png"),
@@ -61,13 +54,13 @@ export default function App() {
       // loading its initial state and rendering its first pixels. So instead,
       // we hide the splash screen once we know the root view has already
       // performed layout.
-      SplashScreen.hideAsync();
     }
   }, [appIsReady]);
 
   if (!appIsReady || !isLoaded) {
     return null;
   }
+
   return (
     <SafeAreaProvider initialMetrics={initialWindowMetrics}>
       <View style={styles.container} onLayout={onLayoutRootView}>

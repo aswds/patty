@@ -1,88 +1,76 @@
-import { UserLocation } from "./../../Types/User";
+import * as Location from "expo-location";
+import { getDocs } from "firebase/firestore";
 import { useEffect, useState } from "react";
-import { getUserLocation } from "../../shared/GetLocationFunctions/getUserLocation";
-import { getDocs, onSnapshot } from "firebase/firestore";
-import { getAddress } from "../../shared/GetLocationFunctions/getAddress";
-import { ICoordinates, IEvent, IFullAddress } from "../../Types/Events";
-import { LocationObject } from "expo-location";
 import { Alert } from "react-native";
 import { eventsReference } from "../../Firebase/References";
-import { useActions } from "../useActions";
-import { useAppDispatch } from "../useAppDispatch";
-import { updateUserLocation } from "../../redux/reducers/User";
+import { IEvent } from "../../Types/Events";
+import { getAddress } from "../../shared/GetLocationFunctions/getAddress";
+
+interface UserLocation {
+  coords: {
+    latitude: number;
+    longitude: number;
+  };
+  city: string | undefined;
+}
+
+// export const useUserLocation = (): [UserLocation, boolean, Error | null] => {
+//   const [location, setLocation] = useState<UserLocation>({
+//     coords: { latitude: 0, longitude: 0 },
+//     city: undefined,
+//   });
+//   const [isLoading, setIsLoading] = useState(true);
+//   const [error, setError] = useState<Error | null>(null);
+
+//   useEffect(() => {
+//     const fetchUserLocation = async () => {
+//       try {
+//         const { coords } = await Location.getCurrentPositionAsync({});
+//         const { latitude, longitude } = coords;
+
+//         setLocation((prevLocation) => ({
+//           ...prevLocation,
+//           coords: { latitude, longitude },
+//         }));
+
+//         const address = await getAddress(latitude, longitude);
+//         const city =
+//           address?.city ?? "We're having trouble finding your location.😕";
+//         setLocation({
+//           city: city!,
+//           labelToFindParties: address?.labelToFindParties,
+//         });
+//         setIsLoading(false);
+//       } catch (error) {
+//         setError(error);
+//         setIsLoading(false);
+//       }
+//     };
+
+//     fetchUserLocation();
+//   }, []);
+
+//   return [location, isLoading, error];
+// };
 
 /**
- * Get all parties in user's city
+ * Get all parties in the user's city
  * @param userLocation
  * @returns {Promise<IEvent[]>}
  */
 export async function fetchCityParties(
   userLocation: string
 ): Promise<IEvent[]> {
-  return new Promise(async (resolve, reject) => {
+  try {
     const collectionRef = eventsReference(userLocation, "Public");
-    await getDocs(collectionRef).then(
-      (querySnapshot) => {
-        if (querySnapshot.docs.length === 0)
-          reject(
-            new Error(
-              "Sadly, no events we're found :(" +
-                "\nBecome the first who gonna create one 👽"
-            )
-          );
-        else resolve(querySnapshot.docs.map((e) => e.data() as IEvent));
-      },
-      (error) => {
-        Alert.alert(error.message);
-        reject(Error("Something went wrong 👽"));
-      }
-    );
-  });
-}
-
-export default function useUserLocation() {
-  // setUserLocation?: Dispatch<SetStateAction<ICoordinates | undefined>>
-  const [userLocation, setUserLocation] = useState<ICoordinates>();
-  const [errorMsg, setErrorMsg] = useState<string>();
-  const [city, setCity] = useState<string>();
-  const [isLocationLoading, setIsLoading] = useState<boolean>(true);
-  const dispatch = useAppDispatch();
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        setIsLoading(true);
-        await getUserLocation().then(async (res: LocationObject) => {
-          setUserLocation({
-            latitude: res.coords.latitude,
-            latitudeDelta: 0,
-            longitude: res.coords.longitude,
-            longitudeDelta: -0.01,
-          });
-
-          await getAddress(res.coords.latitude, res.coords.longitude).then(
-            (r: IFullAddress) => {
-              setCity(r?.city);
-              dispatch(
-                updateUserLocation({
-                  city: r?.city,
-                  location: {
-                    latitude: res.coords.latitude,
-                    latitudeDelta: 0,
-                    longitude: res.coords.longitude,
-                    longitudeDelta: -0.01,
-                  },
-                })
-              );
-              setIsLoading(false);
-            }
-          );
-        });
-      } catch (e: any) {
-        setErrorMsg(e);
-      }
+    const querySnapshot = await getDocs(collectionRef);
+    if (querySnapshot.docs.length === 0) {
+      throw new Error(
+        "Sadly, no events were found :( Become the first to create one 👽"
+      );
     }
-    fetchData();
-  }, []);
-
-  return { userLocation, city, errorMsg, isLocationLoading };
+    return querySnapshot.docs.map((e) => e.data() as IEvent);
+  } catch (error) {
+    throw new Error("Something went wrong 👽");
+  }
 }

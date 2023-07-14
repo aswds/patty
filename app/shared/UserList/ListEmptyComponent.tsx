@@ -1,5 +1,6 @@
 import React from "react";
 
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {
   StyleSheet,
   Text,
@@ -10,9 +11,6 @@ import {
 } from "react-native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import { colors } from "../../src/colors";
-import { MaterialCommunityIcons } from "@expo/vector-icons";
-import Loader from "../Loaders/Loader";
-import ListLoader from "../Loaders/ListLoader";
 
 interface ListEmptyComponentProps {
   title: string;
@@ -36,7 +34,7 @@ const ListEmptyComponent = ({
   textProps,
 }: ListEmptyComponentProps) => {
   return (
-    <View style={(styles.container, style)}>
+    <View style={[styles.container, style]}>
       <View style={styles.iconContainer}>
         {icon ? (
           icon
@@ -53,7 +51,7 @@ const ListEmptyComponent = ({
           {title}
         </Text>
       </View>
-      <View style={buttonContainer}>{button}</View>
+      {button && <View style={buttonContainer}>{button}</View>}
     </View>
   );
 };

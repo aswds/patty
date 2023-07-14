@@ -1,7 +1,7 @@
 import { FlatList, ScrollView, StyleSheet, Text, View } from "react-native";
 import React, { FC, useEffect, useState } from "react";
 import UserList from "../../../shared/UserList/UserList";
-import { fetchGuests } from "../../../shared/UserList/fetchGuests";
+import { fetchUsers } from "../../../shared/UserList/fetchGuests";
 import { IUser } from "../../../Types/User";
 import UserItem from "../../../shared/UserList/UserItem";
 import { connectStorageEmulator } from "firebase/storage";
@@ -16,7 +16,7 @@ const Mingles: FC<MinglesProps> = ({ guestsUIDs }) => {
   const [guests, setGuests] = useState<IUser[]>([]);
   const { current_user } = useTypedSelector((state) => state.user_state);
   useEffect(() => {
-    fetchGuests(guestsUIDs).then((guests) => {
+    fetchUsers(guestsUIDs).then((guests) => {
       setGuests(guests);
     });
   }, []);

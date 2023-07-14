@@ -23,4 +23,6 @@ export type ProfileNavigatorParamList = {
   ChangeUsername: {
     username?: IUser["username"];
   };
+  ChangePassword: undefined;
+  VerifyEmail: undefined;
 };

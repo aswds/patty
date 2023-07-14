@@ -1,20 +1,9 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
-import React, { useEffect, useRef, useState } from "react";
-import { Screen } from "../../../../shared/Screen/Screen";
-import NavigationBar from "../../../Map/PartyCreationScreens/NavigationBar";
-import { ProfileStackScreenNavigationProps } from "../../../../Types/ProfileStack/ScreenNavigationProps";
-import { ScreenCreateParty } from "../../../../shared/Screen/ScreenCreateParty";
-import Input from "../../../../shared/Input/Input";
-import { colors } from "../../../../src/colors";
+import { useRef, useState } from "react";
+import { StyleSheet, Text, TextInput } from "react-native";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
-import Button from "../../../../shared/Buttons/Button";
-import CustomAlert from "../../../../shared/Alert/CustomAlert";
-import BigButton from "../../../Authorization/components/BigButton";
-import { WebViewNavigationEvent } from "react-native-webview/lib/WebViewTypes";
-import { NativeStackNavigationEventMap } from "@react-navigation/native-stack";
-import { changeUser } from "./changeUser";
+import { ProfileStackScreenNavigationProps } from "../../../../Types/ProfileStack/ScreenNavigationProps";
+import { colors } from "../../../../src/colors";
 import ChangeScreen from "../../Layout/ChangeScreen";
-import { IUser } from "../../../../Types/User";
 const ChangeBio = ({
   navigation,
   route,

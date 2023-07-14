@@ -1,4 +1,4 @@
 export const image = {
-  logo: require("./logo2.png"),
+  logo: require("./logo23.png"),
   noImage: require("./images/noImage-01.png"),
 };

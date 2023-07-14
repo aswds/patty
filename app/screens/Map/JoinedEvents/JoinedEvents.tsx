@@ -1,17 +1,16 @@
-import { FlatList, RefreshControl, StyleSheet, Text, View } from "react-native";
-import React, { useEffect, useState } from "react";
 import { useRoute } from "@react-navigation/native";
-import { JoinedEventsRouteProps } from "../../../Types/MapStack/RouteTypes";
-import { fetch_joined_events } from "../../../redux/actions/Events";
-import { IEvent } from "../../../Types/Events";
-import RenderItem from "./RenderItem";
-import { Region } from "react-native-maps";
-import { Title } from "../../../shared/Title/Title";
-import { colors } from "../../../src/colors";
+import { useEffect, useState } from "react";
+import { FlatList, StyleSheet, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import ListEmptyComponent from "../../../shared/UserList/ListEmptyComponent";
+import { IEvent } from "../../../Types/Events";
+import { JoinedEventsRouteProps } from "../../../Types/MapStack/RouteTypes";
 import { MapStackScreenProps } from "../../../Types/MapStack/ScreenNavigationProps";
+import { fetch_joined_event } from "../../../redux/actions/Events";
 import CustomRefreshControl from "../../../shared/RefreshControl/RefreshControl";
+import { Title } from "../../../shared/Title/Title";
+import ListEmptyComponent from "../../../shared/UserList/ListEmptyComponent";
+import { colors } from "../../../src/colors";
+import RenderItem from "./RenderItem";
 
 const JoinedEvents = ({ navigation }: MapStackScreenProps<"JoinedEvents">) => {
   const route = useRoute<JoinedEventsRouteProps>();
@@ -20,7 +19,7 @@ const JoinedEvents = ({ navigation }: MapStackScreenProps<"JoinedEvents">) => {
   const [isLoading, setIsLoading] = useState<boolean>(true);
   const insets = useSafeAreaInsets();
   useEffect(() => {
-    fetch_joined_events(route.params?.city)
+    fetch_joined_event(route.params?.city)
       .then((events) => {
         setJoinedEvents(events);
         setIsLoading(false);
@@ -69,10 +68,7 @@ const JoinedEvents = ({ navigation }: MapStackScreenProps<"JoinedEvents">) => {
         data={joinedEvents}
         renderItem={renderItem}
         ListEmptyComponent={
-          <ListEmptyComponent
-            title="It looks like there's no one here"
-            isLoading={!joinedEvents && isLoading}
-          />
+          <ListEmptyComponent title="It looks like there's no one here" />
         }
         refreshControl={
           <CustomRefreshControl

@@ -1,7 +1,6 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
-import TagItem from "../../../../shared/Tag/TagItem";
+import { StyleSheet, View } from "react-native";
 import { IEvent } from "../../../../Types/Events";
+import TagItem from "../../../../shared/Tag/TagItem";
 
 interface Props {
   tags: IEvent["tags"];

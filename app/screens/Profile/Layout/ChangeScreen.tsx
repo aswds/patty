@@ -1,17 +1,16 @@
-import { StyleSheet, Text, TextInput, View } from "react-native";
 import React, {
-  MutableRefObject,
   PropsWithChildren,
   RefObject,
   useEffect,
   useState,
 } from "react";
-import { ScreenCreateParty } from "../../../shared/Screen/ScreenCreateParty";
-import NavigationBar from "../../Map/PartyCreationScreens/NavigationBar";
-import CustomAlert from "../../../shared/Alert/CustomAlert";
+import { StyleSheet, TextInput } from "react-native";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
+import CustomAlert from "../../../shared/Alert/CustomAlert";
+import BigButton from "../../../shared/Buttons/BigButton";
+import { ScreenCreateParty } from "../../../shared/Screen/ScreenCreateParty";
 import { colors } from "../../../src/colors";
-import BigButton from "../../Authorization/components/BigButton";
+import NavigationBar from "../../Map/PartyCreationScreens/NavigationBar";
 
 interface ChangeScreenProps extends PropsWithChildren {
   navigation: any;

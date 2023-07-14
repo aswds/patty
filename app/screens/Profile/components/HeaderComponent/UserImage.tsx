@@ -1,9 +1,9 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { Image, ImageStyle, StyleProp, StyleSheet, View } from "react-native";
 import { Skeleton } from "moti/skeleton";
-import CurrentUserButtons from "../CurrentUserButtons";
-import { IUser } from "../../../../Types/User";
+import { Dispatch, SetStateAction } from "react";
+import { Image, ImageStyle, StyleProp, StyleSheet, View } from "react-native";
 import { image } from "../../../../../assets/images";
+import { IUser } from "../../../../Types/User";
+import CurrentUserButtons from "../CurrentUserButtons";
 
 interface UserImageProps {
   Loader: {

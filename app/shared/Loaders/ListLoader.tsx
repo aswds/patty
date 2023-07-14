@@ -1,13 +1,26 @@
-import { ActivityIndicator, StyleSheet, Text, View } from "react-native";
-import React from "react";
+import {
+  ActivityIndicator,
+  StyleSheet,
+  Text,
+  TextStyle,
+  View,
+  ViewStyle,
+} from "react-native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import { colors } from "../../src/colors";
 
-const ListLoader = () => {
+interface ListLoaderProps {
+  style?: ViewStyle;
+  textStyle?: TextStyle;
+  text?: string;
+  size?: "small" | "large";
+}
+
+const ListLoader = ({ style, textStyle, text, size }: ListLoaderProps) => {
   return (
-    <View style={styles.loaderContainer}>
-      <ActivityIndicator size={"large"} color={colors.accentColor} />
-      <Text style={styles.textStyle}>Loading</Text>
+    <View style={[styles.loaderContainer, style]}>
+      <ActivityIndicator size={size ?? "large"} color={colors.accentColor} />
+      <Text style={[styles.textStyle, textStyle]}>{text ?? "Loading"}</Text>
     </View>
   );
 };

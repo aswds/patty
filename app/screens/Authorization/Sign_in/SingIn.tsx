@@ -3,7 +3,7 @@ import React, { useState } from "react";
 import { Keyboard, View } from "react-native";
 import { colors } from "../../../src/colors";
 import { BackButton } from "../../../shared/Buttons/BackButton";
-import Button from "../components/BigButton";
+import Button from "../../../shared/Buttons/BigButton";
 import Input from "../../../shared/Input/Input";
 import { Logo } from "../components/Logo";
 import CustomAlert from "../CustomAlert";
@@ -58,10 +58,11 @@ const SignInScreen = ({
     <>
       <Screen>
         <BackButton navigation={navigation} />
-        <View style={styles.logoContainer}>
-          <Logo />
-        </View>
+
         <View style={styles.loginContainer}>
+          <View style={styles.logoContainer}>
+            <Logo />
+          </View>
           <View style={styles.innerText}>
             <Input
               isValid={email.isValid}
@@ -76,7 +77,7 @@ const SignInScreen = ({
               }}
               defaultValue={userLogin}
               autoCapitalize="none"
-              style={{ height: 60 }}
+              style={{ height: 60, width: "100%" }}
             />
 
             <Input
@@ -91,29 +92,27 @@ const SignInScreen = ({
               }}
               defaultValue={userPassword}
               inputStyle={styles.inputField}
-              style={{ height: 60 }}
+              style={{ height: 60, width: "100%" }}
             />
             <ForgotPassword styles={styles} navigation={navigation} />
           </View>
         </View>
-        <View style={styles.styledButtonContainer}>
-          <Button
-            testID="sign-in-button"
-            onPress={() => {
-              user_signIn(
-                setEmail,
-                setPassword,
-                setErrorMsg,
-                setShowModal,
-                userLogin,
-                userPassword
-              );
-            }}
-            style={styles.styledButtonStyle}
-            textStyle={styles.styledButtonTextStyle}
-            title={"Sign in"}
-          />
-        </View>
+        <Button
+          testID="sign-in-button"
+          onPress={() => {
+            user_signIn(
+              setEmail,
+              setPassword,
+              setErrorMsg,
+              setShowModal,
+              userLogin,
+              userPassword
+            );
+          }}
+          style={styles.styledButtonStyle}
+          textStyle={styles.styledButtonTextStyle}
+          title={"Sign in"}
+        />
       </Screen>
 
       <CustomAlert

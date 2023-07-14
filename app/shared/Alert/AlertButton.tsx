@@ -23,10 +23,7 @@ const AlertButton: React.FC<AlertButtonProps> = ({
   textStyle,
 }) => {
   return (
-    <TouchableOpacity
-      style={[styles.button, { borderLeftWidth: style === "cancel" ? 1 : 0 }]}
-      onPress={onPress}
-    >
+    <TouchableOpacity style={[styles.button, {}]} onPress={onPress}>
       <Text
         style={[
           style === "ok"
