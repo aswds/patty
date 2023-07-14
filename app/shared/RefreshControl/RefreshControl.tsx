@@ -1,6 +1,5 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { RefreshControl, SafeAreaView, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Dispatch, SetStateAction } from "react";
+import { RefreshControl } from "react-native";
 import { colors } from "../../src/colors";
 import { onRefresh } from "./refreshControlFuncs";
 
@@ -15,13 +14,11 @@ const CustomRefreshControl = ({
   refreshing,
   onRefreshFunction,
 }: CustomRefreshControlProps) => {
-  const insets = useSafeAreaInsets();
   return (
     <RefreshControl
       refreshing={refreshing}
       onRefresh={onRefreshFunction ?? onRefresh.bind(null, setRefreshing)}
       tintColor={colors.buttonText}
-      style={{ alignItems: "center", justifyContent: "center" }}
     />
   );
 };

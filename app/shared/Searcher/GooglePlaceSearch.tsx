@@ -1,17 +1,14 @@
-import React, { SetStateAction, useState } from "react";
+import { useNavigation } from "@react-navigation/native";
 import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import {
   GooglePlaceDetail,
   GooglePlacesAutocomplete,
 } from "react-native-google-places-autocomplete";
-import { colors } from "../../src/colors";
-import { BackButton } from "../Buttons/BackButton";
-import { useNavigation } from "@react-navigation/native";
-import { PartyCreationNavigationProps } from "../../Types/MapStack/ScreenNavigationProps";
 import { FontFamily } from "../../../assets/fonts/Fonts";
+import { PartyCreationNavigationProps } from "../../Types/MapStack/ScreenNavigationProps";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import NavigationBar from "../../screens/Map/PartyCreationScreens/NavigationBar";
-import { useUserLocation } from "../../hooks/useUserLocation/useUserLocation";
+import { colors } from "../../src/colors";
 interface GooglePlaceSearchProps {
   style: StyleProp<ViewStyle>;
   regionUpdate: (region: GooglePlaceDetail["geometry"]["location"]) => void;
@@ -20,13 +17,15 @@ export default function GooglePlaceSearch({
   style,
   regionUpdate,
 }: GooglePlaceSearchProps) {
-  const [location] = useUserLocation();
+  const location = useTypedSelector(
+    (state) => state.user_state.current_user.userLocation?.coords
+  );
   const currentLocation = {
     description: "📍\tCurrent location",
     geometry: {
       location: {
-        lat: location.coords.latitude,
-        lng: location.coords.longitude,
+        lat: location?.latitude,
+        lng: location?.longitude,
       },
     },
   };
@@ -59,8 +58,7 @@ export default function GooglePlaceSearch({
           }}
           // styles={searchBarStyle}
           onPress={(data, details) => regionUpdate(details?.geometry.location!)}
-          onFail={(error) => console.log(error)}
-          onNotFound={() => console.log("no results")}
+          onFail={(error) => <></>}
           enablePoweredByContainer={false}
           styles={searchBarStyle}
           predefinedPlaces={[currentLocation]}

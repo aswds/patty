@@ -1,16 +1,14 @@
-import React, { Dispatch, SetStateAction, useEffect } from "react";
+import { Ionicons } from "@expo/vector-icons";
+import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
+import React from "react";
 import {
-  Keyboard,
   StyleSheet,
-  TextInput,
   TextInputProps,
   TouchableOpacity,
   View,
   ViewStyle,
 } from "react-native";
-import { Ionicons } from "@expo/vector-icons";
 import { colors } from "../../src/colors";
-import { BottomSheetTextInput } from "@gorhom/bottom-sheet";
 interface SearchBarProps extends TextInputProps {
   icon?: React.ReactNode;
   containerStyle: ViewStyle;
@@ -34,7 +32,6 @@ export default function SearchBar({
         onBlur={() => {
           snapTo(1);
         }}
-      
       />
       <TouchableOpacity style={{}} onPress={onPressClear}>
         <Ionicons name="close-circle" size={24} color={colors.iconColor} />
