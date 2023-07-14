@@ -1,19 +1,18 @@
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import Screen from "../../../shared/Screen/Screen_MappingChildren";
 import Location from "./components/Location";
 import CustomButton from "./components/LocationAddButton";
 
-import NavigationBar from "./NavigationBar";
-import { PartyPlace, ILocation } from "../../../Types/Events";
-import PickTime from "./PickTime/PickTime";
-import PartyPlaces from "./Place/PartyPlace";
+import { ILocation, PartyPlace } from "../../../Types/Events";
 import { PartyCreationStackScreenProps } from "../../../Types/MapStack/ScreenNavigationProps";
-import NextButton from "../../../shared/Buttons/NextButton";
 import { useActions } from "../../../hooks/useActions";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
-import { AlertConfig } from "../helpers/pickAnAlertType";
 import CustomAlert from "../../../shared/Alert/CustomAlert";
-import { useUserLocation } from "../../../hooks/useUserLocation/useUserLocation";
+import NextButton from "../../../shared/Buttons/NextButton";
+import { AlertConfig } from "../helpers/pickAnAlertType";
+import NavigationBar from "./NavigationBar";
+import PickTime from "./PickTime/PickTime";
+import PartyPlaces from "./Place/PartyPlace";
 
 const LocationAndTime = ({
   route,
@@ -47,7 +46,10 @@ const LocationAndTime = ({
       region,
     });
   }, [route.params.region]);
-  const [userLocation] = useUserLocation();
+  const userLocation = useTypedSelector(
+    (state) => state.user_state.current_user.userLocation
+  );
+
   const onPress = () => {
     if (location && time) {
       createEventsLocationAndTimeUpdate({
@@ -74,16 +76,18 @@ const LocationAndTime = ({
     <Screen>
       <NavigationBar navigation={navigation} text={"Location and time"} />
       <Location
-        userLocation={userLocation.coords}
+        userLocation={userLocation?.coords}
         locationAddButton={
           <CustomButton
             style={{ width: "100%" }}
-            onPress={() =>
-              navigation.navigate("ChooseLocation", {
-                userLocation: userLocation.coords,
-                city: userLocation.city,
-              })
-            }
+            onPress={() => {
+              if (userLocation?.city) {
+                navigation.navigate("ChooseLocation", {
+                  userLocation: userLocation.coords,
+                  city: userLocation.city,
+                });
+              }
+            }}
             title="Select a location"
           />
         }

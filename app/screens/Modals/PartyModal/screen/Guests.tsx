@@ -1,11 +1,11 @@
-import React, { useCallback, useEffect, useState } from "react";
-import UserList from "../../../../shared/UserList/UserList";
 import { useFocusEffect } from "@react-navigation/native";
+import { useCallback, useState } from "react";
+import { GuestsScreenNavigationProps } from "../../../../Types/MapStack/ScreenNavigationProps";
 import { IUser } from "../../../../Types/User";
+import UserItem from "../../../../shared/UserList/UserItem";
+import UserList from "../../../../shared/UserList/UserList";
 import Screen from "../components/Screen";
 import { fetchGuests } from "../fetchGuests";
-import { GuestsScreenNavigationProps } from "../../../../Types/MapStack/ScreenNavigationProps";
-import UserItem from "../../../../shared/UserList/UserItem";
 
 export default function Guests({
   route,

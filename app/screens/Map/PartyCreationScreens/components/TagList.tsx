@@ -1,14 +1,14 @@
-import React, { Dispatch, SetStateAction } from "react";
-import { KeyboardAvoidingView, StyleSheet, View } from "react-native";
-import { colors } from "../../../../src/colors";
-import TagAddButton from "./TagAddButton";
-import TagItem from "../../../../shared/Tag/TagItem";
-import * as Haptics from "expo-haptics";
-import { Title } from "../../../../shared/Title/Title";
 import { AntDesign } from "@expo/vector-icons";
-import { descriptionTexts } from "../descriptionTexts";
+import * as Haptics from "expo-haptics";
+import { Dispatch, SetStateAction } from "react";
+import { StyleSheet, View } from "react-native";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { IEvent } from "../../../../Types/Events";
+import TagItem from "../../../../shared/Tag/TagItem";
+import { Title } from "../../../../shared/Title/Title";
+import { colors } from "../../../../src/colors";
+import { descriptionTexts } from "../descriptionTexts";
+import TagAddButton from "./TagAddButton";
 
 interface Props {
   setTags: Dispatch<SetStateAction<IEvent["tags"]>>;

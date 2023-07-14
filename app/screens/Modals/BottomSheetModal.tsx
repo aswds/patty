@@ -15,7 +15,6 @@ import BottomSheet, {
 import { ModalProps } from "./Types/Modals";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../src/colors";
-import { useSharedValue } from "react-native-reanimated";
 interface BottomSheetModalProps extends PropsWithChildren, ModalProps {}
 
 const BottomSheetModal: React.FC<BottomSheetModalProps> = ({

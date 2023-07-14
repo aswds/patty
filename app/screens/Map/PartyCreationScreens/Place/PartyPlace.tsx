@@ -1,11 +1,11 @@
-import React, { Dispatch, SetStateAction, useState } from "react";
-import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
+import { Entypo } from "@expo/vector-icons";
+import React, { useState } from "react";
+import { StyleSheet, View } from "react-native";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
 import { PartyPlace } from "../../../../Types/Events";
 import ChoiceButton from "../../../../shared/Buttons/ChoiseButton";
-import { FontFamily } from "../../../../../assets/fonts/Fonts";
-import { colors } from "../../../../src/colors";
 import { Title } from "../../../../shared/Title/Title";
-import { Entypo, MaterialIcons } from "@expo/vector-icons";
+import { colors } from "../../../../src/colors";
 import { descriptionTexts } from "../descriptionTexts";
 
 interface PartyPlaceProps {

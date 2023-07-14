@@ -1,21 +1,14 @@
-import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
-import React from "react";
-import { colors } from "../../../../src/colors";
-import { addPartyOnMap } from "../Firebase/addPartyOnMap";
 import { useNavigation } from "@react-navigation/native";
-import { FontFamily } from "../../../../../assets/fonts/Fonts";
-import { IEvent } from "../../../../Types/Events";
-import { MapNavigationProps } from "../../../../Types/MapStack/ScreenNavigationProps";
-import { joinEvent } from "../../Firebase/fetchUserJoinedEvents";
-import { AdditionalInformationData } from "../../../../redux/reducers/CreateEvent";
-import { useTypedSelector } from "../../../../hooks/useTypedSelector";
-import { useActions } from "../../../../hooks/useActions";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Timestamp, serverTimestamp } from "firebase/firestore";
-import {
-  AppNavigatorNavigationProp,
-  AppNavigatorParamList,
-} from "../../../../Types/AppNavigator/AppNavigator";
+import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { AppNavigatorNavigationProp } from "../../../../Types/AppNavigator/AppNavigator";
+import { useActions } from "../../../../hooks/useActions";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { AdditionalInformationData } from "../../../../redux/reducers/CreateEvent";
+import { colors } from "../../../../src/colors";
+import { joinEvent } from "../../Firebase/fetchUserJoinedEvents";
+import { addPartyOnMap } from "../Firebase/addPartyOnMap";
 
 interface CreatePartyButtonProps {
   data: AdditionalInformationData;
@@ -34,8 +27,9 @@ export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
 
   async function onPress() {
     if (allNecessaryDataPresent) {
-      await addPartyOnMap(_data);
-      await joinEvent(_data);
+      await addPartyOnMap(_data).then(async () => {
+        await joinEvent(_data);
+      });
 
       navigation.navigate("MapNav", {
         screen: "Map",
@@ -47,7 +41,7 @@ export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
           partyData: _data,
         },
       });
-      // clearCreateEvents();
+      clearCreateEvents();
     } else {
       Alert.alert("Please make sure you entered all data.");
     }

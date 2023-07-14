@@ -1,8 +1,7 @@
-import React, { Dispatch, SetStateAction, useRef, useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
-import { Swipeable } from "react-native-gesture-handler";
-import { colors } from "../../../../src/colors";
+import React from "react";
+import { StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FontFamily } from "../../../../../assets/fonts/Fonts";
+import { colors } from "../../../../src/colors";
 
 interface ListItemProps {
   text: string;
@@ -26,13 +25,7 @@ const ListItem: React.FC<ListItemProps> = ({ text, onDelete, index, icon }) => {
   };
 
   return (
-    // <Swipeable
-    //   ref={swipeableRef}
-    //   renderRightActions={renderRightActions}
-    //   overshootLeft={true}
-    //   onEnded={() => console.log("f")}
-    //   onSwipeableWillClose={() => console.log("ff")}
-    // >
+    
     <View
       style={styles.listItem}
       // onPress={() => setShowDelete(!showDelete)}

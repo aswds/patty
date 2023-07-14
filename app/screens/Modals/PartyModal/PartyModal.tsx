@@ -75,7 +75,7 @@ const PartyModal: React.FC<PartyMarkerModalProps> = ({
     onLeaveCurrentEvent();
     await deleteParty(
       markerInfo.partyID,
-      markerInfo.location.fullAddressInfo?.subregion!,
+      markerInfo.location.fullAddressInfo?.partyLocation!,
       markerInfo.party_access
     ).then(() => {
       closeModal();

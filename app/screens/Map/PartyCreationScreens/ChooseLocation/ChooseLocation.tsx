@@ -11,23 +11,22 @@ import MapView, { PROVIDER_DEFAULT } from "react-native-maps";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { ICoordinates, IFullAddress } from "../../../../Types/Events";
 import { PartyCreationStackScreenProps } from "../../../../Types/MapStack/ScreenNavigationProps";
-import { UserLocation } from "../../../../Types/User";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { getAddress } from "../../../../shared/GetLocationFunctions/getAddress";
 import GooglePlaceSearch from "../../../../shared/Searcher/GooglePlaceSearch";
 import AddressTitle from "./components/AddressTitle";
 import ChooseLocationButton from "./components/ChooseLocationButton";
 import FakeMarker from "./components/Marker";
 
-export default function ChooseLocation({
-  route,
-  navigation,
-}: PartyCreationStackScreenProps<"ChooseLocation">) {
+export default function ChooseLocation({}: PartyCreationStackScreenProps<"ChooseLocation">) {
   const [region, setRegion] = useState<ICoordinates>();
   const [addressInfo, setAddressInfo] = useState<IFullAddress | null>();
-  const [city, setCity] = useState<UserLocation["city"]>(route.params?.city);
-
+  const { userLocation } = useTypedSelector(
+    (state) => state.user_state.current_user
+  );
   const mapRef = useRef<MapView>(null);
   const insets = useSafeAreaInsets();
+
   function onRegionChange(region: ICoordinates) {
     setRegion(region);
     getAddress(region.latitude, region.longitude)
@@ -35,9 +34,8 @@ export default function ChooseLocation({
         if (!_.isEmpty(res)) {
           setAddressInfo({
             ...res!,
-            label: [res.country, res.subregion, res.street, res.streetNumber]
-              .filter((value) => value !== undefined && value !== null)
-              .join(", "),
+            label: res.label,
+            partyLocation: `${res?.countryName}_${res?.county}_${res?.city}`,
           });
         }
       })
@@ -73,13 +71,17 @@ export default function ChooseLocation({
           <FakeMarker />
           <AddressTitle
             Address={addressInfo?.label}
-            showOutsideCityError={addressInfo?.subregion != city}
+            showOutsideCityError={
+              addressInfo?.partyLocation != userLocation?.partyLocation
+            }
           />
 
           <ChooseLocationButton
             region={region}
             fullAddress={addressInfo}
-            outsideCity={addressInfo?.subregion != city}
+            outsideCity={
+              addressInfo?.partyLocation != userLocation?.partyLocation
+            }
           />
         </View>
       </TouchableWithoutFeedback>

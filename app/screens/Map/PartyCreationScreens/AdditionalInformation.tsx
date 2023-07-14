@@ -1,32 +1,32 @@
-import { StyleSheet, Text, View } from "react-native";
-import React, { useState } from "react";
+import { useState } from "react";
+import { StyleSheet, View } from "react-native";
 import {
   DrinkTypes,
   FoodProvided,
   GiftsRequireTextTypes,
   IEvent,
 } from "../../../Types/Events";
-import FoodAndDrinkList from "./FoodAndDrinks/FoodAndDrinks";
-import Gifts from "./Gifts/Gifts";
-import { Screen } from "../../../shared/Screen/Screen";
-import NavigationBar from "./NavigationBar";
 import { PartyCreationStackScreenProps } from "../../../Types/MapStack/ScreenNavigationProps";
-import CreatePartyButton from "./components/CreatePartyButton";
 import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { ScreenCreateParty } from "../../../shared/Screen/ScreenCreateParty";
 import { colors } from "../../../src/colors";
+import FoodAndDrinkList from "./FoodAndDrinks/FoodAndDrinks";
+import Gifts from "./Gifts/Gifts";
+import NavigationBar from "./NavigationBar";
+import RadiusToPost from "./RadiusToPost/RadiusToPost";
+import CreatePartyButton from "./components/CreatePartyButton";
 
 const AdditionalInformation = ({
   navigation,
   route,
 }: PartyCreationStackScreenProps<"AdditionalInformation">) => {
   //route params
-  const { uid, name, image, surname, username } = useTypedSelector(
-    (state) => state.user_state.current_user
-  );
+  const { uid, name, image, surname, username, userLocation } =
+    useTypedSelector((state) => state.user_state.current_user);
   //states
   const [foodProvided, setFoodProvided] =
     useState<FoodProvided>("Not Provided");
+  const [radiusToPost, setRadiusToPost] = useState<number>(50);
   const [drinksType, setDrinksType] = useState<DrinkTypes>("Soft");
   const [giftRequired, setGiftsRequired] =
     useState<GiftsRequireTextTypes>("Not Required");
@@ -43,6 +43,7 @@ const AdditionalInformation = ({
     giftRequired,
     guests: [uid!],
     partyID: uid!,
+    radiusToPost,
   };
   //functions
 
@@ -54,10 +55,13 @@ const AdditionalInformation = ({
   function onGiftUpdate(value: GiftsRequireTextTypes) {
     setGiftsRequired(value);
   }
+  function onRadiusUpdate(value: number) {
+    setRadiusToPost(value);
+  }
   return (
     <View style={{ flex: 1, backgroundColor: colors.background }}>
       <ScreenCreateParty
-        containerStyle={{}}
+        containerStyle={{ paddingBottom: 50 }}
         navigationBar={
           <NavigationBar
             navigation={navigation}
@@ -65,6 +69,7 @@ const AdditionalInformation = ({
           />
         }
       >
+        <RadiusToPost onPress={onRadiusUpdate} />
         <FoodAndDrinkList onUpdate={updateFunctions} />
         <Gifts onGiftUpdate={onGiftUpdate} />
       </ScreenCreateParty>
