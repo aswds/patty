@@ -1,17 +1,14 @@
-import React from "react";
+import React, { PropsWithChildren } from "react";
 import {
-  Keyboard,
   KeyboardAvoidingView,
   ScrollView,
   StyleSheet,
-  TouchableWithoutFeedback,
   View,
   ViewStyle,
 } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { colors } from "../../src/colors";
 import { isAndroid } from "../../src/platform";
-import { PropsWithChildren } from "react";
 interface ScreenProps extends PropsWithChildren {
   createPartyButton?: React.ReactNode;
   containerStyle?: ViewStyle;
