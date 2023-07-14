@@ -1,5 +1,4 @@
 import { IFullAddress } from "../../Types/Events";
-import { reverseGeocodeAsync } from "expo-location";
 
 export async function getAddress(
   latitude: number,
@@ -10,11 +9,11 @@ export async function getAddress(
       latitude,
       longitude,
     };
-
-    const address = await reverseGeocodeAsync(location);
-
-    if (address.length > 0) {
-      return address[0];
+    const address = await fetch(
+      `https://revgeocode.search.hereapi.com/v1/revgeocode?at=${latitude}%2C${longitude}&lang=en-US&apiKey=t5B5wwA5DV5PQIEflTT-w8zczmupP7qx3FDhKopVkOM`
+    ).then((res) => res.json());
+    if (address.items.length > 0) {
+      return address.items[0].address;
     } else {
       return null;
     }

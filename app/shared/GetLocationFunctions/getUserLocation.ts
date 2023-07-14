@@ -7,5 +7,5 @@ export async function getUserLocation(): Promise<LocationObject> {
   if (status !== "granted") {
     Alert.alert("Permission to access location was denied");
   }
-  return await Location.getCurrentPositionAsync();
+  return await Location.getCurrentPositionAsync({});
 }
