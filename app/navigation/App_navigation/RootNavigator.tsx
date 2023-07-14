@@ -1,13 +1,12 @@
+import { PermissionStatus } from "expo-location";
+import * as SplashScreen from "expo-splash-screen";
 import { onAuthStateChanged } from "firebase/auth";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import { auth } from "../../../firebase";
+import useLocationPermission from "../../hooks/useLocationPermission";
+import LocationPermissionScreen from "../../screens/Permissions/LocationPermission";
 import { Authorization } from "../Navigators/Authorization/Authorization";
 import { App_Navigation } from "./AppNavigation";
-import { VerifyEmailNav } from "../Navigators/EmailVerification/VerifyEmailNav";
-import { eventEmitter } from "../../custom/EventEmitter";
-import { EMAIL_VERIFICATION } from "../../screens/constans";
-import * as SplashScreen from "expo-splash-screen";
-
 /**
  *
  * Controls navigator changing
@@ -21,6 +20,8 @@ import * as SplashScreen from "expo-splash-screen";
 
 export const RootNavigator = () => {
   const [isSignedIn, setIsSigned] = useState<boolean>(false);
+  const locationPermissionsStatus = useLocationPermission();
+
   // const [emailVerified, setEmailVerified] = useState<boolean | undefined>(
   //   auth.currentUser?.emailVerified
   // );
@@ -56,6 +57,9 @@ export const RootNavigator = () => {
   if (!isLoading) {
     SplashScreen.hideAsync();
     // - Hides splash screen
+  }
+  if (locationPermissionsStatus !== PermissionStatus.GRANTED) {
+    return <LocationPermissionScreen />;
   }
 
   // -Navigation between main navigator and LoginAndRegister navigator
