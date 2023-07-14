@@ -1,10 +1,7 @@
-import React from "react";
 import { Dimensions, StyleSheet, Text, View } from "react-native";
-import { isAndroid } from "../../../src/platform";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
-import { IUserEvents } from "../../../Types/User";
-import Loader from "../../../shared/Loaders/Loader";
 import { colors } from "../../../src/colors";
+import { isAndroid } from "../../../src/platform";
 
 interface RenderItemProps {
   eventInfo: any;
@@ -38,7 +35,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 1,
     shadowRadius: 2,
     margin: 10,
-    shadowColor: isAndroid ? "white" : "rgba(0, 0, 0, 0.7)",
+    shadowColor: isAndroid ? "grey" : "rgba(0, 0, 0, 0.7)",
     borderRadius: 45,
     elevation: 5,
   },

@@ -1,11 +1,9 @@
-import React from "react";
-
-import { Alert, Text } from "react-native";
-import Button from "../../../shared/Buttons/Button";
-import { auth } from "../../../../firebase";
 import { useNavigation } from "@react-navigation/native";
+import { Alert } from "react-native";
+import { auth } from "../../../../firebase";
 import { ProfileNavigationProps } from "../../../Types/ProfileStack/ScreenNavigationProps";
 import { IUser } from "../../../Types/User";
+import Button from "../../../shared/Buttons/Button";
 import Follow_UnfollowButtons from "../Follow_UnfollowButtons";
 
 interface CurrentUserButtonsProps {

@@ -1,19 +1,13 @@
-import {
-  FlatList,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-} from "react-native";
-import React, { useEffect, useState } from "react";
-import { colors } from "../../../../src/colors";
 import { Ionicons } from "@expo/vector-icons";
-import { userReference } from "../../../../Firebase/References";
 import { getAuth } from "firebase/auth";
 import { onSnapshot } from "firebase/firestore";
+import { useEffect, useState } from "react";
+import { StyleSheet, TouchableOpacity } from "react-native";
+import { userReference } from "../../../../Firebase/References";
 import { EventInvitation, IUser } from "../../../../Types/User";
-import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { useActions } from "../../../../hooks/useActions";
+import { useTypedSelector } from "../../../../hooks/useTypedSelector";
+import { colors } from "../../../../src/colors";
 interface NotificationTypes {
   type: "follower" | "invitation";
   payload: string | EventInvitation;

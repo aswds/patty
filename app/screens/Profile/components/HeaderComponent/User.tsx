@@ -1,15 +1,10 @@
-import React, { useEffect, useState } from "react";
-import { StyleSheet, TouchableOpacity, View } from "react-native";
+import React from "react";
+import { StyleSheet, View } from "react-native";
+import { IUser } from "../../../../Types/User";
 import UserBio from "./UserBio";
 import UserFollowers from "./UserFollowers";
 import UserImage from "./UserImage";
 import UserName from "./UserName/UserName";
-import { IUser } from "../../../../Types/User";
-import { Ionicons } from "@expo/vector-icons";
-import { colors } from "../../../../src/colors";
-import { onSnapshot } from "firebase/firestore";
-import { userReference } from "../../../../Firebase/References";
-import Notification from "./Notification";
 
 interface UserProps {
   user: IUser;
@@ -30,7 +25,7 @@ export default function User({ user, backButton, updateUser }: UserProps) {
         }}
       >
         {backButton}
-        <Notification />
+        {/* <Notification /> */}
       </View>
 
       {/*Component UserImage contains follow/unfollow buttons !!!*/}
