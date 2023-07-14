@@ -6,7 +6,9 @@ type AlertType =
   | "hostLeaving"
   | "hostLeavingToJoin"
   | "downloadPost"
-  | "deletePost";
+  | "deletePost"
+  | "deleteAnnouncement"
+  | "leaveParty";
 
 export type AlertConfig = {
   title: string;
@@ -44,6 +46,13 @@ export function pickAlertText(type: AlertType): AlertConfig {
         okText: "stay",
         cancelText: "leave a party",
       };
+    case "leaveParty":
+      return {
+        title: "Leaving party",
+        message: "Are you sure you want to leave?",
+        okText: "stay",
+        cancelText: "leave a party",
+      };
     case "noPartyJoined":
       return {
         title: "Join a party",
@@ -73,6 +82,15 @@ export function pickAlertText(type: AlertType): AlertConfig {
       return {
         title: "Delete Post",
         message: "Are you sure you want to delete your post?",
+        okText: "Cancel",
+        cancelText: "Delete",
+      };
+    }
+    case "deleteAnnouncement": {
+      return {
+        title: "Delete Announcement",
+        message:
+          "Hey there! Are you sure you want to delete your announcement?",
         okText: "Cancel",
         cancelText: "Delete",
       };
