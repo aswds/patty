@@ -1,3 +1,6 @@
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { getAuth } from "firebase/auth";
+import firebase from "firebase/compat";
 import {
   arrayUnion,
   collection,
@@ -6,10 +9,8 @@ import {
   getFirestore,
   updateDoc,
 } from "firebase/firestore";
-import { getAuth } from "firebase/auth";
 import { IEvent } from "../../../Types/Events";
-import firebase from "firebase/compat";
-import * as EVENTS from "events";
+import { cacheJoinedAt } from "../../Party/helpers/cacheFunctions";
 import FieldValue = firebase.firestore.FieldValue;
 
 export async function fetchUserJoinedEvents() {
@@ -29,11 +30,12 @@ export async function joinEvent(data: IEvent) {
   const updateRef = doc(
     db,
     `EVENTS`,
-    `${data.location?.fullAddressInfo?.subregion}`,
+    `${data.location?.fullAddressInfo?.partyLocation}`,
     `${data.party_access}`,
     `${data.partyID || data.user.uid}`
   );
   //functions
+  await cacheJoinedAt(new Date().toISOString());
   await updateDoc(updateRef, {
     guests: arrayUnion(current_user_uid),
   });
@@ -51,12 +53,12 @@ export async function leaveEvent(data: IEvent) {
   const eventDoc_ref = doc(
     db,
     `EVENTS`,
-    `${data.location?.fullAddressInfo?.subregion}`,
+    `${data.location?.fullAddressInfo?.partyLocation}`,
     `${data.party_access}`,
     `${data.partyID}`
   );
   //query data from firebase
-
+  await AsyncStorage.removeItem("joinedAt");
   //functions
   await updateDoc(eventDoc_ref, {
     guests: current_user_uid,

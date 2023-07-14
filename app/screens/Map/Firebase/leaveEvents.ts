@@ -12,7 +12,11 @@ import {
   where,
 } from "firebase/firestore";
 import { IEvent } from "../../../Types/Events";
-import { removeCachedPartyScreen } from "../../Party/helpers/cacheFunctions";
+import {
+  removeCacheJoinedAt,
+  removeCachedPartyScreen,
+  cacheJoinedAt,
+} from "../../Party/helpers/cacheFunctions";
 import FieldValue = firebase.firestore.FieldValue;
 
 export async function fetchViaInviteParties(city: string): Promise<IEvent[]> {
@@ -45,11 +49,12 @@ export async function joinEvent(data: IEvent) {
   const updateRef = doc(
     db,
     `EVENTS`,
-    `${data.location?.fullAddressInfo?.subregion}`,
+    `${data.location?.fullAddressInfo?.partyLocation}`,
     `${data.party_access}`,
     `${data.partyID}`
   );
   //functions
+  await cacheJoinedAt(new Date().toISOString());
   await updateDoc(updateRef, {
     guests: arrayUnion(current_user_uid),
   });
@@ -67,12 +72,13 @@ export async function leaveEvent(data: IEvent) {
   const eventDoc_ref = doc(
     db,
     `EVENTS`,
-    `${data.location?.fullAddressInfo?.subregion}`,
+    `${data.location?.fullAddressInfo?.partyLocation}`,
     `${data.party_access}`,
     `${data.partyID}`
   );
   //query data from firebase
-  removeCachedPartyScreen();
+  await removeCacheJoinedAt();
+  await removeCachedPartyScreen();
   //functions
   await updateDoc(eventDoc_ref, {
     guests: FieldValue.arrayRemove(current_user_uid),
@@ -87,7 +93,8 @@ export async function leaveDeletedEvent() {
   const current_user_uid = getAuth().currentUser?.uid;
 
   const db = getFirestore();
-
+  await removeCachedPartyScreen();
+  await removeCacheJoinedAt();
   const userDoc_ref = doc(db, `USERS`, `${current_user_uid}`);
 
   return await updateDoc(userDoc_ref, {
