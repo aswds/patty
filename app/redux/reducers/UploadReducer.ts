@@ -1,6 +1,7 @@
 // uploadReducer.ts
 
 import {
+  UPLOAD_COMPRESS,
   UPLOAD_FAILURE,
   UPLOAD_PROGRESS,
   UPLOAD_START,
@@ -13,12 +14,14 @@ interface UploadState {
   uploadProgress: number;
   isUploading: boolean;
   uploadError: string | null;
+  isUploadingCompress: boolean;
 }
 
 const initialState: UploadState = {
   uploadProgress: 0,
   isUploading: false,
   uploadError: null,
+  isUploadingCompress: false,
 };
 
 // Define action types
@@ -52,6 +55,11 @@ const uploadReducer = (
         isUploading: false,
         uploadProgress: 0,
         uploadError: action.payload,
+      };
+    case UPLOAD_COMPRESS:
+      return {
+        ...state,
+        isUploadingCompress: action.payload,
       };
     default:
       return state;

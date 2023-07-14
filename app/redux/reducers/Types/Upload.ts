@@ -3,6 +3,7 @@ import {
   UPLOAD_START,
   UPLOAD_SUCCESS,
   UPLOAD_FAILURE,
+  UPLOAD_COMPRESS,
 } from "../../constants/Upload_constans";
 
 export interface UploadProgressAction {
@@ -22,9 +23,13 @@ export interface UploadFailureAction {
   type: typeof UPLOAD_FAILURE;
   payload: string;
 }
-
+export interface UploadCompressionStatus {
+  type: typeof UPLOAD_COMPRESS;
+  payload: boolean;
+}
 export type UploadActionTypes =
   | UploadProgressAction
   | UploadStartAction
   | UploadSuccessAction
-  | UploadFailureAction;
+  | UploadFailureAction
+  | UploadCompressionStatus;

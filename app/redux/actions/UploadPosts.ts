@@ -3,12 +3,14 @@ import {
   UPLOAD_START,
   UPLOAD_SUCCESS,
   UPLOAD_FAILURE,
+  UPLOAD_COMPRESS,
 } from "../constants/Upload_constans";
 import {
   UploadProgressAction,
   UploadStartAction,
   UploadSuccessAction,
   UploadFailureAction,
+  UploadCompressionStatus,
 } from "../reducers/Types/Upload";
 
 export const updateUploadProgress = (
@@ -25,7 +27,12 @@ export const startUpload = (): UploadStartAction => ({
 export const uploadSuccess = (): UploadSuccessAction => ({
   type: UPLOAD_SUCCESS,
 });
-
+export const uploadCompressing = (
+  isCompressing: boolean
+): UploadCompressionStatus => ({
+  type: UPLOAD_COMPRESS,
+  payload: isCompressing,
+});
 export const uploadFailure = (error: string): UploadFailureAction => ({
   type: UPLOAD_FAILURE,
   payload: error,
