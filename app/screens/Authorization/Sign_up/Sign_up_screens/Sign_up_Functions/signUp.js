@@ -60,7 +60,7 @@ async function setDocs(result, userInfo) {
     events: {
       eventsCreated: 0,
       eventsVisited: 0,
-      onEvent: [],
+      onEvent: null,
     },
     isPremium: false,
     createdAt: Timestamp.fromDate(new Date()).toJSON() || new Date(),
