@@ -13,7 +13,7 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { Video, Image, getRealPath } from "react-native-compressor";
+// import { Video, Image, getRealPath } from "react-native-compressor";
 
 import { Alert } from "react-native";
 
@@ -40,21 +40,21 @@ export async function uploadPartyPost(
     const db = getFirestore();
     let compressionResult = null;
     updateCompressStatus(true);
-    if (mediaType === "video") {
-      await Video.compress(fileUri, {
-        compressionMethod: "auto",
-      }).then(async (compressedFileUrl) => {
-        compressionResult = await getRealPath(compressedFileUrl, "video");
-        updateCompressStatus(false);
-      });
-    } else {
-      await Image.compress(fileUri, {
-        compressionMethod: "auto",
-      }).then(async (compressedFileUrl) => {
-        compressionResult = await getRealPath(compressedFileUrl, "image");
-        updateCompressStatus(false);
-      });
-    }
+    // if (mediaType === "video") {
+    //   await Video.compress(fileUri, {
+    //     compressionMethod: "auto",
+    //   }).then(async (compressedFileUrl) => {
+    //     compressionResult = await getRealPath(compressedFileUrl, "video");
+    //     updateCompressStatus(false);
+    //   });
+    // } else {
+    //   await Image.compress(fileUri, {
+    //     compressionMethod: "auto",
+    //   }).then(async (compressedFileUrl) => {
+    //     compressionResult = await getRealPath(compressedFileUrl, "image");
+    //     updateCompressStatus(false);
+    //   });
+    // }
     if (compressionResult) {
       const compressedVideo = await fetch(compressionResult);
       const compressedVideoBlob = await compressedVideo.blob();

@@ -395,6 +395,7 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
                 navigateToPartyScreen(joinedEvent);
               } else {
                 await fetchJoinedEvents().then((event) => {
+                  console.log(event);
                   setJoinedEvent(event);
                   if (event) {
                     navigateToPartyScreen(event);

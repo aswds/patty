@@ -16,14 +16,7 @@ export default function User({ user, backButton, updateUser }: UserProps) {
 
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "5%",
-        }}
-      >
+      <View style={styles.backButtonStyle}>
         {backButton}
         {/* <Notification /> */}
       </View>
@@ -48,5 +41,11 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     paddingHorizontal: "5%",
+  },
+  backButtonStyle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "5%",
   },
 });

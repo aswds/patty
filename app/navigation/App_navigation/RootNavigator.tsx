@@ -58,7 +58,8 @@ export const RootNavigator = () => {
     SplashScreen.hideAsync();
     // - Hides splash screen
   }
-  if (locationPermissionsStatus !== PermissionStatus.GRANTED) {
+  console.log(locationPermissionsStatus);
+  if (locationPermissionsStatus === PermissionStatus.DENIED) {
     return <LocationPermissionScreen />;
   }
 

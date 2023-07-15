@@ -13,3 +13,5 @@ export interface IFonts {
   semi_bold: semi_boldFonts;
   extra_bold: extra_boldFonts;
 }
+
+export type FontTypes = keyof IFonts;
