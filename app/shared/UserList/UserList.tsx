@@ -1,4 +1,4 @@
-import { Fontisto } from "@expo/vector-icons";
+import { AntDesign, FontAwesome, Fontisto } from "@expo/vector-icons";
 import _ from "lodash";
 import { useEffect, useState } from "react";
 import { FlatList, FlatListProps } from "react-native";
@@ -8,7 +8,7 @@ import { colors } from "../../src/colors";
 import ListLoader from "../Loaders/ListLoader";
 import ListEmptyComponent from "./ListEmptyComponent";
 import UserListHeader from "./UserListHeader";
-interface UserListProps extends Omit<FlatListProps<IUser>, "data"> {
+interface UserListProps extends FlatListProps<IUser> {
   isLoading: boolean;
   users: IUser[];
   headerTitle?: string;
@@ -64,19 +64,18 @@ const UserList = ({
       contentContainerStyle={{
         paddingBottom: insets.bottom + 110,
       }}
-      data={data}
       showsVerticalScrollIndicator={false}
       ListEmptyComponent={() => {
         return isLoading ? (
           <ListLoader />
         ) : (
           <ListEmptyComponent
-            title="t looks like there's no one here"
+            title={`Empty invite list?\nFollow each other to invite!`}
             icon={
-              <Fontisto
-                name="cloudy-gusts"
+              <FontAwesome
+                name="envelope-o"
                 size={40}
-                color={colors.text}
+                color={colors.iconColor}
                 style={{ marginVertical: "5%" }}
               />
             }

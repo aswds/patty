@@ -5,6 +5,8 @@ import UserBio from "./UserBio";
 import UserFollowers from "./UserFollowers";
 import UserImage from "./UserImage";
 import UserName from "./UserName/UserName";
+import NavigationBar from "../../../Map/PartyCreationScreens/NavigationBar";
+import { useNavigation } from "@react-navigation/native";
 
 interface UserProps {
   user: IUser;
@@ -13,11 +15,14 @@ interface UserProps {
 }
 export default function User({ user, backButton, updateUser }: UserProps) {
   const [isLoading, setIsLoading] = React.useState(true);
-
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
       <View style={styles.backButtonStyle}>
-        {backButton}
+        <NavigationBar
+          navigation={navigation}
+          text={`${user.name} ${user.surname}`}
+        />
         {/* <Notification /> */}
       </View>
 

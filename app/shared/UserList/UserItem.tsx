@@ -18,25 +18,25 @@ import InviteButton from "./InviteButton";
 import UserPicture from "./UserPicture";
 
 interface UserItemProps {
-  _user: IUser;
+  user: IUser;
   showInviteButton?: boolean;
 }
-const UserItem = ({ _user, showInviteButton }: UserItemProps) => {
+const UserItem = ({ user, showInviteButton }: UserItemProps) => {
+  {
+    console.log(user);
+  }
   const navigation = useNavigation<ProfileNavigationProps>();
   const [show, setShow] = useState<boolean>(true);
-  const [user, setUser] = useState<IUser>(_user);
-
-  const updateUser = (newUser: Pick<IUser, "following" | "followers">) => {
-    setUser({
-      ...user,
-      ...newUser,
-    });
-  };
-  useFocusEffect(
-    useCallback(() => {
-      setUser(_user);
-    }, [])
-  );
+  // const [user, setUser] = useState<IUser>(_user);
+  // const updateUser = (newUser: Pick<IUser, "following" | "followers">) => {
+  //   setUser({
+  //     ...user,
+  //     ...newUser,
+  //   });
+  // };
+  // useFocusEffect(() => {
+  //   setUser(_user);
+  // });
 
   function UserName({ show }: { show: boolean }) {
     const style = { padding: { marginVertical: show ? 5 : 0 } };
@@ -74,7 +74,10 @@ const UserItem = ({ _user, showInviteButton }: UserItemProps) => {
           <View style={styles.topTextContainer}>
             <UserName show={show} />
             {showInviteButton ? (
-              <InviteButton partyId={_user.events.onEvent} userId={_user.uid} />
+              <InviteButton
+                partyId={user?.events?.onEvent}
+                userId={user?.uid}
+              />
             ) : (
               <UserFollowers
                 user={user}

@@ -30,7 +30,13 @@ export const App_Navigation = () => {
         updateUserLocation({
           city: `${address?.city}`,
           coords: { ...location.coords, longitudeDelta: 0, latitudeDelta: 0 },
-          partyLocation: `${address?.countryName}_${address?.county}_${address?.city}`,
+          partyLocation: `${address?.countryName.replace(
+            " ",
+            "_"
+          )}_${address?.county?.replace(" ", "_")}_${address?.city.replace(
+            " ",
+            "_"
+          )}`,
           isLocationLoading: false,
         })
       );

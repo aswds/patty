@@ -1,14 +1,8 @@
 import { MaterialIcons } from "@expo/vector-icons";
 import { useNavigation } from "@react-navigation/native";
-import { sendEmailVerification } from "firebase/auth";
+import { sendEmailVerification, updateCurrentUser } from "firebase/auth";
 import React, { useEffect, useState } from "react";
-import {
-  Alert,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View
-} from "react-native";
+import { Alert, StyleSheet, Text, TouchableOpacity, View } from "react-native";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import { auth } from "../../../firebase";
 import { ProfileStackScreenNavigationProps } from "../../Types/ProfileStack/ScreenNavigationProps";
@@ -95,18 +89,15 @@ const VerifyEmail: React.FC<
   });
   const [canSend, setCanSend] = useState(true);
 
-  // useEffect(() => {
-  //   const unsubscribe = setInterval(() => {
-  //     auth.currentUser?.reload();
-  //     if (auth.currentUser?.emailVerified) {
-  //       updateCurrentUser(auth, { email: email })
-  //         .then(() => {})
-  //         .catch(() => {});
-  //       eventEmitter.emit(EMAIL_VERIFICATION);
-  //     }
-  //   }, 1000);
-  //   return () => clearInterval(unsubscribe);
-  // }, [auth.currentUser?.emailVerified]);
+  useEffect(() => {
+    const unsubscribe = setInterval(() => {
+      auth.currentUser?.reload();
+      if (auth.currentUser?.emailVerified) {
+        navigation.navigate("EditProfile");
+      }
+    }, 1000);
+    return () => clearInterval(unsubscribe);
+  }, []);
 
   function sendVerification() {
     sendEmailVerification(auth.currentUser)

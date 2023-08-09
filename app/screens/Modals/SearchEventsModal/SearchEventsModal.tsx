@@ -142,7 +142,7 @@ const SearchEventsModal: React.FC<SearchEventsModalProps> = ({
               <Fontisto
                 name="cloudy-gusts"
                 size={40}
-                color={colors.text}
+                color={colors.iconColor}
                 style={{ marginVertical: "5%" }}
               />
             }

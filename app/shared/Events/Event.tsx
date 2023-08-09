@@ -79,8 +79,10 @@ const Address = ({
       Icon={MaterialCommunityIcons}
       name={"map-marker"}
       text={
-        <Text style={styles.addressTextStyle}>
-          {address?.street} {"," && address?.houseNumber}{" "}
+        <>
+          <Text style={styles.addressTextStyle}>
+            {address?.street} {"," && address?.houseNumber}{" "}
+          </Text>
           <Text
             style={[
               styles.highlightedText,
@@ -89,7 +91,7 @@ const Address = ({
           >
             - {partyPlace}
           </Text>
-        </Text>
+        </>
       }
       textStyle={styles.dateTextStyle}
     />

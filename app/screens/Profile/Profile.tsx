@@ -31,7 +31,7 @@ function Profile({
 
   useEffect(() => {
     setUser(current_user!);
-  }, []);
+  }, [route.params.current_user]);
   //https://reactjs.org/docs/context.html !!!
   return (
     <Screen>

@@ -1,5 +1,7 @@
 import { nanoid } from "@reduxjs/toolkit";
+import { FirebaseError } from "firebase/app";
 import {
+  addDoc,
   deleteDoc,
   doc,
   getFirestore,
@@ -22,6 +24,7 @@ const storage = getStorage();
 
 interface IPartyPostData {
   description: string;
+  eventRef: object;
 }
 
 export async function uploadPartyPost(
@@ -29,6 +32,7 @@ export async function uploadPartyPost(
   postData: IPartyPostData,
   partyID: string,
   mediaType: string,
+  navigation: any,
   updateProgress: (progress: number) => void,
   uploadedSuccessfully: () => void,
   updateCompressStatus: (status: boolean) => void
@@ -39,8 +43,10 @@ export async function uploadPartyPost(
     const storageRef = ref(storage, `partiesMedia/${partyID}/${fileName}`);
     const db = getFirestore();
     let compressionResult = null;
-    updateCompressStatus(true);
     // if (mediaType === "video") {
+    //   updateCompressStatus(true);
+
+    //   navigation.goBack();
     //   await Video.compress(fileUri, {
     //     compressionMethod: "auto",
     //   }).then(async (compressedFileUrl) => {
@@ -48,6 +54,8 @@ export async function uploadPartyPost(
     //     updateCompressStatus(false);
     //   });
     // } else {
+    //   updateCompressStatus(true);
+    //   navigation.goBack();
     //   await Image.compress(fileUri, {
     //     compressionMethod: "auto",
     //   }).then(async (compressedFileUrl) => {
@@ -84,7 +92,7 @@ export async function uploadPartyPost(
             createdAt: serverTimestamp(),
             likes: [],
             mehs: [],
-            media: downloadURL,
+            media: downloadURL || null,
             id: docID,
             fileName: fileName,
             mediaType: mediaType,
@@ -99,7 +107,7 @@ export async function uploadPartyPost(
 
       uploadedSuccessfully();
     }
-  } catch (error) {
+  } catch (error: FirebaseError) {
     Alert.alert("Error uploading file", error?.message);
     // hide uploading bar
     updateCompressStatus(false);

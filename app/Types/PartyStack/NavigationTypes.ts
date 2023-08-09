@@ -13,6 +13,7 @@ export type PartyNavigatorParamList = {
   };
   PostUploadScreen: {
     media?: MediaItem;
+    partyStartTime: Date | Timestamp;
   };
   AddAnnouncementScreen: undefined;
   MediaListToUpload: {
@@ -20,6 +21,5 @@ export type PartyNavigatorParamList = {
   };
 };
 
-export type PartyNavigationScreenProps<
-  T extends keyof PartyNavigatorParamList
-> = NativeStackScreenProps<PartyNavigatorParamList, T>;
+export type PartyNavigationScreenProps<T extends keyof PartyNaigatorParamList> =
+  NativeStackScreenProps<PartyNavigatorParamList, T>;

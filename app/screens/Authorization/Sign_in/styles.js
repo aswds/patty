@@ -83,8 +83,6 @@ export const styles = StyleSheet.create({
   imageContainer: {
     height: isAndroid ? 80 : 90,
     aspectRatio: 1,
-    shadowOpacity: 0.4,
-    shadowOffset: { height: 2, width: 0 },
   },
   animationStyle: {
     alignItems: "flex-start",

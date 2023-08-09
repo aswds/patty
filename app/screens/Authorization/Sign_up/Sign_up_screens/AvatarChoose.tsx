@@ -53,7 +53,7 @@ export const AvatarChoose = ({
           image={image}
         />
 
-        <Title title={`Let's Choose Your Profile Picture!`} message="" />
+        <Title title={`Let's Pick Your Profile Picture!`} message="" />
 
         <ModalPhoto
           routeName={route.name}
@@ -62,23 +62,13 @@ export const AvatarChoose = ({
           imageHandler={_imagePropHandler.bind(null, setImage)}
         />
       </View>
-      <NextButton
-        style={{ marginTop: "auto" }}
-        handleErrorMessage={() => {}}
-        onPress={() => {
-          if (name && surname && username) {
-            navigation.navigate("SignUpScreen", {
-              name: name,
-              surname: surname,
-              username: username,
-              imageURI: image || "",
-            });
-          }
-        }}
-        error={{
-          title: "",
-          message: "",
-        }}
+      <ACNextButton
+        navigation={navigation}
+        image={image}
+        styles={styles}
+        name={name}
+        surname={surname}
+        username={username}
       />
     </Screen>
   );

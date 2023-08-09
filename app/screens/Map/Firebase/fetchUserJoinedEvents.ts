@@ -7,6 +7,7 @@ import {
   doc,
   getDocs,
   getFirestore,
+  increment,
   updateDoc,
 } from "firebase/firestore";
 import { IEvent } from "../../../Types/Events";
@@ -22,28 +23,30 @@ export async function fetchUserJoinedEvents() {
   return snapshot.docs.forEach((doc) => doc.data());
 }
 
-export async function joinEvent(data: IEvent) {
-  const current_user_uid = getAuth().currentUser?.uid;
-  const db = getFirestore();
-  // references
-  const userDoc_ref = doc(db, `USERS`, `${current_user_uid}`);
-  const updateRef = doc(
-    db,
-    `EVENTS`,
-    `${data.location?.fullAddressInfo?.partyLocation}`,
-    `${data.party_access}`,
-    `${data.partyID || data.user.uid}`
-  );
-  //functions
-  await cacheJoinedAt(new Date().toISOString());
-  await updateDoc(updateRef, {
-    guests: arrayUnion(current_user_uid),
-  });
-  await updateDoc(userDoc_ref, {
-    "events.onEvent": data.partyID || data.user.uid,
-    "events.eventType": data.party_access,
-  });
-}
+// export async function joinEvent(data: IEvent) {
+//   const current_user_uid = getAuth().currentUser?.uid;
+//   const db = getFirestore();
+//   // references
+//   const userDoc_ref = doc(db, `USERS`, `${current_user_uid}`);
+//   const updateRef = doc(
+//     db,
+//     `EVENTS`,
+//     `${data.location?.fullAddressInfo?.partyLocation}`,
+//     `${data.party_access}`,
+//     `${data.partyID || data.user.uid}`
+//   );
+//   //functions
+//   await cacheJoinedAt(new Date().toISOString());
+//   await updateDoc(updateRef, {
+//     guests: arrayUnion(current_user_uid),
+//   });
+//   await updateDoc(userDoc_ref, {
+//     "events.onEvent": data.partyID || data.user.uid,
+//     "events.eventType": data.party_access,
+//     "events.eventsVisited": increment(1),
+//     "events.partyLocation": data.location.fullAddressInfo?.partyLocation,
+//   });
+// }
 
 export async function leaveEvent(data: IEvent) {
   const current_user_uid = getAuth().currentUser?.uid;
@@ -66,5 +69,6 @@ export async function leaveEvent(data: IEvent) {
   await updateDoc(userDoc_ref, {
     "events.onEvent": FieldValue.delete(),
     "events.eventType": FieldValue.delete(),
+    "events.partyLocation": FieldValue.delete(),
   });
 }

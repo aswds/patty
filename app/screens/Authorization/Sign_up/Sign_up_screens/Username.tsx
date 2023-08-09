@@ -68,7 +68,6 @@ export const Username = ({
                 .catch(() => {
                   setIsDisabled(true);
                 });
-              console.log(errorMsg);
               setUsername(text_modifier(text));
             }}
             value={username}
@@ -79,7 +78,10 @@ export const Username = ({
         </View>
       </View>
       <NextButton
-        error={errorMsg}
+        error={{
+          title: "Oops!",
+          message: "It seems the username field is empty or too short.",
+        }}
         handleErrorMessage={handleErrorMessage}
         onPress={() => {
           navigation.navigate("Avatar", {
@@ -90,10 +92,7 @@ export const Username = ({
           });
         }}
         containsProfane={isProfane(username)}
-        isValueEntered={
-          !isDisabled &&
-          Boolean(name.length > 0 && surname.length > 0 && username.length > 3)
-        }
+        isValueEntered={!isDisabled && username.length > 3}
       />
       <CustomAlert
         errorMsg={errorMsg.message}

@@ -42,6 +42,10 @@ const Follow_UnfollowButtons = ({
           ...user,
           followers: [...user?.followers, auth.currentUser?.uid!],
         });
+        console.log({
+          ...user,
+          followers: [...user?.followers, auth.currentUser?.uid!],
+        });
       });
       setIsFollowing(true);
     }

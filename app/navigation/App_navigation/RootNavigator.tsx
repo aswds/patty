@@ -56,11 +56,10 @@ export const RootNavigator = () => {
   // - If onAuthStateChanged didn't fire yet, the splashscreen is shown
   if (!isLoading) {
     SplashScreen.hideAsync();
+    if (locationPermissionsStatus === PermissionStatus.DENIED) {
+      return <LocationPermissionScreen />;
+    }
     // - Hides splash screen
-  }
-  console.log(locationPermissionsStatus);
-  if (locationPermissionsStatus === PermissionStatus.DENIED) {
-    return <LocationPermissionScreen />;
   }
 
   // -Navigation between main navigator and LoginAndRegister navigator

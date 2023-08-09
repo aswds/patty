@@ -49,7 +49,7 @@ const UserContainer: React.FC<UserContainerProps> = ({
       <View style={styles.userPhotoContainer}>
         <Skeleton show={isLoading} radius="round">
           <Image
-            source={user.image ? { uri: user.image } : image?.noImage}
+            source={user?.image ? { uri: user.image } : image?.noImage}
             style={styles.userPhoto}
             onLoad={() => setIsLoading(false)}
           />

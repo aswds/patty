@@ -24,7 +24,7 @@ export default function NextButton({
   onPress,
   style,
   containsProfane,
-  isValueEntered = true,
+  isValueEntered,
   handleErrorMessage,
   error,
 }: NextButtonProps): JSX.Element {

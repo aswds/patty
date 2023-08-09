@@ -11,7 +11,7 @@ import { useTypedSelector } from "../../../hooks/useTypedSelector";
 import { Event } from "../../../shared/Events/Event";
 import TagItem from "../../../shared/Tag/TagItem";
 import { colors } from "../../../src/colors";
-import { joinEvent } from "../../Map/Firebase/leaveEvents";
+import { joinEvent } from "../../Map/Firebase/eventFunctions";
 import { AlertConfig, pickAlertText } from "../../Map/helpers/pickAnAlertType";
 import BottomSheetModal from "../BottomSheetModal";
 import { ModalProps } from "../Types/Modals";
@@ -30,7 +30,12 @@ function TagList({ markerInfo }: { markerInfo: IEvent }) {
   return (
     <View style={styles.tagsContainer}>
       {markerInfo?.tags?.map((tag, index) => (
-        <TagItem tag={tag} id={index} onDelete={() => {}} key={index} />
+        <TagItem
+          tag={tag}
+          id={index}
+          onDelete={(id: string) => {}}
+          key={index}
+        />
       ))}
     </View>
   );
@@ -47,6 +52,7 @@ type PartyMarkerModalProps = ModalProps & {
     onCancelCallback?: () => void,
     onOkCallback?: () => void
   ) => void;
+  navigateToPartyScreen: (partyData: IEvent) => void;
 };
 
 const PartyModal: React.FC<PartyMarkerModalProps> = ({
@@ -57,6 +63,7 @@ const PartyModal: React.FC<PartyMarkerModalProps> = ({
   onLeaveCurrentEvent,
   handleAlertError,
   onJoin,
+  navigateToPartyScreen,
 }) => {
   const navigation = useNavigation<AppNavigatorNavigationProp>();
   const { current_user } = useTypedSelector((state) => state.user_state);
@@ -82,18 +89,23 @@ const PartyModal: React.FC<PartyMarkerModalProps> = ({
     });
   }
   function onJoinEvent(data: IEvent) {
-    joinEvent(data).then((r) => {
-      onJoin(data);
-      navigation.navigate("PartyNav", {
-        screen: "PartyScreen",
-        params: {
-          partyData: data,
-        },
+    const current_date = new Date();
+    if (current_date > data?.time) {
+      navigateToPartyScreen(data);
+    } else {
+      joinEvent(data).then((r) => {
+        onJoin(data);
+        navigation.navigate("PartyNav", {
+          screen: "PartyScreen",
+          params: {
+            partyData: data,
+          },
+        });
       });
-      onClose!();
-    });
-  }
+    }
 
+    onClose!();
+  }
   function onPress(data: IEvent) {
     if (isJoinedEvent) {
       // host is leaving

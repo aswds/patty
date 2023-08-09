@@ -8,7 +8,7 @@ interface RadiusToPostProps {
 }
 
 const RadiusToPost = ({ onPress }: RadiusToPostProps) => {
-  let radiuses = [50, 100, 150, 200];
+  let radiuses = [10, 30, 50, 100];
   const [selectedRadius, setSelectedRadius] = useState(radiuses[0]);
   function onSelect(radius: number) {
     onPress(radius);

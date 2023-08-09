@@ -58,7 +58,9 @@ export default function GooglePlaceSearch({
           }}
           // styles={searchBarStyle}
           onPress={(data, details) => regionUpdate(details?.geometry.location!)}
-          onFail={(error) => <></>}
+          onFail={(error) => {
+            console.log(error);
+          }}
           enablePoweredByContainer={false}
           styles={searchBarStyle}
           predefinedPlaces={[currentLocation]}
@@ -76,7 +78,7 @@ const searchBarStyle = {
     alignItems: "center",
     backgroundColor: colors.input,
     borderRadius: 10,
-    color: colors.text_2,
+    color: colors.text,
   },
   poweredContainer: {
     justifyContent: "flex-end",

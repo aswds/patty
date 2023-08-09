@@ -17,7 +17,7 @@ import GooglePlaceSearch from "../../../../shared/Searcher/GooglePlaceSearch";
 import AddressTitle from "./components/AddressTitle";
 import ChooseLocationButton from "./components/ChooseLocationButton";
 import FakeMarker from "./components/Marker";
-
+import mapStyle from "../../mapStyle.json";
 export default function ChooseLocation({}: PartyCreationStackScreenProps<"ChooseLocation">) {
   const [region, setRegion] = useState<ICoordinates>();
   const [addressInfo, setAddressInfo] = useState<IFullAddress | null>();
@@ -35,7 +35,11 @@ export default function ChooseLocation({}: PartyCreationStackScreenProps<"Choose
           setAddressInfo({
             ...res!,
             label: res.label,
-            partyLocation: `${res?.countryName}_${res?.county}_${res?.city}`,
+
+            partyLocation: `${res?.countryName.replace(
+              " ",
+              "_"
+            )}_${res?.county.replace(" ", "_")}_${res?.city.replace(" ", "_")}`,
           });
         }
       })
@@ -57,10 +61,12 @@ export default function ChooseLocation({}: PartyCreationStackScreenProps<"Choose
             provider={PROVIDER_DEFAULT}
             style={{ flex: 1 }}
             showsUserLocation
-            showsMyLocationButton
+            showsMyLocationButton={false}
             onRegionChangeComplete={onRegionChange}
             ref={mapRef}
             showsCompass={false}
+            customMapStyle={mapStyle}
+
             // initialRegion={userLocation as Region}
           />
 

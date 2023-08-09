@@ -1,4 +1,3 @@
-import { AntDesign } from "@expo/vector-icons";
 import { ResizeMode, Video } from "expo-av";
 import React, { memo, useEffect, useState } from "react";
 import { Alert, Dimensions, Image, StyleSheet, Text, View } from "react-native";
@@ -14,9 +13,7 @@ import { deletePartyPost } from "../../AddPost/deletePost";
 import { Description } from "../../ShowMoreText";
 import { IPost } from "../types";
 import DeletePost from "./DeletePost";
-import ReactionButton from "./ReactionButton";
 import UserContainer from "./UserContainer";
-import { handleRatingPress } from "./helpers/handleRates";
 import { ratePost } from "./helpers/ratePost";
 interface Props {
   item: IPost;
@@ -89,7 +86,7 @@ const Post: React.FC<Props> = ({ item, events, uid, handleAlertError }) => {
               textStyle={{ fontSize: 10 }}
             />
           )}
-          {item.mediaType === "photo" || item.mediaType === "image" ? (
+          {item?.mediaType === "photo" || item.mediaType === "image" ? (
             <>
               <Image
                 source={{ uri: item.media }}
@@ -112,7 +109,7 @@ const Post: React.FC<Props> = ({ item, events, uid, handleAlertError }) => {
         </View>
 
         <View style={styles.bottomContainer}>
-          {item.user.uid === uid ? (
+          {item.user?.uid === uid ? (
             <DeletePost
               handleDeletePost={() => {
                 handleAlertError(pickAlertText("deletePost"), () =>
