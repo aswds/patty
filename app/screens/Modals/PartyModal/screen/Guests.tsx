@@ -34,10 +34,12 @@ export default function Guests({
   return (
     <Screen>
       <UserList
+        data={guests}
         isLoading={isLoading}
         users={guests}
-        renderItem={({ item, index }) => <UserItem _user={item} key={index} />}
+        renderItem={({ item, index }) => <UserItem user={item} key={index} />}
         keyExtractor={(item, index) => item.uid!}
+        extraData={guests}
       />
     </Screen>
   );

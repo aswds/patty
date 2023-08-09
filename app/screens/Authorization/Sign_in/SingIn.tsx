@@ -6,13 +6,14 @@ import { BackButton } from "../../../shared/Buttons/BackButton";
 import Button from "../../../shared/Buttons/BigButton";
 import Input from "../../../shared/Input/Input";
 import { Logo } from "../components/Logo";
-import CustomAlert from "../CustomAlert";
+import CustomAlert from "../../../shared/Alert/CustomAlert";
 import { textStyle } from "../style";
 import ForgotPassword from "./SignInComponents/ForgotPassword";
 import { user_signIn } from "./SignInComponents/SignInFuncs/signInFunction";
 import { styles } from "./styles";
 import { Screen } from "../../../shared/Screen/Screen";
 import { SignInStackScreenProps } from "../../../Types/Authorization/SignIn/ScreenNavigationProps";
+import Loader from "../../../shared/Loaders/Loader";
 
 const SignInScreen = ({
   navigation,
@@ -29,7 +30,7 @@ const SignInScreen = ({
   const [showPassword, setShowPassword] = useState<boolean>(true);
   // State for show modal
   const [_showModal, setShowModal] = useState<boolean>(false);
-
+  const [showLoader, setShowLoader] = useState<boolean>(false);
   // Function to hide modal
   const _hideModal = () => {
     setShowModal(false);
@@ -58,7 +59,6 @@ const SignInScreen = ({
     <>
       <Screen>
         <BackButton navigation={navigation} />
-
         <View style={styles.loginContainer}>
           <View style={styles.logoContainer}>
             <Logo />
@@ -99,12 +99,13 @@ const SignInScreen = ({
         </View>
         <Button
           testID="sign-in-button"
-          onPress={() => {
-            user_signIn(
+          onPress={async () => {
+            await user_signIn(
               setEmail,
               setPassword,
               setErrorMsg,
               setShowModal,
+              setShowLoader,
               userLogin,
               userPassword
             );
@@ -113,13 +114,17 @@ const SignInScreen = ({
           textStyle={styles.styledButtonTextStyle}
           title={"Sign in"}
         />
+        <CustomAlert
+          title="Error"
+          errorMsg={errorMsg!}
+          hideModal={_hideModal}
+          showModal={_showModal}
+        />
       </Screen>
 
-      <CustomAlert
-        errorMsg={errorMsg!}
-        hideModal={_hideModal}
-        showModal={_showModal}
-      />
+      {showLoader && (
+        <Loader isVisible={showLoader} containerStyle={{ zIndex: -23 }} />
+      )}
     </>
   );
 };

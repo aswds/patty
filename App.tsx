@@ -9,7 +9,6 @@ import {
 } from "react-native-safe-area-context";
 import { Provider } from "react-redux";
 import { useFontsLoad } from "./app/hooks/useFontsLoad";
-import useNotifications from "./app/hooks/useNotifications";
 import { ProvidedNavigator } from "./app/navigation/Navigators/Authorization/ProvidedNavigator";
 import store from "./app/redux/store/store";
 import { isDarkTheme } from "./app/src/theme";
@@ -17,7 +16,7 @@ import { isDarkTheme } from "./app/src/theme";
 SplashScreen.preventAutoHideAsync();
 export default function App() {
   const { isLoaded, error } = useFontsLoad();
-  useNotifications();
+  // useNotifications();
   let cacheResources = async () => {
     const images = [
       require("./assets/logo.png"),

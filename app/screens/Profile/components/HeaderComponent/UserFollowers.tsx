@@ -22,16 +22,15 @@ export default function UserFollowers({
 }: UserFollowersProps) {
   const [userFollowNumbers, setUserFollowNumbers] =
     useState<IUserFollowNumbers>({
-      followers: user.followers?.length ?? 0,
-      following: user.following?.length ?? 0,
+      followers: user?.followers?.length ?? 0,
+      following: user?.following?.length ?? 0,
     });
   useEffect(() => {
     setUserFollowNumbers({
-      followers: user.followers?.length ?? 0,
-      following: user.following?.length ?? 0,
+      followers: user?.followers?.length ?? 0,
+      following: user?.following?.length ?? 0,
     });
   }, [user]);
-
   return (
     <View style={styles.followersContainer}>
       <TouchableOpacity style={styles.textContainer}>

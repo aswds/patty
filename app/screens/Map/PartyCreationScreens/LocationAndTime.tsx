@@ -94,17 +94,17 @@ const LocationAndTime = ({
       />
       <PartyPlaces handlePartyPlaceUpdate={handlePartyPlaceUpdate} />
       <PickTime setTime={setTime} />
-      <NextButton
-        onPress={onPress}
-        isValueEntered={Boolean(location.region && time)}
-        error={error}
-        handleErrorMessage={handleErrorMessage}
-      />
       <CustomAlert
         errorMsg={error.message}
         title={error.title}
         hideModal={() => setShowAlertModal(false)}
         showModal={showAlertModal}
+      />
+      <NextButton
+        onPress={onPress}
+        isValueEntered={Boolean(location.region && time)}
+        error={error}
+        handleErrorMessage={handleErrorMessage}
       />
     </Screen>
   );

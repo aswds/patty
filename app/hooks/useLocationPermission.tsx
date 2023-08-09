@@ -8,8 +8,11 @@ const useLocationPermission = () => {
 
   useEffect(() => {
     const getLocationPermission = async () => {
-      const { status } = await Location.getForegroundPermissionsAsync();
-      setStatus(status);
+      const { status: foregroundStatus } =
+        await Location.getForegroundPermissionsAsync();
+      const { status: backgroundStatues } =
+        await Location.getBackgroundPermissionsAsync();
+      setStatus(foregroundStatus);
     };
 
     getLocationPermission();

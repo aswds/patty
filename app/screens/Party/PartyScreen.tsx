@@ -1,9 +1,15 @@
-import { FontAwesome5 } from "@expo/vector-icons";
+import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
 import { usePreventScreenCapture } from "expo-screen-capture";
-import _ from "lodash";
+import _, { times } from "lodash";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { FlatList, RefreshControl, StyleSheet, View } from "react-native";
+import {
+  FlatList,
+  Linking,
+  RefreshControl,
+  StyleSheet,
+  View,
+} from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import { IEvent } from "../../Types/Events";
@@ -24,6 +30,8 @@ import { listenToUsersPosts } from "./components/PostFlatlist/Post/helpers/liste
 import { IPost } from "./components/PostFlatlist/types";
 import { cachePosts, getCachedPosts } from "./helpers/cacheFunctions";
 import { fetchPartyPosts } from "./helpers/fetchPartyPosts";
+import { getDatabase, onValue, ref } from "firebase/database";
+import { getStorage } from "firebase/storage";
 const PartyScreen: React.FC<PartyNavigationScreenProps<"PartyScreen">> = ({
   navigation,
   route,
@@ -33,6 +41,7 @@ const PartyScreen: React.FC<PartyNavigationScreenProps<"PartyScreen">> = ({
   const [posts, setPosts] = useState<IPost[]>([]);
   const [refreshing, setRefreshing] = useState<boolean>(false);
   const [showAlertModal, setShowAlertModal] = useState<boolean>(false);
+  const [canPost, setCanPost] = useState<boolean>(false);
   const [alertError, setAlertError] = useState<AlertConfig>({
     message: "",
     title: "",
@@ -74,6 +83,9 @@ const PartyScreen: React.FC<PartyNavigationScreenProps<"PartyScreen">> = ({
     }
   }, []);
 
+  useEffect(() => {
+    setCanPost(new Date() > new Date(party.time));
+  }, [party.time]);
   const _hideModal = React.useCallback(() => {
     setShowAlertModal(false);
   }, []);
@@ -119,7 +131,7 @@ const PartyScreen: React.FC<PartyNavigationScreenProps<"PartyScreen">> = ({
     return (
       <Post
         item={{ ...item, createdAt: createdAt }}
-        uid={uid!}
+        uid={uid}
         events={events}
         handleAlertError={handleAlertError.bind(
           null,
@@ -136,7 +148,7 @@ const PartyScreen: React.FC<PartyNavigationScreenProps<"PartyScreen">> = ({
         extraData={posts}
         maxToRenderPerBatch={5}
         initialNumToRender={5}
-        keyExtractor={(item, index) => item.id.toString()}
+        keyExtractor={(item, index) => item.id || index}
         renderItem={_renderItem}
         ListHeaderComponent={
           <PartyHeader
@@ -159,16 +171,52 @@ const PartyScreen: React.FC<PartyNavigationScreenProps<"PartyScreen">> = ({
         }
         ListEmptyComponent={
           <ListEmptyComponent
-            title="No Party Posts Yet."
+            title={
+              canPost
+                ? "No Party Posts Yet."
+                : `Party starts at ${moment(party.time).format("lll")}`
+            }
             icon={
-              <FontAwesome5 name="stream" size={24} color={colors.text_2} />
+              canPost ? (
+                <FontAwesome5
+                  name="stream"
+                  size={24}
+                  color={colors.iconColor}
+                />
+              ) : (
+                <AntDesign
+                  name="clockcircleo"
+                  size={30}
+                  color={colors.iconColor}
+                />
+              )
             }
             button={
               <Button
                 textStyled={styles.buttonsTextStyle}
                 style={{ backgroundColor: "transparent" }}
-                text="add post"
-                onPress={() => navigation.navigate("PostUploadScreen")}
+                text={canPost ? "add post" : "add a reminder"}
+                onPress={() => {
+                  if (canPost) {
+                    navigation.navigate("PostUploadScreen", {
+                      partyStartTime: party.time as Date,
+                    });
+                  } else {
+                    if (!isAndroid) {
+                      const referenceDate = moment.utc("2001-01-01");
+                      const atTime = moment.utc(party.time);
+                      const secondsSinceRefDate =
+                        atTime.unix() - referenceDate.unix();
+                      Linking.openURL("calshow:" + secondsSinceRefDate);
+                    } else {
+                      const atTime = moment.utc(party.time);
+                      const msSinceEpoch = atTime.valueOf(); // milliseconds since epoch
+                      Linking.openURL(
+                        "content://com.android.calendar/time/" + msSinceEpoch
+                      );
+                    }
+                  }
+                }}
               />
             }
             textStyle={{ fontSize: 20, fontFamily: FontFamily.bold }}
@@ -179,7 +227,7 @@ const PartyScreen: React.FC<PartyNavigationScreenProps<"PartyScreen">> = ({
         contentContainerStyle={[
           styles.listEmptyComponentStyle,
           {
-            paddingBottom: bottomPadding,
+            paddingBottom: isAndroid ? bottomPadding + 40 : bottomPadding,
           },
         ]}
       />
@@ -189,13 +237,19 @@ const PartyScreen: React.FC<PartyNavigationScreenProps<"PartyScreen">> = ({
         </BoldText>
       )}
       <View style={styles.buttonsContainer}>
-        <BigButton
-          style={styles.buttonStyle}
-          textStyle={styles.buttonsTextStyle}
-          title="add post"
-          onPress={() => navigation.navigate("PostUploadScreen")}
-        />
-        {party.user.uid === uid ? (
+        {canPost && (
+          <BigButton
+            style={styles.buttonStyle}
+            textStyle={styles.buttonsTextStyle}
+            title="add post"
+            onPress={() =>
+              navigation.navigate("PostUploadScreen", {
+                partyStartTime: party.time as Date,
+              })
+            }
+          />
+        )}
+        {party.user?.uid === uid ? (
           <BigButton
             style={styles.buttonStyle}
             textStyle={styles.buttonsTextStyle}
@@ -230,7 +284,7 @@ const makeStyles = (insets: any) =>
     buttonStyle: {
       flex: 1,
       height: isAndroid ? 60 : 65,
-      marginBottom: isAndroid ? "5%" : 0,
+      marginBottom: isAndroid ? 20 : 0,
       padding: 10,
       // borderStyle: "dashed",
       // backgroundColor: colors.doneButtonBG,

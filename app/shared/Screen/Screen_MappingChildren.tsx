@@ -35,7 +35,7 @@ export default function Screen({ children }: ScreenProps) {
                   setToScrollBottom: setToScrollBottom,
                 });
               }
-              return <View style={{ marginBottom: "7%" }}>{child}</View>;
+              return <View style={{ marginBottom: "5%" }}>{child}</View>;
             })}
         </View>
       </ScrollView>

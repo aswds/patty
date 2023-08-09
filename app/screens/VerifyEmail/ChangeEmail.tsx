@@ -105,6 +105,7 @@ export default function ChangeEmail({
   // _hideModal function to hide error modal
   function _hideModal() {
     setError({ ...error, showErrorModal: false });
+    error?.onPress();
   }
 
   async function handleReauth(pass: string) {

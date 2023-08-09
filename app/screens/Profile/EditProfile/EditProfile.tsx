@@ -2,7 +2,7 @@ import { updateDoc } from "firebase/firestore";
 import { useEffect, useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
-import { auth } from "../../../../firebase";
+import { auth, db } from "../../../../firebase";
 import { userReference } from "../../../Firebase/References";
 import { ProfileStackScreenNavigationProps } from "../../../Types/ProfileStack/ScreenNavigationProps";
 import { EditUser, IUser } from "../../../Types/User";
@@ -15,6 +15,9 @@ import { uploadImage } from "../../Authorization/Sign_up/Sign_up_screens/Sign_up
 import NavigationBar from "../../Map/PartyCreationScreens/NavigationBar";
 import EditImage from "./components/EditImage";
 import EditPublicInformation from "./components/EditPublicInformation";
+import DeleteUserAccount from "./DeleteUserAccount/DeleteUserAccount";
+import { useFocusEffect } from "@react-navigation/native";
+import { updatePostsAndAnnouncementsOnProfileChange } from "./updatePostsAndAnnouncements";
 
 export default function EditProfile({
   navigation,
@@ -39,19 +42,19 @@ export default function EditProfile({
   const [emailVerified, setEmailVerified] = useState<boolean>(
     auth.currentUser?.emailVerified
   );
-  useEffect(() => {
+  useFocusEffect(() => {
     auth.currentUser?.reload();
     setEmailVerified(auth.currentUser?.emailVerified);
-  }, []);
+  });
   //Effects
   useEffect(() => {
     setUserInfo({
       ...userInfo,
       emailVerified: emailVerified,
-      bio: route.params.bio ?? userInfo.bio,
+      bio: route.params?.bio ?? userInfo?.bio,
       username: route.params.username ?? userInfo.username,
     });
-  }, [route.params.bio, route.params.username]);
+  }, [route.params?.bio, route.params?.username]);
   //redux
   const areChanges: boolean = Boolean(
     userInfo.name !== current_user.name ||
@@ -65,11 +68,20 @@ export default function EditProfile({
     // checking if user has changes
 
     const userRef = userReference(current_user.uid!);
+
     if (
       current_user &&
       userInfo.name?.length > 0 &&
       userInfo.surname?.length > 0
     ) {
+      const areChanges: boolean = Boolean(
+        userInfo.name !== current_user.name ||
+          userInfo.surname !== current_user.surname ||
+          userInfo.username !== current_user.username ||
+          userInfo.bio !== current_user.bio ||
+          (userImage && userImage !== current_user.image) // Check if the userImage exists and is different from the current_user's image
+      );
+
       if (areChanges) {
         const updateUser: Pick<
           IUser,
@@ -82,9 +94,22 @@ export default function EditProfile({
           username: userInfo.username,
         };
 
+        if (userImage && userImage !== current_user.image) {
+          // If there is a new userImage and it's different from the current_user's image, upload it
+          await uploadImage(userImage);
+        }
+        await updatePostsAndAnnouncementsOnProfileChange(
+          db,
+          {
+            ...updateUser,
+            uid: current_user.uid,
+            eventRef: `EVENTS/${current_user.userLocation?.partyLocation}/${current_user.events.eventType}/${current_user.events.onEvent}`,
+          },
+          current_user?.events?.onEvent
+        );
         await updateDoc(userRef, updateUser);
-        await uploadImage(userImage);
       }
+
       navigation.navigate("Profile", {
         current_user: { ...current_user, ...userInfo, image: userImage },
       });
@@ -138,6 +163,7 @@ export default function EditProfile({
         setErrorMsg={setErrorMsg}
         setShowAlertModal={setShowAlertModal}
       />
+      <DeleteUserAccount />
       <CustomAlert
         hideModal={hideModal}
         showModal={showAlertModal}

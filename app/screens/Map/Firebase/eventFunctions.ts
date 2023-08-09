@@ -6,8 +6,10 @@ import {
   doc,
   getDocs,
   getFirestore,
+  increment,
   or,
   query,
+  serverTimestamp,
   updateDoc,
   where,
 } from "firebase/firestore";
@@ -61,6 +63,8 @@ export async function joinEvent(data: IEvent) {
   await updateDoc(userDoc_ref, {
     "events.onEvent": data.partyID || data.user.uid,
     "events.eventType": data.party_access,
+    "events.eventsVisited": increment(1),
+    "events.partyLocation": data.location.fullAddressInfo?.partyLocation,
   });
 }
 
@@ -69,14 +73,15 @@ export async function leaveEvent(data: IEvent) {
   const db = getFirestore();
   // references
   const userDoc_ref = doc(db, `USERS`, `${current_user_uid}`);
+  //!! The leaveEvent is used when deleting an account, passing only crucial data from delete account screen  {partyLocation: ..., party_access: ..., partyID: ...} without fetching the entire party.
   const eventDoc_ref = doc(
     db,
     `EVENTS`,
-    `${data.location?.fullAddressInfo?.partyLocation}`,
+    `${data.location?.fullAddressInfo?.partyLocation ?? data?.partyLocation}`,
     `${data.party_access}`,
     `${data.partyID}`
   );
-  //query data from firebase
+  //remove cache
   await removeCacheJoinedAt();
   await removeCachedPartyScreen();
   //functions
@@ -86,6 +91,8 @@ export async function leaveEvent(data: IEvent) {
   await updateDoc(userDoc_ref, {
     "events.onEvent": FieldValue.delete(),
     "events.eventType": FieldValue.delete(),
+    "events.partyLocation": FieldValue.delete(),
+    invited: FieldValue.arrayRemove(data.partyID),
   });
 }
 
@@ -100,5 +107,6 @@ export async function leaveDeletedEvent() {
   return await updateDoc(userDoc_ref, {
     "events.onEvent": FieldValue.delete(),
     "events.eventType": FieldValue.delete(),
+    "events.partyLocation": FieldValue.delete(),
   });
 }

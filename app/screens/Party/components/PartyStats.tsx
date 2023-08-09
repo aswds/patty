@@ -1,14 +1,13 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, StyleSheet } from "react-native";
-import firebase from "firebase/app";
+import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 import "firebase/database";
+import { Timestamp } from "firebase/firestore";
+import React, { useEffect } from "react";
+import { StyleSheet, Text, View } from "react-native";
 import { FontFamily } from "../../../../assets/fonts/Fonts";
 import { colors } from "../../../src/colors";
-import { FieldValue } from "firebase/firestore";
-import { Entypo, FontAwesome5 } from "@expo/vector-icons";
 
 interface PartyStatsProps {
-  startedAt: Date | FieldValue | undefined;
+  startedAt: Timestamp;
   guests: number;
 }
 
@@ -22,7 +21,7 @@ const PartyStats: React.FC<PartyStatsProps> = ({ startedAt, guests }) => {
       return null;
     }
     const now = new Date().getTime();
-    const partyStart = new Date(startedAt).getTime();
+    const partyStart = new Date(startedAt.toDate()).getTime();
     const hoursUp = Math.floor((now - partyStart) / (1000 * 60 * 60));
     return hoursUp;
   };

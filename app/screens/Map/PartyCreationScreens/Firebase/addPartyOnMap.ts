@@ -1,6 +1,12 @@
 import { formatISO } from "date-fns";
 import { getAuth } from "firebase/auth";
-import { doc, increment, setDoc, updateDoc } from "firebase/firestore";
+import {
+  doc,
+  increment,
+  serverTimestamp,
+  setDoc,
+  updateDoc,
+} from "firebase/firestore";
 import { db } from "../../../../../firebase";
 import type { IEvent } from "../../../../Types/Events";
 
@@ -21,7 +27,7 @@ export async function addPartyOnMap(data: IEvent) {
       ...data,
       partyID: DB_references.events.id,
       time: data.time as string,
-      createdAt: formatISO(new Date()),
+      createdAt: serverTimestamp(),
       isViaInvite: data.party_access === "Via Invite",
     });
   };

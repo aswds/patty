@@ -5,7 +5,12 @@ import { colors } from "../../src/colors";
 
 export default function TagItem({ tag, onDelete, id }) {
   return (
-    <TouchableOpacity style={styles.tagStyle} onLongPress={() => onDelete(id)}>
+    <TouchableOpacity
+      style={styles.tagStyle}
+      onLongPress={() => {
+        onDelete && onDelete(id);
+      }}
+    >
       <Text style={styles.textStyle}>{tag}</Text>
       <AntDesign
         name="tago"

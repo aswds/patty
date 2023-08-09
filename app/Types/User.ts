@@ -15,6 +15,11 @@ export interface UserLocation {
   isLocationLoading: boolean;
 }
 
+export type UserMediaInformation = Pick<
+  IUser,
+  "name" | "surname" | "username" | "image" | "uid"
+>;
+
 type EditUserFields =
   | "bio"
   | "name"

@@ -27,7 +27,7 @@ const CircleRadiusButton: React.FC<CircleRadiusButtonProps> = ({
           style={[
             styles.circle,
             {
-              height: radius / 5,
+              height: radius === 100 ? radius / 3 : radius / 2,
               backgroundColor: isRadiusSelected
                 ? colors.accentColor
                 : colors.background,
@@ -41,7 +41,7 @@ const CircleRadiusButton: React.FC<CircleRadiusButtonProps> = ({
               style={[
                 styles.selectedCircle,
                 {
-                  height: radius / 30,
+                  height: radius / 10,
                 },
               ]}
             />

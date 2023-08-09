@@ -1,5 +1,5 @@
 import { createUserWithEmailAndPassword } from "firebase/auth";
-import { doc, setDoc, Timestamp } from "firebase/firestore";
+import { doc, serverTimestamp, setDoc, Timestamp } from "firebase/firestore";
 import { uploadImage } from "./uploadImage";
 import { auth, db } from "../../../../../../firebase";
 import * as Haptics from "expo-haptics";
@@ -47,6 +47,7 @@ export function set_errorMsg_errorType(error_code) {
 }
 async function setDocs(result, userInfo) {
   const { email, username, name, surname, image } = userInfo;
+  const createdAt = await serverTimestamp();
   await setDoc(doc(db, `USERS`, `${auth.currentUser.uid}`), {
     uid: auth.currentUser.uid,
     username: username,
@@ -63,7 +64,7 @@ async function setDocs(result, userInfo) {
       onEvent: null,
     },
     isPremium: false,
-    createdAt: Timestamp.fromDate(new Date()).toJSON() || new Date(),
+    createdAt: createdAt,
   }).then(() => {
     uploadImage(image, auth.currentUser);
   });

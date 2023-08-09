@@ -1,5 +1,7 @@
 import { nanoid } from "@reduxjs/toolkit";
+import { FirebaseError } from "firebase/app";
 import {
+  addDoc,
   deleteDoc,
   doc,
   getFirestore,
@@ -13,7 +15,7 @@ import {
   ref,
   uploadBytesResumable,
 } from "firebase/storage";
-import { Video, Image, getRealPath } from "react-native-compressor";
+// import { Video, Image, getRealPath } from "react-native-compressor";
 
 import { Alert } from "react-native";
 
@@ -22,6 +24,7 @@ const storage = getStorage();
 
 interface IPartyPostData {
   description: string;
+  eventRef: object;
 }
 
 export async function uploadPartyPost(
@@ -29,6 +32,7 @@ export async function uploadPartyPost(
   postData: IPartyPostData,
   partyID: string,
   mediaType: string,
+  navigation: any,
   updateProgress: (progress: number) => void,
   uploadedSuccessfully: () => void,
   updateCompressStatus: (status: boolean) => void
@@ -39,22 +43,26 @@ export async function uploadPartyPost(
     const storageRef = ref(storage, `partiesMedia/${partyID}/${fileName}`);
     const db = getFirestore();
     let compressionResult = null;
-    updateCompressStatus(true);
-    if (mediaType === "video") {
-      await Video.compress(fileUri, {
-        compressionMethod: "auto",
-      }).then(async (compressedFileUrl) => {
-        compressionResult = await getRealPath(compressedFileUrl, "video");
-        updateCompressStatus(false);
-      });
-    } else {
-      await Image.compress(fileUri, {
-        compressionMethod: "auto",
-      }).then(async (compressedFileUrl) => {
-        compressionResult = await getRealPath(compressedFileUrl, "image");
-        updateCompressStatus(false);
-      });
-    }
+    // if (mediaType === "video") {
+    //   updateCompressStatus(true);
+
+    //   navigation.goBack();
+    //   await Video.compress(fileUri, {
+    //     compressionMethod: "auto",
+    //   }).then(async (compressedFileUrl) => {
+    //     compressionResult = await getRealPath(compressedFileUrl, "video");
+    //     updateCompressStatus(false);
+    //   });
+    // } else {
+    //   updateCompressStatus(true);
+    //   navigation.goBack();
+    //   await Image.compress(fileUri, {
+    //     compressionMethod: "auto",
+    //   }).then(async (compressedFileUrl) => {
+    //     compressionResult = await getRealPath(compressedFileUrl, "image");
+    //     updateCompressStatus(false);
+    //   });
+    // }
     if (compressionResult) {
       const compressedVideo = await fetch(compressionResult);
       const compressedVideoBlob = await compressedVideo.blob();
@@ -84,7 +92,7 @@ export async function uploadPartyPost(
             createdAt: serverTimestamp(),
             likes: [],
             mehs: [],
-            media: downloadURL,
+            media: downloadURL || null,
             id: docID,
             fileName: fileName,
             mediaType: mediaType,
@@ -99,7 +107,7 @@ export async function uploadPartyPost(
 
       uploadedSuccessfully();
     }
-  } catch (error) {
+  } catch (error: FirebaseError) {
     Alert.alert("Error uploading file", error?.message);
     // hide uploading bar
     updateCompressStatus(false);

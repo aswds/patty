@@ -54,7 +54,7 @@ const NoTrack = ({}) => {
         <Fontisto
           name="cloudy-gusts"
           size={20}
-          color={colors.text}
+          color={colors.iconColor}
           style={{ marginVertical: "5%", marginHorizontal: 5 }}
         />
       }

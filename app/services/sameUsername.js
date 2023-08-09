@@ -17,20 +17,18 @@ export const sameUsernames = async (username, handleError) => {
       );
       reject(false);
     } else {
-      const q = query(
+      const q = await query(
         collection(db, "USERS"),
         where("username", "==", `${username.toLowerCase()}`)
       );
-      const querySnapshot = await getDocs(q)
-        .then((snapshot) => {
-          if (snapshot.empty) {
-            resolve(true);
-          } else {
-            handleError("", "Sorry, this username is taken.");
-            reject(false);
-          }
-        })
-        .catch((e) => Alert.alert(e));
+      const querySnapshot = await getDocs(q).then((snapshot) => {
+        if (snapshot.empty) {
+          resolve(true);
+        } else {
+          handleError("", "Sorry, this username is taken.");
+          reject(false);
+        }
+      });
     }
   });
 };

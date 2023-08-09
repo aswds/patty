@@ -10,7 +10,7 @@ export default function Buttons(props) {
   return (
     <View style={styles.container}>
       <TouchableOpacity
-        style={styles.button1}
+        style={[styles.button, styles.button1]}
         onPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
           navigation.navigate("SignUpNav", { screen: "NameInfo" });
@@ -21,12 +21,12 @@ export default function Buttons(props) {
           <Ionicons
             name="ios-arrow-forward-circle-sharp"
             size={25}
-            color={colors.accentColor}
+            color={colors.text}
           />
         </View>
       </TouchableOpacity>
       <TouchableOpacity
-        style={styles.button2}
+        style={[styles.button, styles.button2]}
         onPress={() => {
           Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
           navigation.navigate("SignInNav", { screen: "SignInScreen" });
@@ -44,26 +44,27 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "space-evenly",
   },
-  button1: {
+  button: {
     height: 45,
-    width: "50%",
-    // backgroundColor: colors.accentColor,
+    width: "40%",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  button1: {
+    backgroundColor: colors.accentColor,
     borderRadius: 30,
     justifyContent: "center",
     alignItems: "center",
     flexDirection: "row",
   },
   button2: {
-    height: 45,
     marginTop: "10%",
-    width: "50%",
     borderRadius: 15,
-    justifyContent: "center",
-    alignItems: "center",
+
     borderColor: "#C2C2C2",
   },
   textStyle: {
-    color: colors.accentColor,
+    color: colors.text,
     fontFamily: FontFamily.extra_bold,
   },
 });

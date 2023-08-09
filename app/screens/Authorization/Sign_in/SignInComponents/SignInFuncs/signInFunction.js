@@ -2,25 +2,25 @@ import { signInWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../../../../../firebase";
 import error_handle from "./error_handle";
 
-export function user_signIn(
+export async function user_signIn(
   setEmail,
   setPassword,
   setErrorMsg,
   setShowModal,
+  setShowLoader,
   email,
   password,
   signIn
 ) {
-  return new Promise((res, rej) => {
-    signInWithEmailAndPassword(auth, email, password).catch((error) => {
-      error_handle({
+  await signInWithEmailAndPassword(auth, email, password).catch(
+    async (error) => {
+      await error_handle({
         error: error.code,
         setEmail,
         setPassword,
         setErrorMsg,
         setShowModal,
       });
-      rej();
-    });
-  });
+    }
+  );
 }

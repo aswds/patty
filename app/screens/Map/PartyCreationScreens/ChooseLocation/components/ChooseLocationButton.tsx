@@ -37,7 +37,7 @@ export default function ChooseLocationButton({
       >
         <MaterialCommunityIcons
           name="map-marker-check-outline"
-          size={40}
+          size={35}
           color="white"
         />
       </TouchableOpacity>
@@ -48,7 +48,7 @@ const styles = StyleSheet.create({
   button: {
     // make button bg
 
-    height: "100%",
+    height: 65,
     aspectRatio: 1,
     borderRadius: 100,
     backgroundColor: colors.accentColor,

@@ -5,6 +5,8 @@ import UserBio from "./UserBio";
 import UserFollowers from "./UserFollowers";
 import UserImage from "./UserImage";
 import UserName from "./UserName/UserName";
+import NavigationBar from "../../../Map/PartyCreationScreens/NavigationBar";
+import { useNavigation } from "@react-navigation/native";
 
 interface UserProps {
   user: IUser;
@@ -13,18 +15,14 @@ interface UserProps {
 }
 export default function User({ user, backButton, updateUser }: UserProps) {
   const [isLoading, setIsLoading] = React.useState(true);
-
+  const navigation = useNavigation();
   return (
     <View style={styles.container}>
-      <View
-        style={{
-          flexDirection: "row",
-          justifyContent: "space-between",
-          alignItems: "center",
-          marginBottom: "5%",
-        }}
-      >
-        {backButton}
+      <View style={styles.backButtonStyle}>
+        <NavigationBar
+          navigation={navigation}
+          text={`${user.name} ${user.surname}`}
+        />
         {/* <Notification /> */}
       </View>
 
@@ -48,5 +46,11 @@ const styles = StyleSheet.create({
   container: {
     justifyContent: "center",
     paddingHorizontal: "5%",
+  },
+  backButtonStyle: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "5%",
   },
 });

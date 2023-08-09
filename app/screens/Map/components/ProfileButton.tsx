@@ -49,7 +49,6 @@ const MapHeader = ({
           {city}
         </BoldText>
       )}
-
       <TouchableOpacity
         style={[styles.userImageContainer]}
         onPress={onPress}
@@ -92,7 +91,7 @@ const styles = StyleSheet.create({
     fontSize: 30,
     textDecorationLine: "underline",
     maxWidth: "80%",
-    color: colors.background,
+    color: colors.text,
     fontWeight: "bold",
     textAlign: "left",
     paddingRight: 10,

@@ -7,6 +7,7 @@ import TwoButtons from "../../../../shared/Buttons/TwoChoiseButtons";
 import { TwoButtonsText } from "../../../../shared/Buttons/Types/TwoButtonsType";
 import { Title } from "../../../../shared/Title/Title";
 import { colors } from "../../../../src/colors";
+import { descriptionTexts } from "../descriptionTexts";
 
 interface GiftsProps {
   onGiftUpdate: (value: GiftsRequireTextTypes) => void;
@@ -22,7 +23,7 @@ const Gifts: React.FC<GiftsProps> = ({ onGiftUpdate }) => {
     <View style={styles.container}>
       <Title
         title="Gift"
-        description=""
+        description={descriptionTexts.gifts}
         icon={
           <Ionicons
             name="gift"

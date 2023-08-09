@@ -22,20 +22,33 @@ import { colors } from "../../../../src/colors";
 import NavigationBar from "../../../Map/PartyCreationScreens/NavigationBar";
 import MediaComponent from "./PickMedia";
 import { uploadPartyPost } from "./firebasePostFunctions";
+import { doc } from "firebase/firestore";
+import { db } from "../../../../../firebase";
 const PostUploadScreen: React.FC<
   PartyNavigationScreenProps<"PostUploadScreen">
 > = ({ navigation, route }) => {
   const { uid, username, name, surname, image, events } = useTypedSelector(
     (state) => state.user_state.current_user
   );
+  const { onEvent } = events;
+
   const [description, setDescription] = useState<string>("");
   const [media, setMedia] = useState<MediaItem>(route.params?.media);
+  const [partyStartTime, setPartyStartTime] = useState(
+    route.params?.partyStartTime
+  );
   const dispatch = useDispatch();
   const postData = {
     description: description,
-    user: { uid, username, name, surname, image },
+    user: {
+      uid,
+      username,
+      name,
+      surname,
+      image,
+    },
+    eventStartTime: new Date(partyStartTime).getTime(),
   };
-  const { onEvent } = events;
   const handleMediaPick = async () => {
     navigation.navigate("MediaListToUpload");
   };
@@ -44,6 +57,11 @@ const PostUploadScreen: React.FC<
       setMedia(route.params.media);
     }
   }, [route.params?.media]);
+  useEffect(() => {
+    if (route.params?.partyStartTime) {
+      setPartyStartTime(route.params.partyStartTime);
+    }
+  }, [route.params?.partyStartTime]);
 
   function updateProgress(progress: number) {
     dispatch(updateUploadProgress(progress));
@@ -66,14 +84,13 @@ const PostUploadScreen: React.FC<
         postData,
         onEvent,
         media.mediaType,
+        navigation,
         updateProgress,
         uploadedSuccessfully,
         updateCompressStatus
       )
         .then(() => {})
-        .catch((error) => uploadFailed(error?.message))
-        .finally(() => {});
-      navigation.goBack();
+        .catch((error) => uploadFailed(error?.message));
     }
   }
 

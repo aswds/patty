@@ -3,6 +3,7 @@ import { arrayUnion, doc, getFirestore, updateDoc } from "firebase/firestore";
 import React, { useState } from "react";
 import Button from "../../shared/Buttons/Button";
 import { colors } from "../../src/colors";
+import { useTypedSelector } from "../../hooks/useTypedSelector";
 interface InviteButtonProps {
   partyId: string;
   userId: string;
@@ -10,6 +11,11 @@ interface InviteButtonProps {
 
 const InviteButton: React.FC<InviteButtonProps> = ({ partyId, userId }) => {
   const [isUserInvited, setUserInvited] = useState<boolean>();
+  const onEvent = useTypedSelector(
+    (state) => state.user_state.current_user.events.onEvent
+  );
+  const isHost = userId === onEvent;
+
   const handleInvite = async () => {
     const db = getFirestore();
     const userRef = doc(db, `USERS`, `${userId}`);
@@ -34,11 +40,12 @@ const InviteButton: React.FC<InviteButtonProps> = ({ partyId, userId }) => {
 
   return (
     <Button
-      text={isUserInvited ? "Invitation sent" : "Invite"}
+      text={isUserInvited ? "Invitation sent" : !isHost ? "Invite" : "Host"}
       onPress={handleInvite}
-      disabled={isUserInvited === true}
+      disabled={isUserInvited || isHost}
       style={{
-        backgroundColor: isUserInvited ? undefined : colors.doneButtonBG,
+        backgroundColor:
+          isUserInvited || isHost ? undefined : colors.doneButtonBG,
       }}
       textStyled={{
         color: colors.doneButtonText,

@@ -7,8 +7,9 @@ import { useActions } from "../../../../hooks/useActions";
 import { useTypedSelector } from "../../../../hooks/useTypedSelector";
 import { AdditionalInformationData } from "../../../../redux/reducers/CreateEvent";
 import { colors } from "../../../../src/colors";
-import { joinEvent } from "../../Firebase/fetchUserJoinedEvents";
+import { joinEvent } from "../../Firebase/eventFunctions";
 import { addPartyOnMap } from "../Firebase/addPartyOnMap";
+import { isAndroid } from "../../../../src/platform";
 
 interface CreatePartyButtonProps {
   data: AdditionalInformationData;
@@ -30,24 +31,28 @@ export default function CreatePartyButton({ data }: CreatePartyButtonProps) {
       await addPartyOnMap(_data).then(async () => {
         await joinEvent(_data);
       });
+      new Promise((res, rej) => {
+        navigation.navigate("MapNav", {
+          screen: "Map",
+        });
 
-      navigation.navigate("MapNav", {
-        screen: "Map",
+        navigation.navigate("PartyNav", {
+          screen: "PartyScreen",
+          params: {
+            partyData: _data,
+          },
+        });
+      }).then(() => {
+        clearCreateEvents();
       });
-
-      navigation.navigate("PartyNav", {
-        screen: "PartyScreen",
-        params: {
-          partyData: _data,
-        },
-      });
-      clearCreateEvents();
     } else {
       Alert.alert("Please make sure you entered all data.");
     }
   }
   return (
-    <View style={[styles.container, { bottom: insets.bottom }]}>
+    <View
+      style={[styles.container, { bottom: isAndroid ? 20 : insets.bottom }]}
+    >
       <TouchableOpacity style={styles.buttonBg} onPress={onPress}>
         <Text style={styles.textStyle}>Create</Text>
       </TouchableOpacity>
