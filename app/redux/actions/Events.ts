@@ -21,7 +21,7 @@ export const fetch_joined_event = async (
   const db = getFirestore();
   const auth = getAuth();
   const docRef = userReference(auth.currentUser?.uid!);
-  const user: IUser = await getDoc(docRef).then((res) => <IUser>res.data());
+  // const user: IUser = await getDoc(docRef).then((res) => <IUser>res.data());
   const collectionRef = doc(
     db,
     `EVENTS`,

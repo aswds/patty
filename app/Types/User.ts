@@ -1,11 +1,12 @@
 import { Region } from "react-native-maps";
 import { ITime, Party_Access_Types } from "./Events";
-import { serverTimestamp } from "firebase/firestore";
+import { Timestamp, serverTimestamp } from "firebase/firestore";
 export interface IUserEvents {
   onEvent?: string;
   eventType: Party_Access_Types;
   eventsCreated: number;
   eventsVisited: number;
+  partyLocation: string;
 }
 
 export interface UserLocation {
@@ -57,5 +58,5 @@ export interface IUser {
   uid?: string;
   isPremium?: boolean;
   verifiedEmail?: boolean;
-  createdAt?: ITime;
+  createdAt?: Timestamp;
 }

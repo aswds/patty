@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import Button from "../../shared/Buttons/Button";
 import { colors } from "../../src/colors";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
+import { eventReference } from "../../Firebase/References";
 interface InviteButtonProps {
   partyId: string;
   userId: string;
@@ -11,16 +12,21 @@ interface InviteButtonProps {
 
 const InviteButton: React.FC<InviteButtonProps> = ({ partyId, userId }) => {
   const [isUserInvited, setUserInvited] = useState<boolean>();
-  const onEvent = useTypedSelector(
-    (state) => state.user_state.current_user.events.onEvent
+  const events = useTypedSelector(
+    (state) => state.user_state.current_user.events
   );
-  const isHost = userId === onEvent;
+  const isHost = userId === events?.onEvent;
 
   const handleInvite = async () => {
     const db = getFirestore();
     const userRef = doc(db, `USERS`, `${userId}`);
+    const partyRef = eventReference(
+      events.partyLocation,
+      events?.eventType,
+      events?.onEvent
+    );
 
-    await updateDoc(userRef, {
+    await updateDoc(partyRef, {
       invited: arrayUnion(partyId),
     }).then(() => {
       setUserInvited(true);

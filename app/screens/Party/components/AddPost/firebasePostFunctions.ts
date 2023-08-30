@@ -45,7 +45,6 @@ export async function uploadPartyPost(
     let compressionResult = null;
     // if (mediaType === "video") {
     //   updateCompressStatus(true);
-
     //   navigation.goBack();
     //   await Video.compress(fileUri, {
     //     compressionMethod: "auto",

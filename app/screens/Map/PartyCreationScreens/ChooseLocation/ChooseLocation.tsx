@@ -27,15 +27,14 @@ export default function ChooseLocation({}: PartyCreationStackScreenProps<"Choose
   const mapRef = useRef<MapView>(null);
   const insets = useSafeAreaInsets();
 
-  function onRegionChange(region: ICoordinates) {
-    setRegion(region);
-    getAddress(region.latitude, region.longitude)
+  const debouncedGetAddress = _.debounce((latitude, longitude) => {
+    return getAddress(latitude, longitude)
       .then((res) => {
+        setRegion({ latitude, longitude });
         if (!_.isEmpty(res)) {
           setAddressInfo({
             ...res!,
             label: res.label,
-
             partyLocation: `${res?.countryName.replace(
               " ",
               "_"
@@ -44,7 +43,8 @@ export default function ChooseLocation({}: PartyCreationStackScreenProps<"Choose
         }
       })
       .catch((e) => setAddressInfo(e));
-  }
+  }, 500); // Adjust the debounce delay as needed (in milliseconds)
+
   function regionUpdate(region: GooglePlaceDetail["geometry"]["location"]) {
     mapRef.current?.animateToRegion({
       latitude: region.lat,
@@ -62,14 +62,15 @@ export default function ChooseLocation({}: PartyCreationStackScreenProps<"Choose
             style={{ flex: 1 }}
             showsUserLocation
             showsMyLocationButton={false}
-            onRegionChangeComplete={onRegionChange}
+            onRegionChangeComplete={(region) =>
+              debouncedGetAddress(region.latitude, region.longitude)
+            }
             ref={mapRef}
             showsCompass={false}
             customMapStyle={mapStyle}
 
             // initialRegion={userLocation as Region}
           />
-
           <GooglePlaceSearch
             style={[styles.googlePlaceSearchStyle, { paddingTop: insets.top }]}
             regionUpdate={regionUpdate}

@@ -3,13 +3,14 @@ import {
   useNavigationContainerRef,
 } from "@react-navigation/native";
 import _ from "lodash";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { SafeAreaProvider } from "react-native-safe-area-context";
 import { useDispatch } from "react-redux";
 import { updateUserLocation } from "../../redux/reducers/User";
 import { AppNavigator } from "./AppNavigator";
 import { getUserLocation } from "../../shared/GetLocationFunctions/getUserLocation";
 import { getAddress } from "../../shared/GetLocationFunctions/getAddress";
+import { useForegroundPermissions } from "expo-location";
 
 /**
  * Providing redux store for app
@@ -18,8 +19,12 @@ import { getAddress } from "../../shared/GetLocationFunctions/getAddress";
 export const App_Navigation = () => {
   const navigation = useNavigationContainerRef();
   const dispatch = useDispatch();
+  const [statusForeground, requestPermissionForeground] =
+    useForegroundPermissions();
+
   useEffect(() => {
     async function updateCurrentUserLocation() {
+      await requestPermissionForeground();
       const location = await getUserLocation();
       const address = await getAddress(
         location.coords.latitude,
@@ -43,13 +48,11 @@ export const App_Navigation = () => {
     }
 
     updateCurrentUserLocation();
-  }, []);
+  }, [statusForeground?.status]);
 
   return (
-    <SafeAreaProvider>
-      <NavigationContainer ref={navigation}>
-        <AppNavigator />
-      </NavigationContainer>
-    </SafeAreaProvider>
+    <NavigationContainer ref={navigation}>
+      <AppNavigator />
+    </NavigationContainer>
   );
 };

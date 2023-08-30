@@ -1,6 +1,6 @@
 import { doc, onSnapshot } from "firebase/firestore";
 import { Alert } from "react-native";
-import { auth, db } from "../../../firebase";
+import { db, auth } from "../../../firebase";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 import { IUser } from "../../Types/User";
 
@@ -11,7 +11,12 @@ export const fetch_user = createAsyncThunk(
       const docRef = doc(db, `USERS/${auth.currentUser?.uid}`);
       onSnapshot(docRef, async (docSnap) => {
         if (docSnap.exists()) {
-          resolve(docSnap.data() as IUser);
+          const docSnapData = docSnap.data() as IUser;
+          const data = {
+            ...docSnapData,
+            createdAt: docSnapData?.createdAt.toDate().toISOString(),
+          };
+          resolve(data);
           // eventEmitter.emit("user_change");
         } else {
           Alert.alert(

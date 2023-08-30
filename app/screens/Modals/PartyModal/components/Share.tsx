@@ -12,6 +12,7 @@ const InviteButton = ({ creatorUID }: { creatorUID: string }) => {
     (state) => state.user_state.current_user
   );
   const navigation = useNavigation<MapNavigationProps>();
+
   const usersToInvite = followers?.filter((userUID) =>
     following?.includes(userUID)
   );

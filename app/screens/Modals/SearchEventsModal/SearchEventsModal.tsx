@@ -1,27 +1,16 @@
-import React, {
-  MutableRefObject,
-  RefObject,
-  useEffect,
-  useMemo,
-  useRef,
-  useState,
-} from "react";
-import { StyleSheet, View, Text, Keyboard } from "react-native";
-import BottomSheet, {
-  BottomSheetFlatList,
-  BottomSheetTextInput,
-} from "@gorhom/bottom-sheet";
-import { Fontisto } from "@expo/vector-icons";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
-import { Region } from "react-native-maps";
-import { ModalProps } from "../Types/Modals";
-import { colors } from "../../../src/colors";
-import { IEvent } from "../../../Types/Events";
-import RenderItem from "../../Map/JoinedEvents/RenderItem";
-import SearchBar from "../../../shared/Searcher/SearchBar";
-import { Feather } from "@expo/vector-icons";
+import { Feather, Fontisto } from "@expo/vector-icons";
+import BottomSheet, { BottomSheetFlatList } from "@gorhom/bottom-sheet";
 import _ from "lodash";
+import React, { useEffect, useMemo, useState } from "react";
+import { StyleSheet } from "react-native";
+import { Region } from "react-native-maps";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { IEvent } from "../../../Types/Events";
+import SearchBar from "../../../shared/Searcher/SearchBar";
 import ListEmptyComponent from "../../../shared/UserList/ListEmptyComponent";
+import { colors } from "../../../src/colors";
+import RenderItem from "../../Map/JoinedEvents/RenderItem";
+import { ModalProps } from "../Types/Modals";
 interface SearchEventsModalProps extends ModalProps {
   city: string;
   animateToRegion: (region: Region) => void;
