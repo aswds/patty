@@ -7,6 +7,8 @@ import useLocationPermission from "../../hooks/useLocationPermission";
 import LocationPermissionScreen from "../../screens/Permissions/LocationPermission";
 import { Authorization } from "../Navigators/Authorization/Authorization";
 import { App_Navigation } from "./AppNavigation";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+
 /**
  *
  * Controls navigator changing
@@ -21,7 +23,6 @@ import { App_Navigation } from "./AppNavigation";
 export const RootNavigator = () => {
   const [isSignedIn, setIsSigned] = useState<boolean>(false);
   const locationPermissionsStatus = useLocationPermission();
-
   // const [emailVerified, setEmailVerified] = useState<boolean | undefined>(
   //   auth.currentUser?.emailVerified
   // );
@@ -37,6 +38,7 @@ export const RootNavigator = () => {
   //   }
   // }, []);
   // - Check if user is already signed up or signed in
+
   onAuthStateChanged(auth, (user) => {
     if (user) {
       setIsSigned(true);

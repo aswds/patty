@@ -11,7 +11,6 @@ import { addNotificationForUser } from "./firebase/addNotificationForUser";
 const NotificationsScreen: React.FC = () => {
   const [notifications, setNotifications] = useState<NotificationTypes[]>([]);
   const { current_user } = useTypedSelector((state) => state.user_state);
-  const { updateUser } = useActions();
 
   useEffect(() => {
     const userRef = userReference(auth.currentUser?.uid!);

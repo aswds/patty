@@ -3,7 +3,7 @@ import { getFirestore, doc, deleteDoc } from "firebase/firestore";
 import { Alert } from "react-native";
 
 // Function to delete the user account from Firestore
-async function deleteUserAccount(uid: string, onDelete: () => void) {
+export async function deleteUserAccount(uid: string, onDelete: () => void) {
   try {
     // Get a reference to the Firestore database
     const db = getFirestore();
@@ -12,8 +12,8 @@ async function deleteUserAccount(uid: string, onDelete: () => void) {
     const userDocRef = doc(db, "USERS", uid);
 
     // Delete the user document
-    onDelete();
     await deleteDoc(userDocRef);
+    onDelete();
   } catch (error) {
     Alert.alert("Error deleting user account:", error.message);
   }

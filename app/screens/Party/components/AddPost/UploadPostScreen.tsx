@@ -22,8 +22,6 @@ import { colors } from "../../../../src/colors";
 import NavigationBar from "../../../Map/PartyCreationScreens/NavigationBar";
 import MediaComponent from "./PickMedia";
 import { uploadPartyPost } from "./firebasePostFunctions";
-import { doc } from "firebase/firestore";
-import { db } from "../../../../../firebase";
 const PostUploadScreen: React.FC<
   PartyNavigationScreenProps<"PostUploadScreen">
 > = ({ navigation, route }) => {

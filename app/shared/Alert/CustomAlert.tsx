@@ -66,7 +66,7 @@ const CustomAlert: React.FC<CustomAlertProps> = ({
             text={okButtonText}
             textStyle={okButtonTextStyle}
           />
-          {onPressCancel && (
+          {onPressCancel && cancelButtonText && (
             <AlertButton
               onPress={onPressCancel}
               style="cancel"

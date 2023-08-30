@@ -89,20 +89,15 @@ const PartyModal: React.FC<PartyMarkerModalProps> = ({
     });
   }
   function onJoinEvent(data: IEvent) {
-    const current_date = new Date();
-    if (current_date > data?.time) {
-      navigateToPartyScreen(data);
-    } else {
-      joinEvent(data).then((r) => {
-        onJoin(data);
-        navigation.navigate("PartyNav", {
-          screen: "PartyScreen",
-          params: {
-            partyData: data,
-          },
-        });
+    joinEvent(data).then((r) => {
+      onJoin(data);
+      navigation.navigate("PartyNav", {
+        screen: "PartyScreen",
+        params: {
+          partyData: data,
+        },
       });
-    }
+    });
 
     onClose!();
   }

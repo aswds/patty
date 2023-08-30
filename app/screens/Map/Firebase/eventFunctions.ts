@@ -39,7 +39,6 @@ export async function fetchViaInviteParties(city: string): Promise<IEvent[]> {
     )
   );
   const querySnapshot = await getDocs(q);
-
   return querySnapshot.docs.map((doc) => doc.data()) as IEvent[];
 }
 
@@ -87,12 +86,12 @@ export async function leaveEvent(data: IEvent) {
   //functions
   await updateDoc(eventDoc_ref, {
     guests: FieldValue.arrayRemove(current_user_uid),
+    invited: FieldValue.arrayRemove(current_user_uid),
   });
   await updateDoc(userDoc_ref, {
     "events.onEvent": FieldValue.delete(),
     "events.eventType": FieldValue.delete(),
     "events.partyLocation": FieldValue.delete(),
-    invited: FieldValue.arrayRemove(data.partyID),
   });
 }
 

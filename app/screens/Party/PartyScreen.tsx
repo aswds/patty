@@ -1,6 +1,7 @@
 import { AntDesign, FontAwesome5 } from "@expo/vector-icons";
+import * as NetInfo from "@react-native-community/netinfo";
 import { usePreventScreenCapture } from "expo-screen-capture";
-import _, { times } from "lodash";
+import _ from "lodash";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
 import {
@@ -14,6 +15,7 @@ import { useSafeAreaInsets } from "react-native-safe-area-context";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import { IEvent } from "../../Types/Events";
 import { PartyNavigationScreenProps } from "../../Types/PartyStack/NavigationTypes";
+import InternetConnection from "../../custom/InternetConnection/InternetConnection";
 import { useTypedSelector } from "../../hooks/useTypedSelector";
 import CustomAlert from "../../shared/Alert/CustomAlert";
 import BigButton from "../../shared/Buttons/BigButton";
@@ -23,15 +25,14 @@ import ListEmptyComponent from "../../shared/UserList/ListEmptyComponent";
 import { colors } from "../../src/colors";
 import { isAndroid } from "../../src/platform";
 import { handleAlertError } from "../Map/helpers/handleAlertError";
-import { AlertConfig } from "../Map/helpers/pickAnAlertType";
+import { AlertConfig, pickAlertText } from "../Map/helpers/pickAnAlertType";
 import PartyHeader from "./components/PostFlatlist/PartyHeader";
 import Post from "./components/PostFlatlist/Post/Post";
 import { listenToUsersPosts } from "./components/PostFlatlist/Post/helpers/listeners";
 import { IPost } from "./components/PostFlatlist/types";
 import { cachePosts, getCachedPosts } from "./helpers/cacheFunctions";
 import { fetchPartyPosts } from "./helpers/fetchPartyPosts";
-import { getDatabase, onValue, ref } from "firebase/database";
-import { getStorage } from "firebase/storage";
+
 const PartyScreen: React.FC<PartyNavigationScreenProps<"PartyScreen">> = ({
   navigation,
   route,
@@ -47,6 +48,15 @@ const PartyScreen: React.FC<PartyNavigationScreenProps<"PartyScreen">> = ({
     title: "",
   });
   const [error, setError] = useState<string>();
+  const [isConnected, setIsConnected] = useState<boolean>();
+  useEffect(() => {
+    const unsubscribe = NetInfo.addEventListener((state) => {
+      if (state) {
+        setIsConnected(state?.isConnected);
+      }
+    });
+    return () => unsubscribe();
+  }, []);
   const { uid, events } = useTypedSelector(
     (state) => state.user_state.current_user
   );
@@ -197,10 +207,16 @@ const PartyScreen: React.FC<PartyNavigationScreenProps<"PartyScreen">> = ({
                 style={{ backgroundColor: "transparent" }}
                 text={canPost ? "add post" : "add a reminder"}
                 onPress={() => {
-                  if (canPost) {
+                  if (canPost && isConnected) {
                     navigation.navigate("PostUploadScreen", {
                       partyStartTime: party.time as Date,
                     });
+                  } else if (!isConnected) {
+                    handleAlertError(
+                      setAlertError,
+                      setShowAlertModal,
+                      pickAlertText("noInternetConnection")
+                    );
                   } else {
                     if (!isAndroid) {
                       const referenceDate = moment.utc("2001-01-01");
@@ -231,6 +247,7 @@ const PartyScreen: React.FC<PartyNavigationScreenProps<"PartyScreen">> = ({
           },
         ]}
       />
+      {!isConnected && <InternetConnection />}
       {error && (
         <BoldText onPress={() => setError("")} textStyles={styles.errorStyle}>
           {error}

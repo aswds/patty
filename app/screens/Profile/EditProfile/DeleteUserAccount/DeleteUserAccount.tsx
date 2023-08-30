@@ -16,6 +16,7 @@ import { deleteParty } from "../../../Modals/PartyModal/components/actionButtons
 import { leaveEvent } from "../../../Map/Firebase/eventFunctions";
 import Loader from "../../../../shared/Loaders/Loader";
 import { Feather, MaterialCommunityIcons } from "@expo/vector-icons";
+import { deleteUserAccount } from "./deleteAccount";
 
 const DeleteUserAccount = () => {
   const [showAlert, setShowAlert] = useState<boolean>(false);
@@ -53,7 +54,9 @@ const DeleteUserAccount = () => {
             await leaveEvent(data);
           }
           // Proceed with email change
-          await auth.currentUser?.delete();
+          deleteUserAccount(userInfo.uid, async () => {
+            await auth.currentUser?.delete();
+          });
         })
         .catch((e) => {
           if (e.code === "auth/wrong-password") {

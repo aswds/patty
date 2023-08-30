@@ -1,6 +1,7 @@
 import { deleteDoc, doc } from "firebase/firestore";
 import { deleteObject, getStorage, ref } from "firebase/storage";
 import { db } from "../../../../../firebase";
+import { Alert } from "react-native";
 
 export async function deletePartyPost(
   partyId: string,
@@ -8,18 +9,19 @@ export async function deletePartyPost(
   fileName: string
 ) {
   try {
-    const storage = getStorage();
-    // Delete the media file from Firebase Storage
-    const storageRef = ref(storage, `partiesMedia/${partyId}/${fileName}`);
-    await deleteObject(storageRef);
-
+    async function deletePostFromStorage() {
+      const storage = getStorage();
+      // Delete the media file from Firebase Storage
+      const storageRef = ref(storage, `partiesMedia/${partyId}/${fileName}`);
+      await deleteObject(storageRef);
+    }
+    async function deletePostFromDB() {
+      const postRef = doc(db, "PARTIES_POSTS", partyId, "USERS_POSTS", postId);
+      await deleteDoc(postRef);
+    }
     // Delete the post document from Firestore
-    const postRef = doc(db, "PARTIES_POSTS", partyId, "USERS_POSTS", postId);
-    await deleteDoc(postRef);
-
-    console.log("Post and media deleted successfully");
+    Promise.all([deletePostFromStorage(), deletePostFromDB()]);
   } catch (error) {
-    console.error("Error deleting post:", error);
-    throw error;
+    Alert.alert("Error", error.message);
   }
 }

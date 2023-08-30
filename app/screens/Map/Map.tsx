@@ -45,6 +45,11 @@ import { handleAlertError } from "./helpers/handleAlertError";
 import { AlertConfig, pickAlertText } from "./helpers/pickAnAlertType";
 import mapStyle from "./mapStyle.json";
 import { Alert } from "react-native";
+import useLocationPermission from "../../hooks/useLocationPermission";
+import { getCurrentPositionAsync } from "expo-location";
+import useEventSubscription from "../../hooks/useEventSubscription";
+import useFetchUserData from "../../hooks/useFetchUserData";
+import { getAddress } from "../../shared/GetLocationFunctions/getAddress";
 
 function Map({ navigation }: MapStackScreenProps<"Map">) {
   //States
@@ -55,7 +60,6 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
     (state) => state.user_state.current_user.userLocation
   );
 
-  const currentUserLocation = useUserLocationWatch();
   const city = location?.city;
   const isLocationLoading = location?.isLocationLoading;
 
@@ -71,6 +75,7 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
   const appNavigation = useNavigation<AppNavigatorNavigationProp>();
   // Redux
   const { current_user } = useTypedSelector((state) => state.user_state);
+  const { uid, events: userEvents } = current_user;
   const partyLocation = location?.partyLocation;
 
   const { fetch_user } = useActions();
@@ -79,114 +84,67 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
   const partyMarkerModalRef = useRef<BottomSheet>(null);
   const searchEventsModalRef = useRef<BottomSheet>(null);
   // useEffects
-  // clearing onEvent when party has been deleted
-
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        await Promise.all([
-          fetch_user(),
-          fetch_public_events(),
-          fetch_viaInvite_events(),
-        ]);
-      } catch (error) {
-        // Handle errors
-      }
-    };
-
-    fetchData();
+  //@ts-ignore
+  useFetchUserData(fetch_user, []);
+  useFetchUserData(async () => {
+    await Promise.all([
+      fetch_user(),
+      fetch_public_events(),
+      fetch_viaInvite_events(),
+    ]);
   }, []);
 
-  useEffect(() => {
-    if (current_user.uid) {
-      const userRef = userReference(current_user.uid);
-      const unsub = onSnapshot(userRef, () => {
-        fetch_user();
-      });
-      return () => unsub();
-    }
-  }, [current_user?.uid]);
+  useEventSubscription(() => onSnapshot(userReference(uid), fetch_user), [uid]);
 
-  useEffect(() => {
-    if (partyLocation && current_user.uid) {
-      const public_eventsRef = eventsReference(partyLocation, "Public");
-      const viaInvite_eventsRef = eventsReference(partyLocation, "Via Invite");
-      const unsubscribe_public_events = onSnapshot(public_eventsRef, () => {
-        fetch_public_events();
-      });
+  useEventSubscription(
+    () =>
+      onSnapshot(eventsReference(partyLocation, "Public"), fetch_public_events),
+    [partyLocation]
+  );
 
-      const unsubscribe_viaInvite_events = onSnapshot(
-        viaInvite_eventsRef,
-        () => {
-          fetch_viaInvite_events();
+  useEventSubscription(
+    () =>
+      onSnapshot(
+        eventsReference(partyLocation, "Via Invite"),
+        fetch_viaInvite_events
+      ),
+    [partyLocation]
+  );
+
+  useEventSubscription(() => {
+    if (partyLocation && userEvents?.eventType && userEvents?.onEvent) {
+      return onSnapshot(
+        eventReference(
+          partyLocation,
+          userEvents?.eventType,
+          userEvents?.onEvent
+        ),
+        (snapshot) => {
+          if (!snapshot.exists() && uid) {
+            leaveDeletedEvent();
+            setJoinedEvent(undefined);
+          }
         }
       );
-
-      return () => {
-        unsubscribe_public_events();
-        unsubscribe_viaInvite_events();
-      };
+    } else {
+      return () => {};
     }
-  }, [
-    partyLocation,
-    current_user.events?.onEvent,
-    current_user.events?.eventType,
-    current_user.uid,
-  ]);
+  }, [partyLocation, userEvents?.eventType, userEvents?.onEvent, uid]);
 
-  useEffect(() => {
-    if (
-      partyLocation &&
-      current_user.uid &&
-      current_user.events?.eventType &&
-      current_user.events?.onEvent
-    ) {
-      const eventRef = eventReference(
-        partyLocation,
-        current_user.events?.eventType,
-        current_user.events?.onEvent
-      );
-
-      const unsubscribe = onSnapshot(eventRef, (snapshot) => {
-        if (!snapshot.exists() && current_user.uid) {
-          leaveDeletedEvent();
-          setJoinedEvent(undefined);
-          fetch_viaInvite_events();
-          fetch_public_events();
-        }
-      });
-
-      return () => unsubscribe();
-    }
-  }, [
-    current_user.events?.eventType,
-    current_user.events?.onEvent,
-    partyLocation,
-    current_user.uid,
-  ]);
-
-  useEffect(() => {
-    if (
-      partyLocation &&
-      current_user.events?.eventType &&
-      current_user.events.onEvent &&
-      current_user.uid
-    ) {
-      fetchJoinedEvents().then((event) => setJoinedEvent(event));
-    }
-  }, [
-    current_user.events?.onEvent,
-    partyLocation,
-    current_user.events?.eventType,
-  ]);
-
+  useFetchUserData(
+    () =>
+      fetchJoinedEvents().then((event) => {
+        setJoinedEvent(event);
+      }),
+    [userEvents?.onEvent, partyLocation, userEvents?.eventType]
+  );
   useEffect(() => {
     // animate to user location
 
     if (location?.coords) animateToRegion(location?.coords);
   }, [location?.coords]);
 
-  // functions
+  // // functions
 
   function animateToRegion(region: Region) {
     mapRef.current?.animateToRegion(
@@ -198,13 +156,16 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
       500
     );
   }
+
   async function navigateToPartyScreen(partyData: IEvent) {
     const { location } = partyData;
+    const currentUserLocation = await getCurrentPositionAsync();
+
     let dis = getDistance(
       //@ts-ignore
       {
-        latitude: currentUserLocation?.latitude,
-        longitude: currentUserLocation?.longitude,
+        latitude: currentUserLocation?.coords.latitude,
+        longitude: currentUserLocation?.coords.longitude,
       },
       {
         latitude: location.region?.latitude,
@@ -266,8 +227,10 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
         current_user.events.eventType,
         current_user.events.onEvent
       );
+
       return newEvent;
     } else {
+      // Alert.alert("Something went wrong");
     }
   }
 
@@ -321,6 +284,62 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
     animateToRegion(region);
     partyMarkerModalRef.current?.snapToIndex(0);
   }
+
+  // BUTTONS FUNCTIONS
+
+  const handleLeaveEventButtonPress = () => {
+    if (joinedEvent && joinedEvent.user.uid === current_user.uid) {
+      handleAlert(pickAlertText("hostLeaving"), onDeleteCurrentEvent);
+    } else {
+      handleAlert(pickAlertText("leaveParty"), leaveCurrentEvent);
+    }
+  };
+
+  const handlePartyCreationButtonPress = () => {
+    if (_.isEmpty(current_user.events.onEvent)) {
+      navigateToPartyCreation();
+    } else {
+      if (joinedEvent && joinedEvent.user.uid === current_user.uid) {
+        handleAlert(pickAlertText("hostLeaving"), onDeleteCurrentEvent);
+      } else {
+        handleAlert(pickAlertText("toCreate"), leaveCurrentEvent);
+      }
+    }
+  };
+
+  const handleSearchPartyButtonPress = () => {
+    searchEventsModalRef.current?.snapToIndex(0);
+    // setVisibleModal({ ...visibleModal, searchModal: true });
+  };
+
+  const handleSelectedButtonPress = async () => {
+    try {
+      if (joinedEvent) {
+        navigateToPartyScreen(joinedEvent);
+      } else {
+        const event = await fetchJoinedEvents();
+        setJoinedEvent(event);
+        if (event) {
+          navigateToPartyScreen(event);
+        } else if (!current_user.events.onEvent) {
+          handleAlert(pickAlertText("noPartyJoined"));
+        }
+      }
+    } catch (e) {
+      if (typeof e === "string") {
+        setAlertError({
+          title: "Something went wrong...",
+          message: e.message,
+        });
+      } else if (e instanceof Error) {
+        setAlertError({
+          title: "Something went wrong...",
+          message: e.message,
+        });
+      }
+    }
+  };
+
   //Render
   return (
     <GestureHandlerRootView style={{ flex: 1 }}>
@@ -361,56 +380,10 @@ function Map({ navigation }: MapStackScreenProps<"Map">) {
         />
 
         <Buttons
-          onPressLeaveEventButton={() => {
-            if (joinedEvent && joinedEvent.user.uid === current_user.uid) {
-              handleAlert(pickAlertText("hostLeaving"), onDeleteCurrentEvent);
-            } else {
-              handleAlert(pickAlertText("leaveParty"), leaveCurrentEvent);
-            }
-          }}
-          onPressPartyCreationButton={() => {
-            if (_.isEmpty(current_user.events.onEvent)) {
-              navigateToPartyCreation();
-            } else {
-              if (joinedEvent && joinedEvent.user.uid === current_user.uid) {
-                handleAlert(pickAlertText("hostLeaving"), onDeleteCurrentEvent);
-              } else {
-                handleAlert(pickAlertText("toCreate"), leaveCurrentEvent);
-              }
-            }
-          }}
-          onPressSearchPartyButton={() => {
-            searchEventsModalRef.current?.snapToIndex(0);
-            // setVisibleModal({ ...visibleModal, searchModal: true });
-          }}
-          onPressSelectedButton={async () => {
-            try {
-              if (joinedEvent) {
-                navigateToPartyScreen(joinedEvent);
-              } else {
-                const event = await fetchJoinedEvents();
-
-                setJoinedEvent(event);
-                if (event) {
-                  navigateToPartyScreen(event);
-                }
-              }
-              setAlertError(pickAlertText("noPartyJoined"));
-            } catch (e) {
-              if (typeof e === "string") {
-                setAlertError({
-                  title: "Something went wrong...",
-                  message: e.message,
-                }); // works, `e` narrowed to string
-              } else if (e instanceof Error) {
-                // works, `e` narrowed to Error
-                setAlertError({
-                  title: "Something went wrong...",
-                  message: e.message,
-                });
-              }
-            }
-          }}
+          onPressLeaveEventButton={handleLeaveEventButtonPress}
+          onPressPartyCreationButton={handlePartyCreationButtonPress}
+          onPressSearchPartyButton={handleSearchPartyButtonPress}
+          onPressSelectedButton={handleSelectedButtonPress}
         />
         {/*<SearchModal visible={true} hideModal={() => {}} />*/}
         <SearchEventsModal
@@ -486,9 +459,4 @@ const styles = StyleSheet.create({
   loaderStyle: { height: 100, zIndex: -1 },
 });
 
-// const mapStateToProps = (store: RootState) => ({
-//   current_user: store.user_state.current_user,
-//   isPartiesLoading: store.parties_state.isLoading,
-//   events: store.parties_state.events,
-// });
 export default Map;
