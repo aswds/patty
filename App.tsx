@@ -12,11 +12,14 @@ import { useFontsLoad } from "./app/hooks/useFontsLoad";
 import { ProvidedNavigator } from "./app/navigation/Navigators/Authorization/ProvidedNavigator";
 import store from "./app/redux/store/store";
 import { isDarkTheme } from "./app/src/theme";
+import useLocationPermission from "./app/hooks/useLocationPermission";
+
 // Setting splash screen
 SplashScreen.preventAutoHideAsync();
 export default function App() {
   const { isLoaded, error } = useFontsLoad();
   // useNotifications();
+  useLocationPermission();
   let cacheResources = async () => {
     const images = [
       require("./assets/logo.png"),
@@ -29,6 +32,7 @@ export default function App() {
   };
   const [appIsReady, setAppIsReady] = useState(false);
 
+  // To unsubscribe to these update, just use:
   useEffect(() => {
     async function prepare() {
       try {
@@ -65,6 +69,7 @@ export default function App() {
       <View style={styles.container} onLayout={onLayoutRootView}>
         <StatusBar barStyle={isDarkTheme ? "light-content" : "dark-content"} />
         {/* <StrictMode> */}
+
         <BottomSheetModalProvider>
           <Provider store={store}>
             <ProvidedNavigator />

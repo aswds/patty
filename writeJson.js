@@ -21,6 +21,5 @@ fs.readFile("data.txt", "utf8", (err, data) => {
       console.error(err);
       return;
     }
-    console.log("Data saved to data.json");
   });
 });
