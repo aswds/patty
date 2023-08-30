@@ -65,19 +65,19 @@ function Profile({
           }
           data={[
             {
-              data: `${user.events.eventsCreated} ${
-                user.events.eventsCreated > 0 ? "🥳" : ""
+              data: `${user.events?.eventsCreated ?? 0} ${
+                user.events?.eventsCreated > 0 ? "🥳" : ""
               }`,
               title: "number of parties created ",
             },
             {
-              data: `${user.events.eventsVisited} ${
-                user.events.eventsVisited > 0 ? "🎉" : ""
+              data: `${user.events?.eventsVisited ?? 0} ${
+                user.events?.eventsVisited > 0 ? "🎉" : ""
               }`,
               title: "party count ",
             },
             {
-              data: user.events.onEvent
+              data: user.events?.onEvent
                 ? "living it up at the party 🎉🕺"
                 : "just chillin' and relaxing 🍹",
               title: `party presence profiler`,

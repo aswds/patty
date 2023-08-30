@@ -3,6 +3,7 @@ import { StyleProp, StyleSheet, View, ViewStyle } from "react-native";
 import {
   GooglePlaceDetail,
   GooglePlacesAutocomplete,
+  Styles,
 } from "react-native-google-places-autocomplete";
 import { FontFamily } from "../../../assets/fonts/Fonts";
 import { PartyCreationNavigationProps } from "../../Types/MapStack/ScreenNavigationProps";
@@ -53,24 +54,24 @@ export default function GooglePlaceSearch({
           placeholder={"Search location"}
           fetchDetails={true}
           query={{
-            key: "AIzaSyCPNfHc1tXamJ5l-ujrjrW8ZNrQ5iw4STk",
+            key: "AIzaSyDC-sa73L21bELvv1eaA8D-M0jj0VVqkrg",
             //   location: "latitude,longitude",
           }}
           // styles={searchBarStyle}
           onPress={(data, details) => regionUpdate(details?.geometry.location!)}
-          onFail={(error) => {
-            console.log(error);
-          }}
           enablePoweredByContainer={false}
           styles={searchBarStyle}
           predefinedPlaces={[currentLocation]}
+          textInputProps={{
+            placeholderTextColor: "grey",
+          }}
         />
       </View>
     </View>
   );
 }
 
-const searchBarStyle = {
+const searchBarStyle: Styles = {
   textInputContainer: {},
   textInput: {
     flexDirection: "row",
@@ -79,6 +80,7 @@ const searchBarStyle = {
     backgroundColor: colors.input,
     borderRadius: 10,
     color: colors.text,
+    fontFamily: FontFamily.medium,
   },
   poweredContainer: {
     justifyContent: "flex-end",

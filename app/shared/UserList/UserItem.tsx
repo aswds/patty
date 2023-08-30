@@ -22,9 +22,6 @@ interface UserItemProps {
   showInviteButton?: boolean;
 }
 const UserItem = ({ user, showInviteButton }: UserItemProps) => {
-  {
-    console.log(user);
-  }
   const navigation = useNavigation<ProfileNavigationProps>();
   const [show, setShow] = useState<boolean>(true);
   // const [user, setUser] = useState<IUser>(_user);

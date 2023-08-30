@@ -43,6 +43,5 @@ const compressVideo = async (videoUri) => {
   }
 
   const compressedUri = await Video.convertMovToMp4Async(videoUri);
-  console.log("Compressed video URI:", compressedUri);
   return compressedUri;
 };

@@ -1,6 +1,9 @@
 # Created by https://www.toptal.com/developers/gitignore/api/webstorm,reactnative,firebase
 # Edit at https://www.toptal.com/developers/gitignore?templates=webstorm,reactnative,firebase
 
+
+### Folders ###
+app/screens/Chat/
 ### Firebase ###
 .idea
 **/node_modules/*
@@ -10,6 +13,7 @@
 .runtimeconfig.json
 .firebase/
 .firebaseAdmin
+firebase.*
 ### ReactNative ###
 # React Native Stack Base
 
