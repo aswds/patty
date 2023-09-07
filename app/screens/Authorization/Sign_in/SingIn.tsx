@@ -114,16 +114,18 @@ const SignInScreen = ({
           textStyle={styles.styledButtonTextStyle}
           title={"Sign in"}
         />
-        <CustomAlert
-          title="Error"
-          errorMsg={errorMsg!}
-          hideModal={_hideModal}
-          showModal={_showModal}
-        />
       </Screen>
-
-      {showLoader && (
-        <Loader isVisible={showLoader} containerStyle={{ zIndex: -23 }} />
+      <CustomAlert
+        title="Error"
+        errorMsg={errorMsg!}
+        hideModal={_hideModal}
+        showModal={_showModal}
+      />
+      {!_showModal && showLoader && (
+        <Loader
+          isVisible={!_showModal && showLoader}
+          containerStyle={{ zIndex: 0 }}
+        />
       )}
     </>
   );

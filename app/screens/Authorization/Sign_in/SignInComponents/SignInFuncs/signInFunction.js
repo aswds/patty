@@ -12,6 +12,7 @@ export async function user_signIn(
   password,
   signIn
 ) {
+  setShowLoader(true);
   await signInWithEmailAndPassword(auth, email, password).catch(
     async (error) => {
       await error_handle({
@@ -23,4 +24,5 @@ export async function user_signIn(
       });
     }
   );
+  setShowLoader(false);
 }

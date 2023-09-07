@@ -12,7 +12,7 @@ import { BackButton } from "../../../shared/Buttons/BackButton";
 import Button from "../../../shared/Buttons/BigButton";
 import Input from "../../../shared/Input/Input";
 import { Logo } from "../components/Logo";
-import CustomAlert from "../CustomAlert";
+import CustomAlert from "../../../shared/Alert/CustomAlert";
 import { textStyle } from "../style";
 import { TermText } from "../Initial_Screen/TermText";
 import { error_handle } from "./Sign_up_screens/Sign_up_Functions/error_handle";
@@ -23,6 +23,7 @@ import { SignUpStackScreenProps } from "../../../Types/Authorization/SignUp/Scre
 import { Screen } from "../../../shared/Screen/Screen";
 import Title from "../components/Title";
 import { getAuth, sendSignInLinkToEmail } from "firebase/auth";
+import Loader from "../../../shared/Loaders/Loader";
 type SignUpUser = {
   email: string | null;
   password: string | null;
@@ -41,6 +42,7 @@ const SignUpScreen = ({
     email: null,
     password: null,
   });
+  const [showLoader, setShowLoader] = useState<boolean>(false);
   const [showModal, setShowModal] = useState<boolean>(false);
   const [confirmPass, setConfirmPass] = useState<string>("");
   const [showPassword, setShowPassword] = useState<boolean>(true);
@@ -58,6 +60,8 @@ const SignUpScreen = ({
     setShowModal(false);
   };
   function signUp_handle() {
+    setShowLoader(true);
+
     if (
       valid.validEmail &&
       valid.validPassword &&
@@ -85,6 +89,7 @@ const SignUpScreen = ({
       setShowModal(true);
       setErrorMsg("Please check if everything is correct :)");
     }
+    setShowLoader(false);
   }
   function refHandle(ref_input: MutableRefObject<TextInput | null>) {
     ref_input?.current?.focus();
@@ -193,7 +198,13 @@ const SignUpScreen = ({
         {/* Fix */}
         {/* Fix */}
 
+        {/* <CustomAlert
+          errorMsg={errorMsg!}
+          hideModal={_hideModal}
+          showModal={showModal}
+        /> */}
         <CustomAlert
+          title="Error"
           errorMsg={errorMsg!}
           hideModal={_hideModal}
           showModal={showModal}
@@ -211,6 +222,7 @@ const SignUpScreen = ({
           />
         </View>
       </Screen>
+      <Loader isVisible={showLoader} />
     </View>
   );
 };

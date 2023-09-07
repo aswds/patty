@@ -18,20 +18,21 @@ export default function Loader({
   containerStyle,
   ...other
 }: LoaderProps) {
+  if (!isVisible) {
+    return null;
+  }
   return (
-    <View style={containerStyle}>
-      <Modal animationType="fade" transparent={true} visible={isVisible}>
-        <View style={[styles.container, style]} {...other}>
-          <ActivityIndicator size={"large"} color={colors.accentColor} />
-        </View>
-      </Modal>
+    <View style={[styles.container, containerStyle]}>
+      <View style={[styles.container, style]} {...other}>
+        <ActivityIndicator size={"large"} color={colors.accentColor} />
+      </View>
     </View>
   );
 }
 
 const styles = StyleSheet.create({
   container: {
-    backgroundColor: "rgba(0,0,0,0.65)",
+    backgroundColor: "rgba(0,0,0,0.3)",
     justifyContent: "center",
     alignItems: "center",
     position: "absolute",
